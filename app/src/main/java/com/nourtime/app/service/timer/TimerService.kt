@@ -9,7 +9,6 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import com.nourtime.app.core.detection.DetectionSource
@@ -134,10 +133,11 @@ class TimerService : Service() {
             .distinctUntilChanged()
             .collect { (_, _, degraded) ->
                 val status = engine.status.value
-                runCatching {
-                    NotificationManagerCompat.from(this@TimerService)
-                        .notify(ProtectionNotifications.STATUS_ID, ProtectionNotifications.status(this@TimerService, status))
-                }
+                ProtectionNotifications.notify(
+                    this@TimerService,
+                    ProtectionNotifications.STATUS_ID,
+                    ProtectionNotifications.status(this@TimerService, status),
+                )
                 if (degraded) ProtectionNotifications.showDegraded(this@TimerService)
                 else ProtectionNotifications.clearDegraded(this@TimerService)
                 if (status?.source == DetectionSource.NONE) Log.w(TAG, "No foreground detection available")

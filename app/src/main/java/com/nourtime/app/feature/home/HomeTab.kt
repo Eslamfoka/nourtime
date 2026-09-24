@@ -1,5 +1,6 @@
 package com.nourtime.app.feature.home
 
+import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -163,6 +164,7 @@ private fun BudgetRing(status: TimerStatus) {
 
 /** One of: available, in use now (with the app name), or locked with the refill countdown. */
 @Composable
+@SuppressLint("ProduceStateDoesNotAssignValue") // assigned after the suspend lookup
 private fun StatusCard(status: TimerStatus, label: suspend (String) -> String) {
     val app = status.appsInUse.firstOrNull()
     val appName by produceState<String?>(null, app) { value = app?.let { label(it) } }
@@ -230,6 +232,7 @@ private fun DebugDetectionCard(state: ForegroundState, onSkip: (endBudget: Boole
 
 /** Simple bars of today's use per app (brief §12, Home). */
 @Composable
+@SuppressLint("ProduceStateDoesNotAssignValue") // assigned after the suspend lookup
 private fun TodayCard(today: List<DailyUsage>, label: suspend (String) -> String) {
     val totalMs = today.sumOf { it.usedMs }
     NourCard {

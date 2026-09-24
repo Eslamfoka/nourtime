@@ -1,5 +1,6 @@
 package com.nourtime.app.feature.setup
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -335,6 +336,7 @@ fun AppRowItem(
 }
 
 @Composable
+@SuppressLint("ProduceStateDoesNotAssignValue") // assigned after the suspend lookup
 private fun AppIcon(packageName: String, loadIcon: suspend (String) -> ImageBitmap?) {
     val icon by produceState<ImageBitmap?>(null, packageName) { value = loadIcon(packageName) }
     Box(Modifier.size(44.dp).clip(RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {

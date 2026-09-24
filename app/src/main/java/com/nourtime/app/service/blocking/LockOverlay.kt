@@ -8,6 +8,7 @@ import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.MediaPlayer
+import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
 import android.view.WindowManager
@@ -222,7 +223,11 @@ class LockOverlay @Inject constructor(
                 PixelFormat.TRANSLUCENT,
             ).apply {
                 softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-                layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+                }
             }
             return runCatching { wm.addView(root, params) }
                 .onFailure { Log.w(TAG, "Couldn't show the lock overlay", it) }

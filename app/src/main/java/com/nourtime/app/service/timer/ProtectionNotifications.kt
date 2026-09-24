@@ -1,13 +1,17 @@
 package com.nourtime.app.service.timer
 
+import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import com.nourtime.app.MainActivity
 import com.nourtime.app.R
 import com.nourtime.app.core.timer.TimerPhase
@@ -62,7 +66,7 @@ object ProtectionNotifications {
             .setOngoing(true)
             .setContentIntent(openApp(context))
             .build()
-        runCatching { NotificationManagerCompat.from(context).notify(ALERT_ID, n) }
+        notify(context, ALERT_ID, n)
     }
 
     /** Device admin was turned off, so Nour Time can be uninstalled until the parent turns it back on. */
@@ -74,11 +78,18 @@ object ProtectionNotifications {
             .setStyle(NotificationCompat.BigTextStyle().bigText(context.getString(R.string.notif_admin_disabled)))
             .setContentIntent(openApp(context))
             .build()
-        runCatching { NotificationManagerCompat.from(context).notify(ADMIN_ALERT_ID, n) }
+        notify(context, ADMIN_ALERT_ID, n)
     }
 
     fun clearDegraded(context: Context) {
         NotificationManagerCompat.from(context).cancel(ALERT_ID)
+    }
+
+    /** Posts only when allowed: the parent may have skipped the notifications step. */
+    fun notify(context: Context, id: Int, notification: Notification) {
+        val allowed = Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+        if (allowed) NotificationManagerCompat.from(context).notify(id, notification)
     }
 
     private fun minutesUp(ms: Long): Int = ((ms + 59_999) / 60_000).toInt()
