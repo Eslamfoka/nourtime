@@ -265,6 +265,12 @@
     <string name="preview_button">معاينة شاشة \"خلص الوقت\"</string>
     <string name="preview_default">افتراضي</string>
 
+    <string name="settings_security_section">رمز الأهل وسؤال الأمان</string>
+    <string name="change_pin">تغيير الرمز</string>
+    <string name="change_question">تغيير سؤال الأمان</string>
+    <string name="pin_changed">تم تغيير الرمز</string>
+    <string name="question_changed">تم حفظ سؤال الأمان</string>
+
     <!-- Services -->
     <string name="accessibility_service_description">يعرف وقت نور التطبيقات الظاهرة على الشاشة (بما فيها الصورة داخل الصورة وتقسيم الشاشة) ليحدّ من وقت طفلك على التطبيقات التي تختارها. يقرأ فقط اسم التطبيق الذي يملك كل نافذة، ولا يقرأ أبدًا النصوص أو المحتوى الظاهر فيها ولا ما يكتبه طفلك. لا تخرج أي بيانات من هذا الجهاز.</string>
     <string name="device_admin_label">حماية وقت نور</string>

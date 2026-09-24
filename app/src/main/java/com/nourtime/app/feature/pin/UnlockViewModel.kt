@@ -33,7 +33,7 @@ class UnlockViewModel @Inject constructor(
     val askAnswer: StateFlow<Boolean> = _askAnswer.asStateFlow()
 
     val pin = PinCheckController(viewModelScope, security, clock) {
-        if (lockPeriod.active.value) _askAnswer.value = true else unlock()
+        viewModelScope.launch { if (lockPeriod.isActive()) _askAnswer.value = true else unlock() }
     }
 
     val answer = AnswerCheckController(viewModelScope, security, clock) { unlock() }

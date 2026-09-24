@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.NourPrimaryButton
+import com.nourtime.app.feature.home.LockTypeEditor
 import com.nourtime.app.feature.setup.AppList
 import com.nourtime.app.feature.setup.AppSearchField
 import com.nourtime.app.feature.setup.AppsViewModel
@@ -124,6 +125,8 @@ fun TimeBudgetStep(
                 onBudgetMinutes = viewModel::setBudgetMinutes,
                 onLockPeriodHours = viewModel::setLockPeriodHours,
             )
+            Text(stringResource(R.string.settings_lock_section), style = MaterialTheme.typography.titleMedium)
+            LockTypeEditor(s.lockType, viewModel::setLockType)
         }
     }
 }

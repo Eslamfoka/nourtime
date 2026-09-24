@@ -223,6 +223,11 @@ private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewMod
             Text(stringResource(R.string.settings_protection_section), style = MaterialTheme.typography.titleLarge)
             ToggleCard(stringResource(R.string.protect_settings_title), stringResource(R.string.protect_settings_hint), s.protectSystemSettings, viewModel::setProtectSystemSettings)
             ToggleCard(stringResource(R.string.sound_title), stringResource(R.string.sound_hint), s.soundEnabled, viewModel::setSoundEnabled)
+            Text(stringResource(R.string.settings_security_section), style = MaterialTheme.typography.titleLarge)
+            var securityEdit by remember { mutableStateOf<SecurityEdit?>(null) }
+            NourSecondaryButton(stringResource(R.string.change_pin), { securityEdit = SecurityEdit.PIN })
+            NourSecondaryButton(stringResource(R.string.change_question), { securityEdit = SecurityEdit.QUESTION })
+            securityEdit?.let { edit -> SecurityEditDialog(edit, onClose = { securityEdit = null }) }
             var previewing by remember { mutableStateOf(false) }
             NourSecondaryButton(stringResource(R.string.preview_button), { previewing = true })
             if (previewing) {

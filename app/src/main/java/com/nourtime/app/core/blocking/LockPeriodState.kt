@@ -1,21 +1,22 @@
 package com.nourtime.app.core.blocking
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.nourtime.app.core.time.TrustedClock
+import com.nourtime.app.core.timer.TimeEngine
+import com.nourtime.app.data.settings.ParentSettingsRepository
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Whether a lock period (time up or bedtime) is running right now. Written by the block
- * coordinator; read by the app's unlock screen, which then also asks the security question.
+ * Whether a lock period (time up or bedtime) is running right now. Read straight from the persisted
+ * timer state and the bedtime setting, so it is right even the instant the app process starts.
  */
 @Singleton
-class LockPeriodState @Inject constructor() {
-    private val _active = MutableStateFlow(false)
-    val active: StateFlow<Boolean> = _active.asStateFlow()
-
-    fun set(active: Boolean) {
-        _active.value = active
-    }
+class LockPeriodState @Inject constructor(
+    private val engine: TimeEngine,
+    private val settings: ParentSettingsRepository,
+    private val trustedClock: TrustedClock,
+) {
+    suspend fun isActive(): Boolean =
+        engine.isLocked() || settings.settings.first().bedtime.isActive(trustedClock.now().toLocalTime())
 }

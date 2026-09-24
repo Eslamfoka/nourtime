@@ -71,7 +71,7 @@ internal fun ToggleCard(title: String, hint: String, checked: Boolean, onChange:
 
 /** Lock type (brief §3): only the selected apps, or the whole phone. */
 @Composable
-internal fun LockTypeEditor(lockType: LockType, onChange: (LockType) -> Unit) {
+fun LockTypeEditor(lockType: LockType, onChange: (LockType) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         ChoiceCard(
             selected = lockType == LockType.SELECTED_APPS,

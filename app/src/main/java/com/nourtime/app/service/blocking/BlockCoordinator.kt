@@ -6,7 +6,6 @@ import com.nourtime.app.core.blocking.BlockDecision
 import com.nourtime.app.core.blocking.BlockInput
 import com.nourtime.app.core.blocking.BlockPolicy
 import com.nourtime.app.core.blocking.BlockReason
-import com.nourtime.app.core.blocking.LockPeriodState
 import com.nourtime.app.core.blocking.ParentPass
 import com.nourtime.app.core.blocking.isActive
 import com.nourtime.app.core.detection.ForegroundAppTracker
@@ -47,7 +46,6 @@ class BlockCoordinator @Inject constructor(
     private val settings: ParentSettingsRepository,
     private val schedule: ScheduleRepository,
     private val pass: ParentPass,
-    private val lockPeriod: LockPeriodState,
     private val trustedClock: TrustedClock,
     private val overlay: LockOverlay,
 ) {
@@ -86,7 +84,6 @@ class BlockCoordinator @Inject constructor(
         val now = trustedClock.now()
         val bedtime = s.bedtime.isActive(now.toLocalTime())
         val timeUp = status?.phase == TimerPhase.LOCKED
-        lockPeriod.set(timeUp || bedtime)
 
         val decision = BlockPolicy.decide(
             BlockInput(

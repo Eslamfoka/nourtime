@@ -253,6 +253,12 @@
     <string name="preview_button">Preview the \"Time\'s up\" screen</string>
     <string name="preview_default">Default</string>
 
+    <string name="settings_security_section">Parent PIN and security question</string>
+    <string name="change_pin">Change the PIN</string>
+    <string name="change_question">Change the security question</string>
+    <string name="pin_changed">PIN changed</string>
+    <string name="question_changed">Security question saved</string>
+
     <!-- Services -->
     <string name="accessibility_service_description">Nour Time detects which apps are on the screen (including picture-in-picture and split screen) to limit your child\'s time on the apps you choose. It reads only the name of the app that owns each window, never the text or content shown in it or anything your child types. No data leaves this device.</string>
     <string name="device_admin_label">Nour Time protection</string>

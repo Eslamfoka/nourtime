@@ -95,6 +95,9 @@ class TimeEngine @Inject constructor(
         _status.value = TimerStatus(next.phase, next.remainingMs, next.budgetMs, next.lockRemainingMs, appsInUse, source)
     }
 
+    /** True while the lock period runs; falls back to the saved state before the first update. */
+    suspend fun isLocked(): Boolean = mutex.withLock { (state ?: load())?.phase == TimerPhase.LOCKED }
+
     /** Debug builds only (test tools on Home): jump the budget or the lock forward. */
     suspend fun debugSkip(endBudget: Boolean) = mutex.withLock {
         val s = state ?: return@withLock
