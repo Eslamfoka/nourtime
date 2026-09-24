@@ -83,7 +83,20 @@ class SecurityRepositoryTest {
     fun `security answer is checked after normalization`() = runTest {
         repo.setSecurityQuestion("  اسم قرية جدتي؟ ", "أبو حمص")
         assertEquals("اسم قرية جدتي؟", repo.securityQuestion.first())
-        assertTrue(repo.verifyAnswer("ابو  حمص"))
-        assertFalse(repo.verifyAnswer("طنطا"))
+        assertEquals(AnswerCheckResult.Correct, repo.checkAnswer("ابو  حمص"))
+        assertEquals(AnswerCheckResult.Wrong, repo.checkAnswer("طنطا"))
+    }
+
+    @Test
+    fun `wrong answers lock out like the PIN, independently of it`() = runTest {
+        repo.setPin("4827")
+        repo.setSecurityQuestion("Question?", "blue")
+        repeat(4) { assertEquals(AnswerCheckResult.Wrong, repo.checkAnswer("red")) }
+        assertEquals(AnswerCheckResult.LockedOut(30_000), repo.checkAnswer("red"))
+        assertEquals(AnswerCheckResult.LockedOut(30_000), repo.checkAnswer("blue"))
+        // The PIN has its own counter.
+        assertEquals(PinCheckResult.Success, repo.verifyPin("4827"))
+        clock.now += 30_000
+        assertEquals(AnswerCheckResult.Correct, repo.checkAnswer("BLUE"))
     }
 }

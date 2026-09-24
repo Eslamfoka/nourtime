@@ -18,6 +18,7 @@ import androidx.compose.material.icons.rounded.LockClock
 import androidx.compose.material.icons.rounded.PlayCircle
 import androidx.compose.material.icons.rounded.WarningAmber
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nourtime.app.BuildConfig
 import com.nourtime.app.R
@@ -54,11 +56,12 @@ import com.nourtime.app.core.ui.startFirstAvailable
 import com.nourtime.app.data.apps.InstalledAppsRepository
 import com.nourtime.app.feature.setup.durationText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    engine: TimeEngine,
+    private val engine: TimeEngine,
     tracker: ForegroundAppTracker,
     private val apps: InstalledAppsRepository,
     private val permissions: PermissionChecker,
@@ -69,6 +72,10 @@ class HomeViewModel @Inject constructor(
     suspend fun label(packageName: String) = apps.label(packageName)
 
     fun accessibilitySettings() = permissions.settingsIntents(NourPermission.ACCESSIBILITY)
+
+    fun debugSkip(endBudget: Boolean) {
+        viewModelScope.launch { engine.debugSkip(endBudget) }
+    }
 }
 
 @Composable
@@ -92,7 +99,7 @@ internal fun HomeTab(padding: PaddingValues, viewModel: HomeViewModel = hiltView
             BudgetRing(s)
             StatusCard(s, viewModel::label)
         }
-        if (BuildConfig.DEBUG) DebugDetectionCard(detection)
+        if (BuildConfig.DEBUG) DebugDetectionCard(detection, viewModel::debugSkip)
         PermissionsSection(permissionsViewModel)
     }
 }
@@ -183,7 +190,7 @@ private fun DegradedCard(onFix: () -> Unit) {
 
 /** Debug builds only: what detection sees, to verify on real Samsung/Xiaomi phones. */
 @Composable
-private fun DebugDetectionCard(state: ForegroundState) {
+private fun DebugDetectionCard(state: ForegroundState, onSkip: (endBudget: Boolean) -> Unit) {
     NourCard(containerColor = MaterialTheme.colorScheme.surfaceVariant) {
         Text("Detection (debug)", style = MaterialTheme.typography.titleSmall)
         Text(
@@ -191,5 +198,9 @@ private fun DebugDetectionCard(state: ForegroundState) {
                 "screenUsable=${state.screen.usable}",
             style = MaterialTheme.typography.bodySmall,
         )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(onClick = { onSkip(true) }) { Text("End budget now") }
+            OutlinedButton(onClick = { onSkip(false) }) { Text("End lock now") }
+        }
     }
 }

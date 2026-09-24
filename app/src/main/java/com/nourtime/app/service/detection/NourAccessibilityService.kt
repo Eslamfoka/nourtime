@@ -9,6 +9,7 @@ import com.nourtime.app.core.detection.AppWindow
 import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.UsageStatsSource
 import com.nourtime.app.data.onboarding.OnboardingRepository
+import com.nourtime.app.service.blocking.LockOverlay
 import com.nourtime.app.service.timer.TimerService
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -34,6 +35,7 @@ class NourAccessibilityService : AccessibilityService() {
     @Inject lateinit var tracker: ForegroundAppTracker
     @Inject lateinit var onboarding: OnboardingRepository
     @Inject lateinit var usageStats: UsageStatsSource
+    @Inject lateinit var overlay: LockOverlay
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -47,6 +49,7 @@ class NourAccessibilityService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
         tracker.onAccessibilityConnected()
+        overlay.attach(this)
         scope.launch(Dispatchers.Default.limitedParallelism(1)) {
             for (request in refreshRequests) publishWindows()
         }
@@ -85,11 +88,13 @@ class NourAccessibilityService : AccessibilityService() {
     override fun onInterrupt() = Unit
 
     override fun onUnbind(intent: Intent?): Boolean {
+        overlay.detach(this)
         tracker.onAccessibilityDisconnected(usageStats.available)
         return super.onUnbind(intent)
     }
 
     override fun onDestroy() {
+        overlay.detach(this)
         tracker.onAccessibilityDisconnected(usageStats.available)
         scope.cancel()
         super.onDestroy()

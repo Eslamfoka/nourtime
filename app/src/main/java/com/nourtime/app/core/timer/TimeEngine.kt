@@ -9,7 +9,9 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.nourtime.app.core.detection.DetectionSource
 import com.nourtime.app.core.time.DeviceClock
+import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.data.settings.ParentSettings
+import com.nourtime.app.data.usage.UsageRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,7 +19,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -48,11 +49,16 @@ data class TimerStatus(
 class TimeEngine @Inject constructor(
     private val store: DataStore<Preferences>,
     private val clock: DeviceClock,
+    private val trustedClock: TrustedClock,
+    private val usage: UsageRepository,
 ) {
     private val mutex = Mutex()
     private var state: TimerState? = null
     private var lastInUse = false
+    private var lastAppsInUse: Set<String> = emptySet()
     private var lastSavedElapsed = 0L
+    /** Charged time not yet written to the stats database, per app. */
+    private val pendingUsage = mutableMapOf<String, Long>()
 
     private val _status = MutableStateFlow<TimerStatus?>(null)
     val status: StateFlow<TimerStatus?> = _status.asStateFlow()
@@ -68,9 +74,10 @@ class TimeEngine @Inject constructor(
         val lockMs = settings.lockPeriodHours * HOUR
         val previous = state ?: load() ?: TimerState.fresh(budgetMs, lockMs, now, boot)
 
-        val wall = LocalDateTime.now()
+        val wall = trustedClock.now()
         val resetAt = settings.dailyResetMinute?.let { LocalTime.of(it / 60, it % 60) }
         var next = TimeRules.advance(previous, now, boot, lastInUse)
+        chargeUsage(previous, next)
         next = TimeRules.applySettings(next, budgetMs, lockMs)
         next = TimeRules.applyDailyReset(next, wall.toLocalDate(), wall.toLocalTime(), resetAt)
 
@@ -79,15 +86,47 @@ class TimeEngine @Inject constructor(
             next.lastResetDay != previous.lastResetDay || now - lastSavedElapsed >= SAVE_EVERY_MS
         state = next
         lastInUse = inUse
+        lastAppsInUse = appsInUse
         if (mustSave) {
             save(next)
+            flushUsage(wall.toLocalDate())
             lastSavedElapsed = now
         }
         _status.value = TimerStatus(next.phase, next.remainingMs, next.budgetMs, next.lockRemainingMs, appsInUse, source)
     }
 
+    /** Debug builds only (test tools on Home): jump the budget or the lock forward. */
+    suspend fun debugSkip(endBudget: Boolean) = mutex.withLock {
+        val s = state ?: return@withLock
+        state = if (endBudget && s.phase == TimerPhase.AVAILABLE) {
+            s.copy(remainingMs = 0)
+        } else if (!endBudget && s.phase == TimerPhase.LOCKED) {
+            s.copy(lockRemainingMs = 1)
+        } else {
+            s
+        }
+    }
+
     /** Persists the latest state, e.g. when the service stops. */
-    suspend fun flush() = mutex.withLock { state?.let { save(it) } }
+    suspend fun flush() = mutex.withLock {
+        state?.let { save(it) }
+        flushUsage(trustedClock.now().toLocalDate())
+    }
+
+    /** Attributes budget consumed during the last interval to the foreground-most limited app. */
+    private fun chargeUsage(before: TimerState, after: TimerState) {
+        if (!lastInUse || before.phase != TimerPhase.AVAILABLE) return
+        val used = before.remainingMs - if (after.phase == TimerPhase.AVAILABLE) after.remainingMs else 0
+        val app = lastAppsInUse.firstOrNull() ?: return
+        if (used > 0) pendingUsage[app] = (pendingUsage[app] ?: 0) + used
+    }
+
+    private suspend fun flushUsage(day: LocalDate) {
+        if (pendingUsage.isEmpty()) return
+        val batch = pendingUsage.toMap()
+        pendingUsage.clear()
+        batch.forEach { (pkg, ms) -> usage.add(day, pkg, ms) }
+    }
 
     private suspend fun load(): TimerState? {
         val p = store.data.first()

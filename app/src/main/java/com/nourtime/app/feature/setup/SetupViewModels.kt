@@ -7,7 +7,9 @@ import com.nourtime.app.data.apps.InstalledApp
 import com.nourtime.app.data.apps.InstalledAppsRepository
 import com.nourtime.app.data.apps.filterApps
 import com.nourtime.app.data.settings.AgeGroup
+import com.nourtime.app.data.settings.Bedtime
 import com.nourtime.app.data.settings.ChildGender
+import com.nourtime.app.data.settings.LockType
 import com.nourtime.app.data.settings.ParentSettings
 import com.nourtime.app.data.settings.ParentSettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,6 +40,14 @@ class ParentSettingsViewModel @Inject constructor(
     fun setLockPeriodHours(hours: Int) = launch { repository.setLockPeriodHours(hours) }
 
     fun setDailyResetMinute(minute: Int?) = launch { repository.setDailyResetMinute(minute) }
+
+    fun setLockType(type: LockType) = launch { repository.setLockType(type) }
+
+    fun setProtectSystemSettings(on: Boolean) = launch { repository.setProtectSystemSettings(on) }
+
+    fun setSoundEnabled(on: Boolean) = launch { repository.setSoundEnabled(on) }
+
+    fun setBedtime(bedtime: Bedtime) = launch { repository.setBedtime(bedtime) }
 
     private fun launch(block: suspend () -> Unit) {
         viewModelScope.launch { block() }

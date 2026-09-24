@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.nourtime.app.core.designsystem.component.NourFace
+import com.nourtime.app.core.designsystem.component.NourPose
 import com.nourtime.app.core.designsystem.component.NourStar
 import com.nourtime.app.core.designsystem.component.PinDots
 import com.nourtime.app.core.designsystem.component.PinPad
@@ -40,7 +40,7 @@ fun PinEntryLayout(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        NourStar(Modifier.size(72.dp), face = NourFace.CLOCK, animated = false)
+        NourStar(Modifier.size(72.dp), pose = NourPose.CLOCK, animated = false)
         AnimatedContent(title, transitionSpec = { fadeIn() togetherWith fadeOut() }, label = "pinTitle") {
             Text(it, style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
         }

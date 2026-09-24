@@ -18,6 +18,7 @@ import com.nourtime.app.core.detection.UsageStatsSource
 import com.nourtime.app.core.timer.TimeEngine
 import com.nourtime.app.core.timer.TimerPhase
 import com.nourtime.app.data.settings.ParentSettingsRepository
+import com.nourtime.app.service.blocking.BlockCoordinator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,6 +47,7 @@ class TimerService : Service() {
     @Inject lateinit var engine: TimeEngine
     @Inject lateinit var settings: ParentSettingsRepository
     @Inject lateinit var usageStats: UsageStatsSource
+    @Inject lateinit var blocking: BlockCoordinator
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -80,6 +82,7 @@ class TimerService : Service() {
         scope.launch { runTimer() }
         scope.launch { runUsageStatsFallback() }
         scope.launch { runNotifications() }
+        scope.launch { blocking.run() }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_STICKY

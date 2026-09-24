@@ -121,7 +121,7 @@ private fun SectionLabel(text: String) {
 }
 
 @Composable
-private fun ChoiceCard(
+internal fun ChoiceCard(
     selected: Boolean,
     onClick: () -> Unit,
     title: String,

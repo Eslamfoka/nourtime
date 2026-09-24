@@ -192,6 +192,59 @@
     <string name="notif_locked">مقفل · يمتلئ الرصيد بعد %1$s</string>
     <string name="notif_degraded_body">تم إيقاف خدمة إمكانية الوصول. افتح وقت نور لإعادة تشغيلها.</string>
 
+    <!-- Parent check on lock screens -->
+    <string name="action_cancel">إلغاء</string>
+    <string name="answer_title">سؤال الأمان</string>
+    <string name="answer_body">فترة القفل جارية. أجب عن سؤال الأمان للمتابعة.</string>
+    <string name="answer_wrong">هذه ليست الإجابة.</string>
+    <string name="answer_submit">متابعة</string>
+    <string name="lock_parent_pin_body">أدخل رمز الأهل للمتابعة.</string>
+    <string name="lock_phone_only">افتح الهاتف فقط</string>
+
+    <!-- Child "Time's up" screens: exactly as written in the brief -->
+    <string name="tu_default_title">خلص وقتك! نرجع نتقابل بعد شوية</string>
+    <string name="tu_play_title">يلا نلعب برّه الشاشة!</string>
+    <string name="tu_study_title">وقت نتعلم حاجة جديدة 📚</string>
+    <string name="tu_meal_title">يلا ناكل سوا 🍽️</string>
+    <string name="tu_sleep_title_m">تصبح على خير 🌙</string>
+    <string name="tu_sleep_title_f">تصبحي على خير 🌙</string>
+    <string name="tu_parents_title_m">دي حاجة للكبار، اطلب من بابا أو ماما ⭐</string>
+    <string name="tu_parents_title_f">دي حاجة للكبار، اطلبي من بابا أو ماما ⭐</string>
+    <string name="tu_bravo_m">برافو! خلّصت وقتك، يلا نعمل حاجة حلوة</string>
+    <string name="tu_bravo_f">برافو! خلّصتي وقتك، يلا نعمل حاجة حلوة</string>
+    <string name="tu_back_in_label">نرجع بعد</string>
+    <string name="tu_parents_button">للأهل</string>
+    <string name="tu_ok">حاضر</string>
+    <string name="act_drawing">رسم 🎨</string>
+    <string name="act_blocks">مكعبات 🧱</string>
+    <string name="act_ball">كورة ⚽</string>
+    <string name="act_story">قصة 📖</string>
+    <string name="act_puzzle">ألغاز 🧩</string>
+    <string name="act_coloring">تلوين 🖍️</string>
+    <string name="act_hands">نغسل إيدينا 🧼</string>
+    <string name="act_table">نجهّز السفرة 🍽️</string>
+    <string name="act_water">نشرب مية 💧</string>
+
+    <!-- Settings: locking and protection -->
+    <string name="settings_lock_section">عند انتهاء الوقت</string>
+    <string name="lock_type_apps">اقفل التطبيقات المختارة</string>
+    <string name="lock_type_apps_desc">يبقى باقي الهاتف يعمل.</string>
+    <string name="lock_type_device">اقفل الهاتف كله</string>
+    <string name="lock_type_device_desc">لا يفتحه إلا رمز الأهل خلال فترة القفل. تبقى مكالمات الطوارئ متاحة.</string>
+    <string name="settings_protection_section">الحماية</string>
+    <string name="protect_settings_title">حماية إعدادات الهاتف</string>
+    <string name="protect_settings_hint">تحتاج إعدادات الهاتف وشاشات إلغاء التثبيت والأمان إلى رمز الأهل، حتى لا يمكن إيقاف وقت نور أو حذفه.</string>
+    <string name="sound_title">الصوت في شاشة \"خلص الوقت\"</string>
+    <string name="sound_hint">نغمة هادئة للأطفال الأصغر سنًا.</string>
+    <string name="bedtime_title">وقت النوم</string>
+    <string name="bedtime_hint">اقفل التطبيقات المحددة وقت النوم حتى لو تبقى وقت.</string>
+    <string name="bedtime_window">من %1$s إلى %2$s</string>
+    <string name="bedtime_start">البداية</string>
+    <string name="bedtime_end">النهاية</string>
+
+    <string name="admin_disable_warning">إيقاف هذا يسمح بإلغاء تثبيت وقت نور ويوقف حدود وقت طفلك. يجب أن يفعل ذلك أحد الوالدين فقط.</string>
+    <string name="notif_admin_disabled">تم إيقاف مشرف الجهاز. افتح وقت نور لإعادة تشغيل الحماية.</string>
+
     <!-- Services -->
     <string name="accessibility_service_description">يعرف وقت نور التطبيقات الظاهرة على الشاشة (بما فيها الصورة داخل الصورة وتقسيم الشاشة) ليحدّ من وقت طفلك على التطبيقات التي تختارها. يقرأ فقط اسم التطبيق الذي يملك كل نافذة، ولا يقرأ أبدًا النصوص أو المحتوى الظاهر فيها ولا ما يكتبه طفلك. لا تخرج أي بيانات من هذا الجهاز.</string>
     <string name="device_admin_label">حماية وقت نور</string>

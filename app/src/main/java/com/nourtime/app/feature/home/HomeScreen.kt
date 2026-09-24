@@ -1,7 +1,5 @@
 package com.nourtime.app.feature.home
 
-import android.app.TimePickerDialog
-import android.text.format.DateFormat
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -66,9 +64,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import javax.inject.Inject
 
 @HiltViewModel
@@ -235,6 +230,12 @@ private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewMod
             Text(stringResource(R.string.settings_time_section), style = MaterialTheme.typography.titleLarge)
             TimeBudgetEditor(s.budgetMinutes, s.lockPeriodHours, viewModel::setBudgetMinutes, viewModel::setLockPeriodHours)
             DailyResetCard(s.dailyResetMinute, viewModel::setDailyResetMinute)
+            Text(stringResource(R.string.settings_lock_section), style = MaterialTheme.typography.titleLarge)
+            LockTypeEditor(s.lockType, viewModel::setLockType)
+            BedtimeCard(s.bedtime, viewModel::setBedtime)
+            Text(stringResource(R.string.settings_protection_section), style = MaterialTheme.typography.titleLarge)
+            ToggleCard(stringResource(R.string.protect_settings_title), stringResource(R.string.protect_settings_hint), s.protectSystemSettings, viewModel::setProtectSystemSettings)
+            ToggleCard(stringResource(R.string.sound_title), stringResource(R.string.sound_hint), s.soundEnabled, viewModel::setSoundEnabled)
         }
     }
 }
@@ -243,15 +244,6 @@ private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewMod
 @Composable
 private fun DailyResetCard(minute: Int?, onChange: (Int?) -> Unit) {
     val context = LocalContext.current
-    fun pickTime(initial: Int) {
-        TimePickerDialog(
-            context,
-            { _, h, m -> onChange(h * 60 + m) },
-            initial / 60,
-            initial % 60,
-            DateFormat.is24HourFormat(context),
-        ).show()
-    }
     NourCard {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
@@ -273,11 +265,11 @@ private fun DailyResetCard(minute: Int?, onChange: (Int?) -> Unit) {
             )
         }
         if (minute != null) {
-            val time = LocalTime.of(minute / 60, minute % 60).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
+            val time = formatMinuteOfDay(minute)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(stringResource(R.string.daily_reset_at, time), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
                 OutlinedButton(
-                    onClick = { pickTime(minute) },
+                    onClick = { showTimePicker(context, minute, onChange) },
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
                 ) { Text(stringResource(R.string.action_change_time)) }
             }

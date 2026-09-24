@@ -18,6 +18,7 @@ import com.nourtime.app.core.ui.formatDuration
 object ProtectionNotifications {
     const val STATUS_ID = 1
     private const val ALERT_ID = 2
+    private const val ADMIN_ALERT_ID = 3
     private const val CHANNEL_STATUS = "protection_status"
     private const val CHANNEL_ALERTS = "protection_alerts"
 
@@ -62,6 +63,18 @@ object ProtectionNotifications {
             .setContentIntent(openApp(context))
             .build()
         runCatching { NotificationManagerCompat.from(context).notify(ALERT_ID, n) }
+    }
+
+    /** Device admin was turned off, so Nour Time can be uninstalled until the parent turns it back on. */
+    fun showAdminDisabled(context: Context) {
+        val n = NotificationCompat.Builder(context, CHANNEL_ALERTS)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(context.getString(R.string.status_degraded_title))
+            .setContentText(context.getString(R.string.notif_admin_disabled))
+            .setStyle(NotificationCompat.BigTextStyle().bigText(context.getString(R.string.notif_admin_disabled)))
+            .setContentIntent(openApp(context))
+            .build()
+        runCatching { NotificationManagerCompat.from(context).notify(ADMIN_ALERT_ID, n) }
     }
 
     fun clearDegraded(context: Context) {

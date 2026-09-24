@@ -1,0 +1,150 @@
+package com.nourtime.app.service.blocking
+
+import android.content.Context
+import android.util.Log
+import com.nourtime.app.core.blocking.BlockDecision
+import com.nourtime.app.core.blocking.BlockInput
+import com.nourtime.app.core.blocking.BlockPolicy
+import com.nourtime.app.core.blocking.BlockReason
+import com.nourtime.app.core.blocking.LockPeriodState
+import com.nourtime.app.core.blocking.ParentPass
+import com.nourtime.app.core.blocking.isActive
+import com.nourtime.app.core.detection.ForegroundAppTracker
+import com.nourtime.app.core.detection.ForegroundState
+import com.nourtime.app.core.time.TrustedClock
+import com.nourtime.app.core.timer.TimeEngine
+import com.nourtime.app.core.timer.TimerPhase
+import com.nourtime.app.core.timer.TimerStatus
+import com.nourtime.app.data.db.SchedulePeriod
+import com.nourtime.app.data.schedule.ScheduleRepository
+import com.nourtime.app.data.schedule.periodAt
+import com.nourtime.app.data.settings.AgeGroup
+import com.nourtime.app.data.settings.ChildGender
+import com.nourtime.app.data.settings.ParentSettings
+import com.nourtime.app.data.settings.ParentSettingsRepository
+import com.nourtime.app.feature.lock.LockScreenState
+import com.nourtime.app.feature.lock.templateFor
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
+import java.time.Duration
+import java.time.ZonedDateTime
+import javax.inject.Inject
+import javax.inject.Singleton
+
+/**
+ * Decides, about once a second and on every change, whether something must be blocked, and shows
+ * or hides the lock overlay accordingly (brief §3, §4, §5).
+ */
+@Singleton
+class BlockCoordinator @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val tracker: ForegroundAppTracker,
+    private val engine: TimeEngine,
+    private val settings: ParentSettingsRepository,
+    private val schedule: ScheduleRepository,
+    private val pass: ParentPass,
+    private val lockPeriod: LockPeriodState,
+    private val trustedClock: TrustedClock,
+    private val overlay: LockOverlay,
+) {
+    private data class Inputs(
+        val fg: ForegroundState,
+        val status: TimerStatus?,
+        val settings: ParentSettings,
+        val periods: List<SchedulePeriod>,
+    )
+
+    /** What the child dismissed with "OK"; the screen stays hidden until what's on screen changes. */
+    @Volatile private var dismissedFor: Pair<String?, Set<String>>? = null
+    @Volatile private var lastInputs: Inputs? = null
+
+    suspend fun run() {
+        withContext(Dispatchers.Main) {
+            overlay.onChildDismiss = ::onChildDismiss
+        }
+        val ticker = flow {
+            while (true) {
+                emit(Unit)
+                delay(TICK_MS)
+            }
+        }
+        combine(tracker.state, engine.status, settings.settings, schedule.periods, pass.state) { fg, status, s, periods, _ ->
+            Inputs(fg, status, s, periods)
+        }.combine(ticker) { inputs, _ -> inputs }
+            .collect { evaluate(it) }
+    }
+
+    private suspend fun evaluate(inputs: Inputs) {
+        lastInputs = inputs
+        val (fg, status, s, periods) = inputs
+        if (!fg.screen.interactive) pass.revoke()
+
+        val now = trustedClock.now()
+        val bedtime = s.bedtime.isActive(now.toLocalTime())
+        val timeUp = status?.phase == TimerPhase.LOCKED
+        lockPeriod.set(timeUp || bedtime)
+
+        val decision = BlockPolicy.decide(
+            BlockInput(
+                foreground = fg,
+                limitedApps = s.limitedApps,
+                lockType = s.lockType,
+                timeUp = timeUp,
+                bedtime = bedtime,
+                protectionDegraded = status?.protectionDegraded ?: false,
+                protectSystemSettings = s.protectSystemSettings,
+                ownPackage = context.packageName,
+                devicePass = pass.deviceActive(),
+                fullPass = pass.fullActive(),
+            ),
+        )
+
+        val key = fg.foreground to fg.visible
+        if (decision == null) dismissedFor = null
+        val hidden = decision != null && !decision.wholeDevice && dismissedFor == key
+
+        val screen = if (decision == null || hidden) null else LockScreenState(
+            decision = decision,
+            template = templateFor(decision.reason, periods.periodAt(now.minuteOfDay())?.kind),
+            ageGroup = s.ageGroup ?: AgeGroup.AGES_3_6,
+            gender = s.gender ?: ChildGender.GIRL,
+            countdownMs = when (decision.reason) {
+                BlockReason.TIME_UP -> status?.lockRemainingMs
+                BlockReason.BEDTIME -> untilMinute(now, s.bedtime.endMinute)
+                else -> null
+            },
+            soundEnabled = s.soundEnabled,
+        )
+        if (decision != lastDecision) {
+            Log.i(TAG, "decision=$decision fg=${fg.foreground} visible=${fg.visible} source=${fg.source} hidden=$hidden")
+            lastDecision = decision
+        }
+        withContext(Dispatchers.Main) { overlay.render(screen) }
+    }
+
+    private var lastDecision: BlockDecision? = null
+
+    /** The child tapped "OK": go home and keep the screen hidden while nothing changes. */
+    private fun onChildDismiss() {
+        val fg = lastInputs?.fg ?: return
+        dismissedFor = fg.foreground to fg.visible
+        overlay.goHome()
+    }
+
+    private fun ZonedDateTime.minuteOfDay() = hour * 60 + minute
+
+    private fun untilMinute(now: ZonedDateTime, minute: Int): Long {
+        var end = now.toLocalDate().atTime(minute / 60, minute % 60).atZone(now.zone)
+        if (!end.isAfter(now)) end = end.plusDays(1)
+        return Duration.between(now, end).toMillis()
+    }
+
+    private companion object {
+        const val TAG = "BlockCoordinator"
+        const val TICK_MS = 1_000L
+    }
+}

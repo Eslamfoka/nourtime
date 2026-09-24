@@ -180,6 +180,59 @@
     <string name="notif_locked">Locked · refills in %1$s</string>
     <string name="notif_degraded_body">Accessibility was turned off. Open Nour Time to turn it back on.</string>
 
+    <!-- Parent check on lock screens -->
+    <string name="action_cancel">Cancel</string>
+    <string name="answer_title">Security question</string>
+    <string name="answer_body">A lock period is running. Answer your security question to continue.</string>
+    <string name="answer_wrong">That\'s not the answer.</string>
+    <string name="answer_submit">Continue</string>
+    <string name="lock_parent_pin_body">Enter the parent PIN to continue.</string>
+    <string name="lock_phone_only">Unlock the phone only</string>
+
+    <!-- Child "Time's up" screens (Arabic originals in values-ar) -->
+    <string name="tu_default_title">Your time is up! See you again soon</string>
+    <string name="tu_play_title">Let\'s play away from the screen!</string>
+    <string name="tu_study_title">Time to learn something new 📚</string>
+    <string name="tu_meal_title">Let\'s eat together 🍽️</string>
+    <string name="tu_sleep_title_m">Good night 🌙</string>
+    <string name="tu_sleep_title_f">Good night 🌙</string>
+    <string name="tu_parents_title_m">This part is for grown-ups. Ask Mom or Dad ⭐</string>
+    <string name="tu_parents_title_f">This part is for grown-ups. Ask Mom or Dad ⭐</string>
+    <string name="tu_bravo_m">Well done! You finished your time, let\'s do something fun</string>
+    <string name="tu_bravo_f">Well done! You finished your time, let\'s do something fun</string>
+    <string name="tu_back_in_label">Back in</string>
+    <string name="tu_parents_button">For parents</string>
+    <string name="tu_ok">OK</string>
+    <string name="act_drawing">Drawing 🎨</string>
+    <string name="act_blocks">Blocks 🧱</string>
+    <string name="act_ball">Ball ⚽</string>
+    <string name="act_story">A story 📖</string>
+    <string name="act_puzzle">Puzzles 🧩</string>
+    <string name="act_coloring">Colouring 🖍️</string>
+    <string name="act_hands">Wash hands 🧼</string>
+    <string name="act_table">Set the table 🍽️</string>
+    <string name="act_water">Drink water 💧</string>
+
+    <!-- Settings: locking and protection -->
+    <string name="settings_lock_section">When time is up</string>
+    <string name="lock_type_apps">Lock the selected apps</string>
+    <string name="lock_type_apps_desc">The rest of the phone keeps working.</string>
+    <string name="lock_type_device">Lock the whole phone</string>
+    <string name="lock_type_device_desc">Only the parent PIN opens it during the lock period. Emergency calls stay available.</string>
+    <string name="settings_protection_section">Protection</string>
+    <string name="protect_settings_title">Protect phone settings</string>
+    <string name="protect_settings_hint">The phone\'s Settings, uninstall and security screens need the parent PIN, so Nour Time can\'t be turned off or removed.</string>
+    <string name="sound_title">Sound on the \"Time\'s up\" screen</string>
+    <string name="sound_hint">A soft chime for younger children.</string>
+    <string name="bedtime_title">Bedtime</string>
+    <string name="bedtime_hint">Block the limited apps during bedtime, even if time is left.</string>
+    <string name="bedtime_window">From %1$s to %2$s</string>
+    <string name="bedtime_start">Start</string>
+    <string name="bedtime_end">End</string>
+
+    <string name="admin_disable_warning">Turning this off lets Nour Time be uninstalled, and your child\'s time limits stop. Only a parent should do this.</string>
+    <string name="notif_admin_disabled">Device admin was turned off. Open Nour Time to turn protection back on.</string>
+
     <!-- Services -->
     <string name="accessibility_service_description">Nour Time detects which apps are on the screen (including picture-in-picture and split screen) to limit your child\'s time on the apps you choose. It reads only the name of the app that owns each window, never the text or content shown in it or anything your child types. No data leaves this device.</string>
     <string name="device_admin_label">Nour Time protection</string>

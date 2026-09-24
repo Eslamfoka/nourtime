@@ -2,6 +2,7 @@ package com.nourtime.app.data.settings
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -18,6 +19,12 @@ enum class ChildGender { BOY, GIRL }
 /** Drives the "Time's up" template (brief §4). */
 enum class AgeGroup { AGES_3_6, AGES_7_9, AGES_10_12 }
 
+/** What gets locked when time is up (brief §3). */
+enum class LockType { SELECTED_APPS, WHOLE_DEVICE }
+
+/** Optional bedtime (brief §5): minutes of the day; may cross midnight. */
+data class Bedtime(val enabled: Boolean = false, val startMinute: Int = 21 * 60, val endMinute: Int = 7 * 60)
+
 data class ParentSettings(
     val gender: ChildGender? = null,
     val ageGroup: AgeGroup? = null,
@@ -27,6 +34,12 @@ data class ParentSettings(
     val limitedApps: Set<String> = emptySet(),
     /** Minute of the day for the optional daily refill, or null when off. */
     val dailyResetMinute: Int? = null,
+    val lockType: LockType = LockType.SELECTED_APPS,
+    /** Block the phone's Settings and uninstall screens for the child (brief §3). */
+    val protectSystemSettings: Boolean = true,
+    /** Sound on the child's "Time's up" screen (brief §12). */
+    val soundEnabled: Boolean = true,
+    val bedtime: Bedtime = Bedtime(),
 )
 
 object TimeLimits {
@@ -60,7 +73,15 @@ class ParentSettingsRepository @Inject constructor(
             budgetMinutes = prefs[BUDGET]?.let(TimeLimits::budget) ?: TimeLimits.DEFAULT_BUDGET_MINUTES,
             lockPeriodHours = prefs[LOCK_HOURS]?.let(TimeLimits::lockPeriod) ?: TimeLimits.DEFAULT_LOCK_HOURS,
             limitedApps = prefs[LIMITED_APPS].orEmpty(),
-            dailyResetMinute = prefs[DAILY_RESET]?.takeIf { it in 0 until 24 * 60 },
+            dailyResetMinute = prefs[DAILY_RESET]?.takeIf { it in 0 until MINUTES_PER_DAY },
+            lockType = prefs[LOCK_TYPE]?.let { name -> LockType.entries.firstOrNull { it.name == name } } ?: LockType.SELECTED_APPS,
+            protectSystemSettings = prefs[PROTECT_SETTINGS] ?: true,
+            soundEnabled = prefs[SOUND] ?: true,
+            bedtime = Bedtime(
+                enabled = prefs[BEDTIME_ON] ?: false,
+                startMinute = prefs[BEDTIME_START]?.takeIf { it in 0 until MINUTES_PER_DAY } ?: Bedtime().startMinute,
+                endMinute = prefs[BEDTIME_END]?.takeIf { it in 0 until MINUTES_PER_DAY } ?: Bedtime().endMinute,
+            ),
         )
     }.distinctUntilChanged()
 
@@ -73,7 +94,19 @@ class ParentSettingsRepository @Inject constructor(
     suspend fun setLockPeriodHours(hours: Int) = store.edit { it[LOCK_HOURS] = TimeLimits.lockPeriod(hours) }
 
     suspend fun setDailyResetMinute(minute: Int?) = store.edit {
-        if (minute == null) it.remove(DAILY_RESET) else it[DAILY_RESET] = minute.coerceIn(0, 24 * 60 - 1)
+        if (minute == null) it.remove(DAILY_RESET) else it[DAILY_RESET] = minute.coerceIn(0, MINUTES_PER_DAY - 1)
+    }
+
+    suspend fun setLockType(type: LockType) = store.edit { it[LOCK_TYPE] = type.name }
+
+    suspend fun setProtectSystemSettings(on: Boolean) = store.edit { it[PROTECT_SETTINGS] = on }
+
+    suspend fun setSoundEnabled(on: Boolean) = store.edit { it[SOUND] = on }
+
+    suspend fun setBedtime(bedtime: Bedtime) = store.edit {
+        it[BEDTIME_ON] = bedtime.enabled
+        it[BEDTIME_START] = bedtime.startMinute.coerceIn(0, MINUTES_PER_DAY - 1)
+        it[BEDTIME_END] = bedtime.endMinute.coerceIn(0, MINUTES_PER_DAY - 1)
     }
 
     suspend fun setAppLimited(packageName: String, limited: Boolean) = store.edit { prefs ->
@@ -88,5 +121,12 @@ class ParentSettingsRepository @Inject constructor(
         val LOCK_HOURS = intPreferencesKey("lock_period_hours")
         val LIMITED_APPS = stringSetPreferencesKey("limited_apps")
         val DAILY_RESET = intPreferencesKey("daily_reset_minute")
+        val LOCK_TYPE = stringPreferencesKey("lock_type")
+        val PROTECT_SETTINGS = booleanPreferencesKey("protect_system_settings")
+        val SOUND = booleanPreferencesKey("child_sound")
+        val BEDTIME_ON = booleanPreferencesKey("bedtime_on")
+        val BEDTIME_START = intPreferencesKey("bedtime_start")
+        val BEDTIME_END = intPreferencesKey("bedtime_end")
+        const val MINUTES_PER_DAY = 24 * 60
     }
 }
