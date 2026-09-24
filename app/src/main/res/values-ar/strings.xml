@@ -165,7 +165,7 @@
     <string name="nav_schedule">الجدول</string>
     <string name="nav_settings">الإعدادات</string>
     <string name="schedule_empty_title">فترات اليوم</string>
-    <string name="schedule_empty_body">قريبًا ستقسّم اليوم إلى فترات للمذاكرة واللعب والطعام والنوم، ولكل فترة شاشة \"خلص الوقت\" الخاصة بها.</string>
+    <string name="schedule_empty_body">قسّم اليوم إلى فترات للمذاكرة واللعب والطعام والنوم، ولكل فترة شاشة \"خلص الوقت\" الخاصة بها.</string>
     <string name="settings_child_section">الطفل</string>
     <string name="settings_time_section">الوقت</string>
 
@@ -244,6 +244,26 @@
 
     <string name="admin_disable_warning">إيقاف هذا يسمح بإلغاء تثبيت وقت نور ويوقف حدود وقت طفلك. يجب أن يفعل ذلك أحد الوالدين فقط.</string>
     <string name="notif_admin_disabled">تم إيقاف مشرف الجهاز. افتح وقت نور لإعادة تشغيل الحماية.</string>
+
+    <!-- Schedule -->
+    <string name="schedule_intro">عندما ينتهي الوقت، تناسب شاشة \"خلص الوقت\" فترة اليوم. اضغط على فترة لتعديلها، أو اسحبها على الخط الزمني.</string>
+    <string name="schedule_add">أضف فترة</string>
+    <string name="schedule_edit">تعديل الفترة</string>
+    <string name="schedule_save">حفظ</string>
+    <string name="schedule_delete">حذف الفترة</string>
+    <string name="schedule_delete_confirm">هل تريد حذف هذه الفترة؟</string>
+    <string name="schedule_suggested">استخدم يومًا مقترحًا</string>
+    <string name="period_study">مذاكرة</string>
+    <string name="period_play">لعب</string>
+    <string name="period_meal">طعام</string>
+    <string name="period_sleep">نوم</string>
+
+    <!-- Stats -->
+    <string name="stats_today">الاستخدام اليوم</string>
+    <string name="stats_empty">لم تُستخدم أي تطبيقات محددة اليوم بعد.</string>
+
+    <string name="preview_button">معاينة شاشة \"خلص الوقت\"</string>
+    <string name="preview_default">افتراضي</string>
 
     <!-- Services -->
     <string name="accessibility_service_description">يعرف وقت نور التطبيقات الظاهرة على الشاشة (بما فيها الصورة داخل الصورة وتقسيم الشاشة) ليحدّ من وقت طفلك على التطبيقات التي تختارها. يقرأ فقط اسم التطبيق الذي يملك كل نافذة، ولا يقرأ أبدًا النصوص أو المحتوى الظاهر فيها ولا ما يكتبه طفلك. لا تخرج أي بيانات من هذا الجهاز.</string>

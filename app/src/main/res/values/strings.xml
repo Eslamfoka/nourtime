@@ -153,7 +153,7 @@
     <string name="nav_schedule">Schedule</string>
     <string name="nav_settings">Settings</string>
     <string name="schedule_empty_title">Daily periods</string>
-    <string name="schedule_empty_body">Soon you\'ll split the day into study, play, meal and sleep periods, each with its own \"Time\'s up\" screen.</string>
+    <string name="schedule_empty_body">Split the day into study, play, meal and sleep periods. Each one gets its own \"Time\'s up\" screen.</string>
     <string name="settings_child_section">Child</string>
     <string name="settings_time_section">Time</string>
 
@@ -232,6 +232,26 @@
 
     <string name="admin_disable_warning">Turning this off lets Nour Time be uninstalled, and your child\'s time limits stop. Only a parent should do this.</string>
     <string name="notif_admin_disabled">Device admin was turned off. Open Nour Time to turn protection back on.</string>
+
+    <!-- Schedule -->
+    <string name="schedule_intro">When time runs out, the \"Time\'s up\" screen matches the period of the day. Tap a period to edit it, or drag it on the timeline.</string>
+    <string name="schedule_add">Add a period</string>
+    <string name="schedule_edit">Edit period</string>
+    <string name="schedule_save">Save</string>
+    <string name="schedule_delete">Delete period</string>
+    <string name="schedule_delete_confirm">Delete this period?</string>
+    <string name="schedule_suggested">Use a suggested day</string>
+    <string name="period_study">Study</string>
+    <string name="period_play">Play</string>
+    <string name="period_meal">Meal</string>
+    <string name="period_sleep">Sleep</string>
+
+    <!-- Stats -->
+    <string name="stats_today">Used today</string>
+    <string name="stats_empty">No limited apps used yet today.</string>
+
+    <string name="preview_button">Preview the \"Time\'s up\" screen</string>
+    <string name="preview_default">Default</string>
 
     <!-- Services -->
     <string name="accessibility_service_description">Nour Time detects which apps are on the screen (including picture-in-picture and split screen) to limit your child\'s time on the apps you choose. It reads only the name of the app that owns each window, never the text or content shown in it or anything your child types. No data leaves this device.</string>

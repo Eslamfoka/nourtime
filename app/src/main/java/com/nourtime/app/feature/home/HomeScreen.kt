@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -31,6 +30,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -47,13 +48,17 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.NourCard
-import com.nourtime.app.core.designsystem.component.NourStar
+import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.designsystem.component.StatusPill
 import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.core.permissions.NourPermission
 import com.nourtime.app.core.permissions.PermissionChecker
 import com.nourtime.app.core.ui.startFirstAvailable
+import com.nourtime.app.data.settings.AgeGroup
+import com.nourtime.app.data.settings.ChildGender
+import com.nourtime.app.feature.lock.TimeUpPreviewDialog
 import com.nourtime.app.feature.onboarding.ui
+import com.nourtime.app.feature.schedule.ScheduleTab
 import com.nourtime.app.feature.setup.AppList
 import com.nourtime.app.feature.setup.AppSearchField
 import com.nourtime.app.feature.setup.AppsViewModel
@@ -202,24 +207,6 @@ private fun AppsTab(padding: PaddingValues, viewModel: AppsViewModel = hiltViewM
 }
 
 @Composable
-private fun ScheduleTab(padding: PaddingValues) {
-    TabColumn(padding) {
-        Text(stringResource(R.string.nav_schedule), style = MaterialTheme.typography.headlineMedium)
-        NourCard {
-            Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                NourStar(Modifier.size(120.dp))
-                Text(stringResource(R.string.schedule_empty_title), style = MaterialTheme.typography.titleLarge)
-                Text(
-                    stringResource(R.string.schedule_empty_body),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-    }
-}
-
-@Composable
 private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewModel = hiltViewModel()) {
     val settings by viewModel.settings.collectAsStateWithLifecycle()
     TabColumn(padding) {
@@ -236,6 +223,11 @@ private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewMod
             Text(stringResource(R.string.settings_protection_section), style = MaterialTheme.typography.titleLarge)
             ToggleCard(stringResource(R.string.protect_settings_title), stringResource(R.string.protect_settings_hint), s.protectSystemSettings, viewModel::setProtectSystemSettings)
             ToggleCard(stringResource(R.string.sound_title), stringResource(R.string.sound_hint), s.soundEnabled, viewModel::setSoundEnabled)
+            var previewing by remember { mutableStateOf(false) }
+            NourSecondaryButton(stringResource(R.string.preview_button), { previewing = true })
+            if (previewing) {
+                TimeUpPreviewDialog(s.ageGroup ?: AgeGroup.AGES_3_6, s.gender ?: ChildGender.GIRL) { previewing = false }
+            }
         }
     }
 }

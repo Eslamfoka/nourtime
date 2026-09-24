@@ -4,14 +4,17 @@ import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.HourglassTop
 import androidx.compose.material.icons.rounded.LockClock
@@ -25,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.StrokeCap
@@ -36,8 +40,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
 import com.nourtime.app.BuildConfig
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.IconBadge
@@ -48,14 +52,23 @@ import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.ForegroundState
 import com.nourtime.app.core.permissions.NourPermission
 import com.nourtime.app.core.permissions.PermissionChecker
+import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
 import com.nourtime.app.core.timer.TimerPhase
 import com.nourtime.app.core.timer.TimerStatus
 import com.nourtime.app.core.ui.formatCountdown
 import com.nourtime.app.core.ui.startFirstAvailable
 import com.nourtime.app.data.apps.InstalledAppsRepository
+import com.nourtime.app.data.db.DailyUsage
+import com.nourtime.app.data.usage.UsageRepository
 import com.nourtime.app.feature.setup.durationText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -65,9 +78,17 @@ class HomeViewModel @Inject constructor(
     tracker: ForegroundAppTracker,
     private val apps: InstalledAppsRepository,
     private val permissions: PermissionChecker,
+    trustedClock: TrustedClock,
+    usage: UsageRepository,
 ) : ViewModel() {
     val status = engine.status
     val detection = tracker.state
+
+    /** Today's use per limited app, most used first (brief §6 stats). */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val today: StateFlow<List<DailyUsage>> = flow { emit(trustedClock.now().toLocalDate()) }
+        .flatMapLatest { usage.observeDay(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     suspend fun label(packageName: String) = apps.label(packageName)
 
@@ -82,6 +103,7 @@ class HomeViewModel @Inject constructor(
 internal fun HomeTab(padding: PaddingValues, viewModel: HomeViewModel = hiltViewModel(), permissionsViewModel: PermissionsViewModel = hiltViewModel()) {
     val status by viewModel.status.collectAsStateWithLifecycle()
     val detection by viewModel.detection.collectAsStateWithLifecycle()
+    val today by viewModel.today.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     TabColumn(padding) {
@@ -99,6 +121,7 @@ internal fun HomeTab(padding: PaddingValues, viewModel: HomeViewModel = hiltView
             BudgetRing(s)
             StatusCard(s, viewModel::label)
         }
+        TodayCard(today, viewModel::label)
         if (BuildConfig.DEBUG) DebugDetectionCard(detection, viewModel::debugSkip)
         PermissionsSection(permissionsViewModel)
     }
@@ -201,6 +224,50 @@ private fun DebugDetectionCard(state: ForegroundState, onSkip: (endBudget: Boole
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(onClick = { onSkip(true) }) { Text("End budget now") }
             OutlinedButton(onClick = { onSkip(false) }) { Text("End lock now") }
+        }
+    }
+}
+
+/** Simple bars of today's use per app (brief §12, Home). */
+@Composable
+private fun TodayCard(today: List<DailyUsage>, label: suspend (String) -> String) {
+    val totalMs = today.sumOf { it.usedMs }
+    NourCard {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(stringResource(R.string.stats_today), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            Text(durationText((totalMs / 60_000).toInt()), style = MaterialTheme.typography.titleMedium)
+        }
+        if (today.isEmpty()) {
+            Text(
+                stringResource(R.string.stats_empty),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        val max = today.maxOfOrNull { it.usedMs }?.coerceAtLeast(1) ?: 1
+        today.forEach { row ->
+            val name by produceState(row.packageName, row.packageName) { value = label(row.packageName) }
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.padding(top = 4.dp)) {
+                Row {
+                    Text(name, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                    Text(durationText((row.usedMs / 60_000).toInt()), style = MaterialTheme.typography.bodyMedium)
+                }
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(10.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                ) {
+                    Box(
+                        Modifier
+                            .fillMaxWidth(row.usedMs.toFloat() / max)
+                            .height(10.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary),
+                    )
+                }
+            }
         }
     }
 }
