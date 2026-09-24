@@ -131,6 +131,12 @@ fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
                     onDone = viewModel::next,
                 )
 
+                OnboardingStep.CHILD_PROFILE -> ChildProfileStep(progress, onBack, onContinue = viewModel::next)
+
+                OnboardingStep.SELECT_APPS -> SelectAppsStep(progress, onBack, onContinue = viewModel::next)
+
+                OnboardingStep.TIME_BUDGET -> TimeBudgetStep(progress, onBack, onContinue = viewModel::next)
+
                 OnboardingStep.FINISHED -> FinishedStep(onFinish = viewModel::finish)
             }
         }

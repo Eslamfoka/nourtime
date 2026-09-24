@@ -22,7 +22,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nourtime.app.core.designsystem.theme.NourTheme
-import com.nourtime.app.feature.home.HomeRoute
+import com.nourtime.app.feature.home.MainRoute
 import com.nourtime.app.feature.onboarding.OnboardingRoute
 import com.nourtime.app.feature.pin.UnlockRoute
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,7 +56,7 @@ private fun NourApp(viewModel: AppViewModel = hiltViewModel()) {
                 AppDestination.LOADING -> Box(Modifier.fillMaxSize())
                 AppDestination.ONBOARDING -> OnboardingRoute()
                 AppDestination.UNLOCK -> UnlockRoute()
-                AppDestination.HOME -> HomeRoute()
+                AppDestination.HOME -> MainRoute()
             }
         }
     }

@@ -96,15 +96,80 @@
 
     <!-- Finished -->
     <string name="finished_title">كل شيء جاهز!</string>
-    <string name="finished_body">لدى وقت نور كل ما يحتاجه. في الخطوة التالية ستختار التطبيقات التي تريد تحديدها والوقت المسموح لطفلك.</string>
+    <string name="finished_body">اكتمل الإعداد. المؤقت المباشر وشاشة \"خلص الوقت\" قادمان في التحديثات التالية.</string>
     <string name="finished_cta">إلى الرئيسية</string>
 
-    <!-- Home (placeholder until step 2) -->
-    <string name="home_ready_title">اكتمل الإعداد</string>
-    <string name="home_ready_body">اختيار التطبيقات والمؤقت قادمان في التحديث التالي.</string>
+    <!-- Home -->
     <string name="home_permissions_title">الأذونات</string>
     <string name="home_permissions_missing">بعض الأذونات متوقفة. لن يستطيع وقت نور حماية الجهاز بالكامل حتى تفعّلها.</string>
     <string name="action_fix">إصلاح</string>
+
+    <!-- Child profile -->
+    <string name="profile_title">عن طفلك</string>
+    <string name="profile_body">لتخاطب نور طفلك بالطريقة المناسبة وتعرض له شاشة \"خلص الوقت\" الملائمة.</string>
+    <string name="profile_gender_label">طفلك</string>
+    <string name="profile_boy">ولد</string>
+    <string name="profile_girl">بنت</string>
+    <string name="profile_age_label">العمر</string>
+    <string name="age_3_6">٣–٦ سنوات</string>
+    <string name="age_3_6_desc">صور كبيرة ورسالة صوتية قصيرة، ونص قليل جدًا</string>
+    <string name="age_7_9">٧–٩ سنوات</string>
+    <string name="age_7_9_desc">رسائل قصيرة وعدّ تنازلي واقتراحات لأنشطة بعيدًا عن الشاشة</string>
+    <string name="age_10_12">١٠–١٢ سنة</string>
+    <string name="age_10_12_desc">تصميم أهدأ مع عدّ تنازلي واضح</string>
+
+    <!-- App selection -->
+    <string name="apps_title">ما التطبيقات التي تريد تحديد وقتها؟</string>
+    <string name="apps_body">كل التطبيقات التي تفعّلها تتشارك رصيد وقت واحد.</string>
+    <string name="apps_search">ابحث عن تطبيق</string>
+    <string name="apps_none_selected">لم تختر أي تطبيق بعد. فعّل التطبيقات التي تريد تحديد وقتها.</string>
+    <string name="apps_no_results">لا توجد تطبيقات تطابق \"%1$s\"</string>
+    <string name="apps_limited_label">التطبيقات المحددة</string>
+    <plurals name="apps_selected_count">
+        <item quantity="zero">لم تختر أي تطبيق</item>
+        <item quantity="one">تطبيق واحد مختار</item>
+        <item quantity="two">تطبيقان مختاران</item>
+        <item quantity="few">%d تطبيقات مختارة</item>
+        <item quantity="many">%d تطبيقًا مختارًا</item>
+        <item quantity="other">%d تطبيق مختار</item>
+    </plurals>
+
+    <!-- Time budget -->
+    <string name="budget_step_title">كم من الوقت؟</string>
+    <string name="budget_step_body">عندما ينتهي الرصيد تُقفل التطبيقات المختارة طوال فترة القفل، ثم يمتلئ الرصيد من جديد تلقائيًا.</string>
+    <string name="budget_title">رصيد الوقت</string>
+    <string name="budget_hint">مشترك بين كل التطبيقات المختارة، ولا يُحسب إلا أثناء فتح أحدها.</string>
+    <string name="lock_period_title">فترة القفل</string>
+    <string name="lock_period_hint">المدة التي تبقى فيها التطبيقات مقفلة بعد انتهاء الوقت.</string>
+    <string name="duration_joiner">" و"</string>
+    <plurals name="duration_minutes">
+        <item quantity="zero">%d دقيقة</item>
+        <item quantity="one">دقيقة واحدة</item>
+        <item quantity="two">دقيقتان</item>
+        <item quantity="few">%d دقائق</item>
+        <item quantity="many">%d دقيقة</item>
+        <item quantity="other">%d دقيقة</item>
+    </plurals>
+    <plurals name="duration_hours">
+        <item quantity="zero">%d ساعة</item>
+        <item quantity="one">ساعة واحدة</item>
+        <item quantity="two">ساعتان</item>
+        <item quantity="few">%d ساعات</item>
+        <item quantity="many">%d ساعة</item>
+        <item quantity="other">%d ساعة</item>
+    </plurals>
+
+    <!-- Parent tabs -->
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_apps">التطبيقات</string>
+    <string name="nav_schedule">الجدول</string>
+    <string name="nav_settings">الإعدادات</string>
+    <string name="home_setup_title">اكتمل الإعداد</string>
+    <string name="home_timer_soon">المؤقت المباشر قادم في التحديث التالي.</string>
+    <string name="schedule_empty_title">فترات اليوم</string>
+    <string name="schedule_empty_body">قريبًا ستقسّم اليوم إلى فترات للمذاكرة واللعب والطعام والنوم، ولكل فترة شاشة \"خلص الوقت\" الخاصة بها.</string>
+    <string name="settings_child_section">الطفل</string>
+    <string name="settings_time_section">الوقت</string>
 
     <!-- Services -->
     <string name="accessibility_service_description">يعرف وقت نور التطبيق المفتوح على الشاشة ليحدّ من وقت طفلك على التطبيقات التي تختارها. لا يقرأ ما يكتبه طفلك أو يراه ولا يجمعه، ولا تخرج أي بيانات من هذا الجهاز.</string>

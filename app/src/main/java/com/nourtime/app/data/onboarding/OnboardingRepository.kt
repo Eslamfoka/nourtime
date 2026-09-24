@@ -24,6 +24,9 @@ enum class OnboardingStep {
     PERM_NOTIFICATIONS,
     PERM_BATTERY,
     AUTOSTART,
+    CHILD_PROFILE,
+    SELECT_APPS,
+    TIME_BUDGET,
     FINISHED,
 }
 
