@@ -271,6 +271,8 @@
     <string name="pin_changed">تم تغيير الرمز</string>
     <string name="question_changed">تم حفظ سؤال الأمان</string>
 
+    <string name="stats_under_minute">أقل من دقيقة</string>
+
     <!-- Services -->
     <string name="accessibility_service_description">يعرف وقت نور التطبيقات الظاهرة على الشاشة (بما فيها الصورة داخل الصورة وتقسيم الشاشة) ليحدّ من وقت طفلك على التطبيقات التي تختارها. يقرأ فقط اسم التطبيق الذي يملك كل نافذة، ولا يقرأ أبدًا النصوص أو المحتوى الظاهر فيها ولا ما يكتبه طفلك. لا تخرج أي بيانات من هذا الجهاز.</string>
     <string name="device_admin_label">حماية وقت نور</string>

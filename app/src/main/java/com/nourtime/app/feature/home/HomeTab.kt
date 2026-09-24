@@ -238,7 +238,7 @@ private fun TodayCard(today: List<DailyUsage>, label: suspend (String) -> String
     NourCard {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(stringResource(R.string.stats_today), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
-            Text(durationText((totalMs / 60_000).toInt()), style = MaterialTheme.typography.titleMedium)
+            Text(usageText(totalMs), style = MaterialTheme.typography.titleMedium)
         }
         if (today.isEmpty()) {
             Text(
@@ -253,7 +253,7 @@ private fun TodayCard(today: List<DailyUsage>, label: suspend (String) -> String
             Column(verticalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.padding(top = 4.dp)) {
                 Row {
                     Text(name, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
-                    Text(durationText((row.usedMs / 60_000).toInt()), style = MaterialTheme.typography.bodyMedium)
+                    Text(usageText(row.usedMs), style = MaterialTheme.typography.bodyMedium)
                 }
                 Box(
                     Modifier
@@ -274,3 +274,8 @@ private fun TodayCard(today: List<DailyUsage>, label: suspend (String) -> String
         }
     }
 }
+
+/** "Less than a minute" for short use, otherwise "12 minutes" / "1 hour 5 minutes". */
+@Composable
+private fun usageText(ms: Long): String =
+    if (ms in 1 until 60_000) stringResource(R.string.stats_under_minute) else durationText((ms / 60_000).toInt())
