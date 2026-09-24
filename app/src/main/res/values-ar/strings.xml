@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">وقت نور</string>
+
+    <!-- Common -->
+    <string name="action_continue">متابعة</string>
+    <string name="action_open_settings">افتح الإعدادات</string>
+    <string name="action_skip_for_now">تخطَّ الآن</string>
+    <string name="status_allowed">تم السماح</string>
+    <string name="status_not_allowed">لم يُسمح بعد</string>
+    <string name="step_counter">الخطوة %1$d من %2$d</string>
+    <string name="cannot_open_settings">تعذّر فتح هذه الشاشة على هذا الهاتف. يُرجى البحث عنها في الإعدادات.</string>
+
+    <!-- Welcome -->
+    <string name="welcome_title">أهلاً، أنا نور!</string>
+    <string name="welcome_body">يساعد وقت نور طفلك على الاستمتاع بالشاشة بقدر صحي. أنت تختار التطبيقات والوقت، وعندما ينتهي الوقت تخبر نور طفلك بلطف أنه حان وقت شيء آخر.</string>
+    <string name="welcome_point_budget">رصيد وقت واحد مشترك للتطبيقات التي تختارها</string>
+    <string name="welcome_point_lock">قفل تلقائي عند انتهاء الوقت</string>
+    <string name="welcome_point_private">كل شيء يبقى على هذا الجهاز</string>
+    <string name="welcome_cta">لنبدأ</string>
+
+    <!-- Prominent disclosure -->
+    <string name="disclosure_title">ما يحتاجه وقت نور ولماذا</string>
+    <string name="disclosure_intro">وقت نور تطبيق للرقابة الأبوية. ليحدّ من وقت طفلك على التطبيقات التي تختارها، يحتاج إلى الأذونات التالية. كل شيء يبقى على هذا الجهاز، ولا يجمع وقت نور أي بيانات شخصية ولا يرفعها ولا يشاركها.</string>
+    <string name="disclosure_footer">ستمنح كل إذن بنفسك، واحدًا تلو الآخر، ويمكنك إيقاف أي منها لاحقًا من إعدادات الهاتف.</string>
+    <string name="disclosure_accept">أوافق، متابعة</string>
+    <string name="disclosure_decline">ليس الآن</string>
+
+    <!-- PIN -->
+    <string name="pin_create_title">أنشئ رمز الأهل</string>
+    <string name="pin_create_body">٤ أرقام. ستستخدمه لفتح الجهاز ولفتح إعدادات وقت نور. احفظه بعيدًا عن طفلك.</string>
+    <string name="pin_confirm_title">أدخل الرمز مرة أخرى</string>
+    <string name="pin_confirm_body">للتأكد فقط.</string>
+    <string name="pin_error_mismatch">الرمزان غير متطابقين. لنحاول مرة أخرى.</string>
+    <string name="pin_error_too_simple">هذا الرمز سهل التخمين. يُرجى اختيار رمز آخر.</string>
+    <string name="pin_unlock_title">أدخل رمز الأهل</string>
+    <string name="pin_unlock_body">الإعدادات للأهل فقط.</string>
+    <string name="pin_wrong">رمز غير صحيح</string>
+    <string name="pin_wrong_attempts_left">رمز غير صحيح. المحاولات المتبقية قبل الانتظار: %1$d</string>
+    <string name="pin_locked_out">محاولات كثيرة. حاول مرة أخرى بعد %1$s</string>
+    <string name="pin_delete">حذف</string>
+
+    <!-- Security question -->
+    <string name="sq_title">سؤال الأمان</string>
+    <string name="sq_body">إذا عرف طفلك الرمز يومًا ما، سيُبقي هذا السؤال التطبيقات المختارة والإعدادات مغلقة خلال فترة القفل. اكتب سؤالًا لا يعرف إجابته غيرك.</string>
+    <string name="sq_question_label">سؤالك</string>
+    <string name="sq_question_placeholder">مثلًا: ما اسم قرية جدتي؟</string>
+    <string name="sq_answer_label">الإجابة</string>
+    <string name="sq_answer_confirm_label">تأكيد الإجابة</string>
+    <string name="sq_answer_note">المسافات وحالة الأحرف وأشكال الهمزة والألف (أ إ آ ا) لا تهم.</string>
+    <string name="sq_error_question_short">اكتب سؤالًا من ٥ أحرف على الأقل.</string>
+    <string name="sq_error_answer_short">يجب أن تتكون الإجابة من حرفين على الأقل.</string>
+    <string name="sq_error_answer_mismatch">الإجابتان غير متطابقتين.</string>
+    <string name="sq_show_answer">إظهار الإجابة</string>
+    <string name="sq_hide_answer">إخفاء الإجابة</string>
+    <string name="sq_save">حفظ ومتابعة</string>
+
+    <!-- Permissions -->
+    <string name="perm_accessibility_title">خدمة إمكانية الوصول</string>
+    <string name="perm_accessibility_short">تعرف أي تطبيق مفتوح، حتى لا يعمل المؤقت إلا أثناء استخدام تطبيق مختار.</string>
+    <string name="perm_accessibility_why">يستخدم وقت نور خدمة إمكانية الوصول فقط لمعرفة التطبيق المفتوح على الشاشة. بهذا يعمل المؤقت فقط أثناء استخدام أحد التطبيقات المختارة، وتظهر شاشة \"خلص الوقت\" في اللحظة المناسبة. لا يقرأ ما يكتبه طفلك أو يراه ولا يسجله ولا يشاركه، ولا يخرج شيء من هذا الجهاز.</string>
+    <string name="perm_accessibility_how">في الإعدادات، افتح \"التطبيقات المثبتة\" (أو \"التطبيقات التي تم تنزيلها\")، ثم اضغط على وقت نور وفعّله.</string>
+    <string name="perm_accessibility_restricted">هل المفتاح باهت ولا يعمل؟ في أندرويد ١٣ وما بعده: افتح معلومات التطبيق، واضغط قائمة ⋮، واختر \"السماح بالإعدادات المقيدة\"، ثم حاول مرة أخرى.</string>
+    <string name="perm_open_app_info">افتح معلومات التطبيق</string>
+
+    <string name="perm_usage_title">الوصول إلى بيانات الاستخدام</string>
+    <string name="perm_usage_short">طريقة احتياطية لمعرفة التطبيق المفتوح، ومصدر إحصاءات الاستخدام اليومية.</string>
+    <string name="perm_usage_why">يستخدم وقت نور هذا الإذن كطريقة احتياطية لمعرفة التطبيق الظاهر على الشاشة، وليعرض لك مدة استخدام كل تطبيق اليوم. تبقى هذه المعلومات على هذا الجهاز.</string>
+    <string name="perm_usage_how">ابحث عن وقت نور في القائمة وفعّل \"السماح بالوصول إلى بيانات الاستخدام\".</string>
+
+    <string name="perm_overlay_title">الظهور فوق التطبيقات الأخرى</string>
+    <string name="perm_overlay_short">يعرض شاشة \"خلص الوقت\" اللطيفة فوق التطبيقات المختارة.</string>
+    <string name="perm_overlay_why">عندما ينتهي الوقت، يعرض وقت نور شاشة \"خلص الوقت\" اللطيفة فوق التطبيقات المختارة. يحتاج أندرويد إلى هذا الإذن للسماح بذلك.</string>
+    <string name="perm_overlay_how">فعّل \"السماح بالظهور فوق التطبيقات الأخرى\" لوقت نور.</string>
+
+    <string name="perm_admin_title">مشرف الجهاز</string>
+    <string name="perm_admin_short">يقفل الشاشة عند انتهاء الوقت ويحمي وقت نور من الحذف.</string>
+    <string name="perm_admin_why">يسمح إذن مشرف الجهاز لوقت نور بقفل الشاشة عند انتهاء الوقت، ويمنع إلغاء تثبيت التطبيق دون رمزك. لا يستطيع وقت نور قراءة بياناتك أو مسحها بهذا الإذن.</string>
+    <string name="perm_admin_how">اضغط \"تفعيل\" في الشاشة التالية.</string>
+    <string name="perm_admin_explanation">يقفل الشاشة عند انتهاء وقت طفلك، ويحمي وقت نور من الحذف دون رمز الأهل.</string>
+
+    <string name="perm_notif_title">الإشعارات</string>
+    <string name="perm_notif_short">يعرض أندرويد إشعارًا صغيرًا أثناء عمل وقت نور في الخلفية.</string>
+    <string name="perm_notif_why">يتطلب أندرويد إشعارًا صغيرًا صامتًا أثناء حماية وقت نور للجهاز في الخلفية. لا يرسل وقت نور أي إعلانات أو إشعارات ترويجية.</string>
+    <string name="perm_notif_how">اضغط \"سماح\" عند السؤال.</string>
+
+    <string name="perm_battery_title">تحسين البطارية</string>
+    <string name="perm_battery_short">يُبقي المؤقت يعمل بدقة في الخلفية.</string>
+    <string name="perm_battery_why">بعض الهواتف توقف التطبيقات في الخلفية لتوفير البطارية. السماح لوقت نور بالعمل دون قيود يُبقي المؤقت دقيقًا. يستهلك وقت نور القليل جدًا من البطارية.</string>
+    <string name="perm_battery_how">اضغط \"سماح\" في الرسالة التالية.</string>
+
+    <string name="autostart_title">التشغيل التلقائي</string>
+    <string name="autostart_why">قد تمنع هواتف %1$s التطبيقات من العمل تلقائيًا. اسمح لوقت نور بالتشغيل التلقائي لتعود الحماية بعد إعادة تشغيل الهاتف.</string>
+    <string name="autostart_how">في الشاشة التي ستفتح، فعّل وقت نور. إن لم تفتح، ابحث عن \"التشغيل التلقائي\" أو \"تشغيل التطبيقات\" في إعدادات الهاتف.</string>
+    <string name="autostart_done">قمت بتفعيله</string>
+
+    <!-- Finished -->
+    <string name="finished_title">كل شيء جاهز!</string>
+    <string name="finished_body">لدى وقت نور كل ما يحتاجه. في الخطوة التالية ستختار التطبيقات التي تريد تحديدها والوقت المسموح لطفلك.</string>
+    <string name="finished_cta">إلى الرئيسية</string>
+
+    <!-- Home (placeholder until step 2) -->
+    <string name="home_ready_title">اكتمل الإعداد</string>
+    <string name="home_ready_body">اختيار التطبيقات والمؤقت قادمان في التحديث التالي.</string>
+    <string name="home_permissions_title">الأذونات</string>
+    <string name="home_permissions_missing">بعض الأذونات متوقفة. لن يستطيع وقت نور حماية الجهاز بالكامل حتى تفعّلها.</string>
+    <string name="action_fix">إصلاح</string>
+
+    <!-- Services -->
+    <string name="accessibility_service_description">يعرف وقت نور التطبيق المفتوح على الشاشة ليحدّ من وقت طفلك على التطبيقات التي تختارها. لا يقرأ ما يكتبه طفلك أو يراه ولا يجمعه، ولا تخرج أي بيانات من هذا الجهاز.</string>
+    <string name="device_admin_label">حماية وقت نور</string>
+    <string name="device_admin_description">يقفل الشاشة عند انتهاء الوقت ويمنع إلغاء تثبيت وقت نور دون رمز الأهل.</string>
+</resources>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nour Time</string>
+
+    <!-- Common -->
+    <string name="action_continue">Continue</string>
+    <string name="action_open_settings">Open settings</string>
+    <string name="action_skip_for_now">Skip for now</string>
+    <string name="status_allowed">Allowed</string>
+    <string name="status_not_allowed">Not allowed yet</string>
+    <string name="step_counter">Step %1$d of %2$d</string>
+    <string name="cannot_open_settings">Couldn\'t open that screen on this phone. Please find it in Settings.</string>
+
+    <!-- Welcome -->
+    <string name="welcome_title">Hi, I\'m Nour!</string>
+    <string name="welcome_body">Nour Time helps your child enjoy screen time in a healthy amount. You choose the apps and the time. When the time runs out, Nour kindly lets your child know it\'s time for something else.</string>
+    <string name="welcome_point_budget">One shared time budget for the apps you choose</string>
+    <string name="welcome_point_lock">Locks automatically when the time is up</string>
+    <string name="welcome_point_private">Everything stays on this device</string>
+    <string name="welcome_cta">Let\'s start</string>
+
+    <!-- Prominent disclosure -->
+    <string name="disclosure_title">What Nour Time needs, and why</string>
+    <string name="disclosure_intro">Nour Time is a parental control app. To limit your child\'s time on the apps you choose, it needs the permissions below. Everything stays on this device. Nour Time doesn\'t collect, upload or share any personal data.</string>
+    <string name="disclosure_footer">You\'ll grant each permission yourself, one at a time, and you can turn any of them off later from the phone\'s settings.</string>
+    <string name="disclosure_accept">I agree, continue</string>
+    <string name="disclosure_decline">Not now</string>
+
+    <!-- PIN -->
+    <string name="pin_create_title">Create a parent PIN</string>
+    <string name="pin_create_body">4 digits. You\'ll use it to unlock the device and open Nour Time\'s settings. Keep it away from your child.</string>
+    <string name="pin_confirm_title">Enter the PIN again</string>
+    <string name="pin_confirm_body">Just to make sure.</string>
+    <string name="pin_error_mismatch">The PINs didn\'t match. Let\'s try again.</string>
+    <string name="pin_error_too_simple">This PIN is easy to guess. Please choose another one.</string>
+    <string name="pin_unlock_title">Enter parent PIN</string>
+    <string name="pin_unlock_body">Settings are for parents only.</string>
+    <string name="pin_wrong">Wrong PIN</string>
+    <string name="pin_wrong_attempts_left">Wrong PIN. Attempts left before a wait: %1$d</string>
+    <string name="pin_locked_out">Too many attempts. Try again in %1$s</string>
+    <string name="pin_delete">Delete</string>
+
+    <!-- Security question -->
+    <string name="sq_title">Security question</string>
+    <string name="sq_body">If your child ever learns the PIN, this question keeps the selected apps and the settings closed during a lock period. Write a question only you can answer.</string>
+    <string name="sq_question_label">Your question</string>
+    <string name="sq_question_placeholder">e.g. What was my grandmother\'s village called?</string>
+    <string name="sq_answer_label">Answer</string>
+    <string name="sq_answer_confirm_label">Confirm the answer</string>
+    <string name="sq_answer_note">Spaces, capital letters and hamza/alef forms (أ إ آ ا) don\'t matter.</string>
+    <string name="sq_error_question_short">Write a question of at least 5 characters.</string>
+    <string name="sq_error_answer_short">The answer needs at least 2 letters.</string>
+    <string name="sq_error_answer_mismatch">The two answers don\'t match.</string>
+    <string name="sq_show_answer">Show answer</string>
+    <string name="sq_hide_answer">Hide answer</string>
+    <string name="sq_save">Save and continue</string>
+
+    <!-- Permissions -->
+    <string name="perm_accessibility_title">Accessibility service</string>
+    <string name="perm_accessibility_short">Detects which app is open, so the timer only runs while a selected app is in use.</string>
+    <string name="perm_accessibility_why">Nour Time uses the Accessibility service only to know which app is open on the screen. That way the timer runs only while one of the selected apps is in use, and the \"Time\'s up\" screen appears at the right moment. It doesn\'t read, record or share what your child types or sees, and nothing leaves this device.</string>
+    <string name="perm_accessibility_how">In Settings, open \"Installed apps\" (or \"Downloaded apps\"), tap Nour Time, and turn it on.</string>
+    <string name="perm_accessibility_restricted">Is the switch greyed out? On Android 13 and newer: open App info, tap the ⋮ menu, choose \"Allow restricted settings\", then try again.</string>
+    <string name="perm_open_app_info">Open App info</string>
+
+    <string name="perm_usage_title">Usage access</string>
+    <string name="perm_usage_short">A backup way to detect the open app, and the source of your daily usage stats.</string>
+    <string name="perm_usage_why">Nour Time uses usage access as a backup way to know which app is in the foreground, and to show you how long each app was used today. This information stays on this device.</string>
+    <string name="perm_usage_how">Find Nour Time in the list and turn on \"Permit usage access\".</string>
+
+    <string name="perm_overlay_title">Display over other apps</string>
+    <string name="perm_overlay_short">Shows the friendly \"Time\'s up\" screen on top of the selected apps.</string>
+    <string name="perm_overlay_why">When the time runs out, Nour Time shows a friendly \"Time\'s up\" screen on top of the selected apps. Android needs this permission to allow that.</string>
+    <string name="perm_overlay_how">Turn on \"Allow display over other apps\" for Nour Time.</string>
+
+    <string name="perm_admin_title">Device admin</string>
+    <string name="perm_admin_short">Locks the screen when time is up and protects Nour Time from being removed.</string>
+    <string name="perm_admin_why">Device admin lets Nour Time lock the screen when the time is up, and stops the app from being uninstalled without your PIN. Nour Time can\'t read or erase your data with it.</string>
+    <string name="perm_admin_how">Tap \"Activate\" on the next screen.</string>
+    <string name="perm_admin_explanation">Locks the screen when your child\'s time is up, and protects Nour Time from being removed without the parent PIN.</string>
+
+    <string name="perm_notif_title">Notifications</string>
+    <string name="perm_notif_short">Android shows a small notification while Nour Time runs in the background.</string>
+    <string name="perm_notif_why">Android requires a small, silent notification while Nour Time protects the device in the background. Nour Time never sends ads or promotional notifications.</string>
+    <string name="perm_notif_how">Tap \"Allow\" when asked.</string>
+
+    <string name="perm_battery_title">Battery optimization</string>
+    <string name="perm_battery_short">Keeps the timer running reliably in the background.</string>
+    <string name="perm_battery_why">Some phones put background apps to sleep to save battery. Allowing Nour Time to run without restrictions keeps the timer accurate. Nour Time uses very little battery.</string>
+    <string name="perm_battery_how">Tap \"Allow\" on the next prompt.</string>
+
+    <string name="autostart_title">Autostart</string>
+    <string name="autostart_why">%1$s phones can stop apps from starting on their own. Allow Nour Time to autostart so protection comes back after the phone restarts.</string>
+    <string name="autostart_how">In the screen that opens, turn on Nour Time. If it doesn\'t open, look for \"Autostart\" or \"App launch\" in the phone\'s settings.</string>
+    <string name="autostart_done">I\'ve turned it on</string>
+
+    <!-- Finished -->
+    <string name="finished_title">All set!</string>
+    <string name="finished_body">Nour Time has everything it needs. Next, you\'ll choose which apps to limit and how much time your child gets.</string>
+    <string name="finished_cta">Go to home</string>
+
+    <!-- Home (placeholder until step 2) -->
+    <string name="home_ready_title">Setup is complete</string>
+    <string name="home_ready_body">App selection and the timer are coming in the next update.</string>
+    <string name="home_permissions_title">Permissions</string>
+    <string name="home_permissions_missing">Some permissions are off. Nour Time can\'t fully protect the device until they\'re on.</string>
+    <string name="action_fix">Fix</string>
+
+    <!-- Services -->
+    <string name="accessibility_service_description">Nour Time detects which app is open on the screen so it can limit your child\'s time on the apps you choose. It doesn\'t read or collect anything your child types or sees, and no data leaves this device.</string>
+    <string name="device_admin_label">Nour Time protection</string>
+    <string name="device_admin_description">Locks the screen when time is up and prevents uninstalling Nour Time without the parent PIN.</string>
+</resources>
