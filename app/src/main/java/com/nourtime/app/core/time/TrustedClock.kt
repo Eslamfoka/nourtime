@@ -62,7 +62,8 @@ class TrustedClock @Inject constructor(
         val previous = anchor
         val next = TrustedTime.now(previous, System.currentTimeMillis(), clock.elapsedRealtime(), clock.bootCount(), autoTimeEnabled())
         anchor = next
-        if (previous == null || next.elapsedMs != previous.elapsedMs || next.elapsedMs - lastSavedElapsed > SAVE_EVERY_MS) {
+        // Saved on a new boot and then once a minute; with automatic time on, the anchor moves every call.
+        if (previous == null || next.bootCount != previous.bootCount || next.elapsedMs - lastSavedElapsed > SAVE_EVERY_MS) {
             save(next)
             lastSavedElapsed = next.elapsedMs
         }
