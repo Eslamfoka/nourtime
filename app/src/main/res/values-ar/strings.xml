@@ -57,8 +57,8 @@
 
     <!-- Permissions -->
     <string name="perm_accessibility_title">خدمة إمكانية الوصول</string>
-    <string name="perm_accessibility_short">تعرف أي تطبيق مفتوح، حتى لا يعمل المؤقت إلا أثناء استخدام تطبيق مختار.</string>
-    <string name="perm_accessibility_why">يستخدم وقت نور خدمة إمكانية الوصول فقط لمعرفة التطبيق المفتوح على الشاشة. بهذا يعمل المؤقت فقط أثناء استخدام أحد التطبيقات المختارة، وتظهر شاشة \"خلص الوقت\" في اللحظة المناسبة. لا يقرأ ما يكتبه طفلك أو يراه ولا يسجله ولا يشاركه، ولا يخرج شيء من هذا الجهاز.</string>
+    <string name="perm_accessibility_short">تعرف التطبيقات الظاهرة على الشاشة (بما فيها الصورة داخل الصورة وتقسيم الشاشة) حتى لا يعمل المؤقت إلا أثناء استخدام تطبيق مختار. لا تقرأ أبدًا ما يظهر على الشاشة.</string>
+    <string name="perm_accessibility_why">يستخدم وقت نور خدمة إمكانية الوصول فقط لمعرفة التطبيقات الظاهرة على الشاشة، بما فيها نوافذ الصورة داخل الصورة الصغيرة وتقسيم الشاشة. من كل نافذة يقرأ اسم التطبيق الذي يملكها فقط، ولا يقرأ أبدًا النصوص أو الصور أو أي محتوى يظهر داخل التطبيقات، ولا ما يكتبه طفلك. بهذا يعمل المؤقت فقط أثناء استخدام تطبيق مختار، وتظهر شاشة \"خلص الوقت\" في اللحظة المناسبة. لا يخرج شيء من هذا الجهاز.</string>
     <string name="perm_accessibility_how">في الإعدادات، افتح \"التطبيقات المثبتة\" (أو \"التطبيقات التي تم تنزيلها\")، ثم اضغط على وقت نور وفعّله.</string>
     <string name="perm_accessibility_restricted">هل المفتاح باهت ولا يعمل؟ في أندرويد ١٣ وما بعده: افتح معلومات التطبيق، واضغط قائمة ⋮، واختر \"السماح بالإعدادات المقيدة\"، ثم حاول مرة أخرى.</string>
     <string name="perm_open_app_info">افتح معلومات التطبيق</string>
@@ -164,15 +164,36 @@
     <string name="nav_apps">التطبيقات</string>
     <string name="nav_schedule">الجدول</string>
     <string name="nav_settings">الإعدادات</string>
-    <string name="home_setup_title">اكتمل الإعداد</string>
-    <string name="home_timer_soon">المؤقت المباشر قادم في التحديث التالي.</string>
     <string name="schedule_empty_title">فترات اليوم</string>
     <string name="schedule_empty_body">قريبًا ستقسّم اليوم إلى فترات للمذاكرة واللعب والطعام والنوم، ولكل فترة شاشة \"خلص الوقت\" الخاصة بها.</string>
     <string name="settings_child_section">الطفل</string>
     <string name="settings_time_section">الوقت</string>
 
+    <!-- Timer status -->
+    <string name="home_left_of">متبقٍّ من %1$s</string>
+    <string name="status_starting">جارٍ تشغيل الحماية…</string>
+    <string name="status_available">متاح</string>
+    <string name="status_available_body">لا يعمل المؤقت إلا أثناء فتح تطبيق محدد.</string>
+    <string name="status_in_use">قيد الاستخدام الآن</string>
+    <string name="status_locked">مقفل</string>
+    <string name="status_refills_in">يمتلئ الرصيد بعد %1$s</string>
+    <string name="status_degraded_title">الحماية تحتاج إلى انتباهك</string>
+    <string name="status_degraded_body">خدمة إمكانية الوصول متوقفة، لذلك تبقى التطبيقات المحددة مقفلة حتى تعيد تشغيلها.</string>
+    <string name="daily_reset_title">إعادة التعبئة اليومية</string>
+    <string name="daily_reset_hint">املأ الرصيد كل يوم في وقت محدد حتى لو لم يُستهلك.</string>
+    <string name="daily_reset_at">كل يوم الساعة %1$s</string>
+    <string name="action_change_time">تغيير الوقت</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_status">حالة الحماية</string>
+    <string name="notif_channel_alerts">تنبيهات الحماية</string>
+    <string name="notif_title">وقت نور يعمل</string>
+    <string name="notif_time_left">الوقت المتبقي: %1$s</string>
+    <string name="notif_locked">مقفل · يمتلئ الرصيد بعد %1$s</string>
+    <string name="notif_degraded_body">تم إيقاف خدمة إمكانية الوصول. افتح وقت نور لإعادة تشغيلها.</string>
+
     <!-- Services -->
-    <string name="accessibility_service_description">يعرف وقت نور التطبيق المفتوح على الشاشة ليحدّ من وقت طفلك على التطبيقات التي تختارها. لا يقرأ ما يكتبه طفلك أو يراه ولا يجمعه، ولا تخرج أي بيانات من هذا الجهاز.</string>
+    <string name="accessibility_service_description">يعرف وقت نور التطبيقات الظاهرة على الشاشة (بما فيها الصورة داخل الصورة وتقسيم الشاشة) ليحدّ من وقت طفلك على التطبيقات التي تختارها. يقرأ فقط اسم التطبيق الذي يملك كل نافذة، ولا يقرأ أبدًا النصوص أو المحتوى الظاهر فيها ولا ما يكتبه طفلك. لا تخرج أي بيانات من هذا الجهاز.</string>
     <string name="device_admin_label">حماية وقت نور</string>
     <string name="device_admin_description">يقفل الشاشة عند انتهاء الوقت ويمنع إلغاء تثبيت وقت نور دون رمز الأهل.</string>
 </resources>

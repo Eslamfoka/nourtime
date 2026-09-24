@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Boy
 import androidx.compose.material.icons.rounded.CheckCircle
@@ -45,6 +45,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -52,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.NourCard
 import com.nourtime.app.core.designsystem.theme.NourTheme
+import com.nourtime.app.core.ui.formatDuration
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
 import com.nourtime.app.data.settings.TimeLimits
@@ -192,11 +195,8 @@ fun TimeBudgetEditor(
 /** "45 minutes", "1 hour 30 minutes", "2 hours". */
 @Composable
 fun durationText(minutes: Int): String {
-    val h = minutes / 60
-    val m = minutes % 60
-    val hours = if (h > 0) pluralStringResource(R.plurals.duration_hours, h, h) else null
-    val mins = if (m > 0 || h == 0) pluralStringResource(R.plurals.duration_minutes, m, m) else null
-    return listOfNotNull(hours, mins).joinToString(stringResource(R.string.duration_joiner))
+    LocalConfiguration.current // recompose on locale change
+    return LocalContext.current.resources.formatDuration(minutes)
 }
 
 @OptIn(ExperimentalLayoutApi::class)

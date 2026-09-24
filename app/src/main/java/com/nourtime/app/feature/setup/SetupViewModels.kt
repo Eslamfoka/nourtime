@@ -37,6 +37,8 @@ class ParentSettingsViewModel @Inject constructor(
 
     fun setLockPeriodHours(hours: Int) = launch { repository.setLockPeriodHours(hours) }
 
+    fun setDailyResetMinute(minute: Int?) = launch { repository.setDailyResetMinute(minute) }
+
     private fun launch(block: suspend () -> Unit) {
         viewModelScope.launch { block() }
     }

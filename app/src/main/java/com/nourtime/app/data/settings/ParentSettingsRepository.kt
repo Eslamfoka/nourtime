@@ -25,6 +25,8 @@ data class ParentSettings(
     val lockPeriodHours: Int = TimeLimits.DEFAULT_LOCK_HOURS,
     /** Package names of the apps that share the time budget. */
     val limitedApps: Set<String> = emptySet(),
+    /** Minute of the day for the optional daily refill, or null when off. */
+    val dailyResetMinute: Int? = null,
 )
 
 object TimeLimits {
@@ -58,6 +60,7 @@ class ParentSettingsRepository @Inject constructor(
             budgetMinutes = prefs[BUDGET]?.let(TimeLimits::budget) ?: TimeLimits.DEFAULT_BUDGET_MINUTES,
             lockPeriodHours = prefs[LOCK_HOURS]?.let(TimeLimits::lockPeriod) ?: TimeLimits.DEFAULT_LOCK_HOURS,
             limitedApps = prefs[LIMITED_APPS].orEmpty(),
+            dailyResetMinute = prefs[DAILY_RESET]?.takeIf { it in 0 until 24 * 60 },
         )
     }.distinctUntilChanged()
 
@@ -68,6 +71,10 @@ class ParentSettingsRepository @Inject constructor(
     suspend fun setBudgetMinutes(minutes: Int) = store.edit { it[BUDGET] = TimeLimits.budget(minutes) }
 
     suspend fun setLockPeriodHours(hours: Int) = store.edit { it[LOCK_HOURS] = TimeLimits.lockPeriod(hours) }
+
+    suspend fun setDailyResetMinute(minute: Int?) = store.edit {
+        if (minute == null) it.remove(DAILY_RESET) else it[DAILY_RESET] = minute.coerceIn(0, 24 * 60 - 1)
+    }
 
     suspend fun setAppLimited(packageName: String, limited: Boolean) = store.edit { prefs ->
         val current = prefs[LIMITED_APPS].orEmpty()
@@ -80,5 +87,6 @@ class ParentSettingsRepository @Inject constructor(
         val BUDGET = intPreferencesKey("budget_minutes")
         val LOCK_HOURS = intPreferencesKey("lock_period_hours")
         val LIMITED_APPS = stringSetPreferencesKey("limited_apps")
+        val DAILY_RESET = intPreferencesKey("daily_reset_minute")
     }
 }

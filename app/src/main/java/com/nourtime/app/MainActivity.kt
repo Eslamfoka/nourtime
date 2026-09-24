@@ -21,17 +21,33 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.nourtime.app.core.designsystem.theme.NourTheme
+import com.nourtime.app.data.onboarding.OnboardingRepository
 import com.nourtime.app.feature.home.MainRoute
 import com.nourtime.app.feature.onboarding.OnboardingRoute
 import com.nourtime.app.feature.pin.UnlockRoute
+import com.nourtime.app.service.timer.TimerService
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject lateinit var onboarding: OnboardingRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Protection runs once setup is complete; starting from the foreground is always allowed.
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                onboarding.isComplete.filter { it }.collect { TimerService.start(this@MainActivity) }
+            }
+        }
         setContent {
             NourTheme {
                 NourApp()

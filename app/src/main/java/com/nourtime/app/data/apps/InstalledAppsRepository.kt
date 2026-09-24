@@ -46,6 +46,18 @@ class InstalledAppsRepository @Inject constructor(
             .sortedWith { a, b -> collator.compare(a.label, b.label) }
     }
 
+    private val labels = LruCache<String, String>(ICON_CACHE_SIZE)
+
+    /** Display name for [packageName], or the package name itself if it isn't visible. */
+    suspend fun label(packageName: String): String {
+        labels.get(packageName)?.let { return it }
+        return withContext(Dispatchers.IO) {
+            runCatching { pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0)).toString() }
+                .getOrDefault(packageName)
+                .also { labels.put(packageName, it) }
+        }
+    }
+
     suspend fun icon(packageName: String): ImageBitmap? {
         icons.get(packageName)?.let { return it }
         return withContext(Dispatchers.IO) {

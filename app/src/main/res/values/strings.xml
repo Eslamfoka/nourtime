@@ -57,8 +57,8 @@
 
     <!-- Permissions -->
     <string name="perm_accessibility_title">Accessibility service</string>
-    <string name="perm_accessibility_short">Detects which app is open, so the timer only runs while a selected app is in use.</string>
-    <string name="perm_accessibility_why">Nour Time uses the Accessibility service only to know which app is open on the screen. That way the timer runs only while one of the selected apps is in use, and the \"Time\'s up\" screen appears at the right moment. It doesn\'t read, record or share what your child types or sees, and nothing leaves this device.</string>
+    <string name="perm_accessibility_short">Sees which apps are on screen (including picture-in-picture and split screen), so the timer only runs while a selected app is in use. It never reads what\'s on the screen.</string>
+    <string name="perm_accessibility_why">Nour Time uses the Accessibility service only to know which apps are on the screen, including small picture-in-picture windows and split screen. For each window it reads just the name of the app that owns it. It never reads the text, pictures or anything else shown in an app, and never what your child types. That way the timer runs only while a selected app is in use, and the \"Time\'s up\" screen appears at the right moment. Nothing leaves this device.</string>
     <string name="perm_accessibility_how">In Settings, open \"Installed apps\" (or \"Downloaded apps\"), tap Nour Time, and turn it on.</string>
     <string name="perm_accessibility_restricted">Is the switch greyed out? On Android 13 and newer: open App info, tap the ⋮ menu, choose \"Allow restricted settings\", then try again.</string>
     <string name="perm_open_app_info">Open App info</string>
@@ -152,15 +152,36 @@
     <string name="nav_apps">Apps</string>
     <string name="nav_schedule">Schedule</string>
     <string name="nav_settings">Settings</string>
-    <string name="home_setup_title">Setup is complete</string>
-    <string name="home_timer_soon">The live timer arrives in the next update.</string>
     <string name="schedule_empty_title">Daily periods</string>
     <string name="schedule_empty_body">Soon you\'ll split the day into study, play, meal and sleep periods, each with its own \"Time\'s up\" screen.</string>
     <string name="settings_child_section">Child</string>
     <string name="settings_time_section">Time</string>
 
+    <!-- Timer status -->
+    <string name="home_left_of">left of %1$s</string>
+    <string name="status_starting">Starting protection…</string>
+    <string name="status_available">Available</string>
+    <string name="status_available_body">The timer runs only while a limited app is open.</string>
+    <string name="status_in_use">In use now</string>
+    <string name="status_locked">Locked</string>
+    <string name="status_refills_in">Refills in %1$s</string>
+    <string name="status_degraded_title">Protection needs attention</string>
+    <string name="status_degraded_body">Accessibility is off, so the limited apps stay blocked until you turn it back on.</string>
+    <string name="daily_reset_title">Daily reset</string>
+    <string name="daily_reset_hint">Refill the budget every day at a set time, even if it wasn\'t used up.</string>
+    <string name="daily_reset_at">Every day at %1$s</string>
+    <string name="action_change_time">Change time</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_status">Protection status</string>
+    <string name="notif_channel_alerts">Protection alerts</string>
+    <string name="notif_title">Nour Time is on</string>
+    <string name="notif_time_left">Time left: %1$s</string>
+    <string name="notif_locked">Locked · refills in %1$s</string>
+    <string name="notif_degraded_body">Accessibility was turned off. Open Nour Time to turn it back on.</string>
+
     <!-- Services -->
-    <string name="accessibility_service_description">Nour Time detects which app is open on the screen so it can limit your child\'s time on the apps you choose. It doesn\'t read or collect anything your child types or sees, and no data leaves this device.</string>
+    <string name="accessibility_service_description">Nour Time detects which apps are on the screen (including picture-in-picture and split screen) to limit your child\'s time on the apps you choose. It reads only the name of the app that owns each window, never the text or content shown in it or anything your child types. No data leaves this device.</string>
     <string name="device_admin_label">Nour Time protection</string>
     <string name="device_admin_description">Locks the screen when time is up and prevents uninstalling Nour Time without the parent PIN.</string>
 </resources>

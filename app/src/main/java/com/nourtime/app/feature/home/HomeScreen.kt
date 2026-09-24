@@ -1,5 +1,7 @@
 package com.nourtime.app.feature.home
 
+import android.app.TimePickerDialog
+import android.text.format.DateFormat
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,6 +27,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -45,9 +49,9 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.NourCard
-import com.nourtime.app.core.designsystem.component.NourFace
 import com.nourtime.app.core.designsystem.component.NourStar
 import com.nourtime.app.core.designsystem.component.StatusPill
+import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.core.permissions.NourPermission
 import com.nourtime.app.core.permissions.PermissionChecker
 import com.nourtime.app.core.ui.startFirstAvailable
@@ -58,12 +62,13 @@ import com.nourtime.app.feature.setup.AppsViewModel
 import com.nourtime.app.feature.setup.ChildProfileEditor
 import com.nourtime.app.feature.setup.ParentSettingsViewModel
 import com.nourtime.app.feature.setup.TimeBudgetEditor
-import com.nourtime.app.feature.setup.durationText
-import com.nourtime.app.feature.setup.titleRes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import javax.inject.Inject
 
 @HiltViewModel
@@ -120,7 +125,7 @@ fun MainRoute() {
 }
 
 @Composable
-private fun TabColumn(padding: PaddingValues, content: @Composable () -> Unit) {
+internal fun TabColumn(padding: PaddingValues, content: @Composable () -> Unit) {
     Column(
         Modifier
             .fillMaxSize()
@@ -132,44 +137,7 @@ private fun TabColumn(padding: PaddingValues, content: @Composable () -> Unit) {
 }
 
 @Composable
-private fun HomeTab(
-    padding: PaddingValues,
-    settingsViewModel: ParentSettingsViewModel = hiltViewModel(),
-    permissionsViewModel: PermissionsViewModel = hiltViewModel(),
-) {
-    val settings by settingsViewModel.settings.collectAsStateWithLifecycle()
-    TabColumn(padding) {
-        NourCard(containerColor = MaterialTheme.colorScheme.primaryContainer) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                NourStar(Modifier.size(88.dp), face = NourFace.CLOCK)
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.home_setup_title), style = MaterialTheme.typography.titleLarge)
-                    Text(stringResource(R.string.home_timer_soon), style = MaterialTheme.typography.bodyMedium)
-                }
-            }
-        }
-        settings?.let { s ->
-            NourCard {
-                SummaryRow(stringResource(R.string.budget_title), durationText(s.budgetMinutes))
-                SummaryRow(stringResource(R.string.lock_period_title), pluralStringResource(R.plurals.duration_hours, s.lockPeriodHours, s.lockPeriodHours))
-                SummaryRow(stringResource(R.string.apps_limited_label), s.limitedApps.size.let { pluralStringResource(R.plurals.apps_selected_count, it, it) })
-                s.ageGroup?.let { SummaryRow(stringResource(R.string.profile_age_label), stringResource(it.titleRes)) }
-            }
-        }
-        PermissionsSection(permissionsViewModel)
-    }
-}
-
-@Composable
-private fun SummaryRow(label: String, value: String) {
-    Row(Modifier.fillMaxWidth().padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-        Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.weight(1f))
-        Text(value, style = MaterialTheme.typography.titleSmall)
-    }
-}
-
-@Composable
-private fun PermissionsSection(viewModel: PermissionsViewModel) {
+internal fun PermissionsSection(viewModel: PermissionsViewModel) {
     val status by viewModel.status.collectAsStateWithLifecycle()
     val context = LocalContext.current
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { viewModel.refresh() }
@@ -266,6 +234,55 @@ private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewMod
             ChildProfileEditor(s.gender, s.ageGroup, viewModel::setGender, viewModel::setAgeGroup)
             Text(stringResource(R.string.settings_time_section), style = MaterialTheme.typography.titleLarge)
             TimeBudgetEditor(s.budgetMinutes, s.lockPeriodHours, viewModel::setBudgetMinutes, viewModel::setLockPeriodHours)
+            DailyResetCard(s.dailyResetMinute, viewModel::setDailyResetMinute)
         }
     }
 }
+
+/** Optional daily refill at a time the parent picks (brief §2). */
+@Composable
+private fun DailyResetCard(minute: Int?, onChange: (Int?) -> Unit) {
+    val context = LocalContext.current
+    fun pickTime(initial: Int) {
+        TimePickerDialog(
+            context,
+            { _, h, m -> onChange(h * 60 + m) },
+            initial / 60,
+            initial % 60,
+            DateFormat.is24HourFormat(context),
+        ).show()
+    }
+    NourCard {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text(stringResource(R.string.daily_reset_title), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    stringResource(R.string.daily_reset_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Switch(
+                checked = minute != null,
+                onCheckedChange = { on -> onChange(if (on) DEFAULT_RESET_MINUTE else null) },
+                colors = SwitchDefaults.colors(
+                    checkedTrackColor = NourTheme.colors.success,
+                    checkedThumbColor = MaterialTheme.colorScheme.surface,
+                    checkedBorderColor = NourTheme.colors.success,
+                ),
+            )
+        }
+        if (minute != null) {
+            val time = LocalTime.of(minute / 60, minute % 60).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(stringResource(R.string.daily_reset_at, time), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+                OutlinedButton(
+                    onClick = { pickTime(minute) },
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
+                ) { Text(stringResource(R.string.action_change_time)) }
+            }
+        }
+    }
+}
+
+private const val DEFAULT_RESET_MINUTE = 7 * 60
