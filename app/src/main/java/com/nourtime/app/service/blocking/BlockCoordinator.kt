@@ -7,9 +7,11 @@ import com.nourtime.app.core.blocking.BlockInput
 import com.nourtime.app.core.blocking.BlockPolicy
 import com.nourtime.app.core.blocking.BlockReason
 import com.nourtime.app.core.blocking.ParentPass
+import com.nourtime.app.core.blocking.ScreenOffTimer
 import com.nourtime.app.core.blocking.isActive
 import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.ForegroundState
+import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
 import com.nourtime.app.core.timer.TimerPhase
@@ -23,6 +25,7 @@ import com.nourtime.app.data.settings.ParentSettings
 import com.nourtime.app.data.settings.ParentSettingsRepository
 import com.nourtime.app.feature.lock.LockScreenState
 import com.nourtime.app.feature.lock.templateFor
+import com.nourtime.app.service.admin.ScreenLocker
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -48,7 +51,11 @@ class BlockCoordinator @Inject constructor(
     private val pass: ParentPass,
     private val trustedClock: TrustedClock,
     private val overlay: LockOverlay,
+    private val clock: DeviceClock,
+    private val screenLocker: ScreenLocker,
 ) {
+    private val screenOff = ScreenOffTimer()
+
     private data class Inputs(
         val fg: ForegroundState,
         val status: TimerStatus?,
@@ -116,6 +123,15 @@ class BlockCoordinator @Inject constructor(
             },
             soundEnabled = s.soundEnabled,
         )
+        val turnScreenOff = screenOff.update(
+            nowElapsed = clock.elapsedRealtime(),
+            lockPeriod = timeUp || bedtime,
+            lockType = s.lockType,
+            wholeDeviceBlocking = decision?.wholeDevice == true,
+            screenOn = fg.screen.interactive,
+        )
+        if (turnScreenOff) Log.i(TAG, "whole-device lock started: screen off=${screenLocker.lockNow()}")
+
         if (decision != lastDecision) {
             Log.i(TAG, "decision=$decision fg=${fg.foreground} visible=${fg.visible} source=${fg.source} hidden=$hidden")
             lastDecision = decision

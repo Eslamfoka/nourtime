@@ -218,7 +218,7 @@
     <string name="lock_type_apps">Lock the selected apps</string>
     <string name="lock_type_apps_desc">The rest of the phone keeps working.</string>
     <string name="lock_type_device">Lock the whole phone</string>
-    <string name="lock_type_device_desc">Only the parent PIN opens it during the lock period. Emergency calls stay available.</string>
+    <string name="lock_type_device_desc">Only the parent PIN opens it during the lock period. The screen turns off a few seconds after time is up. Emergency calls stay available.</string>
     <string name="settings_protection_section">Protection</string>
     <string name="protect_settings_title">Protect phone settings</string>
     <string name="protect_settings_hint">The phone\'s Settings, uninstall and security screens need the parent PIN, so Nour Time can\'t be turned off or removed.</string>

@@ -230,7 +230,7 @@
     <string name="lock_type_apps">اقفل التطبيقات المختارة</string>
     <string name="lock_type_apps_desc">يبقى باقي الهاتف يعمل.</string>
     <string name="lock_type_device">اقفل الهاتف كله</string>
-    <string name="lock_type_device_desc">لا يفتحه إلا رمز الأهل خلال فترة القفل. تبقى مكالمات الطوارئ متاحة.</string>
+    <string name="lock_type_device_desc">لا يفتحه إلا رمز الأهل خلال فترة القفل. تنطفئ الشاشة بعد ثوانٍ من انتهاء الوقت. تبقى مكالمات الطوارئ متاحة.</string>
     <string name="settings_protection_section">الحماية</string>
     <string name="protect_settings_title">حماية إعدادات الهاتف</string>
     <string name="protect_settings_hint">تحتاج إعدادات الهاتف وشاشات إلغاء التثبيت والأمان إلى رمز الأهل، حتى لا يمكن إيقاف وقت نور أو حذفه.</string>

@@ -31,6 +31,7 @@ Tip: `adb logcat -s BlockCoordinator LockOverlay TimerService` shows every block
 ## 4. Lock screens
 - [ ] Time up, *lock selected apps*: opening a limited app shows the "Time's up" screen immediately; any playing audio pauses; the *OK/حاضر* button goes home.
 - [ ] Time up, *lock the whole phone*: every app is covered; no OK button; the lock screen (keyguard) and emergency calls remain reachable.
+- [ ] Whole phone: about 8 seconds after the lock period starts (child on another app or the home screen) the screen turns off. Waking it shows the lock screen once, and it doesn't turn off again. If the parent unlocks the phone within those seconds, it doesn't turn off.
 - [ ] Parent path: *للأهل* → PIN → security question → overlay disappears for 15 minutes (or until the screen turns off).
 - [ ] Whole phone: after the PIN, *Unlock the phone only* opens the phone but limited apps stay blocked.
 - [ ] During a lock period, opening Nour Time asks the PIN **and** the security question.
