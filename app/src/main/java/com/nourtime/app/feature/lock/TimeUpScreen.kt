@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
@@ -45,10 +46,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nourtime.app.R
+import com.nourtime.app.core.designsystem.component.CenteredScrollColumn
 import com.nourtime.app.core.designsystem.component.NourStar
 import com.nourtime.app.core.designsystem.theme.NourPalette
 import com.nourtime.app.core.designsystem.theme.NourTheme
@@ -87,11 +90,7 @@ fun TimeUpScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 ParentsButton(text, onParents, Modifier.align(Alignment.End))
-                Column(
-                    Modifier.weight(1f).fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                ) {
+                CenteredScrollColumn(Modifier.weight(1f).fillMaxWidth()) {
                     when (state.ageGroup) {
                         AgeGroup.AGES_3_6 -> YoungLayout(state, style, text)
                         AgeGroup.AGES_7_9 -> MiddleLayout(state, style, text)
@@ -104,10 +103,14 @@ fun TimeUpScreen(
     }
 }
 
+/** Short phones (roughly under 700 dp tall) get a smaller Nour so everything fits. */
+@Composable
+private fun compactHeight(): Boolean = LocalConfiguration.current.screenHeightDp < 700
+
 /** Ages 3–6: a big Nour in the middle and almost no text. */
 @Composable
 private fun YoungLayout(state: LockScreenState, style: TemplateStyle, text: Color) {
-    NourStar(Modifier.size(280.dp), pose = style.pose)
+    NourStar(Modifier.size(if (compactHeight()) 190.dp else 280.dp), pose = style.pose)
     Text(
         stringResource(style.title.pick(state.gender)),
         style = MaterialTheme.typography.headlineLarge,
@@ -119,7 +122,7 @@ private fun YoungLayout(state: LockScreenState, style: TemplateStyle, text: Colo
 /** Ages 7–9: short text, a round countdown and three off-screen ideas. */
 @Composable
 private fun MiddleLayout(state: LockScreenState, style: TemplateStyle, text: Color) {
-    NourStar(Modifier.size(180.dp), pose = style.pose)
+    NourStar(Modifier.size(if (compactHeight()) 120.dp else 180.dp), pose = style.pose)
     Text(
         stringResource(style.title.pick(state.gender)),
         style = MaterialTheme.typography.headlineMedium,
@@ -251,15 +254,10 @@ private fun Decorations(kind: TemplateKind) {
 /** Parent side of the lock screen: PIN, then (during a lock period) the security question. */
 @Composable
 fun ParentPanelFrame(onBack: () -> Unit, content: @Composable () -> Unit) {
-    Box(
-        Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).safeDrawingPadding(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            content()
-            TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 48.dp)) {
-                Text(stringResource(R.string.action_cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
+    CenteredScrollColumn(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).safeDrawingPadding().imePadding()) {
+        content()
+        TextButton(onClick = onBack, modifier = Modifier.heightIn(min = 48.dp)) {
+            Text(stringResource(R.string.action_cancel), color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

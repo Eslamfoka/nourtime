@@ -63,6 +63,8 @@ class LockOverlay @Inject constructor(
     private var accessibility: AccessibilityService? = null
     private var window: OverlayWindow? = null
     private val state = MutableStateFlow<LockScreenState?>(null)
+    /** When showing failed (e.g. no overlay permission), don't retry every second. */
+    private var lastFailedOpen: Long? = null
 
     /** Called when the child taps "OK" on a dismissable screen. */
     var onChildDismiss: () -> Unit = {}
@@ -104,13 +106,18 @@ class LockOverlay @Inject constructor(
         }
     }
 
+    /** The window type depends on Accessibility; swap windows quietly (no second chime). */
     private fun reopen() {
         val current = state.value ?: return
         close()
-        open(current)
+        lastFailedOpen = null
+        open(current, withSound = false)
     }
 
-    private fun open(first: LockScreenState) {
+    private fun open(first: LockScreenState, withSound: Boolean = true) {
+        val now = clock.elapsedRealtime()
+        val failedAt = lastFailedOpen
+        if (failedAt != null && now - failedAt < RETRY_AFTER_FAILURE_MS) return
         val host = accessibility
         val context: Context = host ?: appContext
         val type = if (host != null) {
@@ -120,10 +127,16 @@ class LockOverlay @Inject constructor(
         }
         val w = OverlayWindow(context, type)
         Log.i(TAG, "open overlay, accessibility=${host != null}")
-        if (!w.show()) return
+        if (!w.show()) {
+            // Release the window's lifecycle and coroutines; otherwise each retry would leak them.
+            w.dismiss()
+            lastFailedOpen = now
+            return
+        }
         window = w
+        lastFailedOpen = null
         takeAudioFocus()
-        if (first.soundEnabled && first.ageGroup != AgeGroup.AGES_10_12) playChime()
+        if (withSound && first.soundEnabled && first.ageGroup != AgeGroup.AGES_10_12) playChime()
     }
 
     private fun close() {
@@ -158,6 +171,10 @@ class LockOverlay @Inject constructor(
                 audioManager.generateAudioSessionId(),
             )?.apply {
                 setOnCompletionListener { it.release() }
+                setOnErrorListener { mp, _, _ ->
+                    mp.release()
+                    true
+                }
                 start()
             }
         }
@@ -244,5 +261,6 @@ class LockOverlay @Inject constructor(
 
     private companion object {
         const val TAG = "LockOverlay"
+        const val RETRY_AFTER_FAILURE_MS = 10_000L
     }
 }

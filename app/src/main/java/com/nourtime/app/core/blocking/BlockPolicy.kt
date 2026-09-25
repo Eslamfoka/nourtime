@@ -35,6 +35,8 @@ data class BlockInput(
     val ownPackage: String,
     val devicePass: Boolean,
     val fullPass: Boolean,
+    /** The phone is ringing or in a call: nothing is covered, so the child can answer. */
+    val phoneCallActive: Boolean = false,
 )
 
 object BlockPolicy {
@@ -58,10 +60,24 @@ object BlockPolicy {
         "com.samsung.android.sm_cn",
     )
 
+    /** Phone and in-call screens; never covered, so the child can call a parent or answer. */
+    val PHONE_PACKAGES = setOf(
+        "com.android.dialer",
+        "com.google.android.dialer",
+        "com.samsung.android.dialer",
+        "com.android.incallui",
+        "com.samsung.android.incallui",
+        "com.android.server.telecom",
+        "com.android.phone",
+        "com.android.emergency",
+    )
+
     fun decide(input: BlockInput): BlockDecision? {
         val fg = input.foreground
         // Never draw over the lock screen: emergency calls must stay reachable.
         if (!fg.screen.usable) return null
+        // Nor over a ringing phone or a call in progress.
+        if (input.phoneCallActive || fg.foreground in PHONE_PACKAGES) return null
         // Nour Time's own screens are the parent's, behind the PIN.
         if (fg.foreground == input.ownPackage) return null
 

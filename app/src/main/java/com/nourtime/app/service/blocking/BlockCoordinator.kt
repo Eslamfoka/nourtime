@@ -1,6 +1,9 @@
 package com.nourtime.app.service.blocking
 
 import android.content.Context
+import android.media.AudioManager
+import android.os.Build
+import android.telecom.TelecomManager
 import android.util.Log
 import com.nourtime.app.core.blocking.BlockDecision
 import com.nourtime.app.core.blocking.BlockInput
@@ -104,6 +107,7 @@ class BlockCoordinator @Inject constructor(
                 ownPackage = context.packageName,
                 devicePass = pass.deviceActive(),
                 fullPass = pass.fullActive(),
+                phoneCallActive = phoneInUse(fg.foreground),
             ),
         )
 
@@ -140,6 +144,18 @@ class BlockCoordinator @Inject constructor(
     }
 
     private var lastDecision: BlockDecision? = null
+
+    private val audioManager by lazy { context.getSystemService(AudioManager::class.java) }
+    private val telecom by lazy { context.getSystemService(TelecomManager::class.java) }
+
+    /** Ringing, in a call, or the phone app (possibly a third-party default dialer) is open. No permission needed. */
+    private fun phoneInUse(foreground: String?): Boolean {
+        val mode = runCatching { audioManager.mode }.getOrDefault(AudioManager.MODE_NORMAL)
+        if (mode == AudioManager.MODE_RINGTONE || mode == AudioManager.MODE_IN_CALL) return true
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && mode == AudioManager.MODE_CALL_SCREENING) return true
+        val dialer = runCatching { telecom.defaultDialerPackage }.getOrNull()
+        return foreground != null && foreground == dialer
+    }
 
     /** The child tapped "OK": go home and keep the screen hidden while nothing changes. */
     private fun onChildDismiss() {

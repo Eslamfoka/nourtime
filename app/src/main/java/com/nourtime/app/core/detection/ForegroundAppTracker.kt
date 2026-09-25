@@ -35,23 +35,29 @@ class ForegroundAppTracker @Inject constructor(
     var ignoredPackages: Set<String> = computeIgnored()
         private set
 
-    fun onAccessibilityConnected() {
+    /**
+     * Source switches and the updates from each source are serialized, so a late window list can't
+     * overwrite a disconnect (or a late usage-stats poll a reconnect).
+     */
+    private val sourceLock = Any()
+
+    fun onAccessibilityConnected() = synchronized(sourceLock) {
         accessibilityConnected = true
         _state.update { it.copy(source = DetectionSource.ACCESSIBILITY) }
     }
 
-    fun onAccessibilityDisconnected(fallbackAvailable: Boolean) {
+    fun onAccessibilityDisconnected(fallbackAvailable: Boolean) = synchronized(sourceLock) {
         accessibilityConnected = false
         _state.update { it.copy(source = if (fallbackAvailable) DetectionSource.USAGE_STATS else DetectionSource.NONE) }
     }
 
-    fun onWindows(windows: List<AppWindow>) {
+    fun onWindows(windows: List<AppWindow>) = synchronized(sourceLock) {
         if (!accessibilityConnected) return
         _state.update { ForegroundRules.fromWindows(windows, ignoredPackages, it).copy(source = DetectionSource.ACCESSIBILITY) }
     }
 
     /** Fallback result; ignored while Accessibility is connected. */
-    fun onUsageStats(foreground: String?, available: Boolean) {
+    fun onUsageStats(foreground: String?, available: Boolean) = synchronized(sourceLock) {
         if (accessibilityConnected) return
         _state.update {
             if (!available) {

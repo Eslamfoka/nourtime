@@ -21,6 +21,7 @@ import androidx.compose.material.icons.rounded.HourglassTop
 import androidx.compose.material.icons.rounded.LockClock
 import androidx.compose.material.icons.rounded.PlayCircle
 import androidx.compose.material.icons.rounded.WarningAmber
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -65,8 +66,10 @@ import com.nourtime.app.data.usage.UsageRepository
 import com.nourtime.app.feature.setup.durationText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
@@ -87,7 +90,14 @@ class HomeViewModel @Inject constructor(
 
     /** Today's use per limited app, most used first (brief §6 stats). */
     @OptIn(ExperimentalCoroutinesApi::class)
-    val today: StateFlow<List<DailyUsage>> = flow { emit(trustedClock.now().toLocalDate()) }
+    val today: StateFlow<List<DailyUsage>> = flow {
+        // Re-checked every minute so the card rolls over at midnight while Home stays open.
+        while (true) {
+            emit(trustedClock.now().toLocalDate())
+            delay(60_000)
+        }
+    }
+        .distinctUntilChanged()
         .flatMapLatest { usage.observeDay(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
@@ -224,8 +234,9 @@ private fun DebugDetectionCard(state: ForegroundState, onSkip: (endBudget: Boole
             style = MaterialTheme.typography.bodySmall,
         )
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedButton(onClick = { onSkip(true) }) { Text("End budget now") }
-            OutlinedButton(onClick = { onSkip(false) }) { Text("End lock now") }
+            val colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurface)
+            OutlinedButton(onClick = { onSkip(true) }, colors = colors) { Text("End budget now") }
+            OutlinedButton(onClick = { onSkip(false) }, colors = colors) { Text("End lock now") }
         }
     }
 }

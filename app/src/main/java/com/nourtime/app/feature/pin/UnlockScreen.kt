@@ -2,7 +2,6 @@ package com.nourtime.app.feature.pin
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nourtime.app.R
+import com.nourtime.app.core.designsystem.component.CenteredScrollColumn
 import com.nourtime.app.core.designsystem.component.NourPose
 import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourStar
@@ -40,7 +40,7 @@ fun UnlockRoute(viewModel: UnlockViewModel = hiltViewModel()) {
     val answer by viewModel.answer.state.collectAsStateWithLifecycle()
 
     BackHandler(enabled = askAnswer) { viewModel.cancelAnswer() }
-    Box(Modifier.fillMaxSize().safeDrawingPadding().imePadding(), contentAlignment = Alignment.Center) {
+    CenteredScrollColumn(Modifier.fillMaxSize().safeDrawingPadding().imePadding()) {
         if (askAnswer) {
             SecurityAnswerPanel(
                 state = answer,

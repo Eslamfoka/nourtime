@@ -89,6 +89,14 @@ class BlockPolicyTest {
     }
 
     @Test
+    fun `phone calls are never covered`() {
+        val ringing = input(on(youtube), lockType = LockType.WHOLE_DEVICE, timeUp = true).copy(phoneCallActive = true)
+        assertNull(BlockPolicy.decide(ringing))
+        assertNull(BlockPolicy.decide(input(on("com.google.android.dialer"), lockType = LockType.WHOLE_DEVICE, timeUp = true)))
+        assertNull(BlockPolicy.decide(input(on("com.samsung.android.incallui"), lockType = LockType.WHOLE_DEVICE, bedtime = true)))
+    }
+
+    @Test
     fun `bedtime window crossing midnight`() {
         val b = Bedtime(enabled = true, startMinute = 21 * 60, endMinute = 7 * 60)
         assertTrue(b.isActive(LocalTime.of(21, 0)))

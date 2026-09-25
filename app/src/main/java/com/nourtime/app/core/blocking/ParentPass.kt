@@ -4,6 +4,7 @@ import com.nourtime.app.core.time.DeviceClock
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,7 +24,8 @@ class ParentPass @Inject constructor(
     val state: StateFlow<State> = _state.asStateFlow()
 
     fun grantDevice() {
-        _state.value = _state.value.copy(deviceUntil = clock.elapsedRealtime() + DURATION_MS)
+        val until = clock.elapsedRealtime() + DURATION_MS
+        _state.update { it.copy(deviceUntil = until) }
     }
 
     fun grantFull() {
@@ -32,7 +34,7 @@ class ParentPass @Inject constructor(
     }
 
     fun revoke() {
-        if (_state.value != State()) _state.value = State()
+        _state.update { State() }
     }
 
     fun deviceActive(): Boolean = clock.elapsedRealtime() < maxOf(_state.value.deviceUntil, _state.value.fullUntil)

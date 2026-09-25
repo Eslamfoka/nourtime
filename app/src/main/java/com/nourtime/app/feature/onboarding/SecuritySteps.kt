@@ -1,5 +1,6 @@
 package com.nourtime.app.feature.onboarding
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,12 +40,13 @@ fun CreatePinStep(
     state: PinCreationState,
     onDigit: (Char) -> Unit,
     onDelete: () -> Unit,
+    @StringRes title: Int = R.string.pin_create_title,
 ) {
     val confirming = state.stage == PinCreationState.Stage.CONFIRM
     StepLayout(progress = progress, onBack = onBack) {
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             PinEntryLayout(
-                title = stringResource(if (confirming) R.string.pin_confirm_title else R.string.pin_create_title),
+                title = stringResource(if (confirming) R.string.pin_confirm_title else title),
                 body = stringResource(if (confirming) R.string.pin_confirm_body else R.string.pin_create_body),
                 message = when (state.error) {
                     PinCreationState.Error.TOO_SIMPLE -> stringResource(R.string.pin_error_too_simple)

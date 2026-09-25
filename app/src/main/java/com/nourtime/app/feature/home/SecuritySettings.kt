@@ -119,7 +119,14 @@ internal fun SecurityEditDialog(edit: SecurityEdit, onClose: () -> Unit, viewMod
             when (edit) {
                 SecurityEdit.PIN -> {
                     val pin by viewModel.pin.collectAsStateWithLifecycle()
-                    CreatePinStep(progress = null, onBack = onClose, state = pin, onDigit = viewModel::onPinDigit, onDelete = viewModel::onPinDelete)
+                    CreatePinStep(
+                        progress = null,
+                        onBack = onClose,
+                        state = pin,
+                        onDigit = viewModel::onPinDigit,
+                        onDelete = viewModel::onPinDelete,
+                        title = R.string.change_pin,
+                    )
                 }
                 SecurityEdit.QUESTION -> {
                     val form by viewModel.question.collectAsStateWithLifecycle()

@@ -2,8 +2,10 @@ package com.nourtime.app.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import com.nourtime.app.core.security.SecretHasher
@@ -24,7 +26,12 @@ object AppModule {
     @Provides
     @Singleton
     fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> =
-        PreferenceDataStoreFactory.create(produceFile = { context.preferencesDataStoreFile("nour_prefs") })
+        PreferenceDataStoreFactory.create(
+            // A damaged settings file would otherwise crash every start and leave the phone unprotected.
+            // Starting fresh sends the parent back through setup instead.
+            corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+            produceFile = { context.preferencesDataStoreFile("nour_prefs") },
+        )
 
     @Provides
     @Singleton

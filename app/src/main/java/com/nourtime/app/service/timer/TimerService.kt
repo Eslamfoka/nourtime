@@ -14,11 +14,14 @@ import androidx.core.content.ContextCompat
 import com.nourtime.app.core.detection.DetectionSource
 import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.UsageStatsSource
+import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
 import com.nourtime.app.core.timer.TimerPhase
 import com.nourtime.app.data.settings.ParentSettingsRepository
+import com.nourtime.app.data.usage.UsageRepository
 import com.nourtime.app.service.blocking.BlockCoordinator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -47,6 +50,8 @@ class TimerService : Service() {
     @Inject lateinit var settings: ParentSettingsRepository
     @Inject lateinit var usageStats: UsageStatsSource
     @Inject lateinit var blocking: BlockCoordinator
+    @Inject lateinit var usage: UsageRepository
+    @Inject lateinit var trustedClock: TrustedClock
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -78,10 +83,12 @@ class TimerService : Service() {
         tracker.refreshScreen()
         if (!tracker.accessibilityConnected) tracker.onAccessibilityDisconnected(usageStats.available)
 
-        scope.launch { runTimer() }
-        scope.launch { runUsageStatsFallback() }
-        scope.launch { runNotifications() }
-        scope.launch { blocking.run() }
+        scope.launch { resilient("timer") { runTimer() } }
+        scope.launch { resilient("usage-stats fallback") { runUsageStatsFallback() } }
+        scope.launch { resilient("notifications") { runNotifications() } }
+        scope.launch { resilient("degraded alert") { runDegradedAlert() } }
+        scope.launch { resilient("blocking") { blocking.run() } }
+        scope.launch { resilient("stats cleanup") { runStatsCleanup() } }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_STICKY
@@ -128,20 +135,61 @@ class TimerService : Service() {
         engine.status.filterNotNull()
             .map { s ->
                 // Minute resolution is enough for the notification; avoid re-posting every second.
-                Triple(s.phase, (if (s.phase == TimerPhase.LOCKED) s.lockRemainingMs else s.remainingMs) / 60_000, s.protectionDegraded)
+                s.phase to (if (s.phase == TimerPhase.LOCKED) s.lockRemainingMs else s.remainingMs) / 60_000
             }
             .distinctUntilChanged()
-            .collect { (_, _, degraded) ->
-                val status = engine.status.value
+            .collect {
                 ProtectionNotifications.notify(
                     this@TimerService,
                     ProtectionNotifications.STATUS_ID,
-                    ProtectionNotifications.status(this@TimerService, status),
+                    ProtectionNotifications.status(this@TimerService, engine.status.value),
                 )
-                if (degraded) ProtectionNotifications.showDegraded(this@TimerService)
-                else ProtectionNotifications.clearDegraded(this@TimerService)
-                if (status?.source == DetectionSource.NONE) Log.w(TAG, "No foreground detection available")
             }
+    }
+
+    /**
+     * Alerts the parent when protection is weakened. Waits first: right after a reboot this service
+     * often starts a few seconds before Accessibility reconnects, which isn't worth an alert.
+     */
+    private suspend fun runDegradedAlert() {
+        engine.status.filterNotNull()
+            .map { it.source }
+            .distinctUntilChanged()
+            .collectLatest { source ->
+                if (source == DetectionSource.ACCESSIBILITY) {
+                    ProtectionNotifications.clearDegraded(this@TimerService)
+                } else {
+                    delay(DEGRADED_ALERT_DELAY_MS)
+                    if (source == DetectionSource.NONE) Log.w(TAG, "No foreground detection available")
+                    ProtectionNotifications.showDegraded(this@TimerService)
+                }
+            }
+    }
+
+    /** Keeps the stats database small: only recent days are shown. */
+    private suspend fun runStatsCleanup() {
+        while (true) {
+            usage.pruneBefore(trustedClock.now().toLocalDate().minusDays(STATS_KEEP_DAYS))
+            delay(CLEANUP_EVERY_MS)
+        }
+    }
+
+    /**
+     * Keeps a protection loop alive: a failure (e.g. a storage error) is logged and the loop restarts
+     * after a pause, instead of crashing the process or silently ending protection.
+     */
+    private suspend fun resilient(name: String, block: suspend () -> Unit) {
+        while (true) {
+            try {
+                block()
+                return
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e(TAG, "$name failed; restarting", e)
+                delay(RESTART_DELAY_MS)
+            }
+        }
     }
 
     companion object {
@@ -151,6 +199,10 @@ class TimerService : Service() {
         private const val POLL_MS = 2_000L
         private const val FIRST_LOOKBACK_MS = 60 * 60_000L
         private const val POLL_LOOKBACK_MS = 15_000L
+        private const val DEGRADED_ALERT_DELAY_MS = 15_000L
+        private const val RESTART_DELAY_MS = 5_000L
+        private const val STATS_KEEP_DAYS = 30L
+        private const val CLEANUP_EVERY_MS = 12 * 60 * 60_000L
 
         /** Safe to call from the foreground activity, the Accessibility service and boot. */
         fun start(context: Context) {

@@ -37,6 +37,8 @@ and English. Fonts (Cairo, Nunito) are bundled; licences in `licenses/`.
 
 ## Docs
 
+- [`docs/progress.md`](docs/progress.md): what's done against the brief, and what's pending
+- [`docs/handoff.md`](docs/handoff.md): architecture, tricky decisions, how to resume
 - [`docs/testing-checklist.md`](docs/testing-checklist.md): device and tampering tests (implementation step 8)
 - [`docs/play-compliance.md`](docs/play-compliance.md): permission justifications and Play declarations (draft)
 - [`docs/privacy-policy.md`](docs/privacy-policy.md): privacy policy (draft)
