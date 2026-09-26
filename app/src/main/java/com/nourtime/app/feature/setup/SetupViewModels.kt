@@ -54,7 +54,8 @@ class ParentSettingsViewModel @Inject constructor(
     }
 }
 
-data class AppRow(val app: InstalledApp, val limited: Boolean)
+/** One app in a switch list; [checked] means limited, or allowed during the lock, by list. */
+data class AppRow(val app: InstalledApp, val checked: Boolean)
 
 data class AppsUiState(
     val loading: Boolean = true,

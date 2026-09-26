@@ -214,6 +214,8 @@
     <string name="tu_sleep_title_f">Good night 🌙</string>
     <string name="tu_parents_title_m">This part is for grown-ups. Ask Mom or Dad ⭐</string>
     <string name="tu_parents_title_f">This part is for grown-ups. Ask Mom or Dad ⭐</string>
+    <string name="tu_allowed_title_m">You can still open:</string>
+    <string name="tu_allowed_title_f">You can still open:</string>
     <string name="tu_bravo_m">Well done! You finished your time, let\'s do something fun</string>
     <string name="tu_bravo_f">Well done! You finished your time, let\'s do something fun</string>
     <string name="tu_back_in_label">Back in</string>
@@ -276,6 +278,11 @@
     <string name="uninstall_title">Uninstall Nour Time?</string>
     <string name="uninstall_body">Nour Time will stop protecting this phone and Android will ask you to confirm the uninstall. Answer your security question to continue.</string>
     <string name="uninstall_failed">Couldn\'t turn off uninstall protection. Try again, or remove Nour Time from Settings → Device admin apps.</string>
+    <string name="allowed_section">Allowed during the lock</string>
+    <string name="allowed_hint">Educational apps (Quran, stories, languages…) that stay open during the lock period and bedtime. Time in them is free. An app can\'t be limited and allowed at the same time.</string>
+    <string name="allowed_choose">Choose apps</string>
+    <string name="allowed_none">No apps allowed yet.</string>
+    <string name="action_done">Done</string>
     <string name="pin_changed">PIN changed</string>
     <string name="question_changed">Security question saved</string>
 

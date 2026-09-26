@@ -276,7 +276,7 @@ fun AppSearchField(query: String, onQueryChange: (String) -> Unit, modifier: Mod
 @Composable
 fun AppList(
     state: AppsUiState,
-    onLimitedChange: (packageName: String, limited: Boolean) -> Unit,
+    onCheckedChange: (packageName: String, checked: Boolean) -> Unit,
     loadIcon: suspend (String) -> ImageBitmap?,
     modifier: Modifier = Modifier,
     header: LazyListScope.() -> Unit = {},
@@ -298,7 +298,7 @@ fun AppList(
                 )
             }
             else -> items(state.rows, key = { it.app.packageName }) { row ->
-                AppRowItem(row, onLimitedChange = { onLimitedChange(row.app.packageName, it) }, loadIcon = loadIcon)
+                AppRowItem(row, onCheckedChange = { onCheckedChange(row.app.packageName, it) }, loadIcon = loadIcon)
             }
         }
     }
@@ -307,7 +307,7 @@ fun AppList(
 @Composable
 fun AppRowItem(
     row: AppRow,
-    onLimitedChange: (Boolean) -> Unit,
+    onCheckedChange: (Boolean) -> Unit,
     loadIcon: suspend (String) -> ImageBitmap?,
     modifier: Modifier = Modifier,
 ) {
@@ -316,7 +316,7 @@ fun AppRowItem(
             .fillMaxWidth()
             .heightIn(min = 64.dp)
             .clip(MaterialTheme.shapes.medium)
-            .toggleable(value = row.limited, role = Role.Switch, onValueChange = onLimitedChange)
+            .toggleable(value = row.checked, role = Role.Switch, onValueChange = onCheckedChange)
             .padding(horizontal = 8.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -324,7 +324,7 @@ fun AppRowItem(
         AppIcon(row.app.packageName, loadIcon)
         Text(row.app.label, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
         Switch(
-            checked = row.limited,
+            checked = row.checked,
             onCheckedChange = null,
             colors = SwitchDefaults.colors(
                 checkedTrackColor = NourTheme.colors.success,

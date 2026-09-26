@@ -93,6 +93,15 @@ class LockOverlay @Inject constructor(
         }
     }
 
+    /** Opens an app the parent allows during the lock; the coordinator then lifts the cover. */
+    @MainThread
+    fun openApp(packageName: String) {
+        val context: Context = accessibility ?: appContext
+        val intent = context.packageManager.getLaunchIntentForPackage(packageName) ?: return
+        runCatching { context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+            .onFailure { Log.w(TAG, "Couldn't open $packageName", it) }
+    }
+
     /** Sends the child to the home screen, away from the limited app. */
     @MainThread
     fun goHome() {
@@ -220,6 +229,7 @@ class LockOverlay @Inject constructor(
                                     stage = stage,
                                     parentFlow = parentFlow,
                                     onChildOk = { onChildDismiss() },
+                                    onOpenApp = ::openApp,
                                 )
                             }
                         }

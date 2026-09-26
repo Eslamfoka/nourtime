@@ -7,7 +7,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +27,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Apps
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material3.Icon
@@ -67,6 +71,7 @@ fun TimeUpScreen(
     state: LockScreenState,
     onOk: (() -> Unit)?,
     onParents: () -> Unit,
+    onOpenApp: (String) -> Unit = {},
 ) {
     val style = styleFor(state.template).forAge(state.ageGroup)
     val text = if (style.dark) NourPalette.Cream else NourPalette.Navy
@@ -97,6 +102,7 @@ fun TimeUpScreen(
                         AgeGroup.AGES_10_12 -> OlderLayout(state, style, text)
                     }
                 }
+                if (state.allowedApps.isNotEmpty()) AllowedAppsRow(state, text, onOpenApp)
                 if (onOk != null) OkButton(onOk)
             }
         }
@@ -198,6 +204,52 @@ private fun ParentsButton(text: Color, onClick: () -> Unit, modifier: Modifier) 
         Icon(Icons.Rounded.Lock, contentDescription = null, tint = text, modifier = Modifier.size(16.dp))
         Spacer(Modifier.size(6.dp))
         Text(stringResource(R.string.tu_parents_button), style = MaterialTheme.typography.labelMedium, color = text)
+    }
+}
+
+/** "You can still open": the educational apps allowed during the lock, big enough for small hands. */
+@Composable
+private fun AllowedAppsRow(state: LockScreenState, text: Color, onOpenApp: (String) -> Unit) {
+    Column(
+        Modifier.fillMaxWidth().padding(bottom = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Text(
+            stringResource(Gendered(R.string.tu_allowed_title_m, R.string.tu_allowed_title_f).pick(state.gender)),
+            style = MaterialTheme.typography.titleMedium,
+            color = text,
+            textAlign = TextAlign.Center,
+        )
+        Row(
+            Modifier.horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            state.allowedApps.forEach { app ->
+                Surface(
+                    onClick = { onOpenApp(app.packageName) },
+                    shape = MaterialTheme.shapes.large,
+                    color = NourPalette.Cream,
+                    contentColor = NourPalette.Navy,
+                    shadowElevation = 4.dp,
+                    modifier = Modifier.widthIn(min = 96.dp, max = 120.dp),
+                ) {
+                    Column(
+                        Modifier.padding(12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        val icon = app.icon
+                        if (icon != null) {
+                            Image(icon, contentDescription = null, modifier = Modifier.size(56.dp))
+                        } else {
+                            Icon(Icons.Rounded.Apps, contentDescription = null, modifier = Modifier.size(56.dp))
+                        }
+                        Text(app.label, style = MaterialTheme.typography.labelLarge, textAlign = TextAlign.Center, maxLines = 2)
+                    }
+                }
+            }
+        }
     }
 }
 

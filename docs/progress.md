@@ -101,17 +101,9 @@ copy where the child sees text, and parent dark mode.
 |---|---|---|---|
 | 0 | **Detection freeze after the Accessibility service reconnects** (found on Honor: limited app and Settings not blocked during a lock, no degraded alert) | P0 bug | 🟡 Fixed and verified on the emulator (2026-09-27); re-test on Honor |
 | 1 | **Guided onboarding polish.** Permissions stay manual (Android doesn't let an app grant Accessibility or Device admin to itself, and Play forbids auto-clicking them). Make each step as guiding as possible: per-brand instructions (Samsung, Xiaomi, Honor/Huawei, Oppo/Vivo) for *Allow restricted settings* and autostart, return to the app automatically once a permission is on, and a final "Test protection" step. | P1 | 🟡 Done on the emulator (2026-09-27); brand texts need checking on real phones |
-| 2 | **Educational content during the lock period.** The parent allows specific content while locked: (a) an **allow-list of educational apps** that stay usable during the lock, and/or (b) a **safe mini-browser** inside the lock screen that opens only parent-approved sites (Quran, stories, language learning). | P1 | ⏳ Needs your decisions (below) |
+| 2 | **Educational content during the lock period.** Decided 2026-09-27: an **allow-list of apps** only (no mini-browser, so Phase 1 stays offline); time in them is free; it applies during lock periods, bedtime and whole-phone lock. The lock screen shows the allowed apps as big buttons. | P1 | 🟡 Done on the emulator (2026-09-27) |
 | 3 | **Smoother Settings / uninstall protection.** Replace the flashing cover with a calm screen that asks for the PIN (plus the security question during a lock period). A correct answer opens Settings normally. Add *Uninstall Nour Time* in the parent Settings tab: PIN + security question → Nour Time removes its own Device admin → Android's normal uninstall dialog. | P1 | 🟡 Done on the emulator (2026-09-27); the "flashing" didn't reproduce there, re-check on Honor |
 | 4 | **Language support.** Arabic and English stay complete for every new screen and string (standing requirement, checked in review). | Always | ✅ Ongoing |
-
-**Decisions needed for task 2:**
-- Allow-list, mini-browser, or both? The allow-list is simpler and fully offline. The mini-browser
-  needs the `INTERNET` permission (Phase 1 has none), so the privacy policy and Play Data safety
-  answers change.
-- Does time spent in allowed content count against anything, or is it free?
-- Does it also apply at bedtime, and in whole-phone lock mode?
-- Mini-browser: the parent types the site addresses, or picks from a built-in list we curate?
 
 **Task 3 notes to confirm:**
 - Android can't tell *which* Settings page is open without reading screen content (ruled out), so

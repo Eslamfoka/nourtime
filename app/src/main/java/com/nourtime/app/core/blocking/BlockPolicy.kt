@@ -37,6 +37,8 @@ data class BlockInput(
     val fullPass: Boolean,
     /** The phone is ringing or in a call: nothing is covered, so the child can answer. */
     val phoneCallActive: Boolean = false,
+    /** Educational apps the parent allows during lock periods and bedtime (never limited). */
+    val allowedDuringLock: Set<String> = emptySet(),
 )
 
 object BlockPolicy {
@@ -89,11 +91,15 @@ object BlockPolicy {
             if (!allowed) return BlockDecision(BlockReason.SYSTEM_SETTINGS, wholeDevice = false, needsSecurityAnswer = lockPeriod)
         }
 
-        if (lockPeriod && input.lockType == LockType.WHOLE_DEVICE && !input.devicePass && !input.fullPass) {
+        val onScreen = fg.visible + listOfNotNull(fg.foreground)
+
+        // Whole-phone lock: only allowed apps stay usable, and only while nothing else shares the
+        // screen (split screen or picture-in-picture with another app would be a way around it).
+        val onlyAllowedOnScreen = onScreen.isNotEmpty() && onScreen.all { it in input.allowedDuringLock }
+        if (lockPeriod && input.lockType == LockType.WHOLE_DEVICE && !input.devicePass && !input.fullPass && !onlyAllowedOnScreen) {
             return BlockDecision(lockReason, wholeDevice = true, needsSecurityAnswer = false)
         }
 
-        val onScreen = fg.visible + listOfNotNull(fg.foreground)
         val limitedOnScreen = onScreen.any { it in input.limitedApps }
         if (limitedOnScreen && (lockPeriod || input.protectionDegraded) && !input.fullPass) {
             val reason = if (lockPeriod) lockReason else BlockReason.PROTECTION

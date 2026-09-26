@@ -48,6 +48,20 @@ class ParentSettingsRepositoryTest {
     }
 
     @Test
+    fun `an app is either limited or allowed during the lock, never both`() = runTest {
+        repo.setAppLimited("com.google.android.youtube", true)
+        repo.setAppAllowedDuringLock("com.google.android.youtube", true)
+        var s = repo.settings.first()
+        assertEquals(emptySet<String>(), s.limitedApps)
+        assertEquals(setOf("com.google.android.youtube"), s.allowedDuringLock)
+
+        repo.setAppLimited("com.google.android.youtube", true)
+        s = repo.settings.first()
+        assertEquals(setOf("com.google.android.youtube"), s.limitedApps)
+        assertEquals(emptySet<String>(), s.allowedDuringLock)
+    }
+
+    @Test
     fun `toggles limited apps`() = runTest {
         repo.setAppLimited("com.google.android.youtube", true)
         repo.setAppLimited("com.zhiliaoapp.musically", true)

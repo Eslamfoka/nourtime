@@ -4,6 +4,9 @@ Run on at least one **Samsung** (One UI) and one **Xiaomi/Redmi** (MIUI/HyperOS)
 **debug** build so the Home screen shows the detection card and the *End budget now* / *End lock now*
 buttons. Install with `adb install -r app/build/outputs/apk/debug/app-debug.apk`.
 
+Don't run `uiautomator dump` while testing detection: it makes Android reconnect Nour Time's
+Accessibility service.
+
 Tip: `adb logcat -s NourA11y BlockCoordinator LockOverlay TimerService` shows every blocking decision.
 
 ## 1. Onboarding and permissions
@@ -32,11 +35,14 @@ Tip: `adb logcat -s NourA11y BlockCoordinator LockOverlay TimerService` shows ev
 - [ ] Time up, *lock selected apps*: opening a limited app shows the "Time's up" screen immediately; any playing audio pauses; the *OK/حاضر* button goes home.
 - [ ] Time up, *lock the whole phone*: every app is covered; no OK button; the lock screen (keyguard) and emergency calls remain reachable.
 - [ ] Whole phone: about 8 seconds after the lock period starts (child on another app or the home screen) the screen turns off. Waking it shows the lock screen once, and it doesn't turn off again. If the parent unlocks the phone within those seconds, it doesn't turn off.
+- [ ] Settings, App info and the uninstall dialog open straight on the PIN pad (no flashing). After PIN + answer, App info → Uninstall offers Android's *Deactivate & uninstall*.
+- [ ] Settings → *Uninstall Nour Time* → answer → Android's uninstall dialog. Cancel it: Home shows Device admin → *Fix*.
 - [ ] Parent path: *للأهل* → PIN → security question → overlay disappears for 15 minutes (or until the screen turns off).
 - [ ] Whole phone: after the PIN, *Unlock the phone only* opens the phone but limited apps stay blocked.
 - [ ] During a lock period, opening Nour Time asks the PIN **and** the security question.
 - [ ] Wrong answers: after 4, an escalating wait appears (like the PIN).
 - [ ] Bedtime: turn on with a window around "now" → limited apps blocked with the sleep screen even with budget left.
+- [ ] Allowed during the lock: Settings → *Allowed during the lock* → choose an app. During a lock period and at bedtime the lock screen shows it under "You can still open"; tapping it opens it uncovered, in both lock types. In whole-phone mode, Home covers the phone again.
 - [ ] Templates: Settings → *Preview the "Time's up" screen* for each period × age group, in Arabic and English, boy and girl.
 
 ## 5. Tampering (brief §3, step 8)

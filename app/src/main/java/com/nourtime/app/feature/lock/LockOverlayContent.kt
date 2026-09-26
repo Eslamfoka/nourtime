@@ -79,6 +79,7 @@ fun LockOverlayContent(
     stage: ParentStage,
     parentFlow: OverlayParentFlow,
     onChildOk: () -> Unit,
+    onOpenApp: (String) -> Unit,
 ) {
     val settingsCover = state.decision.reason == BlockReason.SYSTEM_SETTINGS
     LaunchedEffect(settingsCover) {
@@ -89,6 +90,7 @@ fun LockOverlayContent(
             state = state,
             onOk = if (state.decision.wholeDevice) null else onChildOk,
             onParents = parentFlow::openParent,
+            onOpenApp = onOpenApp,
         )
         ParentStage.PIN -> ParentPanelFrame(onBack = parentFlow::back) {
             val pin by parentFlow.pin.state.collectAsStateWithLifecycle()

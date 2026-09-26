@@ -32,6 +32,8 @@ data class ParentSettings(
     val lockPeriodHours: Int = TimeLimits.DEFAULT_LOCK_HOURS,
     /** Package names of the apps that share the time budget. */
     val limitedApps: Set<String> = emptySet(),
+    /** Usable during lock periods and bedtime, and never counted (Phase 1.5). Never also limited. */
+    val allowedDuringLock: Set<String> = emptySet(),
     /** Minute of the day for the optional daily refill, or null when off. */
     val dailyResetMinute: Int? = null,
     val lockType: LockType = LockType.SELECTED_APPS,
@@ -73,6 +75,7 @@ class ParentSettingsRepository @Inject constructor(
             budgetMinutes = prefs[BUDGET]?.let(TimeLimits::budget) ?: TimeLimits.DEFAULT_BUDGET_MINUTES,
             lockPeriodHours = prefs[LOCK_HOURS]?.let(TimeLimits::lockPeriod) ?: TimeLimits.DEFAULT_LOCK_HOURS,
             limitedApps = prefs[LIMITED_APPS].orEmpty(),
+            allowedDuringLock = prefs[ALLOWED_DURING_LOCK].orEmpty(),
             dailyResetMinute = prefs[DAILY_RESET]?.takeIf { it in 0 until MINUTES_PER_DAY },
             lockType = prefs[LOCK_TYPE]?.let { name -> LockType.entries.firstOrNull { it.name == name } } ?: LockType.SELECTED_APPS,
             protectSystemSettings = prefs[PROTECT_SETTINGS] ?: true,
@@ -109,9 +112,18 @@ class ParentSettingsRepository @Inject constructor(
         it[BEDTIME_END] = bedtime.endMinute.coerceIn(0, MINUTES_PER_DAY - 1)
     }
 
+    /** Limiting an app takes it off the allowed-during-lock list. */
     suspend fun setAppLimited(packageName: String, limited: Boolean) = store.edit { prefs ->
         val current = prefs[LIMITED_APPS].orEmpty()
         prefs[LIMITED_APPS] = if (limited) current + packageName else current - packageName
+        if (limited) prefs[ALLOWED_DURING_LOCK] = prefs[ALLOWED_DURING_LOCK].orEmpty() - packageName
+    }
+
+    /** Allowing an app during the lock takes it off the limited list, so its time is free. */
+    suspend fun setAppAllowedDuringLock(packageName: String, allowed: Boolean) = store.edit { prefs ->
+        val current = prefs[ALLOWED_DURING_LOCK].orEmpty()
+        prefs[ALLOWED_DURING_LOCK] = if (allowed) current + packageName else current - packageName
+        if (allowed) prefs[LIMITED_APPS] = prefs[LIMITED_APPS].orEmpty() - packageName
     }
 
     private companion object {
@@ -120,6 +132,7 @@ class ParentSettingsRepository @Inject constructor(
         val BUDGET = intPreferencesKey("budget_minutes")
         val LOCK_HOURS = intPreferencesKey("lock_period_hours")
         val LIMITED_APPS = stringSetPreferencesKey("limited_apps")
+        val ALLOWED_DURING_LOCK = stringSetPreferencesKey("allowed_during_lock")
         val DAILY_RESET = intPreferencesKey("daily_reset_minute")
         val LOCK_TYPE = stringPreferencesKey("lock_type")
         val PROTECT_SETTINGS = booleanPreferencesKey("protect_system_settings")

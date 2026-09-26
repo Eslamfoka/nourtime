@@ -182,6 +182,9 @@ window's own accessibility events (event metadata, not content), then, for the a
 from usage stats. A failed window read becomes the usage-stats app. With every root forced to
 `null`: 10/10 blocked. With normal roots the fallback is never used. 6 new unit tests.
 
+**Likely trigger (found 2026-09-27):** `uiautomator dump` makes Android unbind and rebind every
+Accessibility service. On the Honor the reconnect came seconds after such a dump during testing.
+Don't use `uiautomator dump` while testing detection; use screenshots and `dumpsys window`.
 **Not reproduced:** Honor's exact trigger. A clean disable/enable and a second `onServiceConnected`
 on the same instance both work on the emulator. `NourA11y` logs (connect / unbind / destroy, each
 window-list change, and a warning whenever the fallback is used) are there for the next Honor run:
@@ -207,16 +210,19 @@ window-list change, and a warning whenever the fallback is used) are there for t
   doesn't use any budget.
 - The Finished screen no longer says the timer "arrives in the next updates" (leftover text).
 
-### Task 2: educational content during the lock
-- **Allow-list (offline):** new `ParentSettings.allowedDuringLock: Set<String>`. In `BlockPolicy`,
-  skip `TIME_UP`/`BEDTIME` blocking when everything on screen is in the allow-list (also for the
-  whole-phone mode). Whether these apps use the budget outside lock periods is a separate choice.
-- **Mini-browser (needs `INTERNET`):** a `WebView` in the lock overlay. Only `https`, a host
-  allow-list checked in `shouldOverrideUrlLoading` *and* `shouldInterceptRequest` for top-level
-  navigations, no `addJavascriptInterface`, no file or content access, no downloads, no new windows
-  / pop-ups, no external intents, cookies cleared on close. A PiP-able video site (YouTube) would
-  escape the allow-list through its related videos, so offer curated entries, not free URLs, unless
-  the parent insists. Needs privacy policy and Data safety updates.
+### Task 2: educational apps during the lock (done on the emulator 2026-09-27)
+Decisions (user, 2026-09-27): allow-list only, time in allowed apps is free, applies at bedtime too.
+Whole-phone mode is included as well (otherwise the list would do nothing there); easy to drop.
+- `ParentSettings.allowedDuringLock` (DataStore `allowed_during_lock`). An app is either limited or
+  allowed: `setAppLimited` / `setAppAllowedDuringLock` remove it from the other list. Allowed apps
+  are never limited, so they never use the budget.
+- `BlockPolicy`: in whole-phone mode during a lock period or bedtime, nothing is covered while
+  **everything** on screen is allowed (split screen / PiP with another app keeps the lock). In
+  selected-apps mode allowed apps are ordinary unlimited apps. Settings protection still applies.
+- The "Time's up" / bedtime screen shows "You can still open:" with the allowed apps' icons and
+  names (`AllowedAppsRow`, gendered Arabic copy); tapping one opens it (`LockOverlay.openApp`).
+- Parent UI: Settings → "Allowed during the lock" → Choose apps (limited apps aren't offered).
+- Verified on Android 12: selected-apps and whole-phone modes, Home re-locks the phone.
 
 ### Task 3: calmer Settings / uninstall protection (done on the emulator 2026-09-27)
 - The Settings / installer cover (`BlockReason.SYSTEM_SETTINGS`) now opens straight on the PIN pad

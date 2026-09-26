@@ -2,6 +2,7 @@ package com.nourtime.app.feature.lock
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import com.nourtime.app.R
 import com.nourtime.app.core.blocking.BlockDecision
 import com.nourtime.app.core.blocking.BlockReason
@@ -35,7 +36,11 @@ data class LockScreenState(
     /** Until the refill (time up) or the end of bedtime; null when there's nothing to count down. */
     val countdownMs: Long?,
     val soundEnabled: Boolean,
+    /** Apps the parent allows during lock periods and bedtime, offered as buttons on the screen. */
+    val allowedApps: List<AllowedApp> = emptyList(),
 )
+
+data class AllowedApp(val packageName: String, val label: String, val icon: ImageBitmap?)
 
 /** One gendered child message (brief: every child message has masculine and feminine forms). */
 data class Gendered(@StringRes val boy: Int, @StringRes val girl: Int) {

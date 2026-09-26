@@ -26,6 +26,8 @@ import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
 import com.nourtime.app.data.settings.ParentSettings
 import com.nourtime.app.data.settings.ParentSettingsRepository
+import com.nourtime.app.data.apps.InstalledAppsRepository
+import com.nourtime.app.feature.lock.AllowedApp
 import com.nourtime.app.feature.lock.LockScreenState
 import com.nourtime.app.feature.lock.templateFor
 import com.nourtime.app.service.admin.ScreenLocker
@@ -56,6 +58,7 @@ class BlockCoordinator @Inject constructor(
     private val overlay: LockOverlay,
     private val clock: DeviceClock,
     private val screenLocker: ScreenLocker,
+    private val apps: InstalledAppsRepository,
 ) {
     private val screenOff = ScreenOffTimer()
 
@@ -108,6 +111,7 @@ class BlockCoordinator @Inject constructor(
                 devicePass = pass.deviceActive(),
                 fullPass = pass.fullActive(),
                 phoneCallActive = phoneInUse(fg.foreground),
+                allowedDuringLock = s.allowedDuringLock,
             ),
         )
 
@@ -126,6 +130,11 @@ class BlockCoordinator @Inject constructor(
                 else -> null
             },
             soundEnabled = s.soundEnabled,
+            allowedApps = if (decision.reason == BlockReason.TIME_UP || decision.reason == BlockReason.BEDTIME) {
+                allowedApps(s.allowedDuringLock)
+            } else {
+                emptyList()
+            },
         )
         val turnScreenOff = screenOff.update(
             nowElapsed = clock.elapsedRealtime(),
@@ -156,6 +165,12 @@ class BlockCoordinator @Inject constructor(
         val dialer = runCatching { telecom.defaultDialerPackage }.getOrNull()
         return foreground != null && foreground == dialer
     }
+
+    /** Launchable allowed apps, by name. Labels and icons are cached by [InstalledAppsRepository]. */
+    private suspend fun allowedApps(packages: Set<String>): List<AllowedApp> = packages
+        .filter { context.packageManager.getLaunchIntentForPackage(it) != null }
+        .map { AllowedApp(it, apps.label(it), apps.icon(it)) }
+        .sortedBy { it.label }
 
     /** The child tapped "OK": go home and keep the screen hidden while nothing changes. */
     private fun onChildDismiss() {

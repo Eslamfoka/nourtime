@@ -79,7 +79,7 @@ fun SelectAppsStep(
         // Title and search scroll with the list so small screens show more apps.
         AppList(
             state = state,
-            onLimitedChange = viewModel::setLimited,
+            onCheckedChange = viewModel::setLimited,
             loadIcon = viewModel::icon,
             modifier = Modifier.weight(1f),
             header = {

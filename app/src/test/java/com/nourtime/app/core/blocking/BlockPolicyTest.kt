@@ -27,7 +27,8 @@ class BlockPolicyTest {
         protect: Boolean = true,
         devicePass: Boolean = false,
         fullPass: Boolean = false,
-    ) = BlockInput(fg, setOf(youtube), lockType, timeUp, bedtime, degraded, protect, "com.nourtime.app", devicePass, fullPass)
+        allowed: Set<String> = emptySet(),
+    ) = BlockInput(fg, setOf(youtube), lockType, timeUp, bedtime, degraded, protect, "com.nourtime.app", devicePass, fullPass, allowedDuringLock = allowed)
 
     @Test
     fun `nothing is blocked while time is available`() {
@@ -113,5 +114,51 @@ class BlockPolicyTest {
         val b = Bedtime(enabled = true, startMinute = 13 * 60, endMinute = 15 * 60)
         assertTrue(b.isActive(LocalTime.of(14, 0)))
         assertFalse(b.isActive(LocalTime.of(15, 0)))
+    }
+
+    // Educational apps the parent allows during the lock period (Phase 1.5, task 2).
+
+    private val quran = "com.quran.labs.androidquran"
+
+    @Test
+    fun `whole phone lock lets an allowed app through`() {
+        assertNull(BlockPolicy.decide(input(on(quran), LockType.WHOLE_DEVICE, timeUp = true, allowed = setOf(quran))))
+    }
+
+    @Test
+    fun `whole phone bedtime lets an allowed app through`() {
+        assertNull(BlockPolicy.decide(input(on(quran), LockType.WHOLE_DEVICE, bedtime = true, allowed = setOf(quran))))
+    }
+
+    @Test
+    fun `whole phone lock still covers the launcher and other apps`() {
+        assertEquals(
+            BlockDecision(BlockReason.TIME_UP, wholeDevice = true, needsSecurityAnswer = false),
+            BlockPolicy.decide(input(on(launcher), LockType.WHOLE_DEVICE, timeUp = true, allowed = setOf(quran))),
+        )
+    }
+
+    @Test
+    fun `split screen with a non-allowed app keeps the whole phone locked`() {
+        assertEquals(
+            BlockDecision(BlockReason.TIME_UP, wholeDevice = true, needsSecurityAnswer = false),
+            BlockPolicy.decide(input(on(quran, "com.android.chrome"), LockType.WHOLE_DEVICE, timeUp = true, allowed = setOf(quran))),
+        )
+    }
+
+    @Test
+    fun `a limited app in picture in picture over an allowed app is still blocked`() {
+        assertEquals(
+            BlockDecision(BlockReason.TIME_UP, wholeDevice = false, needsSecurityAnswer = true),
+            BlockPolicy.decide(input(on(quran, youtube), timeUp = true, allowed = setOf(quran))),
+        )
+    }
+
+    @Test
+    fun `allowed apps don't open the phone's settings`() {
+        assertEquals(
+            BlockDecision(BlockReason.SYSTEM_SETTINGS, wholeDevice = false, needsSecurityAnswer = true),
+            BlockPolicy.decide(input(on("com.android.settings"), LockType.WHOLE_DEVICE, timeUp = true, allowed = setOf("com.android.settings"))),
+        )
     }
 }

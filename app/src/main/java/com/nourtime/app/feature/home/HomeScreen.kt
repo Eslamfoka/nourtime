@@ -182,7 +182,7 @@ private fun AppsTab(padding: PaddingValues, viewModel: AppsViewModel = hiltViewM
     val state by viewModel.state.collectAsStateWithLifecycle()
     AppList(
         state = state,
-        onLimitedChange = viewModel::setLimited,
+        onCheckedChange = viewModel::setLimited,
         loadIcon = viewModel::icon,
         modifier = Modifier.fillMaxSize().padding(padding).imePadding().padding(horizontal = 16.dp),
         header = {
@@ -221,6 +221,8 @@ private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewMod
             Text(stringResource(R.string.settings_lock_section), style = MaterialTheme.typography.titleLarge)
             LockTypeEditor(s.lockType, viewModel::setLockType)
             BedtimeCard(s.bedtime, viewModel::setBedtime)
+            Text(stringResource(R.string.allowed_section), style = MaterialTheme.typography.titleLarge)
+            AllowedDuringLockCard(s.allowedDuringLock.size)
             Text(stringResource(R.string.settings_protection_section), style = MaterialTheme.typography.titleLarge)
             ToggleCard(stringResource(R.string.protect_settings_title), stringResource(R.string.protect_settings_hint), s.protectSystemSettings, viewModel::setProtectSystemSettings)
             ToggleCard(stringResource(R.string.sound_title), stringResource(R.string.sound_hint), s.soundEnabled, viewModel::setSoundEnabled)

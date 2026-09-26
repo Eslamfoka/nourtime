@@ -226,6 +226,8 @@
     <string name="tu_sleep_title_f">تصبحي على خير 🌙</string>
     <string name="tu_parents_title_m">دي حاجة للكبار، اطلب من بابا أو ماما ⭐</string>
     <string name="tu_parents_title_f">دي حاجة للكبار، اطلبي من بابا أو ماما ⭐</string>
+    <string name="tu_allowed_title_m">لسه تقدر تفتح:</string>
+    <string name="tu_allowed_title_f">لسه تقدري تفتحي:</string>
     <string name="tu_bravo_m">برافو! خلّصت وقتك، يلا نعمل حاجة حلوة</string>
     <string name="tu_bravo_f">برافو! خلّصتي وقتك، يلا نعمل حاجة حلوة</string>
     <string name="tu_back_in_label">نرجع بعد</string>
@@ -288,6 +290,11 @@
     <string name="uninstall_title">إلغاء تثبيت وقت نور؟</string>
     <string name="uninstall_body">سيتوقف وقت نور عن حماية هذا الهاتف، وسيطلب منك أندرويد تأكيد إلغاء التثبيت. أجب عن سؤال الأمان للمتابعة.</string>
     <string name="uninstall_failed">تعذّر إيقاف حماية إلغاء التثبيت. حاول مرة أخرى، أو أزل وقت نور من الإعدادات ← تطبيقات مشرف الجهاز.</string>
+    <string name="allowed_section">مسموح أثناء القفل</string>
+    <string name="allowed_hint">تطبيقات تعليمية (القرآن، القصص، اللغات…) تبقى مفتوحة أثناء فترة القفل ووقت النوم، والوقت فيها مجاني. لا يمكن أن يكون التطبيق محددًا ومسموحًا في الوقت نفسه.</string>
+    <string name="allowed_choose">اختر التطبيقات</string>
+    <string name="allowed_none">لم تسمح بأي تطبيق بعد.</string>
+    <string name="action_done">تم</string>
     <string name="pin_changed">تم تغيير الرمز</string>
     <string name="question_changed">تم حفظ سؤال الأمان</string>
 
