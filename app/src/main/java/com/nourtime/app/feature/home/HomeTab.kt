@@ -56,6 +56,7 @@ import com.nourtime.app.core.permissions.NourPermission
 import com.nourtime.app.core.permissions.PermissionChecker
 import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
+import com.nourtime.app.core.timer.TimerCommand
 import com.nourtime.app.core.timer.TimerPhase
 import com.nourtime.app.core.timer.TimerStatus
 import com.nourtime.app.core.ui.formatCountdown
@@ -106,7 +107,7 @@ class HomeViewModel @Inject constructor(
     fun accessibilitySettings() = permissions.settingsIntents(NourPermission.ACCESSIBILITY)
 
     fun debugSkip(endBudget: Boolean) {
-        viewModelScope.launch { engine.debugSkip(endBudget) }
+        viewModelScope.launch { engine.apply(if (endBudget) TimerCommand.LockNow else TimerCommand.EndLock) }
     }
 }
 

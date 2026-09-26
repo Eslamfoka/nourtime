@@ -101,6 +101,23 @@ object TimeRules {
         return refill(state).copy(lastResetDay = dueDay, sinceResetMs = 0)
     }
 
+    /** Longest remaining budget a bonus can create, so repeated bonuses can't grow without bound. */
+    const val MAX_REMAINING_MS = 24 * 60 * 60_000L
+
+    /** Applies a command from the parent's phone. Commands that don't fit the current phase change nothing. */
+    fun apply(state: TimerState, command: TimerCommand): TimerState = when (command) {
+        is TimerCommand.Bonus -> {
+            val bonusMs = command.minutes * 60_000L
+            if (state.phase == TimerPhase.LOCKED) {
+                state.copy(phase = TimerPhase.AVAILABLE, remainingMs = bonusMs.coerceAtMost(MAX_REMAINING_MS), lockRemainingMs = 0)
+            } else {
+                state.copy(remainingMs = (state.remainingMs + bonusMs).coerceAtMost(MAX_REMAINING_MS))
+            }
+        }
+        TimerCommand.LockNow -> if (state.phase == TimerPhase.AVAILABLE) startLock(state) else state
+        TimerCommand.EndLock -> if (state.phase == TimerPhase.LOCKED) refill(state) else state
+    }
+
     private fun startLock(state: TimerState) =
         state.copy(phase = TimerPhase.LOCKED, remainingMs = 0, lockRemainingMs = state.lockMs)
 

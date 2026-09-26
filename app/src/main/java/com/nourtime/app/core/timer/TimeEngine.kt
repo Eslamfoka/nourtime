@@ -98,16 +98,19 @@ class TimeEngine @Inject constructor(
     /** True while the lock period runs; falls back to the saved state before the first update. */
     suspend fun isLocked(): Boolean = mutex.withLock { (state ?: load())?.phase == TimerPhase.LOCKED }
 
-    /** Debug builds only (test tools on Home): jump the budget or the lock forward. */
-    suspend fun debugSkip(endBudget: Boolean) = mutex.withLock {
-        val s = state ?: return@withLock
-        state = if (endBudget && s.phase == TimerPhase.AVAILABLE) {
-            s.copy(remainingMs = 0)
-        } else if (!endBudget && s.phase == TimerPhase.LOCKED) {
-            s.copy(lockRemainingMs = 1)
-        } else {
-            s
-        }
+    /** Applies a command from the parent's phone (or the debug tools on Home) and saves it at once. */
+    suspend fun apply(command: TimerCommand) = mutex.withLock {
+        val current = state ?: load() ?: return@withLock
+        val next = TimeRules.apply(current, command)
+        state = next
+        save(next)
+        lastSavedElapsed = clock.elapsedRealtime()
+        _status.value = _status.value?.copy(
+            phase = next.phase,
+            remainingMs = next.remainingMs,
+            budgetMs = next.budgetMs,
+            lockRemainingMs = next.lockRemainingMs,
+        )
     }
 
     /** Persists the latest state, e.g. when the service stops. */
