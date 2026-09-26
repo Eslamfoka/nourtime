@@ -111,12 +111,16 @@ fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
                                 notificationLauncher.launch(viewModel.notificationPermission)
                             } else {
                                 open(viewModel.settingsIntents(permission))
+                                viewModel.watchUntilGranted(permission)
                             }
                         },
                         onContinue = viewModel::next,
                         onSkip = if (permission == NourPermission.NOTIFICATIONS) viewModel::next else null,
                         onOpenAppInfo = if (permission == NourPermission.ACCESSIBILITY) {
-                            { open(listOf(viewModel.appDetailsIntent())) }
+                            {
+                                open(listOf(viewModel.appDetailsIntent()))
+                                viewModel.watchUntilGranted(permission)
+                            }
                         } else {
                             null
                         },
@@ -127,6 +131,7 @@ fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
                     progress = progress,
                     onBack = onBack,
                     manufacturer = OemAutostart.manufacturerName,
+                    brand = OemAutostart.brand(),
                     onOpen = { open(OemAutostart.intents() + viewModel.appDetailsIntent()) },
                     onDone = viewModel::next,
                 )
@@ -136,6 +141,19 @@ fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
                 OnboardingStep.SELECT_APPS -> SelectAppsStep(progress, onBack, onContinue = viewModel::next)
 
                 OnboardingStep.TIME_BUDGET -> TimeBudgetStep(progress, onBack, onContinue = viewModel::next)
+
+                OnboardingStep.TEST_PROTECTION -> {
+                    val testApp by viewModel.testApp.collectAsStateWithLifecycle()
+                    val detected by viewModel.testDetected.collectAsStateWithLifecycle()
+                    TestProtectionStep(
+                        progress = progress,
+                        onBack = onBack,
+                        appLabel = testApp?.label,
+                        detectedLabel = detected,
+                        onOpenApp = viewModel::openTestApp,
+                        onContinue = viewModel::next,
+                    )
+                }
 
                 OnboardingStep.FINISHED -> FinishedStep(onFinish = viewModel::finish)
             }

@@ -27,6 +27,7 @@ enum class OnboardingStep {
     CHILD_PROFILE,
     SELECT_APPS,
     TIME_BUDGET,
+    TEST_PROTECTION,
     FINISHED,
 }
 

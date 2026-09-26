@@ -1,8 +1,11 @@
 package com.nourtime.app.feature.onboarding
 
+import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nourtime.app.MainActivity
+import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.permissions.NourPermission
 import com.nourtime.app.core.permissions.OemAutostart
 import com.nourtime.app.core.permissions.PermissionChecker
@@ -12,15 +15,24 @@ import com.nourtime.app.core.security.PinCreationState
 import com.nourtime.app.core.security.SecurityQuestionValidator
 import com.nourtime.app.data.onboarding.OnboardingRepository
 import com.nourtime.app.data.onboarding.OnboardingStep
+import com.nourtime.app.data.apps.InstalledAppsRepository
 import com.nourtime.app.data.security.SecurityRepository
+import com.nourtime.app.data.settings.ParentSettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 
 data class SecurityQuestionForm(
@@ -31,12 +43,19 @@ data class SecurityQuestionForm(
     val saving: Boolean = false,
 )
 
+/** A limited app the parent can open on the "Test protection" step. */
+data class TestApp(val packageName: String, val label: String)
+
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     private val onboarding: OnboardingRepository,
     private val security: SecurityRepository,
     private val permissions: PermissionChecker,
     private val session: ParentSession,
+    @ApplicationContext private val context: Context,
+    private val tracker: ForegroundAppTracker,
+    private val settings: ParentSettingsRepository,
+    private val apps: InstalledAppsRepository,
 ) : ViewModel() {
 
     /** Steps for this device; the autostart step only appears on OEMs that need it. */
@@ -91,6 +110,70 @@ class OnboardingViewModel @Inject constructor(
 
     fun settingsIntents(permission: NourPermission): List<Intent> = permissions.settingsIntents(permission)
 
+    private var watch: Job? = null
+
+    /**
+     * After the parent opens a Settings screen, brings onboarding back as soon as the permission is
+     * on, so they don't have to find their way back. Android lets Nour Time do this once its
+     * Accessibility service is bound, which is the first permission step.
+     */
+    fun watchUntilGranted(permission: NourPermission) {
+        watch?.cancel()
+        watch = viewModelScope.launch {
+            withTimeoutOrNull(WATCH_MS) {
+                while (!permissions.isGranted(permission)) delay(WATCH_POLL_MS)
+                refreshPermissions()
+                bringToFront()
+            }
+        }
+    }
+
+    private fun bringToFront() {
+        runCatching {
+            context.startActivity(
+                Intent(context, MainActivity::class.java).addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP,
+                ),
+            )
+        }
+    }
+
+    // --- "Test protection" step ---
+
+    private val _testApp = MutableStateFlow<TestApp?>(null)
+    val testApp: StateFlow<TestApp?> = _testApp.asStateFlow()
+
+    /** Label of the limited app Nour Time saw on screen during the test, once it has. */
+    private val _testDetected = MutableStateFlow<String?>(null)
+    val testDetected: StateFlow<String?> = _testDetected.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            step.collectLatest { current ->
+                if (current != OnboardingStep.TEST_PROTECTION) return@collectLatest
+                val limited = settings.settings.first().limitedApps
+                _testApp.value = limited
+                    .filter { context.packageManager.getLaunchIntentForPackage(it) != null }
+                    .map { TestApp(it, apps.label(it)) }
+                    .minByOrNull { it.label }
+                if (_testDetected.value != null) return@collectLatest
+                combine(tracker.state, settings.settings) { fg, s -> fg.limitedInUse(s.limitedApps).firstOrNull() }
+                    .collect { pkg ->
+                        if (pkg != null && _testDetected.value == null) {
+                            _testDetected.value = apps.label(pkg)
+                            bringToFront()
+                        }
+                    }
+            }
+        }
+    }
+
+    fun openTestApp() {
+        val app = _testApp.value ?: return
+        val intent = context.packageManager.getLaunchIntentForPackage(app.packageName) ?: return
+        runCatching { context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+    }
+
     fun appDetailsIntent(): Intent = permissions.appDetailsIntent()
 
     val notificationsNeedRuntimeRequest: Boolean get() = permissions.notificationsNeedRuntimeRequest
@@ -143,5 +226,10 @@ class OnboardingViewModel @Inject constructor(
     private suspend fun advanceFrom(current: OnboardingStep) {
         val next = steps.getOrNull(steps.indexOf(current) + 1) ?: return
         onboarding.setStep(next)
+    }
+
+    private companion object {
+        const val WATCH_MS = 3 * 60_000L
+        const val WATCH_POLL_MS = 500L
     }
 }

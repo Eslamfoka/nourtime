@@ -92,11 +92,26 @@
     <string name="autostart_title">Autostart</string>
     <string name="autostart_why">%1$s phones can stop apps from starting on their own. Allow Nour Time to autostart so protection comes back after the phone restarts.</string>
     <string name="autostart_how">In the screen that opens, turn on Nour Time. If it doesn\'t open, look for \"Autostart\" or \"App launch\" in the phone\'s settings.</string>
+    <string name="autostart_how_xiaomi">In the screen that opens, turn on Autostart for Nour Time. Then open Settings → Apps → Nour Time → Battery saver and choose \"No restrictions\".</string>
+    <string name="autostart_how_oppo">In the screen that opens, turn on Nour Time. On newer phones this is usually in App info → Battery usage: turn on \"Allow auto launch\" and \"Allow background activity\".</string>
+    <string name="autostart_how_vivo">In the screen that opens, turn on Nour Time. Then check Settings → Battery → Background power consumption and allow Nour Time.</string>
+    <string name="autostart_how_honor_huawei">In \"App launch\", find Nour Time, switch it to \"Manage manually\" and turn on all three switches (auto-launch, secondary launch, run in background).</string>
+    <string name="autostart_how_oneplus">In the screen that opens, turn on Nour Time. Then in App info → Battery, allow background activity (\"Don\'t optimize\").</string>
+    <string name="autostart_title_samsung">Keep Nour Time awake</string>
+    <string name="autostart_why_samsung">Samsung phones put apps they think are unused to sleep. Keep Nour Time awake so protection keeps running.</string>
+    <string name="autostart_how_samsung">In Battery → Background usage limits, make sure Nour Time isn\'t in \"Sleeping apps\" or \"Deep sleeping apps\", and add it to \"Never sleeping apps\".</string>
     <string name="autostart_done">I\'ve turned it on</string>
+    <string name="test_title">Let’s check it works</string>
+    <string name="test_body">Open one of the apps you limited. When Nour Time sees it, it brings you back here by itself.</string>
+    <string name="test_no_app">None of the limited apps can be opened from here. You can check protection later by opening one of them.</string>
+    <string name="test_open_app">Open %1$s</string>
+    <string name="test_waiting">Waiting for a limited app</string>
+    <string name="test_detected">Nour Time saw %1$s</string>
+    <string name="test_success">Protection is working. When the time is up, this app will lock.</string>
 
     <!-- Finished -->
     <string name="finished_title">All set!</string>
-    <string name="finished_body">Setup is complete. The live timer and the \"Time\'s up\" screen arrive in the next updates.</string>
+    <string name="finished_body">Setup is complete. Nour Time is now protecting this phone. You can change anything later from the app.</string>
     <string name="finished_cta">Go to home</string>
 
     <!-- Home -->

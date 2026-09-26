@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.RestartAlt
+import androidx.compose.material.icons.rounded.VerifiedUser
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,6 +27,7 @@ import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.designsystem.component.NourTextButton
 import com.nourtime.app.core.designsystem.component.StatusPill
 import com.nourtime.app.core.permissions.NourPermission
+import com.nourtime.app.core.permissions.OemBrand
 
 /** One permission: why it's needed, how to grant it, live status. Continue unlocks once granted. */
 @Composable
@@ -70,12 +72,13 @@ fun PermissionStep(
     }
 }
 
-/** OEM autostart can't be detected, so the parent confirms it themselves. */
+/** OEM autostart / battery limits can't be detected, so the parent confirms it themselves. */
 @Composable
 fun AutostartStep(
     progress: Pair<Int, Int>?,
     onBack: (() -> Unit)?,
     manufacturer: String,
+    brand: OemBrand?,
     onOpen: () -> Unit,
     onDone: () -> Unit,
 ) {
@@ -87,9 +90,72 @@ fun AutostartStep(
             NourSecondaryButton(stringResource(R.string.autostart_done), onDone)
         },
     ) {
-        StepHeader(Icons.Rounded.RestartAlt, stringResource(R.string.autostart_title))
-        Text(stringResource(R.string.autostart_why, manufacturer), style = MaterialTheme.typography.bodyLarge)
-        HowToCard(stringResource(R.string.autostart_how))
+        val samsung = brand == OemBrand.SAMSUNG
+        StepHeader(Icons.Rounded.RestartAlt, stringResource(if (samsung) R.string.autostart_title_samsung else R.string.autostart_title))
+        Text(
+            if (samsung) stringResource(R.string.autostart_why_samsung) else stringResource(R.string.autostart_why, manufacturer),
+            style = MaterialTheme.typography.bodyLarge,
+        )
+        HowToCard(
+            stringResource(
+                when (brand) {
+                    OemBrand.XIAOMI -> R.string.autostart_how_xiaomi
+                    OemBrand.OPPO -> R.string.autostart_how_oppo
+                    OemBrand.VIVO -> R.string.autostart_how_vivo
+                    OemBrand.HONOR_HUAWEI -> R.string.autostart_how_honor_huawei
+                    OemBrand.ONEPLUS -> R.string.autostart_how_oneplus
+                    OemBrand.SAMSUNG -> R.string.autostart_how_samsung
+                    null -> R.string.autostart_how
+                },
+            ),
+        )
+    }
+}
+
+/**
+ * Last check before finishing: the parent opens a limited app and Nour Time confirms it saw it
+ * (and comes back to this screen by itself). Skippable, e.g. when no limited app can be opened.
+ */
+@Composable
+fun TestProtectionStep(
+    progress: Pair<Int, Int>?,
+    onBack: (() -> Unit)?,
+    appLabel: String?,
+    detectedLabel: String?,
+    onOpenApp: () -> Unit,
+    onContinue: () -> Unit,
+) {
+    val detected = detectedLabel != null
+    StepLayout(
+        progress = progress,
+        onBack = onBack,
+        actions = {
+            when {
+                detected -> NourPrimaryButton(stringResource(R.string.action_continue), onContinue)
+                appLabel != null -> {
+                    NourPrimaryButton(stringResource(R.string.test_open_app, appLabel), onOpenApp)
+                    NourTextButton(stringResource(R.string.action_skip_for_now), onContinue)
+                }
+                else -> NourPrimaryButton(stringResource(R.string.action_continue), onContinue)
+            }
+        },
+    ) {
+        StepHeader(Icons.Rounded.VerifiedUser, stringResource(R.string.test_title))
+        StatusPill(
+            done = detected,
+            doneText = stringResource(R.string.test_detected, detectedLabel.orEmpty()),
+            pendingText = stringResource(R.string.test_waiting),
+        )
+        Text(
+            stringResource(
+                when {
+                    detected -> R.string.test_success
+                    appLabel != null -> R.string.test_body
+                    else -> R.string.test_no_app
+                },
+            ),
+            style = MaterialTheme.typography.bodyLarge,
+        )
     }
 }
 

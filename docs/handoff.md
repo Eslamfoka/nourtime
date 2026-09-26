@@ -187,16 +187,25 @@ on the same instance both work on the emulator. `NourA11y` logs (connect / unbin
 window-list change, and a warning whenever the fallback is used) are there for the next Honor run:
 `adb logcat -s NourA11y BlockCoordinator LockOverlay TimerService`.
 
-### Task 1: guided onboarding (no auto-granting)
+### Task 1: guided onboarding, no auto-granting (done on the emulator 2026-09-27)
 - Android has no API for an app to grant Accessibility or Device admin to itself, and Play's
   Accessibility policy forbids using Accessibility to click through permission screens. Everything
   stays a manual toggle; the work is guidance.
-- Per-brand help text and deep links (`OemAutostart.kt` already maps autostart screens): *Allow
-  restricted settings* location, autostart, battery ("App launch" on Honor, "Sleeping apps" on
-  Samsung, "Autostart" + "No restrictions" on Xiaomi).
-- Bring the onboarding back to the front automatically when the permission is detected (the
-  Accessibility service's `onServiceConnected` can do this; for the others, poll on resume).
-- A last "Test protection" step: open a limited app for a second and confirm it's detected.
+- **Per-brand help:** `OemAutostart.brand()` → `OemBrand`; the Autostart step shows brand-specific
+  steps (Xiaomi, Oppo/realme, Vivo/iQOO, Honor/Huawei, OnePlus) and now also appears on Samsung as
+  "Keep Nour Time awake" (Sleeping apps). The menu paths are written as "usually" and **need
+  checking on real phones**. *Allow restricted settings* keeps the generic text until device tests
+  say where each brand puts it.
+- **Automatic return:** after "Open settings" (and "Open App info" on the Accessibility step),
+  `OnboardingViewModel.watchUntilGranted` polls that permission for up to 3 min and brings
+  `MainActivity` back (`CLEAR_TOP | SINGLE_TOP`) once it's on. Android allows this background
+  start because Nour Time's Accessibility service is bound (first permission step). Verified for
+  Accessibility, usage access, overlay, device admin and battery.
+- **"Test protection" step** (`OnboardingStep.TEST_PROTECTION`, before Finished): opens the first
+  limited app; when the tracker sees a limited app on screen it shows "Nour Time saw …" and brings
+  onboarding back. Skippable. The timer service isn't running yet during onboarding, so the test
+  doesn't use any budget.
+- The Finished screen no longer says the timer "arrives in the next updates" (leftover text).
 
 ### Task 2: educational content during the lock
 - **Allow-list (offline):** new `ParentSettings.allowedDuringLock: Set<String>`. In `BlockPolicy`,
