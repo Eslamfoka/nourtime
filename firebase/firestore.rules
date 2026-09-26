@@ -1,0 +1,114 @@
+rules_version = '2';
+
+// Nour Time Phase 2 (remote control). The child's phone signs in anonymously and owns
+// devices/{id}; a parent signed in with Google claims a short-lived pairing code, and the child's
+// phone confirms by writing ownerUid. See docs/superpowers/plans/2026-09-27-phase2-remote-control.md.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isGoogle() {
+      return signedIn() && request.auth.token.firebase.sign_in_provider == 'google.com';
+    }
+
+    function changedOnly(keys) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
+    }
+
+    function device(id) {
+      return get(/databases/$(database)/documents/devices/$(id)).data;
+    }
+
+    function isChildOf(id) {
+      return signedIn() && device(id).childUid == request.auth.uid;
+    }
+
+    function isOwnerOf(id) {
+      return signedIn() && device(id).ownerUid == request.auth.uid;
+    }
+
+    // Short-lived pairing codes. Claiming one does nothing until the child's phone confirms.
+    match /pairings/{code} {
+      allow get: if signedIn();
+      allow list: if false;
+
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['deviceId', 'childUid', 'expiresAt', 'claimedBy', 'claimedEmail', 'claimedName'])
+        && request.resource.data.childUid == request.auth.uid
+        && request.resource.data.claimedBy == null
+        && request.resource.data.expiresAt is timestamp
+        && request.resource.data.expiresAt <= request.time + duration.value(11, 'm')
+        && exists(/databases/$(database)/documents/devices/$(request.resource.data.deviceId))
+        && device(request.resource.data.deviceId).childUid == request.auth.uid;
+
+      allow update: if isGoogle()
+        && resource.data.claimedBy == null
+        && request.time < resource.data.expiresAt
+        && changedOnly(['claimedBy', 'claimedEmail', 'claimedName'])
+        && request.resource.data.claimedBy == request.auth.uid;
+
+      allow delete: if signedIn() && resource.data.childUid == request.auth.uid;
+    }
+
+    match /devices/{id} {
+      allow get: if signedIn()
+        && (resource.data.childUid == request.auth.uid || resource.data.ownerUid == request.auth.uid);
+      allow list: if signedIn() && resource.data.ownerUid == request.auth.uid;
+
+      allow create: if signedIn()
+        && request.resource.data.childUid == request.auth.uid
+        && request.resource.data.ownerUid == null;
+
+      // The child's phone writes everything but its own identity; the owner writes only the
+      // settings, or removes itself.
+      allow update: if signedIn() && (
+        (resource.data.childUid == request.auth.uid
+          && request.resource.data.childUid == resource.data.childUid)
+        || (resource.data.ownerUid == request.auth.uid
+          && (changedOnly(['settings'])
+            || (changedOnly(['ownerUid', 'ownerEmail']) && request.resource.data.ownerUid == null)))
+      );
+
+      allow delete: if false;
+
+      match /usage/{day} {
+        allow read: if isChildOf(id) || isOwnerOf(id);
+        allow write: if isChildOf(id);
+      }
+
+      match /meta/{docId} {
+        allow read: if isChildOf(id) || isOwnerOf(id);
+        allow write: if isChildOf(id);
+      }
+
+      match /commands/{commandId} {
+        allow read: if isChildOf(id) || isOwnerOf(id);
+
+        allow create: if isOwnerOf(id)
+          && request.resource.data.by == request.auth.uid
+          && request.resource.data.createdAt == request.time
+          && request.resource.data.appliedAt == null
+          && (
+            (request.resource.data.type == 'BONUS'
+              && request.resource.data.keys().hasOnly(['type', 'minutes', 'createdAt', 'by', 'appliedAt'])
+              && request.resource.data.minutes is int
+              && request.resource.data.minutes >= 1
+              && request.resource.data.minutes <= 240)
+            || (request.resource.data.type in ['LOCK_NOW', 'END_LOCK']
+              && request.resource.data.keys().hasOnly(['type', 'createdAt', 'by', 'appliedAt']))
+          );
+
+        // Applied exactly once, by the child's phone.
+        allow update: if isChildOf(id)
+          && resource.data.appliedAt == null
+          && changedOnly(['appliedAt'])
+          && request.resource.data.appliedAt != null;
+
+        allow delete: if false;
+      }
+    }
+  }
+}
