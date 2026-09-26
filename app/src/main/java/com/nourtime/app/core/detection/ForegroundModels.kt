@@ -35,7 +35,12 @@ data class AppWindow(
     val packageName: String?,
     val isApplication: Boolean,
     val isActive: Boolean,
-)
+    val windowId: Int = NO_WINDOW_ID,
+) {
+    companion object {
+        const val NO_WINDOW_ID = -1
+    }
+}
 
 object ForegroundRules {
 
@@ -50,6 +55,28 @@ object ForegroundRules {
         if (apps.isEmpty()) return previous
         val foreground = (apps.firstOrNull { it.isActive } ?: apps.first()).packageName
         return previous.copy(foreground = foreground, visible = apps.mapNotNullTo(linkedSetOf()) { it.packageName })
+    }
+
+    /**
+     * Fills in the owner of application windows whose root node couldn't be read. Dropping them
+     * instead would make [fromWindows] keep the previous apps, silently freezing detection (seen
+     * on Honor after the system reconnected the Accessibility service: the limited app was never
+     * blocked). [known] maps window ids to the packages seen in their accessibility events;
+     * [fallback] (usage stats) is asked at most once, and only for the active window. A failed
+     * window read (`null`) becomes the fallback app alone.
+     */
+    fun resolveUnknown(windows: List<AppWindow>?, known: Map<Int, String>, fallback: () -> String?): List<AppWindow> {
+        if (windows == null) {
+            val pkg = fallback() ?: return emptyList()
+            return listOf(AppWindow(pkg, isApplication = true, isActive = true))
+        }
+        val activeUnknown = windows.any { it.isApplication && it.isActive && it.packageName == null && it.windowId !in known }
+        val fallbackPkg by lazy { fallback() }
+        return windows.map { w ->
+            if (!w.isApplication || w.packageName != null) return@map w
+            val pkg = known[w.windowId] ?: if (w.isActive && activeUnknown) fallbackPkg else null
+            if (pkg == null) w else w.copy(packageName = pkg)
+        }
     }
 
     /** Most recent app that came to the foreground in a list of (package, isResumed) usage events, oldest first. */

@@ -82,4 +82,50 @@ class ForegroundRulesTest {
         assertEquals("com.google.android.apps.nexuslauncher", ForegroundRules.lastResumed(events, ignored))
         assertEquals(null, ForegroundRules.lastResumed(emptyList(), ignored))
     }
+
+    // Windows whose owner can't be read (null root) must not freeze detection on the previous app.
+
+    private fun unknown(id: Int, active: Boolean = false) = AppWindow(null, isApplication = true, isActive = active, windowId = id)
+
+    @Test
+    fun `unknown active window is filled from the package seen in its events`() {
+        val resolved = ForegroundRules.resolveUnknown(listOf(unknown(7, active = true)), mapOf(7 to "com.google.android.youtube")) {
+            error("fallback not needed")
+        }
+        assertEquals(listOf(AppWindow("com.google.android.youtube", isApplication = true, isActive = true, windowId = 7)), resolved)
+    }
+
+    @Test
+    fun `unknown active window without events falls back to usage stats`() {
+        val resolved = ForegroundRules.resolveUnknown(listOf(system("com.android.systemui"), unknown(7, active = true)), emptyMap()) {
+            "com.google.android.youtube"
+        }
+        assertEquals("com.google.android.youtube", resolved.single { it.isActive }.packageName)
+    }
+
+    @Test
+    fun `known windows are left alone and the fallback is not asked`() {
+        val windows = listOf(app("com.android.chrome", active = true), system("com.android.systemui"))
+        assertEquals(windows, ForegroundRules.resolveUnknown(windows, emptyMap()) { error("fallback not needed") })
+    }
+
+    @Test
+    fun `failed window read falls back to usage stats`() {
+        val resolved = ForegroundRules.resolveUnknown(null, emptyMap()) { "com.google.android.youtube" }
+        assertEquals(listOf(AppWindow("com.google.android.youtube", isApplication = true, isActive = true)), resolved)
+    }
+
+    @Test
+    fun `failed window read with no fallback gives nothing`() {
+        assertEquals(emptyList<AppWindow>(), ForegroundRules.resolveUnknown(null, emptyMap()) { null })
+    }
+
+    @Test
+    fun `limited app is detected when its window owner is unreadable and Nour Time was on screen before`() {
+        val previous = ForegroundState(foreground = "com.nourtime.app", visible = setOf("com.nourtime.app"))
+        val resolved = ForegroundRules.resolveUnknown(listOf(unknown(3, active = true)), emptyMap()) { "com.google.android.youtube" }
+        val s = ForegroundRules.fromWindows(resolved, ignored, previous)
+        assertEquals("com.google.android.youtube", s.foreground)
+        assertEquals(setOf("com.google.android.youtube"), s.limitedInUse(limited))
+    }
 }

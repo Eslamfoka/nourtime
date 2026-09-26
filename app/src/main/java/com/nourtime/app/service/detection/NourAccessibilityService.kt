@@ -3,10 +3,12 @@ package com.nourtime.app.service.detection
 import android.accessibilityservice.AccessibilityService
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityWindowInfo
 import com.nourtime.app.core.detection.AppWindow
 import com.nourtime.app.core.detection.ForegroundAppTracker
+import com.nourtime.app.core.detection.ForegroundRules
 import com.nourtime.app.core.detection.UsageStatsSource
 import com.nourtime.app.data.onboarding.OnboardingRepository
 import com.nourtime.app.service.blocking.LockOverlay
@@ -20,6 +22,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 /**
@@ -48,6 +51,7 @@ class NourAccessibilityService : AccessibilityService() {
 
     override fun onServiceConnected() {
         super.onServiceConnected()
+        Log.i(TAG, "connected ${System.identityHashCode(this)}")
         tracker.onAccessibilityConnected()
         overlay.attach(this)
         scope.launch(Dispatchers.Default.limitedParallelism(1)) {
@@ -59,17 +63,36 @@ class NourAccessibilityService : AccessibilityService() {
         }
     }
 
+    /** Owner package of each window, from event metadata: used when a window's root can't be read. */
+    private val eventPackages = ConcurrentHashMap<Int, String>()
+
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         when (event?.eventType) {
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
             AccessibilityEvent.TYPE_WINDOWS_CHANGED,
-            -> refreshRequests.trySend(Unit)
+            -> {
+                val pkg = event.packageName?.toString()
+                if (pkg != null && event.windowId != AppWindow.NO_WINDOW_ID) eventPackages[event.windowId] = pkg
+                refreshRequests.trySend(Unit)
+            }
         }
     }
 
+    private var lastLogged: String? = null
+
     private fun publishWindows() {
-        val list = runCatching { windows }.getOrNull() ?: return
-        tracker.onWindows(list.map { it.toAppWindow() })
+        val read = runCatching { windows }.getOrNull()?.map { it.toAppWindow() }
+        if (read != null) eventPackages.keys.retainAll(read.mapTo(HashSet()) { it.windowId })
+        val appWindows = ForegroundRules.resolveUnknown(read, eventPackages) {
+            Log.w(TAG, if (read == null) "window list unavailable, using usage stats" else "active window owner unknown, using usage stats")
+            if (usageStats.available) usageStats.latestForeground(tracker.ignoredPackages, FALLBACK_LOOKBACK_MS) else null
+        }
+        val summary = appWindows.joinToString { "${it.windowId}:${it.packageName}${if (it.isActive) "*" else ""}" }
+        if (summary != lastLogged) {
+            Log.d(TAG, "windows [$summary]")
+            lastLogged = summary
+        }
+        tracker.onWindows(appWindows)
     }
 
     /** Reads the owning package of the window's root node, and nothing else from it. */
@@ -82,21 +105,31 @@ class NourAccessibilityService : AccessibilityService() {
             packageName = pkg,
             isApplication = type == AccessibilityWindowInfo.TYPE_APPLICATION,
             isActive = isActive || isFocused,
+            windowId = id,
         )
     }
 
     override fun onInterrupt() = Unit
 
     override fun onUnbind(intent: Intent?): Boolean {
+        Log.i(TAG, "unbind ${System.identityHashCode(this)}")
         overlay.detach(this)
         tracker.onAccessibilityDisconnected(usageStats.available)
         return super.onUnbind(intent)
     }
 
     override fun onDestroy() {
+        Log.i(TAG, "destroy ${System.identityHashCode(this)}")
         overlay.detach(this)
         tracker.onAccessibilityDisconnected(usageStats.available)
         scope.cancel()
         super.onDestroy()
+    }
+
+    private companion object {
+        const val TAG = "NourA11y"
+
+        /** Long enough to find the app that was opened before its window became unreadable. */
+        const val FALLBACK_LOOKBACK_MS = 60 * 60_000L
     }
 }
