@@ -128,7 +128,7 @@ fallback plus fail-closed mode covers that.
 
 - Debug builds: Home shows **Detection (debug)** (source, foreground, visible, screen) and
   **End budget now** / **End lock now**.
-- Logcat: `adb logcat -s BlockCoordinator LockOverlay TimerService ScreenLocker`. Every blocking
+- Logcat: `adb logcat -s NourA11y BlockCoordinator LockOverlay TimerService ScreenLocker`. Every blocking
   decision change is logged at INFO.
 - Grant permissions without the UI (emulator):
   ```
@@ -144,7 +144,8 @@ fallback plus fail-closed mode covers that.
 
 ## 5. Next technical steps
 
-1. **Run step 8** on Samsung and Xiaomi with [`testing-checklist.md`](testing-checklist.md). Fix what
+0. **Phase 1.5** (§6 below) comes first, starting with the detection-freeze bug.
+1. **Run step 8** on Samsung and Xiaomi (Honor started 2026-09-26) with [`testing-checklist.md`](testing-checklist.md). Fix what
    comes up; the likeliest areas are OEM battery killers (autostart, "sleeping apps"), OEM Settings
    package names missing from `SYSTEM_SETTINGS_PACKAGES`, and OEM dialer/in-call package names for
    `PHONE_PACKAGES`.
@@ -152,9 +153,72 @@ fallback plus fail-closed mode covers that.
    play them from `LockOverlay.playChime()` by age group, gender and template (sleep → lullaby).
 3. **Release:** add a `signingConfigs` block reading a keystore from `local.properties` / env vars;
    `./gradlew :app:bundleRelease`. R8 is already verified (a signed release APK ran on the emulator).
-4. **Phase 2 (after your decisions):** Firebase Auth + Firestore + FCM, plus the `INTERNET`
+4. **Phase 2 (after Phase 1.5 and your decisions):** Firebase Auth + Firestore + FCM, plus the `INTERNET`
    permission and Data safety updates. Keep Phase 1 fully offline: remote commands (bonus time,
    settings) should be written into the same repositories the local UI uses (`ParentSettingsRepository`,
    a new `bonus` input to `TimeRules`), so the engine and blocking stay unchanged.
 5. Optional: Lottie animations (the `NourPose` enum is the seam), a TalkBack/contrast audit,
    Device Owner mode for Safe Mode blocking.
+
+## 6. Phase 1.5 design notes
+
+Scheduled 2026-09-26; status and open decisions are in [`progress.md`](progress.md#phase-15-scheduled-2026-09-26).
+Every new string goes into both `values/strings.xml` and `values-ar/strings.xml`. Child copy is
+masculine and feminine, and layouts are checked in RTL.
+
+### Task 0: detection freeze after an Accessibility reconnect (P0), fixed on the emulator 2026-09-27
+Seen on Honor (Android 12) on 2026-09-26: at 22:56:24 the system logged `removeConnection 7` /
+`addConnection 9` for our service. From then on `BlockCoordinator` kept ticking but never produced
+a decision: NourTube and Settings stayed uncovered during a lock, and no degraded alert was shown.
+
+**Mechanism:** if the window list can't be read, or an application window's root node comes back
+`null`, the old code dropped it; `ForegroundRules.fromWindows` then kept the *previous* apps, so
+detection silently froze on whatever was last seen (Nour Time's own screen on Honor, which is never
+blocked). Forcing every root to `null` on the emulator reproduced it exactly (YouTube open during a
+lock, 5/5 unblocked, no alert).
+
+**Fix:** `ForegroundRules.resolveUnknown` fills unknown owners first from the package in the
+window's own accessibility events (event metadata, not content), then, for the active window only,
+from usage stats. A failed window read becomes the usage-stats app. With every root forced to
+`null`: 10/10 blocked. With normal roots the fallback is never used. 6 new unit tests.
+
+**Not reproduced:** Honor's exact trigger. A clean disable/enable and a second `onServiceConnected`
+on the same instance both work on the emulator. `NourA11y` logs (connect / unbind / destroy, each
+window-list change, and a warning whenever the fallback is used) are there for the next Honor run:
+`adb logcat -s NourA11y BlockCoordinator LockOverlay TimerService`.
+
+### Task 1: guided onboarding (no auto-granting)
+- Android has no API for an app to grant Accessibility or Device admin to itself, and Play's
+  Accessibility policy forbids using Accessibility to click through permission screens. Everything
+  stays a manual toggle; the work is guidance.
+- Per-brand help text and deep links (`OemAutostart.kt` already maps autostart screens): *Allow
+  restricted settings* location, autostart, battery ("App launch" on Honor, "Sleeping apps" on
+  Samsung, "Autostart" + "No restrictions" on Xiaomi).
+- Bring the onboarding back to the front automatically when the permission is detected (the
+  Accessibility service's `onServiceConnected` can do this; for the others, poll on resume).
+- A last "Test protection" step: open a limited app for a second and confirm it's detected.
+
+### Task 2: educational content during the lock
+- **Allow-list (offline):** new `ParentSettings.allowedDuringLock: Set<String>`. In `BlockPolicy`,
+  skip `TIME_UP`/`BEDTIME` blocking when everything on screen is in the allow-list (also for the
+  whole-phone mode). Whether these apps use the budget outside lock periods is a separate choice.
+- **Mini-browser (needs `INTERNET`):** a `WebView` in the lock overlay. Only `https`, a host
+  allow-list checked in `shouldOverrideUrlLoading` *and* `shouldInterceptRequest` for top-level
+  navigations, no `addJavascriptInterface`, no file or content access, no downloads, no new windows
+  / pop-ups, no external intents, cookies cleared on close. A PiP-able video site (YouTube) would
+  escape the allow-list through its related videos, so offer curated entries, not free URLs, unless
+  the parent insists. Needs privacy policy and Data safety updates.
+
+### Task 3: calmer Settings / uninstall protection
+- The flashing is likely the overlay closing and reopening as Settings' window list changes (each
+  change re-keys `dismissedFor`, and activity transitions briefly report other packages). Keep the
+  cover up steadily while any `SYSTEM_SETTINGS_PACKAGES` window is visible, and show the PIN pad
+  directly on it (plus the security question during a lock period) instead of a separate tap.
+- Correct PIN → `ParentPass.grantFull()` (already exists) → Settings opens normally for 15 min.
+- New *Uninstall Nour Time* in the Settings tab: PIN + security question →
+  `DevicePolicyManager.removeActiveAdmin(ourAdmin)` → `Intent(Intent.ACTION_DELETE, "package:com.nourtime.app")`.
+  Needs `REQUEST_DELETE_PACKAGES`. If the parent cancels the uninstall, Home shows "Uninstall
+  protection is off" with a button to re-activate Device admin (Android always shows its own
+  confirmation for that).
+- The same "remove protection and uninstall" button appears on the package-installer cover when
+  someone uninstalls from the launcher.

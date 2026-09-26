@@ -4,7 +4,7 @@ Run on at least one **Samsung** (One UI) and one **Xiaomi/Redmi** (MIUI/HyperOS)
 **debug** build so the Home screen shows the detection card and the *End budget now* / *End lock now*
 buttons. Install with `adb install -r app/build/outputs/apk/debug/app-debug.apk`.
 
-Tip: `adb logcat -s BlockCoordinator LockOverlay TimerService` shows every blocking decision.
+Tip: `adb logcat -s NourA11y BlockCoordinator LockOverlay TimerService` shows every blocking decision.
 
 ## 1. Onboarding and permissions
 - [ ] Sideloaded install on Android 13+: Accessibility switch is greyed out → "Open App info" → ⋮ → *Allow restricted settings* → switch works.

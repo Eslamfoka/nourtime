@@ -1,9 +1,9 @@
 # Nour Time: progress against the brief
 
-Status as of 2026-09-25. Legend: ✅ done · 🟡 done with a noted difference · ⏳ pending.
+Status as of 2026-09-26. Legend: ✅ done · 🟡 done with a noted difference · ⏳ pending.
 
 Phase 1 is feature-complete on the emulator (Android 12 and 15). What's left is testing on real
-phones, recorded audio, release plumbing, and Phase 2.
+phones, recorded audio, release plumbing, Phase 1.5 (below) and Phase 2.
 
 ## Implementation order (brief §11)
 
@@ -16,8 +16,9 @@ phones, recorded audio, release plumbing, and Phase 2.
 | 5 | Uninstall and disable protection | ✅ | Device admin, Settings screens covered, boot restart, fail-closed. |
 | 6 | Templates by age and time of day | 🟡 | Done; animations are drawn in code instead of Lottie, and ages 3–6 get a chime, not a voice message (needs a recording). |
 | 7 | Bedtime and stats | ✅ | |
-| 8 | Testing on Samsung and Xiaomi, tampering scenarios | ⏳ | Needs real phones. Checklist: [`testing-checklist.md`](testing-checklist.md). |
-| 9 | Phase 2: remote control | ⏳ | Not started; needs your decisions (see below). |
+| 8 | Testing on Samsung and Xiaomi, tampering scenarios | 🟡 | Started 2026-09-26 on a **HONOR VNE-N41** (Magic UI 6.1, Android 12): blocking worked, then stopped after Honor reconnected the Accessibility service (see Phase 1.5, task 0). Samsung and Xiaomi still to do. Checklist: [`testing-checklist.md`](testing-checklist.md). |
+| 9 | Phase 1.5: fixes and UX requests from device testing | ⏳ | Scheduled 2026-09-26, see [Phase 1.5](#phase-15-scheduled-2026-09-26). |
+| 10 | Phase 2: remote control | ⏳ | Not started; needs your decisions (see below). |
 
 ## Brief sections in detail
 
@@ -90,13 +91,42 @@ transition, friendly empty states, subtle "للأهل" button, positive child co
 🟡 Lottie → code-drawn animations. ⏳ Lullaby for the sleep screen. ⏳ A formal WCAG AA/TalkBack
 audit (key contrasts were checked by hand).
 
+## Phase 1.5 (scheduled 2026-09-26)
+
+Comes before Phase 2. Technical notes for each task are in [`handoff.md` §6](handoff.md#6-phase-15-design-notes).
+**Standing rule for every task:** full Arabic (RTL) and English support, masculine and feminine child
+copy where the child sees text, and parent dark mode.
+
+| # | Task | Priority | Status |
+|---|---|---|---|
+| 0 | **Detection freeze after the Accessibility service reconnects** (found on Honor: limited app and Settings not blocked during a lock, no degraded alert) | P0 bug | 🟡 Fixed and verified on the emulator (2026-09-27); re-test on Honor |
+| 1 | **Guided onboarding polish.** Permissions stay manual (Android doesn't let an app grant Accessibility or Device admin to itself, and Play forbids auto-clicking them). Make each step as guiding as possible: per-brand instructions (Samsung, Xiaomi, Honor/Huawei, Oppo/Vivo) for *Allow restricted settings* and autostart, return to the app automatically once a permission is on, and a final "Test protection" step. | P1 | ⏳ |
+| 2 | **Educational content during the lock period.** The parent allows specific content while locked: (a) an **allow-list of educational apps** that stay usable during the lock, and/or (b) a **safe mini-browser** inside the lock screen that opens only parent-approved sites (Quran, stories, language learning). | P1 | ⏳ Needs your decisions (below) |
+| 3 | **Smoother Settings / uninstall protection.** Replace the flashing cover with a calm screen that asks for the PIN (plus the security question during a lock period). A correct answer opens Settings normally. Add *Uninstall Nour Time* in the parent Settings tab: PIN + security question → Nour Time removes its own Device admin → Android's normal uninstall dialog. | P1 | ⏳ |
+| 4 | **Language support.** Arabic and English stay complete for every new screen and string (standing requirement, checked in review). | Always | ✅ Ongoing |
+
+**Decisions needed for task 2:**
+- Allow-list, mini-browser, or both? The allow-list is simpler and fully offline. The mini-browser
+  needs the `INTERNET` permission (Phase 1 has none), so the privacy policy and Play Data safety
+  answers change.
+- Does time spent in allowed content count against anything, or is it free?
+- Does it also apply at bedtime, and in whole-phone lock mode?
+- Mini-browser: the parent types the site addresses, or picks from a built-in list we curate?
+
+**Task 3 notes to confirm:**
+- Android can't tell *which* Settings page is open without reading screen content (ruled out), so
+  the PIN screen appears for the whole Settings app, as today, just calmer.
+- Once Device admin is removed it can't be switched back on silently. If the parent then decides
+  not to uninstall, Nour Time asks them to turn it back on (one system confirmation).
+
 ## Strictly pending
 
-1. **Device testing** (step 8) on Samsung and Xiaomi: PiP, battery savers, autostart, reboot during a lock, Force stop / uninstall attempts, whole-phone screen-off. [`testing-checklist.md`](testing-checklist.md).
-2. **Audio assets:** a short recorded voice message for ages 3–6 (masculine and feminine) and a soft lullaby for the sleep screen.
-3. **Release:** signing keystore, Play App Signing, store listing, Accessibility demo video.
-4. **Phase 2 decisions:** pairing method (code / QR / parent mode), Firebase project and region, what the parent can change remotely, how bonus time interacts with the lock period.
-5. **Optional:** Lottie animations if an illustrator provides them; Device Owner mode if Safe Mode must be blocked.
+1. **Phase 1.5** tasks 0–3 (above).
+2. **Device testing** (step 8) on Samsung and Xiaomi (Honor started): PiP, battery savers, autostart, reboot during a lock, Force stop / uninstall attempts, whole-phone screen-off. [`testing-checklist.md`](testing-checklist.md).
+3. **Audio assets:** a short recorded voice message for ages 3–6 (masculine and feminine) and a soft lullaby for the sleep screen.
+4. **Release:** signing keystore, Play App Signing, store listing, Accessibility demo video.
+5. **Phase 2 decisions:** pairing method (code / QR / parent mode), Firebase project and region, what the parent can change remotely, how bonus time interacts with the lock period.
+6. **Optional:** Lottie animations if an illustrator provides them; Device Owner mode if Safe Mode must be blocked.
 
 ## Known limitations (documented, not bugs)
 - Safe Mode disables all third-party apps; blocking it needs Device Owner (factory reset + adb).
