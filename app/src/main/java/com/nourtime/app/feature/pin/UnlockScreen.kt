@@ -99,6 +99,8 @@ fun SecurityAnswerPanel(
     modifier: Modifier = Modifier,
     secondaryText: String? = null,
     onSecondary: (() -> Unit)? = null,
+    title: String = stringResource(R.string.answer_title),
+    body: String = stringResource(R.string.answer_body),
 ) {
     val locked = state.lockoutRemainingMs > 0
     Column(
@@ -107,9 +109,9 @@ fun SecurityAnswerPanel(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         NourStar(Modifier.size(72.dp), pose = NourPose.CLOCK, animated = false)
-        Text(stringResource(R.string.answer_title), style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
+        Text(title, style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
         Text(
-            stringResource(R.string.answer_body),
+            body,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,

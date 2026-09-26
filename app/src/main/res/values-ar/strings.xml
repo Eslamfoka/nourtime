@@ -199,6 +199,7 @@
     <string name="answer_wrong">هذه ليست الإجابة.</string>
     <string name="answer_submit">متابعة</string>
     <string name="lock_parent_pin_body">أدخل رمز الأهل للمتابعة.</string>
+    <string name="lock_settings_pin_body">هذا الجزء من الهاتف للكبار. أيها الأهل: أدخلوا الرمز لفتحه.</string>
     <string name="lock_phone_only">افتح الهاتف فقط</string>
 
     <!-- Child "Time's up" screens: exactly as written in the brief -->
@@ -268,6 +269,10 @@
     <string name="settings_security_section">رمز الأهل وسؤال الأمان</string>
     <string name="change_pin">تغيير الرمز</string>
     <string name="change_question">تغيير سؤال الأمان</string>
+    <string name="uninstall_button">إلغاء تثبيت وقت نور</string>
+    <string name="uninstall_title">إلغاء تثبيت وقت نور؟</string>
+    <string name="uninstall_body">سيتوقف وقت نور عن حماية هذا الهاتف، وسيطلب منك أندرويد تأكيد إلغاء التثبيت. أجب عن سؤال الأمان للمتابعة.</string>
+    <string name="uninstall_failed">تعذّر إيقاف حماية إلغاء التثبيت. حاول مرة أخرى، أو أزل وقت نور من الإعدادات ← تطبيقات مشرف الجهاز.</string>
     <string name="pin_changed">تم تغيير الرمز</string>
     <string name="question_changed">تم حفظ سؤال الأمان</string>
 

@@ -187,6 +187,7 @@
     <string name="answer_wrong">That\'s not the answer.</string>
     <string name="answer_submit">Continue</string>
     <string name="lock_parent_pin_body">Enter the parent PIN to continue.</string>
+    <string name="lock_settings_pin_body">This part of the phone is for grown-ups. Parents: enter your PIN to open it.</string>
     <string name="lock_phone_only">Unlock the phone only</string>
 
     <!-- Child "Time's up" screens (Arabic originals in values-ar) -->
@@ -256,6 +257,10 @@
     <string name="settings_security_section">Parent PIN and security question</string>
     <string name="change_pin">Change the PIN</string>
     <string name="change_question">Change the security question</string>
+    <string name="uninstall_button">Uninstall Nour Time</string>
+    <string name="uninstall_title">Uninstall Nour Time?</string>
+    <string name="uninstall_body">Nour Time will stop protecting this phone and Android will ask you to confirm the uninstall. Answer your security question to continue.</string>
+    <string name="uninstall_failed">Couldn\'t turn off uninstall protection. Try again, or remove Nour Time from Settings → Device admin apps.</string>
     <string name="pin_changed">PIN changed</string>
     <string name="question_changed">Security question saved</string>
 

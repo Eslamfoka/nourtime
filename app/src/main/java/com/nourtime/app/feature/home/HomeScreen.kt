@@ -48,6 +48,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.NourCard
+import com.nourtime.app.core.designsystem.component.NourDangerButton
 import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.designsystem.component.StatusPill
 import com.nourtime.app.core.designsystem.theme.NourTheme
@@ -233,6 +234,9 @@ private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewMod
             if (previewing) {
                 TimeUpPreviewDialog(s.ageGroup ?: AgeGroup.AGES_3_6, s.gender ?: ChildGender.GIRL) { previewing = false }
             }
+            var uninstalling by remember { mutableStateOf(false) }
+            NourDangerButton(stringResource(R.string.uninstall_button), { uninstalling = true })
+            if (uninstalling) UninstallDialog(onClose = { uninstalling = false })
         }
     }
 }

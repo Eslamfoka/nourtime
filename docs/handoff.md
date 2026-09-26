@@ -209,16 +209,16 @@ window-list change, and a warning whenever the fallback is used) are there for t
   escape the allow-list through its related videos, so offer curated entries, not free URLs, unless
   the parent insists. Needs privacy policy and Data safety updates.
 
-### Task 3: calmer Settings / uninstall protection
-- The flashing is likely the overlay closing and reopening as Settings' window list changes (each
-  change re-keys `dismissedFor`, and activity transitions briefly report other packages). Keep the
-  cover up steadily while any `SYSTEM_SETTINGS_PACKAGES` window is visible, and show the PIN pad
-  directly on it (plus the security question during a lock period) instead of a separate tap.
-- Correct PIN → `ParentPass.grantFull()` (already exists) → Settings opens normally for 15 min.
-- New *Uninstall Nour Time* in the Settings tab: PIN + security question →
-  `DevicePolicyManager.removeActiveAdmin(ourAdmin)` → `Intent(Intent.ACTION_DELETE, "package:com.nourtime.app")`.
-  Needs `REQUEST_DELETE_PACKAGES`. If the parent cancels the uninstall, Home shows "Uninstall
-  protection is off" with a button to re-activate Device admin (Android always shows its own
-  confirmation for that).
-- The same "remove protection and uninstall" button appears on the package-installer cover when
-  someone uninstalls from the launcher.
+### Task 3: calmer Settings / uninstall protection (done on the emulator 2026-09-27)
+- The Settings / installer cover (`BlockReason.SYSTEM_SETTINGS`) now opens straight on the PIN pad
+  with a "for grown-ups" line (`LockOverlayContent`); Cancel goes back to the child screen and its
+  OK button. PIN, plus the security answer during a lock period, grants the full parent pass, and
+  Settings then works normally: App info → Uninstall leads to Android's own "Deactivate & uninstall".
+- Settings tab → **Uninstall Nour Time** (`feature/home/UninstallSettings.kt`): security answer
+  (always, not only during a lock) → `removeActiveAdmin` (waits until Android confirms) → parent
+  pass → `ACTION_DELETE`. Needs `REQUEST_DELETE_PACKAGES`. If the parent cancels Android's dialog,
+  Home's Permissions card shows Device admin → **Fix**, which re-activates it. All three paths
+  (Settings route, cancel + Fix, full uninstall) verified on Android 12.
+- The flashing the user saw didn't reproduce on the emulator: both App info and the uninstall
+  dialog were covered steadily. Likely Honor-specific; watch `BlockCoordinator` / `LockOverlay`
+  open/close lines when re-testing there.
