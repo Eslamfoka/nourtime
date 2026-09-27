@@ -14,8 +14,30 @@ Requirements: JDK 17, Android SDK 35.
 ./gradlew :app:testDebugUnitTest   # unit tests
 ./gradlew :app:assembleDebug       # debug APK: app/build/outputs/apk/debug/app-debug.apk
 ./gradlew :app:lintDebug           # lint (no errors expected)
-./gradlew :app:assembleRelease     # minified release APK (unsigned); needs app/google-services.json (Phase 2)
+./gradlew :app:bundleRelease       # minified release bundle for Play: app/build/outputs/bundle/release/
+./gradlew :app:assembleRelease     # minified release APK; both need app/google-services.json (Phase 2)
 ```
+
+### Release signing
+
+Release builds are signed when a key is configured, and unsigned otherwise:
+
+1. Create an upload key once and keep it (and its passwords) safe outside the repository; losing it
+   means asking Google to reset the upload key:
+   `keytool -genkeypair -keystore ~/keys/nourtime-upload.jks -alias nourtime -keyalg RSA -keysize 2048 -validity 10000`
+2. Put `keystore.properties` in the project root (git-ignored):
+   ```properties
+   storeFile=C:/Users/you/keys/nourtime-upload.jks
+   storePassword=...
+   keyAlias=nourtime
+   keyPassword=...
+   ```
+   On a build server, set `NOURTIME_KEYSTORE`, `NOURTIME_KEYSTORE_PASSWORD`, `NOURTIME_KEY_ALIAS` and
+   `NOURTIME_KEY_PASSWORD` instead.
+3. `./gradlew :app:bundleRelease`, then upload the `.aab` in Play Console with **Play App Signing** on
+   (Google keeps the app signing key; yours is the upload key). Add the SHA-1/SHA-256 of both keys
+   (Play Console → App integrity) to the Firebase Android app for Google sign-in.
+4. Raise `versionCode` in `app/build.gradle.kts` for every upload.
 
 Debug builds show a **Detection (debug)** card on Home with what detection sees, and two buttons,
 **End budget now** / **End lock now**, to test locking without waiting. They don't exist in release builds.

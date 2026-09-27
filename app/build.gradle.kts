@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -19,6 +21,25 @@ android {
         versionName = "0.1.0"
     }
 
+    // Release signing: keystore.properties in the project root (git-ignored; see README "Release"), or
+    // the NOURTIME_KEYSTORE* environment variables on a build server. Without either, release builds
+    // are unsigned.
+    val keystoreProps = Properties().apply {
+        rootProject.file("keystore.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) }
+    }
+    fun signingValue(key: String, env: String): String? = keystoreProps.getProperty(key) ?: System.getenv(env)
+    val storeFilePath = signingValue("storeFile", "NOURTIME_KEYSTORE")
+    signingConfigs {
+        if (storeFilePath != null) {
+            create("release") {
+                storeFile = rootProject.file(storeFilePath)
+                storePassword = signingValue("storePassword", "NOURTIME_KEYSTORE_PASSWORD")
+                keyAlias = signingValue("keyAlias", "NOURTIME_KEY_ALIAS")
+                keyPassword = signingValue("keyPassword", "NOURTIME_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         debug {
             // Debug builds use the local Firebase Emulator Suite, reached through `adb reverse`, unless
@@ -28,6 +49,7 @@ android {
             buildConfigField("String", "FIREBASE_EMULATOR_HOST", if (emulator) "\"127.0.0.1\"" else "\"\"")
         }
         release {
+            signingConfigs.findByName("release")?.let { signingConfig = it }
             buildConfigField("String", "FIREBASE_EMULATOR_HOST", "\"\"")
             isMinifyEnabled = true
             isShrinkResources = true
