@@ -29,7 +29,8 @@ notes collect what the Play Console declarations will need.
 > parent-selected app is in use, and to show a full-screen "Time's up" screen over those apps when the
 > time runs out. For each visible window the app reads only the package name of the app that owns it.
 > It does not read, collect, store or share any text or content shown on the screen, or anything the
-> user types. All data stays on the device.
+> user types. Nothing it learns from the Accessibility service leaves the device; only if the parent
+> connects their own phone are the time left and per-app minutes shared with the parent's account.
 
 The prominent disclosure is shown before any permission is requested and requires an explicit
 "I agree" tap. It's in onboarding step 1 (`DisclosureStep`) and each permission step repeats the
@@ -74,6 +75,6 @@ reason.
 
 - Release signing (keystore) and Play App Signing.
 - Final privacy policy URL (see `privacy-policy.md`).
-- Store listing, screenshots, and the Accessibility demo video that Play asks for.
+- Store listing text is drafted in [`store-listing.md`](store-listing.md); still to make: screenshots, feature graphic and the Accessibility demo video that Play asks for.
 - Real Firebase project (see README), Firestore rules deployed, and the account-deletion web page
   published (URL in Play Console → Data safety).

@@ -142,13 +142,28 @@ Pending for Phase 2: **your Firebase project** (README steps), a test on two rea
 scanning the QR code and a real Google sign-in), and an **account-deletion** flow (Play requirement
 for apps with sign-in).
 
+## Phase 2.5 and Phase 3 (2026-09-27)
+
+| # | Task | Status |
+|---|---|---|
+| 1 | Account deletion: parent's *Delete my account*; child's data deleted on disconnect, removal and uninstall; rules + web page draft | ✅ Emulator (4 paths checked in Firestore) |
+| 2 | Deferred review items (code TTL, status heartbeat, command expiry, bonus kept on budget edit, lost account, lazy Firebase) | ✅ Unit + rules tests, emulator |
+| 3 | Release signing (`keystore.properties` / env vars), `bundleRelease` | ✅ Verified with a throwaway key |
+| 4 | Accessibility pass (contrast, TalkBack labels) | ✅ Emulator; full TalkBack walk-through still to do on a phone |
+| 5 | Store listing text, Arabic and English ([`store-listing.md`](store-listing.md)) | ✅ Draft |
+
+Found and fixed while testing: after a restart (or re-pairing) the child's sync never started when the
+device document hadn't changed (`MetadataChanges.INCLUDE`); "Add a child's phone" reopened on the last
+result; the parent's child screen stayed blank after the phone was removed.
+
 ## Strictly pending
 
-1. **Phase 2 follow-ups:** real Firebase project + rules deploy, real-phone test, account deletion (above).
-2. **Device testing** (step 8) on Samsung and Xiaomi (Honor started): PiP, battery savers, autostart, reboot during a lock, Force stop / uninstall attempts, whole-phone screen-off. [`testing-checklist.md`](testing-checklist.md).
-3. **Audio assets:** a short recorded voice message for ages 3–6 (masculine and feminine) and a soft lullaby for the sleep screen.
-4. **Release:** signing keystore, Play App Signing, store listing, Accessibility demo video.
-6. **Optional:** Lottie animations if an illustrator provides them; Device Owner mode if Safe Mode must be blocked.
+1. **Your Firebase project** (README steps 1–8, including the TTL policy), then a test on two real phones (QR scan, real Google sign-in).
+2. **Publish the account-deletion page** (`docs/account-deletion.md`, fill in the contact email) and put its URL and the privacy policy URL in Play Console.
+3. **Device testing** (step 8) on Samsung and Xiaomi (Honor started): PiP, battery savers, autostart, reboot during a lock, Force stop / uninstall attempts, whole-phone screen-off. [`testing-checklist.md`](testing-checklist.md).
+4. **Audio assets:** a short recorded voice message for ages 3–6 (masculine and feminine) and a soft lullaby for the sleep screen (the 3–6 description no longer promises the voice message).
+5. **Release:** create the upload key (README "Release signing"), Play App Signing, screenshots, feature graphic and the Accessibility demo video.
+6. **Optional:** Lottie animations if an illustrator provides them; Device Owner mode if Safe Mode must be blocked; push notifications to the parent (needs Cloud Functions / Blaze).
 
 ## Known limitations (documented, not bugs)
 - Safe Mode disables all third-party apps; blocking it needs Device Owner (factory reset + adb).
