@@ -2,6 +2,7 @@ package com.nourtime.app.feature.parent
 
 import android.content.Context
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -94,7 +95,9 @@ class ParentViewModel @Inject constructor(
 
     fun signIn(activityContext: Context) {
         viewModelScope.launch {
-            _signInError.value = runCatching { auth.signInWithGoogle(activityContext) }.isFailure
+            _signInError.value = runCatching { auth.signInWithGoogle(activityContext) }
+                .onFailure { Log.w("ParentSignIn", "Google sign-in failed", it) }
+                .isFailure
         }
     }
 

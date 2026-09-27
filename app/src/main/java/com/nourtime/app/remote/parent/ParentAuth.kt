@@ -1,11 +1,14 @@
 package com.nourtime.app.remote.parent
 
 import android.content.Context
+import android.util.Log
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.NoCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
@@ -50,13 +53,20 @@ class ParentAuth @Inject constructor(
     }
 
     private suspend fun googleCredential(activityContext: Context): AuthCredential {
-        val option = GetGoogleIdOption.Builder()
+        val clientId = activityContext.getString(R.string.default_web_client_id)
+        val manager = CredentialManager.create(activityContext)
+        val picker = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(activityContext.getString(R.string.default_web_client_id))
+            .setServerClientId(clientId)
             .build()
-        val credential = CredentialManager.create(activityContext)
-            .getCredential(activityContext, GetCredentialRequest.Builder().addCredentialOption(option).build())
-            .credential
+        val credential = try {
+            manager.getCredential(activityContext, GetCredentialRequest.Builder().addCredentialOption(picker).build()).credential
+        } catch (e: NoCredentialException) {
+            // No Google account on this phone yet: Google's own "Sign in with Google" screen can add one.
+            Log.i(TAG, "No Google account on the phone; showing Sign in with Google")
+            val button = GetSignInWithGoogleOption.Builder(clientId).build()
+            manager.getCredential(activityContext, GetCredentialRequest.Builder().addCredentialOption(button).build()).credential
+        }
         check(credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
             "Unexpected credential type ${credential.type}"
         }
@@ -104,5 +114,9 @@ class ParentAuth @Inject constructor(
     fun signOut() {
         auth.signOut()
         _user.value = null
+    }
+
+    private companion object {
+        const val TAG = "ParentAuth"
     }
 }

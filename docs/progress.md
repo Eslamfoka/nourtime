@@ -157,6 +157,22 @@ Found and fixed while testing: after a restart (or re-pairing) the child's sync 
 device document hadn't changed (`MetadataChanges.INCLUDE`); "Add a child's phone" reopened on the last
 result; the parent's child screen stayed blank after the phone was removed.
 
+## Phase 4 and real-project testing (2026-09-28)
+
+| # | Item | Status |
+|---|---|---|
+| 4a | Weekend limits | ✅ Emulator (branch `phase4`) |
+| 4b | Usage history, last 7 days | ✅ Emulator |
+| 4c | Ask for more time | ✅ Emulator end to end; 2 bugs fixed |
+| — | Real Firebase project `nourtime-8d4ce` connected, rules published | ✅ |
+| — | Honor onboarding with the real-project build | ✅ All permission steps auto-return; Test protection works |
+| — | Phase 2 on real devices (Honor child + API 35 emulator parent) | ⏳ Waiting for the parent's Google sign-in |
+
+Issues found on Honor (details in [`handoff.md` §9](handoff.md#9-resume-here-updated-2026-09-28-0210)):
+privacy wording says nothing leaves the phone (wrong once paired: **Play policy**), Honor-specific
+Accessibility and overlay hints, the app-search list is cramped on 720p screens with the keyboard open,
+and parent sign-in failed with a misleading message when the phone had no Google account (fixed).
+
 ## Strictly pending
 
 1. **Your Firebase project** (README steps 1–8, including the TTL policy), then a test on two real phones (QR scan, real Google sign-in).

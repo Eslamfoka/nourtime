@@ -363,41 +363,73 @@ Timings (`AskPolicy`): a pending request lapses after 30 min; after "Not now" th
 request is queued and shows "Waiting…" at once. There is no push notification to the parent (needs FCM +
 Cloud Functions); the parent sees it on opening the app.
 
-## 9. Resume here (2026-09-28, real Firebase project)
+## 9. Resume here (updated 2026-09-28 ~02:10)
 
 **State:** branch `phase4` (not merged into `master`): 4a weekend limits, 4b usage history, 4c ask for
-more time, all tested on the emulators with the Firebase emulator. Status against the brief, for outside
-review: [`brief-with-status.md`](brief-with-status.md).
+more time, tested on the emulators with the Firebase emulator. Status against the brief for outside
+review: [`brief-with-status.md`](brief-with-status.md). Uncommitted at the time of writing: nothing
+except `app/google-services.json` (real config, deliberately not committed).
 
-**Real Firebase project `nourtime-8d4ce`** (Spark plan, no billing):
-- Anonymous + Google sign-in enabled; debug-key SHA-1/SHA-256 added
-  (SHA-1 `CA:D6:D5:08:12:A6:FF:34:9C:77:73:02:31:BE:FA:1F:DD:66:D9:BA`).
-- `app/google-services.json` is the real config (**not committed**, by the owner's choice).
-- Firestore rules were **published by hand in the console** from `firebase/firestore.rules`. Whenever the
-  rules change, publish them again (console, or `node node_modules/firebase-tools/lib/bin/firebase.js
-  deploy --only firestore:rules --project nourtime-8d4ce` from `firebase/` after a login; `npx firebase`
-  hangs on this PC and the CLI isn't logged in).
-- No TTL policy (needs billing); the app deletes codes itself (README step 7).
+**Real Firebase project `nourtime-8d4ce`** (Spark plan, no billing): Anonymous + Google sign-in on,
+debug-key SHA-1/SHA-256 added (SHA-1 `CA:D6:D5:08:12:A6:FF:34:9C:77:73:02:31:BE:FA:1F:DD:66:D9:BA`),
+rules **published by hand in the console** from `firebase/firestore.rules` (republish whenever they
+change; the CLI isn't logged in and `npx firebase` hangs here). No TTL policy (needs billing).
 
-**Build against the real project** (debug build, real Firebase instead of the local emulator):
+**Build against the real project** (debug build, real Firebase):
 ```
-mv app/src/debug/google-services.json <somewhere-outside>/   # the demo config would win for debug
+mv app/src/debug/google-services.json <outside>/      # the demo config would win for debug
 ./gradlew :app:assembleDebug -Pnourtime.firebaseEmulator=false
-mv <somewhere-outside>/google-services.json app/src/debug/   # restore for emulator work
+mv <outside>/google-services.json app/src/debug/      # restore for emulator work
 ```
-Built once on 2026-09-28 00:19 (OK). Rebuild after any code change. Don't run `adb reverse` for 8080/9099
-with this build (it ignores them anyway).
 
-**Next steps, in order:**
-1. **Emulator vs the real project:** install that APK on `nourdm-api35` (child) and `nourdm-api31`
-   (parent). The parent needs a real Google account on the emulator (Settings → Accounts; the owner types
-   the password), then *Sign in with Google*. Pair with the 6-digit code; check status, extra time, lock /
-   end lock, settings both ways, ask for more time, and the documents in the Firebase console.
-2. **Real devices:** child = the owner's **HONOR VNE-N41** (Android 12) over USB (uninstall any old Nour
-   Time first; it was removed earlier), parent = the `nourdm-api31` emulator with the 6-digit code (the
-   emulator has no camera). Run [`testing-checklist.md`](testing-checklist.md) §7 (remote) and §8 (Phase
-   4), plus the Phase 1.5 re-tests on Honor (detection freeze, Settings cover, onboarding brand texts).
-   Watch `adb logcat -s NourA11y BlockCoordinator LockOverlay TimerService RemoteSync`. Don't run
-   `uiautomator dump` while testing detection; the phone may be in use, so check before sending input.
-3. Then ask the owner whether to merge `phase4` into `master`.
+### Devices right now
+- **Child = the owner's HONOR VNE-N41 (Android 12), serial `AAYSNU2712209663`.** Nour Time (real-project
+  debug build) installed and fully set up on 2026-09-28: PIN **4827**, answer **blue**, girl, ages 3–6,
+  1 h budget, 6 h lock, the three NourTube apps limited, all permissions on, App launch = manual (3
+  switches on). **Protection is live on the owner's phone** (Settings is covered by the PIN). Not paired
+  yet.
+- **Parent = emulator `nourdm-api35` (emulator-5554)**, real-project build installed, parent mode chosen,
+  data cleared. `nourdm-api31` **can't** be the parent: its Google Play services (225014047) are older
+  than the sign-in library needs (230815045) and the image has no Play Store.
+- The API 35 emulator has **no Google account**. The owner has a dedicated test account for it (the owner
+  gives the password when resuming; it's not stored in the repo).
 
+### Onboarding on Honor: results
+Every permission step returned to Nour Time by itself (Accessibility, Usage access, Overlay, Device
+admin, Battery). Honor's Autostart text matches ("App launch" → Manage manually → 3 switches). "Test
+protection" saw NourTube in ~0.3 s and came back.
+
+### Issues found on Honor (to fix)
+1. **Play-policy text (important):** the disclosure (onboarding step 1: "Everything stays on this device.
+   Nour Time doesn't collect, upload or share any personal data"), the Accessibility step ("Nothing
+   leaves this device") and the Accessibility service description in Settings ("No data leaves this
+   device") are wrong once a parent's phone is connected (usage and the app list are uploaded). Reword:
+   nothing leaves the phone unless a parent's phone is connected, and then only usage times, the app list
+   and settings. The welcome screen's "Everything stays on this device" too. Check
+   `docs/play-compliance.md` and the privacy policy for the same claim.
+2. The Accessibility hint says "open Installed apps (or Downloaded apps)"; on Honor, Nour Time is listed
+   directly on the Accessibility page (scroll down). Make the Honor text brand-specific.
+3. Usage access opens Nour Time's own page on Honor (good); **Display over other apps opens the full
+   list** (Honor ignores the package), so the parent must search. Add that to the hint.
+4. On the 720p Honor screen, the app-search list during onboarding shrinks to a thin strip while the
+   keyboard is open (pinned header and footer).
+5. **Parent sign-in** said "Couldn't sign in. Check the internet connection" when the phone had no Google
+   account (Credential Manager error 28433 = no credentials). **Fixed (uncommitted until the build ends,
+   see below):** `ParentAuth.googleCredential` falls back to `GetSignInWithGoogleOption` (Google's own
+   screen, which can add an account), and `ParentViewModel.signIn` logs the failure (`ParentSignIn`). The
+   error text should also distinguish "no Google account / cancelled" from "offline" (to do).
+
+### Next steps when resuming (Phase 2 on real devices)
+1. Install the latest real-project APK on emulator-5554 (rebuild with the commands above if needed),
+   add the test Google account, and sign in as the parent.
+2. Honor: Nour Time → Settings → Parent's phone → Connect a parent's phone (PIN 4827) → 6-digit code →
+   type it on the emulator → Allow on the Honor.
+3. Checklist [`testing-checklist.md`](testing-checklist.md) §7 and §8 against the real project: status
+   and "Updated" time, +15/+30/+1 h, lock now / end the lock, settings both ways (budget, limited apps,
+   weekend), usage + 7-day card, ask for more time (approve / not now), Honor offline → command applied
+   once online, Accessibility off → "Protection needs attention", disconnect / remove → data gone in the
+   Firebase console.
+4. Phase 1.5 re-tests on Honor: detection after Accessibility reconnect (no `uiautomator dump`), the
+   Settings cover (PIN pad, no flashing), in-app uninstall.
+5. Fix issues 1–5 above, then ask the owner about merging `phase4`.
+Watch: `adb -s AAYSNU2712209663 logcat -s NourA11y BlockCoordinator LockOverlay TimerService RemoteSync`.
