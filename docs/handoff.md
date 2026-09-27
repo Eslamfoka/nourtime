@@ -341,3 +341,10 @@ left moves by the difference, like any budget edit). `DayRules.activeBedtime(now
 as noon to noon and uses the weekend bedtime on the night *before* a weekend day (BlockCoordinator,
 LockPeriodState). Synced as `settings.weekend` (a map); settings written without it read as off; the
 local sync snapshot still decodes its old 9-field form.
+
+### 4b. Usage history
+`data/usage/WeekReport.kt` builds the last 7 days (plus the change from the 7 before) from per-day,
+per-app minutes: from Room on the child (`UsageRepository.observeRange`) and from `usage/{yyyy-MM-dd}`
+on the parent (`ParentDevices.usageRange`, a document-id range query). `WeekCard` shows it on both. The
+child re-uploads the finished day after midnight (and yesterday at start) and deletes server usage
+older than 14 days (`RemoteSync.uploadUsage`).

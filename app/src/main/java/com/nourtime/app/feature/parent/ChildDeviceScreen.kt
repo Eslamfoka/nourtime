@@ -51,7 +51,9 @@ import com.nourtime.app.core.timer.TimerCommand
 import com.nourtime.app.data.apps.InstalledApp
 import com.nourtime.app.data.apps.InstalledAppsRepository
 import com.nourtime.app.data.apps.filterApps
+import com.nourtime.app.data.usage.WeekReport
 import com.nourtime.app.feature.home.BedtimeCard
+import com.nourtime.app.feature.home.WeekCard
 import com.nourtime.app.feature.home.WeekendSection
 import com.nourtime.app.feature.home.DailyResetCard
 import com.nourtime.app.feature.home.LockTypeEditor
@@ -75,6 +77,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -95,6 +98,11 @@ class ChildDeviceViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
     val usage: StateFlow<Map<String, Long>> = ids.flatMapLatest { remote.usage(it, LocalDate.now()).catch { emit(emptyMap()) } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyMap())
+    /** The last 7 days (Phase 4b), by the parent's own date like "today" above. */
+    val week: StateFlow<WeekReport?> = ids.flatMapLatest { id ->
+        val today = LocalDate.now()
+        remote.usageRange(id, WeekReport.firstDayNeeded(today), today).map { WeekReport.of(it, today) }.catch { emit(WeekReport.of(emptyList(), today)) }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
     val apps: StateFlow<List<InstalledApp>> = ids.flatMapLatest { remote.apps(it).catch { emit(emptyList()) } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
     val commands: StateFlow<List<SentCommand>> = ids.flatMapLatest { remote.recentCommands(it).catch { emit(emptyList()) } }
@@ -141,6 +149,7 @@ fun ChildDeviceScreen(
     val device by viewModel.device.collectAsStateWithLifecycle()
     val usage by viewModel.usage.collectAsStateWithLifecycle()
     val apps by viewModel.apps.collectAsStateWithLifecycle()
+    val week by viewModel.week.collectAsStateWithLifecycle()
     val commands by viewModel.commands.collectAsStateWithLifecycle()
     val now by rememberNow()
     var confirm by remember { mutableStateOf<TimerCommand?>(null) }
@@ -186,6 +195,7 @@ fun ChildDeviceScreen(
 
         ActionsCard(summary, commands, onCommand = { confirm = it })
         UsageCard(usage, apps)
+        week?.let { report -> WeekCard(report, apps.firstOrNull { it.packageName == report.topApp }?.label) }
 
         val settings = d.settings
         Text(stringResource(R.string.device_settings), style = MaterialTheme.typography.titleLarge)

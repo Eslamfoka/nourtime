@@ -64,6 +64,7 @@ import com.nourtime.app.core.ui.startFirstAvailable
 import com.nourtime.app.data.apps.InstalledAppsRepository
 import com.nourtime.app.data.db.DailyUsage
 import com.nourtime.app.data.usage.UsageRepository
+import com.nourtime.app.data.usage.WeekReport
 import com.nourtime.app.feature.setup.durationText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -73,6 +74,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -89,18 +91,25 @@ class HomeViewModel @Inject constructor(
     val status = engine.status
     val detection = tracker.state
 
-    /** Today's use per limited app, most used first (brief §6 stats). */
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val today: StateFlow<List<DailyUsage>> = flow {
-        // Re-checked every minute so the card rolls over at midnight while Home stays open.
+    // Re-checked every minute so the cards roll over at midnight while Home stays open.
+    private val date = flow {
         while (true) {
             emit(trustedClock.now().toLocalDate())
             delay(60_000)
         }
-    }
-        .distinctUntilChanged()
+    }.distinctUntilChanged()
+
+    /** Today's use per limited app, most used first (brief §6 stats). */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val today: StateFlow<List<DailyUsage>> = date
         .flatMapLatest { usage.observeDay(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
+    /** The last 7 days (Phase 4b). */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val week: StateFlow<WeekReport?> = date
+        .flatMapLatest { day -> usage.observeRange(WeekReport.firstDayNeeded(day), day).map { WeekReport.of(it, day) } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
     suspend fun label(packageName: String) = apps.label(packageName)
 
@@ -116,6 +125,7 @@ internal fun HomeTab(padding: PaddingValues, viewModel: HomeViewModel = hiltView
     val status by viewModel.status.collectAsStateWithLifecycle()
     val detection by viewModel.detection.collectAsStateWithLifecycle()
     val today by viewModel.today.collectAsStateWithLifecycle()
+    val week by viewModel.week.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     TabColumn(padding) {
@@ -134,6 +144,10 @@ internal fun HomeTab(padding: PaddingValues, viewModel: HomeViewModel = hiltView
             StatusCard(s, viewModel::label)
         }
         TodayCard(today, viewModel::label)
+        week?.let { report ->
+            val topName by produceState<String?>(null, report.topApp) { value = report.topApp?.let { viewModel.label(it) } }
+            WeekCard(report, topName)
+        }
         if (BuildConfig.DEBUG) DebugDetectionCard(detection, viewModel::debugSkip)
         PermissionsSection(permissionsViewModel)
     }
@@ -293,5 +307,5 @@ private fun TodayCard(today: List<DailyUsage>, label: suspend (String) -> String
 
 /** "Less than a minute" for short use, otherwise "12 minutes" / "1 hour 5 minutes". */
 @Composable
-private fun usageText(ms: Long): String =
+internal fun usageText(ms: Long): String =
     if (ms in 1 until 60_000) stringResource(R.string.stats_under_minute) else durationText((ms / 60_000).toInt())

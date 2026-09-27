@@ -46,8 +46,9 @@ phone uses an anonymous Firebase account that contains no personal information.
 Not sent, ever: the child's name, age group or gender, the PIN or the security answer, what is shown on
 the screen or typed, location, contacts, photos or messages.
 
-Data is encrypted in transit (HTTPS). It is kept only while the phones are connected; see "Deleting
-data".
+Data is encrypted in transit (HTTPS). It is kept only while the phones are connected, and per-day
+usage is kept for the last 14 days (for the parent's weekly report); see "Deleting data". On the child's
+phone, per-day usage is kept for 30 days.
 
 ## What the app does not do
 

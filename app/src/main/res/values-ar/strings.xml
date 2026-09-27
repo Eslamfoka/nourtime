@@ -293,6 +293,12 @@
 
     <!-- Stats -->
     <string name="stats_today">الاستخدام اليوم</string>
+    <string name="stats_week">آخر 7 أيام</string>
+    <string name="stats_week_average">نحو %1$s في اليوم</string>
+    <string name="stats_week_top">الأكثر استخدامًا: %1$s (%2$s)</string>
+    <string name="stats_week_more">أكثر بنسبة %1$d%% من الأيام السبعة السابقة</string>
+    <string name="stats_week_less">أقل بنسبة %1$d%% من الأيام السبعة السابقة</string>
+    <string name="stats_week_same">مثل الأيام السبعة السابقة</string>
     <string name="stats_empty">لم تُستخدم أي تطبيقات محددة اليوم بعد.</string>
 
     <string name="preview_button">معاينة شاشة \"خلص الوقت\"</string>

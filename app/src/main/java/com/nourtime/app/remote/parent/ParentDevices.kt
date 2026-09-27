@@ -3,6 +3,7 @@ package com.nourtime.app.remote.parent
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -10,6 +11,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.Source
 import com.nourtime.app.core.timer.TimerCommand
 import com.nourtime.app.data.apps.InstalledApp
+import com.nourtime.app.data.usage.UsageEntry
 import com.nourtime.app.remote.RemotePaths
 import com.nourtime.app.remote.child.CommandQueue
 import com.nourtime.app.remote.model.RemoteSettings
@@ -175,6 +177,29 @@ class ParentDevices @Inject constructor(
                     @Suppress("UNCHECKED_CAST")
                     val ms = snap?.get("ms") as? Map<String, Any?>
                     trySend(ms.orEmpty().mapNotNull { (k, v) -> (v as? Number)?.toLong()?.let { k to it } }.toMap())
+                }
+            }
+        awaitClose { registration.remove() }
+    }
+
+    /** Each day's per-app minutes from [from] to [to] (Phase 4b); usage documents are named by ISO date. */
+    fun usageRange(deviceId: String, from: LocalDate, to: LocalDate): Flow<List<UsageEntry>> = callbackFlow {
+        val registration = devices.document(deviceId).collection(RemotePaths.USAGE)
+            .orderBy(FieldPath.documentId())
+            .startAt(from.format(DateTimeFormatter.ISO_LOCAL_DATE))
+            .endAt(to.format(DateTimeFormatter.ISO_LOCAL_DATE))
+            .addSnapshotListener { snap, error ->
+                if (error != null) {
+                    close(error)
+                } else if (snap != null) {
+                    trySend(
+                        snap.documents.flatMap { doc ->
+                            val date = runCatching { LocalDate.parse(doc.id) }.getOrNull() ?: return@flatMap emptyList()
+                            @Suppress("UNCHECKED_CAST")
+                            val ms = doc.get("ms") as? Map<String, Any?>
+                            ms.orEmpty().mapNotNull { (app, v) -> (v as? Number)?.toLong()?.let { UsageEntry(date, app, it) } }
+                        },
+                    )
                 }
             }
         awaitClose { registration.remove() }

@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -43,6 +44,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -208,14 +210,40 @@ class RemoteSync @Inject constructor(
         }
     }
 
+    /**
+     * Today's minutes per app, refreshed regularly. When the day changes (and once at start, in case
+     * the phone was off at midnight) the finished day is uploaded once more with its last minutes,
+     * and days older than [USAGE_KEEP_DAYS] are deleted from the server (Phase 4b).
+     */
     private suspend fun uploadUsage(device: DocumentReference) {
+        var lastDay: LocalDate? = null
         while (true) {
             val day = trustedClock.now().toLocalDate()
-            val rows = usage.observeDay(day).first()
-            device.collection(RemotePaths.USAGE).document(day.format(DateTimeFormatter.ISO_LOCAL_DATE)).set(
-                mapOf("ms" to rows.associate { it.packageName to it.usedMs }, "updatedAt" to FieldValue.serverTimestamp()),
-            )
+            if (day != lastDay) {
+                uploadUsageDay(device, day.minusDays(1))
+                pruneUsage(device, day.minusDays(USAGE_KEEP_DAYS))
+                lastDay = day
+            }
+            uploadUsageDay(device, day)
             delay(USAGE_EVERY_MS)
+        }
+    }
+
+    private suspend fun uploadUsageDay(device: DocumentReference, day: LocalDate) {
+        val rows = usage.observeDay(day).first()
+        if (rows.isEmpty() && day != trustedClock.now().toLocalDate()) return
+        device.collection(RemotePaths.USAGE).document(day.format(DateTimeFormatter.ISO_LOCAL_DATE)).set(
+            mapOf("ms" to rows.associate { it.packageName to it.usedMs }, "updatedAt" to FieldValue.serverTimestamp()),
+        )
+    }
+
+    private suspend fun pruneUsage(device: DocumentReference, before: LocalDate) {
+        runCatching {
+            device.collection(RemotePaths.USAGE)
+                .orderBy(FieldPath.documentId())
+                .endBefore(before.format(DateTimeFormatter.ISO_LOCAL_DATE))
+                .get().await()
+                .documents.forEach { it.reference.delete() }
         }
     }
 
@@ -239,6 +267,8 @@ class RemoteSync @Inject constructor(
         const val TAG = "RemoteSync"
         const val LOCAL_SETTINGS_DEBOUNCE_MS = 2_000L
         const val USAGE_EVERY_MS = 5 * 60_000L
+        /** Usage history kept on the server; the parent's weekly report needs 14 days. */
+        const val USAGE_KEEP_DAYS = 14L
         const val APPS_EVERY_MS = 6 * 60 * 60_000L
         val SETTINGS_REV = longPreferencesKey("remote_settings_rev")
         val SETTINGS_SNAPSHOT = stringPreferencesKey("remote_settings_snapshot")

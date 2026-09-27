@@ -281,6 +281,12 @@
 
     <!-- Stats -->
     <string name="stats_today">Used today</string>
+    <string name="stats_week">Last 7 days</string>
+    <string name="stats_week_average">About %1$s a day</string>
+    <string name="stats_week_top">Most used: %1$s (%2$s)</string>
+    <string name="stats_week_more">%1$d%% more than the 7 days before</string>
+    <string name="stats_week_less">%1$d%% less than the 7 days before</string>
+    <string name="stats_week_same">The same as the 7 days before</string>
     <string name="stats_empty">No limited apps used yet today.</string>
 
     <string name="preview_button">Preview the \"Time\'s up\" screen</string>

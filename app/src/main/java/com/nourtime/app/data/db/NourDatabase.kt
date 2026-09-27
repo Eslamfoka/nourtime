@@ -53,6 +53,9 @@ interface UsageDao {
     @Query("SELECT * FROM daily_usage WHERE epochDay = :epochDay ORDER BY usedMs DESC")
     fun observeDay(epochDay: Long): Flow<List<DailyUsage>>
 
+    @Query("SELECT * FROM daily_usage WHERE epochDay BETWEEN :fromEpochDay AND :toEpochDay")
+    fun observeRange(fromEpochDay: Long, toEpochDay: Long): Flow<List<DailyUsage>>
+
     @Query("INSERT OR IGNORE INTO daily_usage (epochDay, packageName, usedMs) VALUES (:epochDay, :packageName, 0)")
     suspend fun ensureRow(epochDay: Long, packageName: String)
 
