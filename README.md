@@ -73,7 +73,8 @@ On the parent's phone, "Use a test account (emulator)" signs in without a real G
    Signing key. Google sign-in fails without them.
 5. Download **`google-services.json`** into **`app/`** (not `app/src/debug/`).
 6. Deploy the rules: `cd firebase && npx firebase deploy --only firestore:rules --project <your-project-id>`.
-7. Turn on clean-up of abandoned pairing codes: Firestore → **TTL policies** → collection group
+7. *Optional, needs billing (Blaze):* turn on clean-up of abandoned pairing codes. The app already deletes a
+   code when it is refused, expires or is closed, so this only catches codes left by an app killed mid-pairing: Firestore → **TTL policies** → collection group
    `pairings`, timestamp field `expireAt` (or `gcloud firestore fields ttls update expireAt
    --collection-group=pairings --enable-ttl --project <your-project-id>`).
 8. Release builds now build and use it. To run a **debug** build against the real project, delete
