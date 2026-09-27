@@ -149,10 +149,16 @@ object SettingsSync {
         remoteBy: String?,
     ): SyncAction = when {
         remote == null -> SyncAction.UPLOAD
-        remoteRev > lastSyncedRev && remoteBy == RemoteSettings.BY_PARENT -> SyncAction.APPLY_REMOTE
+        remoteBy == RemoteSettings.BY_PARENT && remoteRev > lastSyncedRev -> SyncAction.APPLY_REMOTE
+        // Same revision, different content: both phones wrote rev N+1 while one was offline.
+        remoteBy == RemoteSettings.BY_PARENT && remoteRev == lastSyncedRev && remote != lastSynced -> SyncAction.APPLY_REMOTE
         local != lastSynced -> SyncAction.UPLOAD
         else -> SyncAction.NOTHING
     }
+
+    /** Checked again inside the upload transaction, against the server's current revision. */
+    fun uploadAllowed(lastSyncedRev: Long, remoteRev: Long, remoteBy: String?): Boolean =
+        !(remoteBy == RemoteSettings.BY_PARENT && remoteRev > lastSyncedRev)
 
     fun nextRev(lastSyncedRev: Long, remoteRev: Long): Long = maxOf(lastSyncedRev, remoteRev) + 1
 }

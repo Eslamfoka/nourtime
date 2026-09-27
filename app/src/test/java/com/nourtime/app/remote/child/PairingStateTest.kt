@@ -8,8 +8,8 @@ class PairingStateTest {
     private val created = 1_000_000L
     private val code = "123456"
 
-    private fun of(exists: Boolean = true, claimedBy: String? = null, now: Long = created + 60_000, createdAt: Long? = created) =
-        PairingStates.of(code, exists, claimedBy, claimedName = "Mom", claimedEmail = "mom@example.com", createdAtMs = createdAt, localStartMs = created, nowMs = now)
+    private fun of(exists: Boolean = true, claimedBy: String? = null, now: Long = created + 60_000) =
+        PairingStates.of(code, exists, claimedBy, claimedName = "Mom", claimedEmail = "mom@example.com", localStartMs = created, nowMs = now)
 
     @Test
     fun `waits for the parent while the code is valid`() {
@@ -38,7 +38,8 @@ class PairingStateTest {
     }
 
     @Test
-    fun `before the server time arrives the phone's own start time is used`() {
-        assertEquals(PairingState.Waiting(code, expiresAtMs = created + PairingStates.VALID_MS), of(createdAt = null))
+    fun `the countdown runs on this phone's own clock from when it started`() {
+        // Review I4: server time isn't compared with a phone clock that may be off; the rules enforce the real expiry.
+        assertEquals(PairingState.Waiting(code, expiresAtMs = created + PairingStates.VALID_MS), of(now = created))
     }
 }

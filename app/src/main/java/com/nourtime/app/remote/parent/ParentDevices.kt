@@ -87,8 +87,11 @@ class ParentDevices @Inject constructor(
             try {
                 ref.update(mapOf("claimedBy" to user.uid, "claimedEmail" to user.email, "claimedName" to user.name)).await()
             } catch (e: FirebaseFirestoreException) {
-                // Expired by server time, or claimed by someone else a moment ago.
-                return if (e.code == FirebaseFirestoreException.Code.PERMISSION_DENIED) ClaimResult.EXPIRED else e.toClaimResult()
+                if (e.code != FirebaseFirestoreException.Code.PERMISSION_DENIED) return e.toClaimResult()
+                // Claimed by someone else a moment ago, or expired by server time.
+                val again = runCatching { ref.get().await() }.getOrNull()
+                val other = again?.getString("claimedBy")
+                return if (other != null && other != user.uid) ClaimResult.ALREADY_CLAIMED else ClaimResult.EXPIRED
             } catch (e: Exception) {
                 return e.toClaimResult()
             }
@@ -134,9 +137,20 @@ class ParentDevices @Inject constructor(
         awaitClose { registration.remove() }
     }
 
-    /** Writes the settings one revision past the current one; the child applies it. */
-    suspend fun writeSettings(deviceId: String, settings: RemoteSettings, currentRev: Long) {
-        devices.document(deviceId).update("settings", settings.toMap(currentRev + 1, RemoteSettings.BY_PARENT)).await()
+    /**
+     * Writes the settings one revision past the server's current one, in a transaction, so two
+     * writers never produce the same revision. [change] is applied to the server's settings, so an
+     * edit made meanwhile on the child's phone isn't lost. Needs the network.
+     */
+    suspend fun writeSettings(deviceId: String, change: (RemoteSettings) -> RemoteSettings) {
+        val ref = devices.document(deviceId)
+        firestore.runTransaction { tx ->
+            @Suppress("UNCHECKED_CAST")
+            val map = tx.get(ref).get("settings") as? Map<String, Any?>
+            val current = RemoteSettings.fromMap(map) ?: return@runTransaction
+            val rev = (map?.get("rev") as? Number)?.toLong() ?: 0
+            tx.update(ref, "settings", change(current).toMap(rev + 1, RemoteSettings.BY_PARENT))
+        }.await()
     }
 
     fun usage(deviceId: String, day: LocalDate): Flow<Map<String, Long>> = callbackFlow {

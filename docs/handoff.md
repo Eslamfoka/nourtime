@@ -262,15 +262,22 @@ devices/{id}/commands/{auto}     type BONUS|LOCK_NOW|END_LOCK, minutes 1..240, c
 
 ### Decisions worth knowing
 - **Pairing** (`remote/child/ChildPairing`, `remote/parent/ParentDevices.claim`): a claimed code does
-  nothing until the child's phone (behind the PIN) taps Allow and writes `ownerUid`. Brute-forcing a
-  6-digit code therefore can't take over a phone. Codes expire from their server `createdAt`, so the
-  child's clock doesn't matter.
-- **Settings sync** (`remote/model/SettingsSync`): every write carries `rev` and `by`. A parent revision
-  newer than the last one the child synced wins, even over an offline change; the child's own writes are
-  never re-applied. The child decides with the *current* local settings (a debounced old value was once
-  uploaded back and briefly undid a parent change).
-- **Commands** (`remote/child/CommandQueue`): applied once each in `createdAt` order; applied ids are
-  also remembered locally; invalid ones are marked applied without effect.
+  nothing until the child's phone (behind the PIN) taps Allow and writes `ownerUid` together with
+  `pairingCode`; the rules accept only the uid that claimed that code for that device, so nobody can
+  push a device into a parent's list. A claim must carry the claimer's own verified email (the rules
+  check the token), so the "Allow Mom (mom@…)?" question can't be faked. Only Google users (or the
+  code's own phone) can read a code. Codes expire from their server `createdAt`; the child's countdown
+  runs on its own clock from when it started, so a wrong clock can't expire it early.
+- **Settings sync** (`remote/model/SettingsSync`): every write carries `rev` and `by`, and both phones
+  write in a Firestore **transaction** (rev = server rev + 1), so two writers never share a revision.
+  The parent's edit is applied to the server's current settings; the child only uploads if no newer
+  parent revision is on the server (otherwise it applies that). A parent revision newer than (or equal
+  to but different from) the last one the child synced wins. Settings edits need the network (the
+  transaction fails offline; the child re-decides on the next snapshot).
+- **Commands** (`remote/child/CommandQueue`): at most once each, in `createdAt` order: each id is saved
+  before its command is applied. Only the current owner's commands take effect; others (a removed
+  parent's) are consumed without effect. Nothing but the settings listener runs until a server (not
+  cache) snapshot confirms the phone is still paired.
 - **Removal:** the parent clears `ownerUid`; the child notices (`PairingCheck`) and drops its pairing.
 - **Device document:** created after a server-side existence check (rules allow reading a missing
   device); `set()` is never used on an existing one because it would clear `ownerUid`.

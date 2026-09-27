@@ -108,7 +108,6 @@ class ParentPhoneViewModel @Inject constructor(
                         claimedBy = snap?.getString("claimedBy"),
                         claimedName = snap?.getString("claimedName"),
                         claimedEmail = snap?.getString("claimedEmail"),
-                        createdAtMs = snap?.getTimestamp("createdAt")?.toDate()?.time,
                         localStartMs = localStart,
                         nowMs = now,
                     )

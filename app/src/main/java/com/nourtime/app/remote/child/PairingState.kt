@@ -26,8 +26,9 @@ object PairingStates {
     const val VALID_MS = 10 * 60_000L
 
     /**
-     * State from the pairing document. [createdAtMs] is the server time, null until the write is
-     * confirmed; [localStartMs] stands in for it meanwhile.
+     * State from the pairing document. The countdown runs from [localStartMs] on this phone's own
+     * clock: comparing the server's createdAt with a phone clock that is off (or was changed) would
+     * expire the code early. The Firestore rules enforce the real 10 minutes with server time.
      */
     fun of(
         code: String,
@@ -35,14 +36,13 @@ object PairingStates {
         claimedBy: String?,
         claimedName: String?,
         claimedEmail: String?,
-        createdAtMs: Long?,
         localStartMs: Long,
         nowMs: Long,
     ): PairingState {
         if (!exists) return PairingState.Expired
         // A claim the server accepted counts even if the snapshot arrives after the expiry.
         if (claimedBy != null) return PairingState.Claimed(code, claimedName, claimedEmail)
-        val expiresAt = (createdAtMs ?: localStartMs) + VALID_MS
+        val expiresAt = localStartMs + VALID_MS
         return if (nowMs >= expiresAt) PairingState.Expired else PairingState.Waiting(code, expiresAt)
     }
 }

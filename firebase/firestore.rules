@@ -30,10 +30,29 @@ service cloud.firestore {
       return signedIn() && device(id).ownerUid == request.auth.uid;
     }
 
+    function pairing(code) {
+      return get(/databases/$(database)/documents/pairings/$(code)).data;
+    }
+
+    // The child's phone may keep its owner, clear it, or set it to the parent who claimed one of
+    // its codes (named in pairingCode). Nobody can be made the owner of a phone they didn't claim.
+    function ownerChangeAllowed(id) {
+      let newOwner = request.resource.data.get('ownerUid', null);
+      let code = request.resource.data.get('pairingCode', '');
+      return newOwner == resource.data.get('ownerUid', null)
+        || newOwner == null
+        || (code is string && code.matches('^[0-9]{6}$')
+          && exists(/databases/$(database)/documents/pairings/$(code))
+          && pairing(code).deviceId == id
+          && pairing(code).claimedBy == newOwner);
+    }
+
     // Pairing codes, valid 10 minutes from createdAt (server time, so the phone's clock doesn't
     // matter). Claiming one does nothing until the child's phone confirms.
     match /pairings/{code} {
-      allow get: if signedIn();
+      // Parents (Google) look codes up; a child's phone only reads its own (or learns a code is free).
+      allow get: if signedIn()
+        && (resource == null || isGoogle() || resource.data.childUid == request.auth.uid);
       allow list: if false;
 
       allow create: if signedIn()
@@ -48,7 +67,12 @@ service cloud.firestore {
         && resource.data.claimedBy == null
         && request.time < resource.data.createdAt + duration.value(10, 'm')
         && changedOnly(['claimedBy', 'claimedEmail', 'claimedName'])
-        && request.resource.data.claimedBy == request.auth.uid;
+        && request.resource.data.claimedBy == request.auth.uid
+        // The name shown on the child's phone must be the signed-in account's own.
+        && request.auth.token.email_verified == true
+        && request.resource.data.claimedEmail == request.auth.token.email
+        && (request.resource.data.claimedName == null
+          || (request.resource.data.claimedName is string && request.resource.data.claimedName.size() <= 100));
 
       allow delete: if signedIn() && resource.data.childUid == request.auth.uid;
     }
@@ -68,7 +92,8 @@ service cloud.firestore {
       // settings, or removes itself.
       allow update: if signedIn() && (
         (resource.data.childUid == request.auth.uid
-          && request.resource.data.childUid == resource.data.childUid)
+          && request.resource.data.childUid == resource.data.childUid
+          && ownerChangeAllowed(id))
         || (resource.data.ownerUid == request.auth.uid
           && (changedOnly(['settings'])
             || (changedOnly(['ownerUid', 'ownerEmail', 'ownerName']) && request.resource.data.ownerUid == null)))

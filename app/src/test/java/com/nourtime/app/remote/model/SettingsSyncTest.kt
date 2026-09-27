@@ -51,4 +51,17 @@ class SettingsSyncTest {
         assertEquals(6L, SettingsSync.nextRev(lastSyncedRev = 5, remoteRev = 3))
         assertEquals(8L, SettingsSync.nextRev(lastSyncedRev = 5, remoteRev = 7))
     }
+
+    @Test
+    fun `a parent edit with the same revision but different content is applied`() {
+        // Two phones computed the same next revision while one was offline (review C1).
+        assertEquals(SyncAction.APPLY_REMOTE, SettingsSync.decide(b, b, 6, c, 6, "parent"))
+    }
+
+    @Test
+    fun `the child only uploads over its own last revision or an older one`() {
+        assertEquals(true, SettingsSync.uploadAllowed(lastSyncedRev = 5, remoteRev = 5, remoteBy = "parent"))
+        assertEquals(true, SettingsSync.uploadAllowed(lastSyncedRev = 5, remoteRev = 6, remoteBy = "child"))
+        assertEquals(false, SettingsSync.uploadAllowed(lastSyncedRev = 5, remoteRev = 6, remoteBy = "parent"))
+    }
 }

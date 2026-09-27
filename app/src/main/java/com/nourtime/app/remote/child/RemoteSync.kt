@@ -24,6 +24,7 @@ import com.nourtime.app.remote.model.SettingsSync
 import com.nourtime.app.remote.model.StatusThrottle
 import com.nourtime.app.remote.model.SyncAction
 import com.nourtime.app.remote.model.statusMap
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.coroutineScope
@@ -36,6 +37,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -63,19 +65,26 @@ class RemoteSync @Inject constructor(
             if (owner == null) return@collectLatest
             identity.ensureSignedIn()
             val device = firestore.collection(RemotePaths.DEVICES).document(identity.deviceId())
+            // Nothing else runs until the server (not the local cache) confirms this phone is still
+            // paired: a parent who removed it while it was offline gets no commands applied and no
+            // more uploads.
+            val confirmed = CompletableDeferred<Unit>()
             coroutineScope {
-                launch { syncSettings(device, owner) }
-                launch { applyCommands(device) }
-                launch { uploadStatus(device) }
-                launch { uploadUsage(device) }
-                launch { uploadApps(device) }
+                launch { syncSettings(device, owner, confirmed) }
+                launch {
+                    confirmed.await()
+                    launch { applyCommands(device, owner) }
+                    launch { uploadStatus(device) }
+                    launch { uploadUsage(device) }
+                    launch { uploadApps(device) }
+                }
             }
         }
     }
 
     /** Two-way settings sync, and noticing that the parent removed this phone. */
     @OptIn(FlowPreview::class)
-    private suspend fun syncSettings(device: DocumentReference, owner: PairedOwner) {
+    private suspend fun syncSettings(device: DocumentReference, owner: PairedOwner, confirmed: CompletableDeferred<Unit>) {
         // Local changes only trigger a check; the decision always reads the current settings, since a
         // debounced value can be older than a parent change applied a moment ago (it would be
         // uploaded back and briefly undo the parent's change).
@@ -87,6 +96,7 @@ class RemoteSync @Inject constructor(
                 identity.setPairedOwner(null)
                 return@collect
             }
+            if (snap.exists() && !snap.metadata.isFromCache) confirmed.complete(Unit)
             @Suppress("UNCHECKED_CAST")
             val remoteMap = snap.get("settings") as? Map<String, Any?>
             val prefs = store.data.first()
@@ -94,11 +104,7 @@ class RemoteSync @Inject constructor(
             val remoteRev = (remoteMap?.get("rev") as? Number)?.toLong() ?: 0
             val remote = RemoteSettings.fromMap(remoteMap)
             when (SettingsSync.decide(localSettings, RemoteSettings.decode(prefs[SETTINGS_SNAPSHOT]), lastRev, remote, remoteRev, remoteMap?.get("by") as? String)) {
-                SyncAction.UPLOAD -> {
-                    val rev = SettingsSync.nextRev(lastRev, remoteRev)
-                    remember(localSettings, rev)
-                    device.update("settings", localSettings.toMap(rev, RemoteSettings.BY_CHILD))
-                }
+                SyncAction.UPLOAD -> uploadSettings(device, localSettings, lastRev)
                 SyncAction.APPLY_REMOTE -> {
                     remember(remote!!, remoteRev)
                     settings.replaceWith(remote)
@@ -108,6 +114,28 @@ class RemoteSync @Inject constructor(
         }
     }
 
+    /**
+     * Writes the local settings one revision past the server's, in a transaction, so a parent edit
+     * that arrived meanwhile is never overwritten (it's applied on the next snapshot instead). Offline
+     * the transaction fails and the next snapshot after reconnecting decides again.
+     */
+    private suspend fun uploadSettings(device: DocumentReference, local: RemoteSettings, lastRev: Long) {
+        val rev = runCatching {
+            firestore.runTransaction { tx ->
+                val current = tx.get(device)
+                @Suppress("UNCHECKED_CAST")
+                val map = current.get("settings") as? Map<String, Any?>
+                val currentRev = (map?.get("rev") as? Number)?.toLong() ?: 0
+                if (!SettingsSync.uploadAllowed(lastRev, currentRev, map?.get("by") as? String)) {
+                    null
+                } else {
+                    SettingsSync.nextRev(lastRev, currentRev).also { tx.update(device, "settings", local.toMap(it, RemoteSettings.BY_CHILD)) }
+                }
+            }.await()
+        }.getOrNull() ?: return
+        remember(local, rev)
+    }
+
     private suspend fun remember(synced: RemoteSettings, rev: Long) {
         store.edit {
             it[SETTINGS_SNAPSHOT] = synced.encode()
@@ -115,18 +143,23 @@ class RemoteSync @Inject constructor(
         }
     }
 
-    private suspend fun applyCommands(device: DocumentReference) {
+    private suspend fun applyCommands(device: DocumentReference, owner: PairedOwner) {
         device.collection(RemotePaths.COMMANDS).whereEqualTo("appliedAt", null).snapshots().collect { snap ->
             val docs = snap.documents.map { CommandDoc(it.id, it.getTimestamp("createdAt")?.toDate()?.time, it.data.orEmpty()) }
-            val applied = store.data.first()[APPLIED_COMMANDS]?.split(",")?.filter { it.isNotEmpty() }.orEmpty()
-            val due = CommandQueue.due(docs, applied.toSet())
-            if (due.isEmpty()) return@collect
+            var applied = store.data.first()[APPLIED_COMMANDS]?.split(",")?.filter { it.isNotEmpty() }.orEmpty()
+            val due = CommandQueue.due(owner.uid, docs, applied.toSet())
+            CommandQueue.runEach(
+                due,
+                remember = { id ->
+                    applied = CommandQueue.remember(applied, listOf(id))
+                    store.edit { it[APPLIED_COMMANDS] = applied.joinToString(",") }
+                },
+                apply = { engine.apply(it) },
+            )
             for (c in due) {
-                c.command?.let { engine.apply(it) }
-                Log.i(TAG, "command ${c.id}: ${c.command ?: "invalid, ignored"}")
+                Log.i(TAG, "command ${c.id}: ${c.command ?: "ignored"}")
+                device.collection(RemotePaths.COMMANDS).document(c.id).update("appliedAt", FieldValue.serverTimestamp())
             }
-            store.edit { it[APPLIED_COMMANDS] = CommandQueue.remember(applied, due.map(DueCommand::id)).joinToString(",") }
-            for (c in due) device.collection(RemotePaths.COMMANDS).document(c.id).update("appliedAt", FieldValue.serverTimestamp())
         }
     }
 

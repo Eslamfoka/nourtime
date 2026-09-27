@@ -4,6 +4,7 @@ import android.os.Build
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Source
 import com.nourtime.app.remote.RemotePaths
 import com.nourtime.app.remote.model.PairingCode
@@ -43,7 +44,8 @@ class ChildPairing @Inject constructor(
         repeat(CODE_ATTEMPTS) {
             val code = PairingCode.generate()
             val ref = firestore.collection(RemotePaths.PAIRINGS).document(code)
-            val created = firestore.runTransaction { tx ->
+            // Another phone's code can't be read (the rules say no), which also means "taken".
+            val created = runCatching { firestore.runTransaction { tx ->
                 if (tx.get(ref).exists()) {
                     false
                 } else {
@@ -60,7 +62,7 @@ class ChildPairing @Inject constructor(
                     )
                     true
                 }
-            }.await()
+            }.await() }.getOrElse { e -> if (e.isPermissionDenied()) false else throw e }
             if (created) return code
         }
         error("No free pairing code after $CODE_ATTEMPTS attempts")
@@ -80,7 +82,10 @@ class ChildPairing @Inject constructor(
 
     /** The parent holding this phone accepted the claim. */
     suspend fun confirm(code: String, owner: PairedOwner) {
-        deviceRef().update(mapOf("ownerUid" to owner.uid, "ownerEmail" to owner.email, "ownerName" to owner.name)).await()
+        // The rules only accept an owner who claimed this code for this device.
+        deviceRef().update(
+            mapOf("ownerUid" to owner.uid, "ownerEmail" to owner.email, "ownerName" to owner.name, "pairingCode" to code),
+        ).await()
         identity.setPairedOwner(owner)
         forget(code)
     }
@@ -97,6 +102,9 @@ class ChildPairing @Inject constructor(
             deviceRef().update(mapOf("ownerUid" to null, "ownerEmail" to null, "ownerName" to null))
         }
     }
+
+    private fun Throwable.isPermissionDenied() =
+        this is FirebaseFirestoreException && code == FirebaseFirestoreException.Code.PERMISSION_DENIED
 
     private suspend fun deviceRef() = firestore.collection(RemotePaths.DEVICES).document(identity.deviceId())
 

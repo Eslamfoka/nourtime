@@ -108,11 +108,10 @@ class ChildDeviceViewModel @Inject constructor(
         viewModelScope.launch { runCatching { remote.send(id, command, user.uid) } }
     }
 
-    /** Applies [change] to the current settings and writes the next revision. */
+    /** Applies [change] to the settings on the server and writes the next revision. */
     fun edit(change: (RemoteSettings) -> RemoteSettings) {
-        val d = device.value ?: return
-        val current = d.settings ?: return
-        viewModelScope.launch { runCatching { remote.writeSettings(d.id, change(current), d.settingsRev) } }
+        val id = deviceId.value ?: return
+        viewModelScope.launch { runCatching { remote.writeSettings(id, change) } }
     }
 
     fun remove(onDone: () -> Unit) {

@@ -36,7 +36,7 @@ const anonymous = (uid = "someone-else"): Firestore =>
   env.authenticatedContext(uid, { firebase: { sign_in_provider: "anonymous" } }).firestore() as unknown as Firestore;
 const parent = (uid = PARENT): Firestore =>
   env
-    .authenticatedContext(uid, { email: `${uid}@example.com`, firebase: { sign_in_provider: "google.com" } })
+    .authenticatedContext(uid, { email: `${uid}@example.com`, email_verified: true, firebase: { sign_in_provider: "google.com" } })
     .firestore() as unknown as Firestore;
 const unauthenticated = (): Firestore => env.unauthenticatedContext().firestore() as unknown as Firestore;
 
@@ -114,9 +114,23 @@ describe("devices", () => {
     await assertFails(getDoc(doc(parent(), "devices", DEVICE)));
   });
 
+  it("the child can only make the parent who claimed its code the owner", async () => {
+    await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
+    await assertFails(updateDoc(doc(child(), "devices", DEVICE), { ownerUid: PARENT, ownerEmail: "p@example.com" }));
+    await seed((db) => setDoc(doc(db, "pairings", CODE), { ...openPairing, claimedBy: OTHER_PARENT }));
+    await assertFails(updateDoc(doc(child(), "devices", DEVICE), { ownerUid: PARENT, pairingCode: CODE }));
+  });
+
+  it("a stranger's device can't be pushed into a parent's list", async () => {
+    const strangerDevice = { ...unpairedDevice, childUid: "someone-else" };
+    await seed((db) => setDoc(doc(db, "devices", "fake"), strangerDevice));
+    await assertFails(updateDoc(doc(anonymous(), "devices", "fake"), { ownerUid: PARENT }));
+  });
+
   it("after the child confirms, the parent reads and lists it", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
-    await assertSucceeds(updateDoc(doc(child(), "devices", DEVICE), { ownerUid: PARENT, ownerEmail: "p@example.com" }));
+    await seed((db) => setDoc(doc(db, "pairings", CODE), { ...openPairing, claimedBy: PARENT }));
+    await assertSucceeds(updateDoc(doc(child(), "devices", DEVICE), { ownerUid: PARENT, ownerEmail: "p@example.com", pairingCode: CODE }));
     await assertSucceeds(getDoc(doc(parent(), "devices", DEVICE)));
     await assertSucceeds(getDocs(query(collection(parent(), "devices"), where("ownerUid", "==", PARENT))));
   });
@@ -181,8 +195,28 @@ describe("pairings", () => {
     await seed((db) => setDoc(doc(db, "pairings", CODE), openPairing));
     await assertSucceeds(getDoc(doc(parent(), "pairings", CODE)));
     await assertSucceeds(
-      updateDoc(doc(parent(), "pairings", CODE), { claimedBy: PARENT, claimedEmail: "p@example.com", claimedName: "Mom" }),
+      updateDoc(doc(parent(), "pairings", CODE), { claimedBy: PARENT, claimedEmail: "parent-uid@example.com", claimedName: "Mom" }),
     );
+  });
+
+  it("a claim can't show someone else's email", async () => {
+    await seed((db) => setDoc(doc(db, "pairings", CODE), openPairing));
+    await assertFails(updateDoc(doc(parent(), "pairings", CODE), { claimedBy: PARENT, claimedEmail: "mom@gmail.com", claimedName: "Mom" }));
+  });
+
+  it("a claim needs a verified email", async () => {
+    await seed((db) => setDoc(doc(db, "pairings", CODE), openPairing));
+    const unverified = env
+      .authenticatedContext(PARENT, { email: "parent-uid@example.com", email_verified: false, firebase: { sign_in_provider: "google.com" } })
+      .firestore() as unknown as Firestore;
+    await assertFails(updateDoc(doc(unverified, "pairings", CODE), { claimedBy: PARENT, claimedEmail: "parent-uid@example.com" }));
+  });
+
+  it("anonymous phones can't read other phones' codes", async () => {
+    await seed((db) => setDoc(doc(db, "pairings", CODE), openPairing));
+    await assertFails(getDoc(doc(anonymous(), "pairings", CODE)));
+    await assertSucceeds(getDoc(doc(child(), "pairings", CODE)));
+    await assertSucceeds(getDoc(doc(anonymous(), "pairings", "999999")));
   });
 
   it("anonymous users can't claim", async () => {
