@@ -47,4 +47,15 @@ class DeviceSummaryTest {
     fun `a status still being written counts as fresh`() {
         assertEquals(DeviceSummary.Available(min, degraded = false), DeviceSummary.of(status(TimerPhase.AVAILABLE, remaining = min, updatedAt = null), nowMs = at))
     }
+
+    @Test
+    fun `updated less than a minute ago, or a moment in the future, is just now`() {
+        assertEquals(null, DeviceSummary.minutesAgo(updatedAtMs = at, nowMs = at + 59_000))
+        assertEquals(null, DeviceSummary.minutesAgo(updatedAtMs = at + 5_000, nowMs = at))
+    }
+
+    @Test
+    fun `older updates count whole minutes`() {
+        assertEquals(3L, DeviceSummary.minutesAgo(updatedAtMs = at, nowMs = at + 3 * min + 10_000))
+    }
 }

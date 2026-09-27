@@ -29,6 +29,9 @@ sealed interface DeviceSummary {
         /** A phone that hasn't uploaded for this long may be off or offline. */
         const val STALE_AFTER_MS = 15 * 60_000L
 
+        /** Whole minutes since the update, or null for "just now" (also when the clocks disagree slightly). */
+        fun minutesAgo(updatedAtMs: Long, nowMs: Long): Long? = ((nowMs - updatedAtMs) / 60_000).takeIf { it >= 1 }
+
         fun of(status: RemoteStatus?, nowMs: Long): DeviceSummary {
             if (status == null) return Unknown
             val updatedAt = status.updatedAtMs

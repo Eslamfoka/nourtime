@@ -203,6 +203,7 @@
 
     <!-- Parent check on lock screens -->
     <string name="action_cancel">Cancel</string>
+    <string name="action_back">Back</string>
     <string name="answer_title">Security question</string>
     <string name="answer_body">A lock period is running. Answer your security question to continue.</string>
     <string name="answer_wrong">That\'s not the answer.</string>
@@ -340,6 +341,28 @@
     <string name="add_child_timeout">Your child\'s phone hasn\'t confirmed yet. Tap \"Allow\" on it, then try again.</string>
     <string name="add_child_refused">Your child\'s phone didn\'t allow the connection.</string>
     <string name="add_child_offline">No internet connection. Connect and try again.</string>
+    <string name="device_updated">Updated %1$s</string>
+    <string name="device_updated_now">Updated just now</string>
+    <string name="device_bonus">Give extra time</string>
+    <string name="device_bonus_chip">+%1$s</string>
+    <string name="device_bonus_confirm_title">Give %1$s more?</string>
+    <string name="device_bonus_confirm_body">If the apps are locked now, the lock ends and your child gets exactly this time. When it runs out, a new lock period starts.</string>
+    <string name="device_lock_now">Lock now</string>
+    <string name="device_lock_now_body">The limited apps lock now and a full lock period starts.</string>
+    <string name="device_end_lock">End the lock</string>
+    <string name="device_end_lock_body">The lock ends now and the full time budget comes back.</string>
+    <string name="device_send">Send</string>
+    <string name="device_command_pending">Sent · waiting for your child\'s phone…</string>
+    <string name="device_command_applied">Done on your child\'s phone.</string>
+    <string name="device_today">Today</string>
+    <string name="device_today_none">No limited apps used yet today.</string>
+    <string name="device_settings">Settings</string>
+    <string name="device_settings_waiting">The settings appear once your child\'s phone is online.</string>
+    <string name="device_limited_apps">Limited apps</string>
+    <string name="device_no_app_list">The list of apps appears once your child\'s phone is online.</string>
+    <string name="device_remove">Remove this phone</string>
+    <string name="device_remove_title">Remove this phone?</string>
+    <string name="device_remove_body">You\'ll stop seeing and controlling it. Nour Time keeps protecting it with its current settings.</string>
     <string name="pin_changed">PIN changed</string>
     <string name="question_changed">Security question saved</string>
 

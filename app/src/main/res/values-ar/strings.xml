@@ -215,6 +215,7 @@
 
     <!-- Parent check on lock screens -->
     <string name="action_cancel">إلغاء</string>
+    <string name="action_back">رجوع</string>
     <string name="answer_title">سؤال الأمان</string>
     <string name="answer_body">فترة القفل جارية. أجب عن سؤال الأمان للمتابعة.</string>
     <string name="answer_wrong">هذه ليست الإجابة.</string>
@@ -352,6 +353,28 @@
     <string name="add_child_timeout">لم يؤكد هاتف طفلك بعد. اضغط \"اسمح\" عليه ثم حاول مرة أخرى.</string>
     <string name="add_child_refused">لم يسمح هاتف طفلك بالربط.</string>
     <string name="add_child_offline">لا يوجد اتصال بالإنترنت. اتصل وحاول مرة أخرى.</string>
+    <string name="device_updated">حُدِّث %1$s</string>
+    <string name="device_updated_now">حُدِّث الآن</string>
+    <string name="device_bonus">امنح وقتًا إضافيًا</string>
+    <string name="device_bonus_chip">+%1$s</string>
+    <string name="device_bonus_confirm_title">منح %1$s إضافية؟</string>
+    <string name="device_bonus_confirm_body">إذا كانت التطبيقات مقفلة الآن فسينتهي القفل ويحصل طفلك على هذا الوقت بالضبط. وعندما ينتهي تبدأ فترة قفل جديدة.</string>
+    <string name="device_lock_now">اقفل الآن</string>
+    <string name="device_lock_now_body">ستُقفل التطبيقات المحددة الآن وتبدأ فترة قفل كاملة.</string>
+    <string name="device_end_lock">إنهاء القفل</string>
+    <string name="device_end_lock_body">سينتهي القفل الآن ويعود رصيد الوقت كاملًا.</string>
+    <string name="device_send">إرسال</string>
+    <string name="device_command_pending">أُرسل · بانتظار هاتف طفلك…</string>
+    <string name="device_command_applied">تم على هاتف طفلك.</string>
+    <string name="device_today">اليوم</string>
+    <string name="device_today_none">لم تُستخدم التطبيقات المحددة اليوم بعد.</string>
+    <string name="device_settings">الإعدادات</string>
+    <string name="device_settings_waiting">ستظهر الإعدادات عندما يتصل هاتف طفلك بالإنترنت.</string>
+    <string name="device_limited_apps">التطبيقات المحددة</string>
+    <string name="device_no_app_list">ستظهر قائمة التطبيقات عندما يتصل هاتف طفلك بالإنترنت.</string>
+    <string name="device_remove">إزالة هذا الهاتف</string>
+    <string name="device_remove_title">إزالة هذا الهاتف؟</string>
+    <string name="device_remove_body">لن تتمكن بعد الآن من رؤيته أو التحكم فيه. سيواصل وقت نور حمايته بإعداداته الحالية.</string>
     <string name="pin_changed">تم تغيير الرمز</string>
     <string name="question_changed">تم حفظ سؤال الأمان</string>
 

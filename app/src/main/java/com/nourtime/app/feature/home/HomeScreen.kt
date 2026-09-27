@@ -248,7 +248,7 @@ private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewMod
 
 /** Optional daily refill at a time the parent picks (brief §2). */
 @Composable
-private fun DailyResetCard(minute: Int?, onChange: (Int?) -> Unit) {
+internal fun DailyResetCard(minute: Int?, onChange: (Int?) -> Unit) {
     val context = LocalContext.current
     NourCard {
         Row(verticalAlignment = Alignment.CenterVertically) {

@@ -83,4 +83,25 @@ class RemoteSettingsTest {
         assertNull(RemoteSettings.decode("garbage"))
         assertNull(RemoteSettings.decode(null))
     }
+
+    @Test
+    fun `limiting an app remotely takes it off the allowed list`() {
+        val r = RemoteSettings.of(local).withAllowed("x", true).withLimited("x", true)
+        assertEquals(true, "x" in r.limitedApps)
+        assertEquals(false, "x" in r.allowedDuringLock)
+    }
+
+    @Test
+    fun `allowing an app remotely takes it off the limited list`() {
+        val r = RemoteSettings.of(local).withAllowed("com.google.android.youtube", true)
+        assertEquals(false, "com.google.android.youtube" in r.limitedApps)
+        assertEquals(true, "com.google.android.youtube" in r.allowedDuringLock)
+    }
+
+    @Test
+    fun `switching an app off only removes it`() {
+        val r = RemoteSettings.of(local).withLimited("com.google.android.youtube", false)
+        assertEquals(emptySet<String>(), r.limitedApps)
+        assertEquals(setOf("com.quran.labs.androidquran"), r.allowedDuringLock)
+    }
 }

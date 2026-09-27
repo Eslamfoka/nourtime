@@ -45,6 +45,16 @@ data class RemoteSettings(
         dailyResetMinute?.toString().orEmpty(),
     ).joinToString(FIELD_SEP)
 
+    /** Limits or frees an app; limiting takes it off the allowed list (never both). */
+    fun withLimited(packageName: String, limited: Boolean): RemoteSettings =
+        if (limited) copy(limitedApps = limitedApps + packageName, allowedDuringLock = allowedDuringLock - packageName)
+        else copy(limitedApps = limitedApps - packageName)
+
+    /** Allows an app during the lock, or not; allowing takes it off the limited list. */
+    fun withAllowed(packageName: String, allowed: Boolean): RemoteSettings =
+        if (allowed) copy(allowedDuringLock = allowedDuringLock + packageName, limitedApps = limitedApps - packageName)
+        else copy(allowedDuringLock = allowedDuringLock - packageName)
+
     /** [base] with these values; the child-only settings are kept. */
     fun applyTo(base: ParentSettings): ParentSettings = base.copy(
         budgetMinutes = budgetMinutes,
