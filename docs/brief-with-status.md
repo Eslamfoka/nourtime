@@ -12,7 +12,7 @@ another AI) can check what was built.
 
 **Important context**
 - "Tested" in this document means tested on **emulators**. Real-phone testing began on a **HONOR VNE-N41 (Android 12)** on 2026-09-26. It found one serious bug, which is fixed on the emulator (see Part 2, 1.5-0) but not yet re-tested on the Honor. Samsung and Xiaomi haven't been tested yet.
-- Automated tests: **239 unit tests** (the pure logic: timer, blocking, clock, PIN, sync) and **49 Firestore security-rules tests**, all passing. Android lint shows no errors.
+- Automated tests: **240 unit tests** (the pure logic: timer, blocking, clock, PIN, sync) and **49 Firestore security-rules tests**, all passing. Android lint shows no errors.
 - Code: a single Android module (`app/`), Kotlin + Jetpack Compose. Firebase rules are in `firebase/`. Technical notes are in [`handoff.md`](handoff.md), the earlier status in [`progress.md`](progress.md), and the device test list in [`testing-checklist.md`](testing-checklist.md).
 - Git: `master` holds Phases 1, 1.5, 2, 2.5 and 3. Branch **`phase4`** holds Phase 4 (3 commits, **not merged yet**).
 
@@ -199,7 +199,7 @@ These were added after the brief, most at the owner's request after the first re
 |---|---|---|
 | 4a | **Weekend limits**: a separate budget, lock length and bedtime on chosen days (Friday+Saturday by default in Arabic, Saturday+Sunday in English), on the child's phone and the parent's phone | ✅ emulator |
 | 4b | **7-day usage history**: a bar per day, total, daily average, most-used app and the change from the previous week, on the child's Home and the parent's phone (the server keeps 14 days) | ✅ emulator |
-| 4c | **"Ask for more time"**: on the time-up screen a paired child taps *Ask*. The parent sees "Asking for more time" and answers +15 / +30 / Not now. An approval arrives as extra time and ends the lock. Not shown at bedtime or on the Settings cover. A request lapses after 30 min; after "Not now" the child waits 10 min to ask again | ✅ unit + rules tests; ⏳ **end-to-end emulator test in progress** |
+| 4c | **"Ask for more time"**: on the time-up screen a paired child taps *Ask*. The parent sees "Asking for more time" and answers +15 / +30 / Not now. An approval arrives as extra time and ends the lock. Not shown at bedtime or on the Settings cover. A request lapses after 30 min; after "Not now" the child waits 10 min to ask again | ✅ emulator end to end (ask, approve, decline, Arabic); 2 bugs found and fixed |
 
 ---
 
@@ -214,7 +214,7 @@ These were added after the brief, most at the owner's request after the first re
 6. **Audio**: record a short voice message for ages 3–6 (masculine and feminine) and a soft lullaby for the sleep screen.
 
 ### B. Engineering next steps
-1. Finish the end-to-end emulator test of 4c, then decide whether to **merge `phase4` into `master`**.
+1. Decide whether to **merge `phase4` into `master`** (4a, 4b and 4c are tested on the emulator).
 2. Fix whatever the real-phone tests find (most likely: OEM Settings / dialer package names, battery killers).
 3. A full TalkBack walk-through on a real phone.
 
