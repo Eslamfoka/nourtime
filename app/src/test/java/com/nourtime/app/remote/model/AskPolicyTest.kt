@@ -45,4 +45,13 @@ class AskPolicyTest {
         assertEquals(AskState.Approved(15), AskPolicy.state(req("approved", createdAgo = 3 * min, answeredAgo = 30_000, minutes = 15), now))
         assertEquals(AskState.CanAsk, AskPolicy.state(req("approved", createdAgo = 90 * min, answeredAgo = 80 * min, minutes = 15), now))
     }
+
+    @Test
+    fun `an approval from before this lock started doesn't show on the new lock`() {
+        val approved = req("approved", createdAgo = 3 * min, answeredAgo = 60_000, minutes = 15)
+        // The parent locked the phone again 30 s after approving: this lock can ask again.
+        assertEquals(AskState.CanAsk, AskPolicy.state(approved, now, lockStartedAtMs = now - 30_000))
+        // The lock the child asked from started before the answer: the approval shows.
+        assertEquals(AskState.Approved(15), AskPolicy.state(approved, now, lockStartedAtMs = now - 5 * min))
+    }
 }

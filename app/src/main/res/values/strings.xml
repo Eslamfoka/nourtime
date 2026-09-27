@@ -387,6 +387,7 @@
     <string name="device_command_expired">Not applied: your child\'s phone was offline for over an hour. Send it again if you still want it.</string>
     <string name="ask_parent_title">%1$s is asking for more time</string>
     <string name="ask_parent_your_child">Your child</string>
+    <string name="ask_parent_just_now">Just now</string>
     <string name="ask_parent_decline">Not now</string>
     <string name="ask_parent_failed">Couldn\'t send the answer. Check the internet connection and try again.</string>
     <string name="ask_parent_list">Asking for more time</string>

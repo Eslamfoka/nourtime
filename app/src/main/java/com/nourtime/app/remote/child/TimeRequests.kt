@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.nourtime.app.core.time.TrustedClock
+import com.nourtime.app.core.timer.TimeEngine
 import com.nourtime.app.remote.RemotePaths
 import com.nourtime.app.remote.model.AskPolicy
 import com.nourtime.app.remote.model.AskState
@@ -34,6 +35,7 @@ class TimeRequests @Inject constructor(
     // Lazy: the lock screen reads this on phones that never pair.
     private val firestore: Lazy<FirebaseFirestore>,
     private val trustedClock: TrustedClock,
+    private val engine: TimeEngine,
 ) {
     /** What the "Time's up" screen shows; null when this phone isn't paired (nobody to ask). */
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -41,7 +43,9 @@ class TimeRequests @Inject constructor(
         if (owner == null) {
             flowOf(null)
         } else {
-            combine(latest(), ticks()) { request, now -> AskPolicy.state(request, now) as AskState? }
+            combine(latest(), ticks(), engine.status) { request, now, status ->
+                AskPolicy.state(request, now, status?.lockElapsedMs?.takeIf { it > 0 }?.let { now - it }) as AskState?
+            }
                 .catch { emit(null) }
         }
     }

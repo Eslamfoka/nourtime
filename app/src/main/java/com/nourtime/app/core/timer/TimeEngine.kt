@@ -32,6 +32,8 @@ data class TimerStatus(
     /** Limited apps on screen right now (even while locked, until the lock screen exists). */
     val appsInUse: Set<String>,
     val source: DetectionSource,
+    /** How long the current lock period has run (0 when not locked); frozen while powered off. */
+    val lockElapsedMs: Long = 0,
 ) {
     /** Accessibility is off or nothing can see the foreground app. */
     val protectionDegraded: Boolean get() = source != DetectionSource.ACCESSIBILITY
@@ -96,7 +98,7 @@ class TimeEngine @Inject constructor(
             flushUsage(wall.toLocalDate())
             lastSavedElapsed = now
         }
-        _status.value = TimerStatus(next.phase, next.remainingMs, next.budgetMs, next.lockRemainingMs, appsInUse, source)
+        _status.value = TimerStatus(next.phase, next.remainingMs, next.budgetMs, next.lockRemainingMs, appsInUse, source, next.lockElapsedMs())
     }
 
     /** True while the lock period runs; falls back to the saved state before the first update. */
@@ -114,6 +116,7 @@ class TimeEngine @Inject constructor(
             remainingMs = next.remainingMs,
             budgetMs = next.budgetMs,
             lockRemainingMs = next.lockRemainingMs,
+            lockElapsedMs = next.lockElapsedMs(),
         )
     }
 
@@ -187,3 +190,6 @@ class TimeEngine @Inject constructor(
         val SINCE_RESET = longPreferencesKey("timer_since_reset")
     }
 }
+
+private fun TimerState.lockElapsedMs(): Long =
+    if (phase == TimerPhase.LOCKED) (lockMs - lockRemainingMs).coerceAtLeast(0) else 0

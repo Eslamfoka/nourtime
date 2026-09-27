@@ -399,6 +399,7 @@
     <string name="device_command_expired">لم يُطبَّق: كان هاتف طفلك غير متصل لأكثر من ساعة. أرسله مرة أخرى إن كنت ما زلت تريده.</string>
     <string name="ask_parent_title">%1$s يطلب وقتًا إضافيًا</string>
     <string name="ask_parent_your_child">طفلك</string>
+    <string name="ask_parent_just_now">الآن</string>
     <string name="ask_parent_decline">ليس الآن</string>
     <string name="ask_parent_failed">تعذّر إرسال الرد. تحقّق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
     <string name="ask_parent_list">يطلب وقتًا إضافيًا</string>

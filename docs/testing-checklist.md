@@ -88,4 +88,5 @@ Run on the API 35 emulator, 2026-09-27: all pass. Dragging a short (1-hour) peri
 - [ ] Paired child, time up → *Ask for more time* → "Waiting for Mom or Dad…"; the parent's list shows "Asking for more time", the child screen shows +15 / +30 / Not now.
 - [ ] Parent taps +15 → the child sees "Yes! +15 min" and the lock ends with 15 minutes. Not now → "Not now…", and the button returns after 10 minutes.
 - [ ] Bedtime and the Settings cover show no *Ask* button; an unpaired phone shows none either.
+- (Emulator 2026-09-27, API 35 child + API 31 parent + Firebase emulator: ask → "Waiting…" and the parent's "Asking for more time" ✅; +15 → bonus applied in ~1 s, lock ended, request `approved`, `askingAt` cleared, one command ✅; Not now → "Not now…" on the child, no command ✅; Arabic feminine copy ✅. Found and fixed: a new lock within 2 min of an approval showed "Yes! +15"; the parent card said "0 minutes ago".)
 - [ ] Child offline → asking still shows "Waiting…"; the request reaches the parent once online.

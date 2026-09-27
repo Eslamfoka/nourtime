@@ -318,7 +318,11 @@ private fun AskCard(name: String, request: TimeRequest, now: Long, failed: Boole
         }
         request.createdAtMs?.let { at ->
             Text(
-                DateUtils.getRelativeTimeSpanString(at, now, DateUtils.MINUTE_IN_MILLIS).toString(),
+                if (DeviceSummary.minutesAgo(at, now) == null) {
+                    stringResource(R.string.ask_parent_just_now)
+                } else {
+                    DateUtils.getRelativeTimeSpanString(at, now, DateUtils.MINUTE_IN_MILLIS).toString()
+                },
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
