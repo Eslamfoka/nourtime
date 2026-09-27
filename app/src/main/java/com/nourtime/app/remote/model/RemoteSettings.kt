@@ -4,6 +4,9 @@ import com.nourtime.app.data.settings.Bedtime
 import com.nourtime.app.data.settings.LockType
 import com.nourtime.app.data.settings.ParentSettings
 import com.nourtime.app.data.settings.TimeLimits
+import com.nourtime.app.data.settings.WeekendRules
+import java.time.DayOfWeek
+import java.util.Locale
 
 /**
  * The settings both phones can edit, as stored in `devices/{id}.settings` (Phase 2). The child's
@@ -17,6 +20,7 @@ data class RemoteSettings(
     val allowedDuringLock: Set<String>,
     val bedtime: Bedtime,
     val dailyResetMinute: Int?,
+    val weekend: WeekendRules = WeekendRules(),
 ) {
     fun toMap(rev: Long, by: String): Map<String, Any?> = mapOf(
         "budgetMinutes" to budgetMinutes,
@@ -28,6 +32,15 @@ data class RemoteSettings(
         "bedtimeStart" to bedtime.startMinute,
         "bedtimeEnd" to bedtime.endMinute,
         "dailyResetMinute" to dailyResetMinute,
+        "weekend" to mapOf(
+            "enabled" to weekend.enabled,
+            "days" to weekend.days.map { it.name }.sorted(),
+            "budgetMinutes" to weekend.budgetMinutes,
+            "lockPeriodHours" to weekend.lockPeriodHours,
+            "bedtimeEnabled" to weekend.bedtime.enabled,
+            "bedtimeStart" to weekend.bedtime.startMinute,
+            "bedtimeEnd" to weekend.bedtime.endMinute,
+        ),
         "rev" to rev,
         "by" to by,
     )
@@ -43,6 +56,13 @@ data class RemoteSettings(
         bedtime.startMinute.toString(),
         bedtime.endMinute.toString(),
         dailyResetMinute?.toString().orEmpty(),
+        weekend.enabled.toString(),
+        weekend.days.map { it.name }.sorted().joinToString(LIST_SEP),
+        weekend.budgetMinutes.toString(),
+        weekend.lockPeriodHours.toString(),
+        weekend.bedtime.enabled.toString(),
+        weekend.bedtime.startMinute.toString(),
+        weekend.bedtime.endMinute.toString(),
     ).joinToString(FIELD_SEP)
 
     /** Limits or frees an app; limiting takes it off the allowed list (never both). */
@@ -64,15 +84,18 @@ data class RemoteSettings(
         allowedDuringLock = allowedDuringLock,
         bedtime = bedtime,
         dailyResetMinute = dailyResetMinute,
+        weekend = weekend,
     )
 
     companion object {
         private const val FIELD_SEP = ""
         private const val LIST_SEP = ","
-        private const val FIELDS = 9
+        /** Before Phase 4a the snapshot had no weekend fields; it still decodes (weekend off). */
+        private const val FIELDS_BEFORE_WEEKEND = 9
+        private const val FIELDS = 16
 
         fun decode(text: String?): RemoteSettings? {
-            val f = text?.split(FIELD_SEP)?.takeIf { it.size == FIELDS } ?: return null
+            val f = text?.split(FIELD_SEP)?.takeIf { it.size == FIELDS || it.size == FIELDS_BEFORE_WEEKEND } ?: return null
             fun set(s: String) = if (s.isEmpty()) emptySet() else s.split(LIST_SEP).toSet()
             return runCatching {
                 RemoteSettings(
@@ -83,6 +106,17 @@ data class RemoteSettings(
                     allowedDuringLock = set(f[4]),
                     bedtime = Bedtime(f[5].toBooleanStrict(), f[6].toInt(), f[7].toInt()),
                     dailyResetMinute = f[8].ifEmpty { null }?.toInt(),
+                    weekend = if (f.size == FIELDS_BEFORE_WEEKEND) {
+                        WeekendRules()
+                    } else {
+                        WeekendRules(
+                            enabled = f[9].toBooleanStrict(),
+                            days = set(f[10]).map { DayOfWeek.valueOf(it) }.toSet(),
+                            budgetMinutes = f[11].toInt(),
+                            lockPeriodHours = f[12].toInt(),
+                            bedtime = Bedtime(f[13].toBooleanStrict(), f[14].toInt(), f[15].toInt()),
+                        )
+                    },
                 )
             }.getOrNull()
         }
@@ -99,6 +133,7 @@ data class RemoteSettings(
             allowedDuringLock = s.allowedDuringLock,
             bedtime = s.bedtime,
             dailyResetMinute = s.dailyResetMinute,
+            weekend = s.weekend,
         )
 
         /** Parses and clamps a Firestore map; null when a required value is missing or unknown. */
@@ -109,18 +144,40 @@ data class RemoteSettings(
             val lockType = (m["lockType"] as? String)?.let { name -> LockType.entries.firstOrNull { it.name == name } } ?: return null
             val limited = m.strings("limitedApps")
             val defaults = Bedtime()
+            val bedtime = Bedtime(
+                enabled = m["bedtimeEnabled"] as? Boolean ?: false,
+                startMinute = m.int("bedtimeStart")?.takeIf { it in 0 until MINUTES_PER_DAY } ?: defaults.startMinute,
+                endMinute = m.int("bedtimeEnd")?.takeIf { it in 0 until MINUTES_PER_DAY } ?: defaults.endMinute,
+            )
+            val clampedBudget = TimeLimits.budget(budget)
+            val clampedLock = TimeLimits.lockPeriod(lock)
             return RemoteSettings(
-                budgetMinutes = TimeLimits.budget(budget),
-                lockPeriodHours = TimeLimits.lockPeriod(lock),
+                budgetMinutes = clampedBudget,
+                lockPeriodHours = clampedLock,
                 lockType = lockType,
                 limitedApps = limited,
                 allowedDuringLock = m.strings("allowedDuringLock") - limited,
-                bedtime = Bedtime(
-                    enabled = m["bedtimeEnabled"] as? Boolean ?: false,
-                    startMinute = m.int("bedtimeStart")?.takeIf { it in 0 until MINUTES_PER_DAY } ?: defaults.startMinute,
-                    endMinute = m.int("bedtimeEnd")?.takeIf { it in 0 until MINUTES_PER_DAY } ?: defaults.endMinute,
-                ),
+                bedtime = bedtime,
                 dailyResetMinute = m.int("dailyResetMinute")?.takeIf { it in 0 until MINUTES_PER_DAY },
+                weekend = weekendFrom(m["weekend"] as? Map<*, *>, clampedBudget, clampedLock, bedtime),
+            )
+        }
+
+        /** Missing (written before Phase 4a) means off, with values copied from the normal ones. */
+        private fun weekendFrom(w: Map<*, *>?, budget: Int, lockHours: Int, bedtime: Bedtime): WeekendRules {
+            @Suppress("UNCHECKED_CAST")
+            val m = (w as? Map<String, Any?>).orEmpty()
+            val days = (m["days"] as? List<*>)?.mapNotNull { name -> DayOfWeek.entries.firstOrNull { it.name == name } }?.toSet()
+            return WeekendRules(
+                enabled = m["enabled"] as? Boolean ?: false,
+                days = days ?: WeekendRules.defaultDays(Locale.getDefault().language),
+                budgetMinutes = m.int("budgetMinutes")?.let(TimeLimits::budget) ?: budget,
+                lockPeriodHours = m.int("lockPeriodHours")?.let(TimeLimits::lockPeriod) ?: lockHours,
+                bedtime = Bedtime(
+                    enabled = m["bedtimeEnabled"] as? Boolean ?: bedtime.enabled,
+                    startMinute = m.int("bedtimeStart")?.takeIf { it in 0 until MINUTES_PER_DAY } ?: bedtime.startMinute,
+                    endMinute = m.int("bedtimeEnd")?.takeIf { it in 0 until MINUTES_PER_DAY } ?: bedtime.endMinute,
+                ),
             )
         }
 

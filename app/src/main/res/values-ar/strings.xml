@@ -268,6 +268,12 @@
     <string name="bedtime_window">من %1$s إلى %2$s</string>
     <string name="bedtime_start">البداية</string>
     <string name="bedtime_end">النهاية</string>
+    <string name="weekend_title">حدود مختلفة في أيام العطلة</string>
+    <string name="weekend_hint">رصيد وقت وفترة قفل ووقت نوم خاصة بالأيام التي تختارها. وقت نوم العطلة يكون في الليالي التي تسبق تلك الأيام.</string>
+    <string name="weekend_days">أيام العطلة</string>
+    <string name="weekend_section">في أيام العطلة (%1$s)</string>
+    <string name="weekend_bedtime_title">وقت النوم قبل يوم العطلة</string>
+    <string name="weekend_bedtime_hint">اقفل التطبيقات المحددة ليلًا قبل يوم العطلة، حتى لو بقي وقت.</string>
 
     <string name="admin_disable_warning">إيقاف هذا يسمح بإلغاء تثبيت وقت نور ويوقف حدود وقت طفلك. يجب أن يفعل ذلك أحد الوالدين فقط.</string>
     <string name="notif_admin_disabled">تم إيقاف مشرف الجهاز. افتح وقت نور لإعادة تشغيل الحماية.</string>

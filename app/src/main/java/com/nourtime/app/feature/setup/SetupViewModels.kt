@@ -12,6 +12,7 @@ import com.nourtime.app.data.settings.ChildGender
 import com.nourtime.app.data.settings.LockType
 import com.nourtime.app.data.settings.ParentSettings
 import com.nourtime.app.data.settings.ParentSettingsRepository
+import com.nourtime.app.data.settings.WeekendRules
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -48,6 +49,8 @@ class ParentSettingsViewModel @Inject constructor(
     fun setSoundEnabled(on: Boolean) = launch { repository.setSoundEnabled(on) }
 
     fun setBedtime(bedtime: Bedtime) = launch { repository.setBedtime(bedtime) }
+
+    fun setWeekend(weekend: WeekendRules) = launch { repository.setWeekend(weekend) }
 
     private fun launch(block: suspend () -> Unit) {
         viewModelScope.launch { block() }

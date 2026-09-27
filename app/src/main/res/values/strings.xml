@@ -256,6 +256,12 @@
     <string name="bedtime_window">From %1$s to %2$s</string>
     <string name="bedtime_start">Start</string>
     <string name="bedtime_end">End</string>
+    <string name="weekend_title">Different limits on weekends</string>
+    <string name="weekend_hint">Its own time budget, lock length and bedtime on the days you pick. The weekend bedtime is for the nights before those days.</string>
+    <string name="weekend_days">Weekend days</string>
+    <string name="weekend_section">On weekend days (%1$s)</string>
+    <string name="weekend_bedtime_title">Bedtime before a weekend day</string>
+    <string name="weekend_bedtime_hint">Block the limited apps at night before a weekend day, even if time is left.</string>
 
     <string name="admin_disable_warning">Turning this off lets Nour Time be uninstalled, and your child\'s time limits stop. Only a parent should do this.</string>
     <string name="notif_admin_disabled">Device admin was turned off. Open Nour Time to turn protection back on.</string>

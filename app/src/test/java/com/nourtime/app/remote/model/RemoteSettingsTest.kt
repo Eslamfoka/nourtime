@@ -4,9 +4,11 @@ import com.nourtime.app.data.settings.Bedtime
 import com.nourtime.app.data.settings.LockType
 import com.nourtime.app.data.settings.ParentSettings
 import com.nourtime.app.data.settings.TimeLimits
+import com.nourtime.app.data.settings.WeekendRules
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
+import java.time.DayOfWeek
 
 class RemoteSettingsTest {
 
@@ -27,6 +29,37 @@ class RemoteSettingsTest {
         assertEquals(3L, map["rev"])
         assertEquals("child", map["by"])
         assertEquals(r, RemoteSettings.fromMap(map))
+    }
+
+    private val weekend = WeekendRules(
+        enabled = true,
+        days = setOf(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY),
+        budgetMinutes = 120,
+        lockPeriodHours = 3,
+        bedtime = Bedtime(enabled = true, startMinute = 23 * 60, endMinute = 9 * 60),
+    )
+
+    @Test
+    fun `the weekend rules round-trip through the map and the snapshot`() {
+        val r = RemoteSettings.of(local.copy(weekend = weekend))
+        assertEquals(r, RemoteSettings.fromMap(r.toMap(1, "parent")))
+        assertEquals(r, RemoteSettings.decode(r.encode()))
+    }
+
+    @Test
+    fun `settings written before weekends existed read as weekend off, copying the normal values`() {
+        val map = RemoteSettings.of(local).toMap(1, "parent") - "weekend"
+        val w = RemoteSettings.fromMap(map)!!.weekend
+        assertEquals(false, w.enabled)
+        assertEquals(45, w.budgetMinutes)
+        assertEquals(4, w.lockPeriodHours)
+        assertEquals(local.bedtime, w.bedtime)
+    }
+
+    @Test
+    fun `an old snapshot without weekend fields still decodes`() {
+        val old = RemoteSettings.of(local).encode().split("").take(9).joinToString("")
+        assertEquals(RemoteSettings.of(local).copy(weekend = WeekendRules()), RemoteSettings.decode(old))
     }
 
     @Test

@@ -92,14 +92,19 @@ fun LockTypeEditor(lockType: LockType, onChange: (LockType) -> Unit) {
 
 /** Optional bedtime (brief §5). */
 @Composable
-internal fun BedtimeCard(bedtime: Bedtime, onChange: (Bedtime) -> Unit) {
+internal fun BedtimeCard(
+    bedtime: Bedtime,
+    title: String = stringResource(R.string.bedtime_title),
+    hint: String = stringResource(R.string.bedtime_hint),
+    onChange: (Bedtime) -> Unit,
+) {
     val context = LocalContext.current
     NourCard {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.bedtime_title), style = MaterialTheme.typography.titleMedium)
+                Text(title, style = MaterialTheme.typography.titleMedium)
                 Text(
-                    stringResource(R.string.bedtime_hint),
+                    hint,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

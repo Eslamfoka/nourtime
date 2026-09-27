@@ -2,6 +2,7 @@ package com.nourtime.app.core.blocking
 
 import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
+import com.nourtime.app.data.settings.DayRules
 import com.nourtime.app.data.settings.ParentSettingsRepository
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -18,5 +19,5 @@ class LockPeriodState @Inject constructor(
     private val trustedClock: TrustedClock,
 ) {
     suspend fun isActive(): Boolean =
-        engine.isLocked() || settings.settings.first().bedtime.isActive(trustedClock.now().toLocalTime())
+        engine.isLocked() || DayRules.activeBedtime(settings.settings.first(), trustedClock.now().toLocalDateTime()) != null
 }

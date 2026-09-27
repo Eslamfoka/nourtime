@@ -44,8 +44,33 @@ class ParentSettingsRepositoryTest {
         repo.setLockPeriodHours(8)
         assertEquals(
             ParentSettings(ChildGender.GIRL, AgeGroup.AGES_3_6, 45, 8, emptySet()),
-            repo.settings.first(),
+            repo.settings.first().copy(weekend = WeekendRules()),
         )
+    }
+
+    @Test
+    fun `weekend values never set start as a copy of the normal ones`() = runTest {
+        repo.setBudgetMinutes(45)
+        repo.setLockPeriodHours(8)
+        repo.setBedtime(Bedtime(enabled = true, startMinute = 20 * 60, endMinute = 6 * 60))
+        val weekend = repo.settings.first().weekend
+        assertEquals(false, weekend.enabled)
+        assertEquals(45, weekend.budgetMinutes)
+        assertEquals(8, weekend.lockPeriodHours)
+        assertEquals(Bedtime(enabled = true, startMinute = 20 * 60, endMinute = 6 * 60), weekend.bedtime)
+    }
+
+    @Test
+    fun `stores the weekend rules`() = runTest {
+        val weekend = WeekendRules(
+            enabled = true,
+            days = setOf(java.time.DayOfWeek.FRIDAY),
+            budgetMinutes = 120,
+            lockPeriodHours = 3,
+            bedtime = Bedtime(enabled = true, startMinute = 23 * 60, endMinute = 9 * 60),
+        )
+        repo.setWeekend(weekend)
+        assertEquals(weekend, repo.settings.first().weekend)
     }
 
     @Test

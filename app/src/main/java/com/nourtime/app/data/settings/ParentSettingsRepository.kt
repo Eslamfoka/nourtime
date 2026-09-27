@@ -1,6 +1,7 @@
 package com.nourtime.app.data.settings
 
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
@@ -11,6 +12,8 @@ import com.nourtime.app.remote.model.RemoteSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import java.time.DayOfWeek
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -43,6 +46,7 @@ data class ParentSettings(
     /** Sound on the child's "Time's up" screen (brief §12). */
     val soundEnabled: Boolean = true,
     val bedtime: Bedtime = Bedtime(),
+    val weekend: WeekendRules = WeekendRules(),
 )
 
 object TimeLimits {
@@ -70,21 +74,36 @@ class ParentSettingsRepository @Inject constructor(
     private val store: DataStore<Preferences>,
 ) {
     val settings: Flow<ParentSettings> = store.data.map { prefs ->
+        val budget = prefs[BUDGET]?.let(TimeLimits::budget) ?: TimeLimits.DEFAULT_BUDGET_MINUTES
+        val lockHours = prefs[LOCK_HOURS]?.let(TimeLimits::lockPeriod) ?: TimeLimits.DEFAULT_LOCK_HOURS
+        val bedtime = Bedtime(
+            enabled = prefs[BEDTIME_ON] ?: false,
+            startMinute = prefs[BEDTIME_START]?.takeIf { it in 0 until MINUTES_PER_DAY } ?: Bedtime().startMinute,
+            endMinute = prefs[BEDTIME_END]?.takeIf { it in 0 until MINUTES_PER_DAY } ?: Bedtime().endMinute,
+        )
         ParentSettings(
             gender = prefs[GENDER]?.let { name -> ChildGender.entries.firstOrNull { it.name == name } },
             ageGroup = prefs[AGE_GROUP]?.let { name -> AgeGroup.entries.firstOrNull { it.name == name } },
-            budgetMinutes = prefs[BUDGET]?.let(TimeLimits::budget) ?: TimeLimits.DEFAULT_BUDGET_MINUTES,
-            lockPeriodHours = prefs[LOCK_HOURS]?.let(TimeLimits::lockPeriod) ?: TimeLimits.DEFAULT_LOCK_HOURS,
+            budgetMinutes = budget,
+            lockPeriodHours = lockHours,
             limitedApps = prefs[LIMITED_APPS].orEmpty(),
             allowedDuringLock = prefs[ALLOWED_DURING_LOCK].orEmpty(),
             dailyResetMinute = prefs[DAILY_RESET]?.takeIf { it in 0 until MINUTES_PER_DAY },
             lockType = prefs[LOCK_TYPE]?.let { name -> LockType.entries.firstOrNull { it.name == name } } ?: LockType.SELECTED_APPS,
             protectSystemSettings = prefs[PROTECT_SETTINGS] ?: true,
             soundEnabled = prefs[SOUND] ?: true,
-            bedtime = Bedtime(
-                enabled = prefs[BEDTIME_ON] ?: false,
-                startMinute = prefs[BEDTIME_START]?.takeIf { it in 0 until MINUTES_PER_DAY } ?: Bedtime().startMinute,
-                endMinute = prefs[BEDTIME_END]?.takeIf { it in 0 until MINUTES_PER_DAY } ?: Bedtime().endMinute,
+            bedtime = bedtime,
+            // Weekend values never set start as a copy of the normal ones.
+            weekend = WeekendRules(
+                enabled = prefs[WEEKEND_ON] ?: false,
+                days = prefs[WEEKEND_DAYS]?.let(::parseDays) ?: WeekendRules.defaultDays(Locale.getDefault().language),
+                budgetMinutes = prefs[WEEKEND_BUDGET]?.let(TimeLimits::budget) ?: budget,
+                lockPeriodHours = prefs[WEEKEND_LOCK_HOURS]?.let(TimeLimits::lockPeriod) ?: lockHours,
+                bedtime = Bedtime(
+                    enabled = prefs[WEEKEND_BEDTIME_ON] ?: bedtime.enabled,
+                    startMinute = prefs[WEEKEND_BEDTIME_START]?.takeIf { it in 0 until MINUTES_PER_DAY } ?: bedtime.startMinute,
+                    endMinute = prefs[WEEKEND_BEDTIME_END]?.takeIf { it in 0 until MINUTES_PER_DAY } ?: bedtime.endMinute,
+                ),
             ),
         )
     }.distinctUntilChanged()
@@ -113,6 +132,21 @@ class ParentSettingsRepository @Inject constructor(
         it[BEDTIME_END] = bedtime.endMinute.coerceIn(0, MINUTES_PER_DAY - 1)
     }
 
+    suspend fun setWeekend(weekend: WeekendRules) = store.edit { writeWeekend(it, weekend) }
+
+    private fun writeWeekend(prefs: MutablePreferences, w: WeekendRules) {
+        prefs[WEEKEND_ON] = w.enabled
+        prefs[WEEKEND_DAYS] = w.days.map { it.name }.toSet()
+        prefs[WEEKEND_BUDGET] = TimeLimits.budget(w.budgetMinutes)
+        prefs[WEEKEND_LOCK_HOURS] = TimeLimits.lockPeriod(w.lockPeriodHours)
+        prefs[WEEKEND_BEDTIME_ON] = w.bedtime.enabled
+        prefs[WEEKEND_BEDTIME_START] = w.bedtime.startMinute.coerceIn(0, MINUTES_PER_DAY - 1)
+        prefs[WEEKEND_BEDTIME_END] = w.bedtime.endMinute.coerceIn(0, MINUTES_PER_DAY - 1)
+    }
+
+    private fun parseDays(names: Set<String>): Set<DayOfWeek> =
+        names.mapNotNull { name -> DayOfWeek.entries.firstOrNull { it.name == name } }.toSet()
+
     /** Settings from the parent's phone (Phase 2); the child-only settings stay as they are. */
     suspend fun replaceWith(r: RemoteSettings) = store.edit { prefs ->
         prefs[BUDGET] = TimeLimits.budget(r.budgetMinutes)
@@ -123,6 +157,7 @@ class ParentSettingsRepository @Inject constructor(
         prefs[BEDTIME_ON] = r.bedtime.enabled
         prefs[BEDTIME_START] = r.bedtime.startMinute.coerceIn(0, MINUTES_PER_DAY - 1)
         prefs[BEDTIME_END] = r.bedtime.endMinute.coerceIn(0, MINUTES_PER_DAY - 1)
+        writeWeekend(prefs, r.weekend)
         val reset = r.dailyResetMinute
         if (reset == null) prefs.remove(DAILY_RESET) else prefs[DAILY_RESET] = reset.coerceIn(0, MINUTES_PER_DAY - 1)
     }
@@ -155,6 +190,13 @@ class ParentSettingsRepository @Inject constructor(
         val BEDTIME_ON = booleanPreferencesKey("bedtime_on")
         val BEDTIME_START = intPreferencesKey("bedtime_start")
         val BEDTIME_END = intPreferencesKey("bedtime_end")
+        val WEEKEND_ON = booleanPreferencesKey("weekend_on")
+        val WEEKEND_DAYS = stringSetPreferencesKey("weekend_days")
+        val WEEKEND_BUDGET = intPreferencesKey("weekend_budget_minutes")
+        val WEEKEND_LOCK_HOURS = intPreferencesKey("weekend_lock_period_hours")
+        val WEEKEND_BEDTIME_ON = booleanPreferencesKey("weekend_bedtime_on")
+        val WEEKEND_BEDTIME_START = intPreferencesKey("weekend_bedtime_start")
+        val WEEKEND_BEDTIME_END = intPreferencesKey("weekend_bedtime_end")
         const val MINUTES_PER_DAY = 24 * 60
     }
 }

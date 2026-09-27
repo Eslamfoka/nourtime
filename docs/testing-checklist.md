@@ -79,3 +79,7 @@ Run on the API 35 emulator, 2026-09-27: all pass. Dragging a short (1-hour) peri
 - [ ] Turn Accessibility off on the child → the parent sees "Protection needs attention" within about a minute.
 - [ ] Arabic and English on both phones.
 
+## 8. Phase 4: weekends, history, asking for time
+- [ ] Settings → *Different limits on weekends*: on a weekend day the Home ring shows the weekend budget (the time left moves by the difference); the day chips start on Friday+Saturday in Arabic, Saturday+Sunday in English. (Emulator 2026-09-27: Sunday, 2 h weekend budget → "1:15:00 left of 2 hours".)
+- [ ] The night before a weekend day uses the weekend bedtime; the night before a school day the normal one.
+- [ ] The parent's phone shows and edits the same weekend section.

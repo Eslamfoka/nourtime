@@ -331,3 +331,13 @@ drops the `adb reverse` tunnels; add them again).
 - Sign-in checks the credential type. Lint's `CredentialManagerSignInWithGoogle` still warns
   (false positive: the check is there).
 
+## 8. Phase 4 (2026-09-27)
+
+### 4a. Weekend limits
+`data/settings/DayRules.kt`: `WeekendRules` (off by default; days default to Friday+Saturday for Arabic,
+Saturday+Sunday otherwise; unset values copy the normal ones). `DayRules.limitsOn(date)` gives the
+budget and lock length of a calendar day (TimeEngine applies it every update, so at midnight the time
+left moves by the difference, like any budget edit). `DayRules.activeBedtime(now)` treats each night
+as noon to noon and uses the weekend bedtime on the night *before* a weekend day (BlockCoordinator,
+LockPeriodState). Synced as `settings.weekend` (a map); settings written without it read as off; the
+local sync snapshot still decodes its old 9-field form.

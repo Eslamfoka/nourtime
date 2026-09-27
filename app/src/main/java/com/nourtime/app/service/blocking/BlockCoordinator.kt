@@ -11,7 +11,6 @@ import com.nourtime.app.core.blocking.BlockPolicy
 import com.nourtime.app.core.blocking.BlockReason
 import com.nourtime.app.core.blocking.ParentPass
 import com.nourtime.app.core.blocking.ScreenOffTimer
-import com.nourtime.app.core.blocking.isActive
 import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.ForegroundState
 import com.nourtime.app.core.time.DeviceClock
@@ -24,6 +23,7 @@ import com.nourtime.app.data.schedule.ScheduleRepository
 import com.nourtime.app.data.schedule.periodAt
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
+import com.nourtime.app.data.settings.DayRules
 import com.nourtime.app.data.settings.ParentSettings
 import com.nourtime.app.data.settings.ParentSettingsRepository
 import com.nourtime.app.data.apps.InstalledAppsRepository
@@ -95,7 +95,9 @@ class BlockCoordinator @Inject constructor(
         if (!fg.screen.interactive) pass.revoke()
 
         val now = trustedClock.now()
-        val bedtime = s.bedtime.isActive(now.toLocalTime())
+        // The night before a weekend day can have its own bedtime (Phase 4a).
+        val activeBedtime = DayRules.activeBedtime(s, now.toLocalDateTime())
+        val bedtime = activeBedtime != null
         val timeUp = status?.phase == TimerPhase.LOCKED
 
         val decision = BlockPolicy.decide(
@@ -126,7 +128,7 @@ class BlockCoordinator @Inject constructor(
             gender = s.gender ?: ChildGender.GIRL,
             countdownMs = when (decision.reason) {
                 BlockReason.TIME_UP -> status?.lockRemainingMs
-                BlockReason.BEDTIME -> untilMinute(now, s.bedtime.endMinute)
+                BlockReason.BEDTIME -> activeBedtime?.let { untilMinute(now, it.endMinute) }
                 else -> null
             },
             soundEnabled = s.soundEnabled,

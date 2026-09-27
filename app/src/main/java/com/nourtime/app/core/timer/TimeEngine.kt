@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.nourtime.app.core.detection.DetectionSource
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.time.TrustedClock
+import com.nourtime.app.data.settings.DayRules
 import com.nourtime.app.data.settings.ParentSettings
 import com.nourtime.app.data.usage.UsageRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -70,11 +71,14 @@ class TimeEngine @Inject constructor(
     suspend fun update(appsInUse: Set<String>, source: DetectionSource, settings: ParentSettings) = mutex.withLock {
         val now = clock.elapsedRealtime()
         val boot = clock.bootCount()
-        val budgetMs = settings.budgetMinutes * MINUTE
-        val lockMs = settings.lockPeriodHours * HOUR
+        val wall = trustedClock.now()
+        // Weekend days can have their own budget and lock length (Phase 4a); a change at midnight moves
+        // the time left by the difference, like any budget edit.
+        val limits = DayRules.limitsOn(settings, wall.toLocalDate())
+        val budgetMs = limits.budgetMinutes * MINUTE
+        val lockMs = limits.lockPeriodHours * HOUR
         val previous = state ?: load() ?: TimerState.fresh(budgetMs, lockMs, now, boot)
 
-        val wall = trustedClock.now()
         val resetAt = settings.dailyResetMinute?.let { LocalTime.of(it / 60, it % 60) }
         var next = TimeRules.advance(previous, now, boot, lastInUse)
         chargeUsage(previous, next)

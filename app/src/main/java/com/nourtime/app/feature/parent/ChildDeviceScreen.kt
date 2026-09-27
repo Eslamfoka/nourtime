@@ -52,6 +52,7 @@ import com.nourtime.app.data.apps.InstalledApp
 import com.nourtime.app.data.apps.InstalledAppsRepository
 import com.nourtime.app.data.apps.filterApps
 import com.nourtime.app.feature.home.BedtimeCard
+import com.nourtime.app.feature.home.WeekendSection
 import com.nourtime.app.feature.home.DailyResetCard
 import com.nourtime.app.feature.home.LockTypeEditor
 import com.nourtime.app.feature.setup.AppList
@@ -200,6 +201,7 @@ fun ChildDeviceScreen(
             DailyResetCard(settings.dailyResetMinute) { v -> viewModel.edit { it.copy(dailyResetMinute = v) } }
             LockTypeEditor(settings.lockType) { v -> viewModel.edit { it.copy(lockType = v) } }
             BedtimeCard(settings.bedtime) { v -> viewModel.edit { it.copy(bedtime = v) } }
+            WeekendSection(settings.weekend) { v -> viewModel.edit { it.copy(weekend = v) } }
             AppListButton(stringResource(R.string.device_limited_apps), settings.limitedApps.size) { picking = AppListKind.LIMITED }
             AppListButton(stringResource(R.string.allowed_section), settings.allowedDuringLock.size) { picking = AppListKind.ALLOWED }
         }
