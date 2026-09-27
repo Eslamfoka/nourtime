@@ -6,8 +6,8 @@
 **Developer:** [developer name], [contact email]
 
 Nour Time helps parents limit how long their child uses the apps they choose. This policy explains
-what the app does with information. In short: **everything stays on the device. Nour Time does not
-collect, upload or share any personal data.**
+what the app does with information. In short: **unless a parent connects their own phone, everything
+stays on the device. Nour Time never sells data, shows ads or uses analytics.**
 
 ## What the app uses, and why
 
@@ -22,9 +22,36 @@ collect, upload or share any personal data.**
 - **Parent PIN and security question.** The PIN and the answer are stored only as salted one-way
   hashes. The question text is stored as written.
 
+## If a parent connects their own phone (optional)
+
+A parent can install Nour Time on their own phone, sign in with their Google account and connect it to
+the child's phone. Connecting needs the parent to hold both phones: the child's phone shows a code, and
+the parent confirms on the child's phone (behind the parent PIN). Only then, and only while connected,
+the child's phone sends the following to Google Firebase (Cloud Firestore), where only that parent's
+account can read it:
+
+- the phone's make and model (to name it in the parent's list);
+- the timer status: time left, whether the apps are locked and until when, and whether protection is
+  working;
+- the minutes used today on each limited app;
+- the names and package names of the apps that can be opened from the launcher (so the parent can
+  choose limited and allowed apps);
+- the Nour Time settings the parent can change remotely (time budget, lock period, lock type, bedtime,
+  daily reset, limited apps and apps allowed during the lock).
+
+The parent's phone stores the parent's Google account name and email (to show the child's phone who
+wants to connect) and the commands the parent sends (extra time, lock now, end the lock). The child's
+phone uses an anonymous Firebase account that contains no personal information.
+
+Not sent, ever: the child's name, age group or gender, the PIN or the security answer, what is shown on
+the screen or typed, location, contacts, photos or messages.
+
+Data is encrypted in transit (HTTPS). Disconnecting (on either phone) stops all uploads. [Retention
+and deletion: see "Deleting data".]
+
 ## What the app does not do
 
-- It does not send any data off the device. Phase 1 of Nour Time has no internet access.
+- Without a connected parent's phone, it sends nothing off the device.
 - It contains no ads and no analytics or tracking.
 - It does not collect the child's name, photos, location, contacts or messages.
 - Data is excluded from cloud backup and device-to-device transfer.
@@ -38,8 +65,11 @@ settings.
 
 ## Deleting data
 
-Uninstalling Nour Time deletes all of its data. (Device admin must first be turned off by the parent
-in the phone's settings.)
+Uninstalling Nour Time deletes all of its data on that phone. The parent can uninstall from Nour Time's
+Settings → Uninstall Nour Time (after the security question). Removing a phone from the parent's list,
+or disconnecting on the child's phone, stops all uploads. [Before publishing: describe how the stored
+copy in Firebase is deleted, and the in-app and web way to delete the parent's account and its data, as
+Google Play requires for apps with sign-in.]
 
 ## Children
 
@@ -48,9 +78,8 @@ Nour Time is meant to be installed and set up by a parent or guardian. The child
 
 ## Changes
 
-If a future version adds features that send data off the device (for example, remote control from a
-parent's phone), this policy will be updated before that version is released, and the app will ask
-for consent where required.
+If a future version changes what is sent off the device, this policy will be updated before that
+version is released, and the app will ask for consent where required.
 
 ## Contact
 
@@ -60,15 +89,19 @@ for consent where required.
 
 # سياسة الخصوصية – وقت نور (مسودة)
 
-يساعد وقت نور الأهل على تحديد وقت طفلهم على التطبيقات التي يختارونها. **كل شيء يبقى على الجهاز، ولا
-يجمع وقت نور أي بيانات شخصية ولا يرفعها ولا يشاركها.**
+يساعد وقت نور الأهل على تحديد وقت طفلهم على التطبيقات التي يختارونها. **ما لم يربط أحد الوالدين هاتفه،
+يبقى كل شيء على الجهاز. لا يبيع وقت نور أي بيانات، ولا يعرض إعلانات، ولا يستخدم أدوات تحليل.**
 
 - **التطبيقات الظاهرة على الشاشة:** يعرف وقت نور اسم حزمة التطبيق المفتوح فقط (بما في ذلك الصورة داخل
   الصورة وتقسيم الشاشة) ليحسب الوقت على التطبيقات المختارة ويعرض شاشة "خلص الوقت". لا يقرأ أبدًا محتوى
   الشاشة ولا ما يُكتب.
 - **مدة الاستخدام اليومية لكل تطبيق:** تُحفظ على الجهاز فقط لتظهر للأهل.
 - **رمز الأهل وإجابة سؤال الأمان:** يُحفظان بصيغة مشفرة أحادية الاتجاه فقط.
-- لا إعلانات، ولا تتبع، ولا اتصال بالإنترنت في المرحلة الأولى، ولا نسخ احتياطي سحابي.
+- **عند ربط هاتف ولي الأمر (اختياري):** بعد موافقة ولي الأمر على هاتف الطفل، يرسل هاتف الطفل إلى Google
+  Firebase ما يلي فقط، ولا يراه إلا حساب ولي الأمر: طراز الهاتف، وحالة المؤقت (الوقت المتبقي والقفل وحالة
+  الحماية)، ودقائق اليوم لكل تطبيق محدد، وأسماء التطبيقات القابلة للفتح، وإعدادات وقت نور. يحفظ هاتف ولي الأمر
+  اسم حساب Google وبريده. لا يُرسل أبدًا اسم الطفل ولا عمره ولا الرمز ولا محتوى الشاشة ولا الموقع.
+- لا إعلانات، ولا تتبع، ولا نسخ احتياطي سحابي. إلغاء الربط يوقف كل الإرسال.
 - حذف التطبيق يحذف كل بياناته.
 
 للتواصل: [البريد الإلكتروني]

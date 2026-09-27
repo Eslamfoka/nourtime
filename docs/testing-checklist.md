@@ -62,3 +62,16 @@ Tip: `adb logcat -s NourA11y BlockCoordinator LockOverlay TimerService` shows ev
 - [ ] Schedule: suggested day, tap to edit, drag to move, delete with confirmation.
 - [ ] Change PIN and security question from Settings.
 - [ ] Home "Used today" shows the minutes per app after using limited apps.
+
+## 7. Phase 2: parent's phone (needs two phones and a Firebase project or the emulator)
+- [ ] Fresh install asks "Whose phone is this?"; an already set-up child phone goes straight to its PIN.
+- [ ] Parent's phone: Google sign-in (real account needs the SHA-1 in Firebase).
+- [ ] Child: Settings → Parent's phone → Connect → QR + code + countdown. Parent: Add a child's phone → **scan the QR** (real camera) → child shows "Allow this parent?" → Allow → parent's list shows the phone.
+- [ ] Same with the typed code; a wrong code, an expired code (wait 10 min) and "Don't allow" each give a clear message.
+- [ ] Parent: +15 min while locked → the child is unlocked with exactly 15 min; Lock now → the child's limited apps lock; End the lock → full budget.
+- [ ] Parent changes the budget / lock type / limited apps / allowed apps / bedtime → the child's Settings show it within seconds; a change on the child shows up on the parent.
+- [ ] Child phone offline (airplane mode) → parent sends extra time → nothing happens; back online → applied once.
+- [ ] Parent: Remove this phone → the child's Settings show "Connect a parent's phone" again. Child: Disconnect → the phone disappears from the parent's list.
+- [ ] Turn Accessibility off on the child → the parent sees "Protection needs attention" within about a minute.
+- [ ] Arabic and English on both phones.
+

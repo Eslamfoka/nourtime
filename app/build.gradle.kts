@@ -21,8 +21,11 @@ android {
 
     buildTypes {
         debug {
-            // Debug builds use the local Firebase Emulator Suite, reached through `adb reverse`.
-            buildConfigField("String", "FIREBASE_EMULATOR_HOST", "\"127.0.0.1\"")
+            // Debug builds use the local Firebase Emulator Suite, reached through `adb reverse`, unless
+            // built with -Pnourtime.firebaseEmulator=false. For that, also remove the demo
+            // app/src/debug/google-services.json so the real app/google-services.json is used.
+            val emulator = (project.findProperty("nourtime.firebaseEmulator") as String?)?.toBoolean() ?: true
+            buildConfigField("String", "FIREBASE_EMULATOR_HOST", if (emulator) "\"127.0.0.1\"" else "\"\"")
         }
         release {
             buildConfigField("String", "FIREBASE_EMULATOR_HOST", "\"\"")

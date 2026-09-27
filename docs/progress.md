@@ -1,6 +1,6 @@
 # Nour Time: progress against the brief
 
-Status as of 2026-09-26. Legend: ✅ done · 🟡 done with a noted difference · ⏳ pending.
+Status as of 2026-09-27. Legend: ✅ done · 🟡 done with a noted difference · ⏳ pending.
 
 Phase 1 is feature-complete on the emulator (Android 12 and 15). What's left is testing on real
 phones, recorded audio, release plumbing, Phase 1.5 (below) and Phase 2.
@@ -17,8 +17,8 @@ phones, recorded audio, release plumbing, Phase 1.5 (below) and Phase 2.
 | 6 | Templates by age and time of day | 🟡 | Done; animations are drawn in code instead of Lottie, and ages 3–6 get a chime, not a voice message (needs a recording). |
 | 7 | Bedtime and stats | ✅ | |
 | 8 | Testing on Samsung and Xiaomi, tampering scenarios | 🟡 | Started 2026-09-26 on a **HONOR VNE-N41** (Magic UI 6.1, Android 12): blocking worked, then stopped after Honor reconnected the Accessibility service (see Phase 1.5, task 0). Samsung and Xiaomi still to do. Checklist: [`testing-checklist.md`](testing-checklist.md). |
-| 9 | Phase 1.5: fixes and UX requests from device testing | ⏳ | Scheduled 2026-09-26, see [Phase 1.5](#phase-15-scheduled-2026-09-26). |
-| 10 | Phase 2: remote control | ⏳ | Not started; needs your decisions (see below). |
+| 9 | Phase 1.5: fixes and UX requests from device testing | 🟡 | All four tasks done on the emulator 2026-09-27; re-test on Honor. See [Phase 1.5](#phase-15-scheduled-2026-09-26). |
+| 10 | Phase 2: remote control | 🟡 | Built and tested on two emulators with the Firebase emulator (2026-09-27), branch `phase2-remote-control`. Needs your real Firebase project, a real-phone test, and account deletion before publishing. See [Phase 2](#phase-2-remote-control-built-2026-09-27). |
 
 ## Brief sections in detail
 
@@ -111,13 +111,37 @@ copy where the child sees text, and parent dark mode.
 - Once Device admin is removed it can't be switched back on silently. If the parent then decides
   not to uninstall, Nour Time asks them to turn it back on (one system confirmation).
 
+## Phase 2: remote control (built 2026-09-27)
+
+Decisions (2026-09-27): same app with two modes · parent signs in with Google · pairing by QR code or
+6-digit code, confirmed on the child's phone · parent sees status and usage, gives extra time, locks or
+ends the lock, and changes every setting · extra time during a lock ends it and gives exactly that time.
+Plan: [`superpowers/plans/2026-09-27-phase2-remote-control.md`](superpowers/plans/2026-09-27-phase2-remote-control.md).
+
+| # | Task | Status |
+|---|---|---|
+| 1 | Firebase emulator tooling (`firebase/`) | ✅ |
+| 2 | Firestore rules + 34 rules tests | ✅ |
+| 3 | Firebase in the app (emulator in debug) | ✅ |
+| 4 | Timer commands: bonus, lock now, end lock | ✅ |
+| 5 | First launch: child phone or parent phone | ✅ |
+| 6 | Pure model: pairing code, settings sync, commands, status | ✅ |
+| 7 | Child phone: pair by QR/code, confirm, disconnect | ✅ Emulator |
+| 8 | Child phone sync: status, usage, apps, settings both ways, commands, removal | ✅ Emulator |
+| 9 | Parent phone: Google sign-in, child list, add a child | ✅ Emulator (QR scan needs a real camera) |
+| 10 | Parent control screen | ✅ Emulator |
+| 11 | Docs, privacy policy, Play notes | ✅ |
+
+Pending for Phase 2: **your Firebase project** (README steps), a test on two real phones (including
+scanning the QR code and a real Google sign-in), and an **account-deletion** flow (Play requirement
+for apps with sign-in).
+
 ## Strictly pending
 
-1. **Phase 1.5** tasks 0–3 (above).
+1. **Phase 2 follow-ups:** real Firebase project + rules deploy, real-phone test, account deletion (above).
 2. **Device testing** (step 8) on Samsung and Xiaomi (Honor started): PiP, battery savers, autostart, reboot during a lock, Force stop / uninstall attempts, whole-phone screen-off. [`testing-checklist.md`](testing-checklist.md).
 3. **Audio assets:** a short recorded voice message for ages 3–6 (masculine and feminine) and a soft lullaby for the sleep screen.
 4. **Release:** signing keystore, Play App Signing, store listing, Accessibility demo video.
-5. **Phase 2 decisions:** pairing method (code / QR / parent mode), Firebase project and region, what the parent can change remotely, how bonus time interacts with the lock period.
 6. **Optional:** Lottie animations if an illustrator provides them; Device Owner mode if Safe Mode must be blocked.
 
 ## Known limitations (documented, not bugs)

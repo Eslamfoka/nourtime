@@ -1,7 +1,8 @@
 # Nour Time – وقت نور
 
 Android parental-control app: one shared time budget for the apps a parent picks, a lock period when
-it runs out, and a friendly "Time's up" screen for the child. Everything runs and stays on the device.
+it runs out, and a friendly "Time's up" screen for the child. Everything runs on the child's phone; a
+parent can optionally follow and control it from their own phone (Phase 2, Firebase).
 
 The product brief is in [`nour-time-brief-en.md`](nour-time-brief-en.md) (Arabic: [`nour-time-brief-ar.md`](nour-time-brief-ar.md)).
 
@@ -13,11 +14,47 @@ Requirements: JDK 17, Android SDK 35.
 ./gradlew :app:testDebugUnitTest   # unit tests
 ./gradlew :app:assembleDebug       # debug APK: app/build/outputs/apk/debug/app-debug.apk
 ./gradlew :app:lintDebug           # lint (no errors expected)
-./gradlew :app:assembleRelease     # minified release APK (unsigned; signing not configured yet)
+./gradlew :app:assembleRelease     # minified release APK (unsigned); needs app/google-services.json (Phase 2)
 ```
 
 Debug builds show a **Detection (debug)** card on Home with what detection sees, and two buttons,
 **End budget now** / **End lock now**, to test locking without waiting. They don't exist in release builds.
+
+## Phase 2: parent's phone (Firebase)
+
+On first launch the app asks whose phone it is. A **child's phone** works exactly as before and, once
+connected, syncs with Firestore. A **parent's phone** signs in with Google and controls its children's
+phones. Details: [`docs/handoff.md` §7](docs/handoff.md#7-phase-2-remote-control).
+
+### Develop against the local emulator (default for debug builds)
+
+Needs Node 18+ and **JDK 21** for firebase-tools (Gradle keeps JDK 17).
+
+```bash
+cd firebase && npm install
+JAVA_HOME=/path/to/jdk-21 npm run emulators         # auth :9099, firestore :8080
+JAVA_HOME=/path/to/jdk-21 npm test                  # Firestore rules tests (own project, safe to run)
+adb reverse tcp:8080 tcp:8080 && adb reverse tcp:9099 tcp:9099   # for every phone/emulator
+```
+
+Debug builds use the demo config in `app/src/debug/google-services.json` and connect to 127.0.0.1.
+On the parent's phone, "Use a test account (emulator)" signs in without a real Google account.
+
+### Connect a real Firebase project (needed for release builds and real phones over the internet)
+
+1. [Firebase console](https://console.firebase.google.com) → **Add project** (Analytics not needed).
+2. **Build → Authentication → Sign-in method:** enable **Anonymous** and **Google** (set the support email).
+3. **Build → Firestore Database → Create database** in production mode; pick the location closest to your
+   users from the list the console offers. It can't be changed later.
+4. **Project settings → Your apps → Add app → Android**, package `com.nourtime.app`. Add the **SHA-1
+   and SHA-256** of your debug key (`./gradlew signingReport`) and, later, of the release/Play App
+   Signing key. Google sign-in fails without them.
+5. Download **`google-services.json`** into **`app/`** (not `app/src/debug/`).
+6. Deploy the rules: `cd firebase && npx firebase deploy --only firestore:rules --project <your-project-id>`.
+7. Release builds now build and use it. To run a **debug** build against the real project, delete
+   `app/src/debug/google-services.json` and build with `./gradlew assembleDebug -Pnourtime.firebaseEmulator=false`.
+
+The free Spark plan is enough to start (no Cloud Functions are used).
 
 ## How it works
 
@@ -31,6 +68,7 @@ Debug builds show a **Detection (debug)** card on Home with what detection sees,
 | Child screens | `feature/lock` | "Time's up" templates by period (play/study/meal/sleep/default) and age group (3–6, 7–9, 10–12), masculine/feminine Arabic. |
 | Parent UI | `feature/*` | Onboarding, Home (ring, status, today's stats, permissions), Apps, Schedule, Settings. |
 | Storage | `data/*` | DataStore (settings, PIN/answer hashes, timer state), Room (schedule periods, daily usage). |
+| Remote control (Phase 2) | `remote/*`, `feature/remote`, `feature/parent`, `firebase/` | Pure model (pairing code, settings sync, commands, status), child sync run by the timer service, parent screens, Firestore rules + tests. |
 
 Architecture: single `:app` module, Kotlin + Jetpack Compose + Material 3, Hilt, MVVM. Arabic (RTL)
 and English. Fonts (Cairo, Nunito) are bundled; licences in `licenses/`.

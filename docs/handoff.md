@@ -153,10 +153,7 @@ fallback plus fail-closed mode covers that.
    play them from `LockOverlay.playChime()` by age group, gender and template (sleep → lullaby).
 3. **Release:** add a `signingConfigs` block reading a keystore from `local.properties` / env vars;
    `./gradlew :app:bundleRelease`. R8 is already verified (a signed release APK ran on the emulator).
-4. **Phase 2 (after Phase 1.5 and your decisions):** Firebase Auth + Firestore + FCM, plus the `INTERNET`
-   permission and Data safety updates. Keep Phase 1 fully offline: remote commands (bonus time,
-   settings) should be written into the same repositories the local UI uses (`ParentSettingsRepository`,
-   a new `bonus` input to `TimeRules`), so the engine and blocking stay unchanged.
+4. **Phase 2 follow-ups** (§7): real Firebase project, real-phone test, account deletion.
 5. Optional: Lottie animations (the `NourPose` enum is the seam), a TalkBack/contrast audit,
    Device Owner mode for Safe Mode blocking.
 
@@ -237,3 +234,61 @@ Whole-phone mode is included as well (otherwise the list would do nothing there)
 - The flashing the user saw didn't reproduce on the emulator: both App info and the uninstall
   dialog were covered steadily. Likely Honor-specific; watch `BlockCoordinator` / `LockOverlay`
   open/close lines when re-testing there.
+
+## 7. Phase 2: remote control
+
+Built 2026-09-27 on branch `phase2-remote-control`; plan in
+[`superpowers/plans/2026-09-27-phase2-remote-control.md`](superpowers/plans/2026-09-27-phase2-remote-control.md).
+
+### Shape
+- **Two modes, one app** (`data/mode/AppModeRepository`): the first launch asks; phones that started
+  onboarding before Phase 2 are child phones. Parent phones skip the PIN (Google sign-in protects them)
+  and never start protection.
+- **No server code.** The child's foreground service (`TimerService`) runs `RemoteSync` while paired, so
+  Firestore snapshot listeners replace push notifications. Firestore queues writes offline.
+- **Everything remote goes through the Phase 1 paths:** settings via `ParentSettingsRepository.replaceWith`,
+  commands via `TimeEngine.apply(TimerCommand)`. Blocking and timing didn't change.
+
+### Data model (Firestore; rules in `firebase/firestore.rules`, tests in `firebase/test/rules.test.ts`)
+```
+pairings/{6-digit code}  deviceId, childUid, createdAt (server time; valid 10 min), claimedBy/Email/Name
+devices/{deviceId}       childUid (anonymous uid), ownerUid/Email/Name (set only by the child's phone),
+                         name, createdAt, status{phase, remainingMs, budgetMs, lockRemainingMs,
+                         protectionDegraded, updatedAt}, settings{..., rev, by: child|parent}
+devices/{id}/meta/apps   apps: [{p, l}]
+devices/{id}/usage/{yyyy-MM-dd}  ms: {package: millis}
+devices/{id}/commands/{auto}     type BONUS|LOCK_NOW|END_LOCK, minutes 1..240, createdAt, by, appliedAt (null → set once by the child)
+```
+
+### Decisions worth knowing
+- **Pairing** (`remote/child/ChildPairing`, `remote/parent/ParentDevices.claim`): a claimed code does
+  nothing until the child's phone (behind the PIN) taps Allow and writes `ownerUid`. Brute-forcing a
+  6-digit code therefore can't take over a phone. Codes expire from their server `createdAt`, so the
+  child's clock doesn't matter.
+- **Settings sync** (`remote/model/SettingsSync`): every write carries `rev` and `by`. A parent revision
+  newer than the last one the child synced wins, even over an offline change; the child's own writes are
+  never re-applied. The child decides with the *current* local settings (a debounced old value was once
+  uploaded back and briefly undid a parent change).
+- **Commands** (`remote/child/CommandQueue`): applied once each in `createdAt` order; applied ids are
+  also remembered locally; invalid ones are marked applied without effect.
+- **Removal:** the parent clears `ownerUid`; the child notices (`PairingCheck`) and drops its pairing.
+- **Device document:** created after a server-side existence check (rules allow reading a missing
+  device); `set()` is never used on an existing one because it would clear `ownerUid`.
+- **Google sign-in:** Credential Manager + `googleid`, `default_web_client_id` from google-services.json.
+  Debug + emulator can sign in with an unsigned test token ("Use a test account").
+
+### Running it
+See the README ("Phase 2"). Useful: the emulator's REST API with `Authorization: Bearer owner` bypasses
+rules, e.g. `curl -H "Authorization: Bearer owner" "http://127.0.0.1:8080/v1/projects/demo-nourtime/databases/(default)/documents/devices"`.
+The rules tests use project `demo-nourtime-test` because they clear the database.
+
+### Not done yet
+- **Account deletion** (Play requirement): parent's phone "Delete my account and data" (remove ownerUid
+  from their devices, delete their Auth user) plus a web deletion URL; and deleting a child device's
+  Firestore data when Nour Time is uninstalled/disconnected (today the document stays, only unlinked).
+- Real-phone test incl. QR scanning (emulators have no camera) and real Google sign-in (needs SHA-1).
+- Push notifications to the parent (e.g. "protection needs attention") would need FCM + Cloud Functions
+  (Blaze plan); today the parent sees it when opening the app.
+- The parent's phone uses its own date for "today's" usage; a parent in another time zone sees the
+  child's day shifted.
+
