@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.MoreTime
 import androidx.compose.material.icons.rounded.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -46,6 +47,7 @@ import com.nourtime.app.core.designsystem.component.NourDangerButton
 import com.nourtime.app.core.designsystem.component.NourDialogButton
 import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourSecondaryButton
+import com.nourtime.app.core.designsystem.component.NourTextButton
 import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.core.timer.TimerCommand
 import com.nourtime.app.data.apps.InstalledApp
@@ -63,7 +65,10 @@ import com.nourtime.app.feature.setup.AppSearchField
 import com.nourtime.app.feature.setup.AppsUiState
 import com.nourtime.app.feature.setup.TimeBudgetEditor
 import com.nourtime.app.feature.setup.durationText
+import com.nourtime.app.remote.model.AskPolicy
+import com.nourtime.app.remote.model.AskState
 import com.nourtime.app.remote.model.RemoteSettings
+import com.nourtime.app.remote.model.TimeRequest
 import com.nourtime.app.remote.parent.ChildDevice
 import com.nourtime.app.remote.parent.DeviceSummary
 import com.nourtime.app.remote.parent.ParentDevices
@@ -108,6 +113,12 @@ class ChildDeviceViewModel @Inject constructor(
     val commands: StateFlow<List<SentCommand>> = ids.flatMapLatest { remote.recentCommands(it).catch { emit(emptyList()) } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
+    /** The child's newest request for more time (Phase 4c). */
+    val request: StateFlow<TimeRequest?> = ids.flatMapLatest { remote.latestRequest(it).catch { emit(null) } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+    private val _answerFailed = MutableStateFlow(false)
+    val answerFailed: StateFlow<Boolean> = _answerFailed
+
     fun bind(id: String) {
         deviceId.value = id
     }
@@ -115,6 +126,15 @@ class ChildDeviceViewModel @Inject constructor(
     fun send(command: TimerCommand, user: ParentUser) {
         val id = deviceId.value ?: return
         viewModelScope.launch { runCatching { remote.send(id, command, user.uid) } }
+    }
+
+    /** [minutes] approves the request with that bonus; null declines it. Needs the network. */
+    fun answer(requestId: String, minutes: Int?, user: ParentUser) {
+        val id = deviceId.value ?: return
+        _answerFailed.value = false
+        viewModelScope.launch {
+            runCatching { remote.answer(id, requestId, minutes, user.uid) }.onFailure { _answerFailed.value = true }
+        }
     }
 
     /** Applies [change] to the settings on the server and writes the next revision. */
@@ -151,6 +171,8 @@ fun ChildDeviceScreen(
     val apps by viewModel.apps.collectAsStateWithLifecycle()
     val week by viewModel.week.collectAsStateWithLifecycle()
     val commands by viewModel.commands.collectAsStateWithLifecycle()
+    val request by viewModel.request.collectAsStateWithLifecycle()
+    val answerFailed by viewModel.answerFailed.collectAsStateWithLifecycle()
     val now by rememberNow()
     var confirm by remember { mutableStateOf<TimerCommand?>(null) }
     var removing by remember { mutableStateOf(false) }
@@ -170,6 +192,9 @@ fun ChildDeviceScreen(
         }
         val d = device ?: return@Column
         val summary = DeviceSummary.of(d.status, now)
+        request?.takeIf { AskPolicy.state(it, now) == AskState.Waiting }?.let { r ->
+            AskCard(d.name, r, now, answerFailed, onAnswer = { minutes -> viewModel.answer(r.id, minutes, user) })
+        }
 
         NourCard {
             Text(summaryText(summary), style = MaterialTheme.typography.titleLarge)
@@ -281,6 +306,36 @@ private fun ActionsCard(summary: DeviceSummary, commands: List<SentCommand>, onC
         }
     }
 }
+
+/** "Sara is asking for more time": approve with a bonus (one tap, no confirmation) or say not now. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun AskCard(name: String, request: TimeRequest, now: Long, failed: Boolean, onAnswer: (Int?) -> Unit) {
+    NourCard {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Icon(Icons.Rounded.MoreTime, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+            Text(stringResource(R.string.ask_parent_title, name.ifBlank { stringResource(R.string.ask_parent_your_child) }), style = MaterialTheme.typography.titleMedium)
+        }
+        request.createdAtMs?.let { at ->
+            Text(
+                DateUtils.getRelativeTimeSpanString(at, now, DateUtils.MINUTE_IN_MILLIS).toString(),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            ASK_CHOICES.forEach { minutes ->
+                NourPrimaryButton(stringResource(R.string.device_bonus_chip, durationText(minutes)), { onAnswer(minutes) }, Modifier.fillMaxWidth(0.45f))
+            }
+        }
+        NourTextButton(stringResource(R.string.ask_parent_decline), { onAnswer(null) })
+        if (failed) {
+            Text(stringResource(R.string.ask_parent_failed), style = MaterialTheme.typography.bodySmall, color = NourTheme.colors.danger)
+        }
+    }
+}
+
+private val ASK_CHOICES = listOf(15, 30)
 
 @Composable
 private fun UsageCard(usage: Map<String, Long>, apps: List<InstalledApp>) {

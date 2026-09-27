@@ -14,8 +14,11 @@ import com.nourtime.app.data.apps.InstalledApp
 import com.nourtime.app.data.usage.UsageEntry
 import com.nourtime.app.remote.RemotePaths
 import com.nourtime.app.remote.child.CommandQueue
+import com.nourtime.app.remote.child.toRequest
+import com.nourtime.app.remote.model.AskPolicy
 import com.nourtime.app.remote.model.RemoteSettings
 import com.nourtime.app.remote.model.RemoteStatus
+import com.nourtime.app.remote.model.TimeRequest
 import com.nourtime.app.remote.model.commandMap
 import com.nourtime.app.remote.model.remoteCommandOf
 import kotlinx.coroutines.channels.awaitClose
@@ -37,6 +40,8 @@ data class ChildDevice(
     val status: RemoteStatus?,
     val settings: RemoteSettings?,
     val settingsRev: Long,
+    /** When the child last asked for more time (Phase 4c); cleared by the child's phone once answered. */
+    val askingAtMs: Long? = null,
 )
 
 /**
@@ -123,6 +128,40 @@ class ParentDevices @Inject constructor(
         devices.document(deviceId).collection(RemotePaths.COMMANDS).add(
             commandMap(command) + mapOf("createdAt" to FieldValue.serverTimestamp(), "by" to uid, "appliedAt" to null),
         ).await()
+    }
+
+    /** The child's newest request for more time (Phase 4c). */
+    fun latestRequest(deviceId: String): Flow<TimeRequest?> = callbackFlow {
+        val registration = devices.document(deviceId).collection(RemotePaths.REQUESTS)
+            .orderBy("createdAt", Query.Direction.DESCENDING)
+            .limit(1)
+            .addSnapshotListener { snap, error ->
+                if (error != null) close(error) else if (snap != null) trySend(snap.documents.firstOrNull()?.let(::toRequest))
+            }
+        awaitClose { registration.remove() }
+    }
+
+    /**
+     * Answers a request: [minutes] approves it and sends that bonus, null declines. One batch, so the
+     * bonus is sent only if the answer is accepted (the rules allow answering a request once).
+     */
+    suspend fun answer(deviceId: String, requestId: String, minutes: Int?, uid: String) {
+        val device = devices.document(deviceId)
+        val answer = mutableMapOf<String, Any>(
+            "status" to if (minutes != null) AskPolicy.APPROVED else AskPolicy.DECLINED,
+            "answeredAt" to FieldValue.serverTimestamp(),
+            "by" to uid,
+        )
+        if (minutes != null) answer["minutes"] = minutes
+        firestore.batch().apply {
+            update(device.collection(RemotePaths.REQUESTS).document(requestId), answer)
+            if (minutes != null) {
+                set(
+                    device.collection(RemotePaths.COMMANDS).document(),
+                    commandMap(TimerCommand.Bonus(minutes)) + mapOf("createdAt" to FieldValue.serverTimestamp(), "by" to uid, "appliedAt" to null),
+                )
+            }
+        }.commit().await()
     }
 
     /** The latest commands, newest first, so the screen can show "waiting for the child's phone". */
@@ -254,6 +293,7 @@ class ParentDevices @Inject constructor(
             status = RemoteStatus.fromMap(statusMap, statusTime),
             settings = RemoteSettings.fromMap(settingsMap),
             settingsRev = (settingsMap?.get("rev") as? Number)?.toLong() ?: 0,
+            askingAtMs = doc.getTimestamp("askingAt")?.toDate()?.time,
         )
     }
 

@@ -8,4 +8,5 @@ object RemotePaths {
     const val META = "meta"
     const val APPS_DOC = "apps"
     const val COMMANDS = "commands"
+    const val REQUESTS = "requests"
 }

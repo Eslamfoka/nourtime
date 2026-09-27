@@ -85,3 +85,7 @@ Run on the API 35 emulator, 2026-09-27: all pass. Dragging a short (1-hour) peri
 - [ ] The parent's phone shows and edits the same weekend section.
 - [ ] Home → *Last 7 days*: a bar per day (today in gold), total, daily average, most used app and the change from the 7 days before. (Emulator 2026-09-27 with seeded days: 4 h 21 min, about 37 min a day, YouTube 3 h 6 min, 9% more.)
 - [ ] The parent's phone shows the same card for the child; usage older than 14 days disappears from Firestore.
+- [ ] Paired child, time up → *Ask for more time* → "Waiting for Mom or Dad…"; the parent's list shows "Asking for more time", the child screen shows +15 / +30 / Not now.
+- [ ] Parent taps +15 → the child sees "Yes! +15 min" and the lock ends with 15 minutes. Not now → "Not now…", and the button returns after 10 minutes.
+- [ ] Bedtime and the Settings cover show no *Ask* button; an unpaired phone shows none either.
+- [ ] Child offline → asking still shows "Waiting…"; the request reaches the parent once online.

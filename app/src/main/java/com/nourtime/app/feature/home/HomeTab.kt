@@ -26,8 +26,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -145,7 +149,8 @@ internal fun HomeTab(padding: PaddingValues, viewModel: HomeViewModel = hiltView
         }
         TodayCard(today, viewModel::label)
         week?.let { report ->
-            val topName by produceState<String?>(null, report.topApp) { value = report.topApp?.let { viewModel.label(it) } }
+            var topName by remember(report.topApp) { mutableStateOf<String?>(null) }
+            LaunchedEffect(report.topApp) { topName = report.topApp?.let { viewModel.label(it) } }
             WeekCard(report, topName)
         }
         if (BuildConfig.DEBUG) DebugDetectionCard(detection, viewModel::debugSkip)

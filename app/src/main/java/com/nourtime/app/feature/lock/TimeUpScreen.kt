@@ -30,6 +30,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Apps
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Lock
+import androidx.compose.material.icons.rounded.MoreTime
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -61,10 +62,13 @@ import com.nourtime.app.core.designsystem.theme.NourPalette
 import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.core.ui.formatCountdown
 import com.nourtime.app.data.settings.AgeGroup
+import com.nourtime.app.feature.setup.durationText
+import com.nourtime.app.remote.model.AskState
 
 /**
  * The child's "Time's up" screen (brief §4, §12): playful and positive, never a punishment.
- * [onOk] is null when the whole device is locked (only the parent can lift it).
+ * [onOk] is null when the whole device is locked (only the parent can lift it). [ask] is null when
+ * there's no parent's phone to ask (not paired, or not a time-up lock).
  */
 @Composable
 fun TimeUpScreen(
@@ -72,6 +76,8 @@ fun TimeUpScreen(
     onOk: (() -> Unit)?,
     onParents: () -> Unit,
     onOpenApp: (String) -> Unit = {},
+    ask: AskState? = null,
+    onAsk: () -> Unit = {},
 ) {
     val style = styleFor(state.template).forAge(state.ageGroup)
     val text = if (style.dark) NourPalette.Cream else NourPalette.Navy
@@ -102,6 +108,7 @@ fun TimeUpScreen(
                         AgeGroup.AGES_10_12 -> OlderLayout(state, style, text)
                     }
                 }
+                if (ask != null) AskRow(ask, state, text, onAsk)
                 if (state.allowedApps.isNotEmpty()) AllowedAppsRow(state, text, onOpenApp)
                 if (onOk != null) OkButton(onOk)
             }
@@ -251,6 +258,40 @@ private fun AllowedAppsRow(state: LockScreenState, text: Color, onOpenApp: (Stri
             }
         }
     }
+}
+
+/** Ask the parent's phone for more time (Phase 4c); the answer arrives as a bonus. */
+@Composable
+private fun AskRow(ask: AskState, state: LockScreenState, text: Color, onAsk: () -> Unit) {
+    Box(Modifier.fillMaxWidth().padding(bottom = 16.dp), contentAlignment = Alignment.Center) {
+        when (ask) {
+            AskState.CanAsk -> Surface(
+                onClick = onAsk,
+                shape = CircleShape,
+                color = NourPalette.Cream,
+                contentColor = NourPalette.Navy,
+                shadowElevation = 4.dp,
+                modifier = Modifier.heightIn(min = 56.dp),
+            ) {
+                Row(
+                    Modifier.padding(horizontal = 24.dp, vertical = 14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(Icons.Rounded.MoreTime, contentDescription = null)
+                    Spacer(Modifier.size(8.dp))
+                    Text(stringResource(Gendered(R.string.tu_ask_m, R.string.tu_ask_f).pick(state.gender)), style = MaterialTheme.typography.titleMedium)
+                }
+            }
+            AskState.Waiting -> AskMessage(stringResource(Gendered(R.string.tu_ask_waiting_m, R.string.tu_ask_waiting_f).pick(state.gender)), text)
+            is AskState.Approved -> AskMessage(stringResource(R.string.tu_ask_approved, durationText(ask.minutes)), text)
+            is AskState.Declined -> AskMessage(stringResource(Gendered(R.string.tu_ask_declined_m, R.string.tu_ask_declined_f).pick(state.gender)), text)
+        }
+    }
+}
+
+@Composable
+private fun AskMessage(message: String, text: Color) {
+    Text(message, style = MaterialTheme.typography.titleMedium, color = text, textAlign = TextAlign.Center)
 }
 
 @Composable

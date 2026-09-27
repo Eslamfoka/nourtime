@@ -15,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PhoneAndroid
+import androidx.compose.material.icons.rounded.MoreTime
 import androidx.compose.material.icons.rounded.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -48,6 +49,7 @@ import com.nourtime.app.core.designsystem.component.NourStar
 import com.nourtime.app.core.designsystem.component.NourTextButton
 import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.feature.setup.durationText
+import com.nourtime.app.remote.model.AskPolicy
 import com.nourtime.app.remote.parent.ChildDevice
 import com.nourtime.app.remote.parent.DeviceSummary
 import com.nourtime.app.remote.parent.ParentAuth
@@ -251,6 +253,13 @@ private fun DeviceCard(device: ChildDevice, now: Long, onClick: () -> Unit) {
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(device.name, style = MaterialTheme.typography.titleMedium)
                 Text(summaryText(summary), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                val asking = device.askingAtMs
+                if (asking != null && now - asking < AskPolicy.PENDING_EXPIRES_MS) {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Icon(Icons.Rounded.MoreTime, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                        Text(stringResource(R.string.ask_parent_list), style = MaterialTheme.typography.bodySmall)
+                    }
+                }
                 if (summary.degraded()) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         Icon(Icons.Rounded.WarningAmber, contentDescription = null, tint = NourTheme.colors.danger, modifier = Modifier.size(18.dp))

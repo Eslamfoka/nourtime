@@ -237,6 +237,13 @@
     <string name="tu_parents_title_f">دي حاجة للكبار، اطلبي من بابا أو ماما ⭐</string>
     <string name="tu_allowed_title_m">لسه تقدر تفتح:</string>
     <string name="tu_allowed_title_f">لسه تقدري تفتحي:</string>
+    <string name="tu_ask_m">اطلب وقت زيادة</string>
+    <string name="tu_ask_f">اطلبي وقت زيادة</string>
+    <string name="tu_ask_waiting_m">استنى رد بابا أو ماما…</string>
+    <string name="tu_ask_waiting_f">استني رد بابا أو ماما…</string>
+    <string name="tu_ask_approved">أيوه! +%1$s</string>
+    <string name="tu_ask_declined_m">مش دلوقتي. تقدر تطلب تاني بعد شوية.</string>
+    <string name="tu_ask_declined_f">مش دلوقتي. تقدري تطلبي تاني بعد شوية.</string>
     <string name="tu_bravo_m">برافو! خلّصت وقتك، يلا نعمل حاجة حلوة</string>
     <string name="tu_bravo_f">برافو! خلّصتي وقتك، يلا نعمل حاجة حلوة</string>
     <string name="tu_back_in_label">نرجع بعد</string>
@@ -390,6 +397,11 @@
     <string name="device_command_pending">أُرسل · بانتظار هاتف طفلك…</string>
     <string name="device_command_applied">تم على هاتف طفلك.</string>
     <string name="device_command_expired">لم يُطبَّق: كان هاتف طفلك غير متصل لأكثر من ساعة. أرسله مرة أخرى إن كنت ما زلت تريده.</string>
+    <string name="ask_parent_title">%1$s يطلب وقتًا إضافيًا</string>
+    <string name="ask_parent_your_child">طفلك</string>
+    <string name="ask_parent_decline">ليس الآن</string>
+    <string name="ask_parent_failed">تعذّر إرسال الرد. تحقّق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
+    <string name="ask_parent_list">يطلب وقتًا إضافيًا</string>
     <string name="device_today">اليوم</string>
     <string name="device_today_none">لم تُستخدم التطبيقات المحددة اليوم بعد.</string>
     <string name="device_settings">الإعدادات</string>

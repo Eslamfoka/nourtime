@@ -119,6 +119,31 @@ service cloud.firestore {
         allow write: if isChildOf(id);
       }
 
+      // A child's request for more time (Phase 4c): asked by the child, answered once by the owner.
+      match /requests/{requestId} {
+        allow read: if isChildOf(id) || isOwnerOf(id);
+
+        allow create: if isChildOf(id)
+          && request.resource.data.keys().hasOnly(['status', 'createdAt'])
+          && request.resource.data.status == 'pending'
+          && request.resource.data.createdAt == request.time;
+
+        allow update: if isOwnerOf(id)
+          && resource.data.status == 'pending'
+          && changedOnly(['status', 'minutes', 'answeredAt', 'by'])
+          && request.resource.data.by == request.auth.uid
+          && request.resource.data.answeredAt == request.time
+          && (
+            (request.resource.data.status == 'approved'
+              && request.resource.data.minutes is int
+              && request.resource.data.minutes >= 1
+              && request.resource.data.minutes <= 240)
+            || (request.resource.data.status == 'declined' && !('minutes' in request.resource.data))
+          );
+
+        allow delete: if isChildOf(id);
+      }
+
       match /commands/{commandId} {
         allow read: if isChildOf(id) || isOwnerOf(id);
 

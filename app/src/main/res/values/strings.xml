@@ -225,6 +225,13 @@
     <string name="tu_parents_title_f">This part is for grown-ups. Ask Mom or Dad ⭐</string>
     <string name="tu_allowed_title_m">You can still open:</string>
     <string name="tu_allowed_title_f">You can still open:</string>
+    <string name="tu_ask_m">Ask for more time</string>
+    <string name="tu_ask_f">Ask for more time</string>
+    <string name="tu_ask_waiting_m">Waiting for Mom or Dad to answer…</string>
+    <string name="tu_ask_waiting_f">Waiting for Mom or Dad to answer…</string>
+    <string name="tu_ask_approved">Yes! +%1$s</string>
+    <string name="tu_ask_declined_m">Not now. You can ask again in a little while.</string>
+    <string name="tu_ask_declined_f">Not now. You can ask again in a little while.</string>
     <string name="tu_bravo_m">Well done! You finished your time, let\'s do something fun</string>
     <string name="tu_bravo_f">Well done! You finished your time, let\'s do something fun</string>
     <string name="tu_back_in_label">Back in</string>
@@ -378,6 +385,11 @@
     <string name="device_command_pending">Sent · waiting for your child\'s phone…</string>
     <string name="device_command_applied">Done on your child\'s phone.</string>
     <string name="device_command_expired">Not applied: your child\'s phone was offline for over an hour. Send it again if you still want it.</string>
+    <string name="ask_parent_title">%1$s is asking for more time</string>
+    <string name="ask_parent_your_child">Your child</string>
+    <string name="ask_parent_decline">Not now</string>
+    <string name="ask_parent_failed">Couldn\'t send the answer. Check the internet connection and try again.</string>
+    <string name="ask_parent_list">Asking for more time</string>
     <string name="device_today">Today</string>
     <string name="device_today_none">No limited apps used yet today.</string>
     <string name="device_settings">Settings</string>

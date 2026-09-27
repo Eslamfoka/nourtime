@@ -361,3 +361,46 @@ describe("commands", () => {
     await assertSucceeds(getDocs(query(commands(parent()), where("by", "==", PARENT))));
   });
 });
+
+describe("requests for more time", () => {
+  const requests = (db: Firestore) => collection(db, "devices", DEVICE, "requests");
+
+  beforeEach(async () => {
+    await seed((db) => setDoc(doc(db, "devices", DEVICE), pairedDevice));
+  });
+
+  it("the child asks; others can't ask for it", async () => {
+    await assertSucceeds(addDoc(requests(child()), { status: "pending", createdAt: serverTimestamp() }));
+    await assertFails(addDoc(requests(parent()), { status: "pending", createdAt: serverTimestamp() }));
+    await assertFails(addDoc(requests(anonymous()), { status: "pending", createdAt: serverTimestamp() }));
+  });
+
+  it("a request starts pending, at server time, with nothing else", async () => {
+    await assertFails(addDoc(requests(child()), { status: "approved", createdAt: serverTimestamp() }));
+    await assertFails(addDoc(requests(child()), { status: "pending", createdAt: Timestamp.now() }));
+    await assertFails(addDoc(requests(child()), { status: "pending", createdAt: serverTimestamp(), minutes: 60 }));
+  });
+
+  it("the owner approves with minutes, or declines, once", async () => {
+    await seed((db) => setDoc(doc(db, "devices", DEVICE, "requests", "r1"), { status: "pending", createdAt: Timestamp.now() }));
+    await assertFails(updateDoc(doc(child(), "devices", DEVICE, "requests", "r1"), { status: "approved", minutes: 60, answeredAt: serverTimestamp(), by: CHILD }));
+    await assertFails(updateDoc(doc(parent(), "devices", DEVICE, "requests", "r1"), { status: "approved", minutes: 999, answeredAt: serverTimestamp(), by: PARENT }));
+    await assertFails(updateDoc(doc(parent(OTHER_PARENT), "devices", DEVICE, "requests", "r1"), { status: "declined", answeredAt: serverTimestamp(), by: OTHER_PARENT }));
+    await assertSucceeds(updateDoc(doc(parent(), "devices", DEVICE, "requests", "r1"), { status: "approved", minutes: 15, answeredAt: serverTimestamp(), by: PARENT }));
+    await assertFails(updateDoc(doc(parent(), "devices", DEVICE, "requests", "r1"), { status: "declined", answeredAt: serverTimestamp(), by: PARENT }));
+  });
+
+  it("a decline carries no minutes", async () => {
+    await seed((db) => setDoc(doc(db, "devices", DEVICE, "requests", "r2"), { status: "pending", createdAt: Timestamp.now() }));
+    await assertFails(updateDoc(doc(parent(), "devices", DEVICE, "requests", "r2"), { status: "declined", minutes: 15, answeredAt: serverTimestamp(), by: PARENT }));
+    await assertSucceeds(updateDoc(doc(parent(), "devices", DEVICE, "requests", "r2"), { status: "declined", answeredAt: serverTimestamp(), by: PARENT }));
+  });
+
+  it("both read them; only the child deletes them", async () => {
+    await seed((db) => setDoc(doc(db, "devices", DEVICE, "requests", "r3"), { status: "pending", createdAt: Timestamp.now() }));
+    await assertSucceeds(getDoc(doc(parent(), "devices", DEVICE, "requests", "r3")));
+    await assertFails(getDoc(doc(parent(OTHER_PARENT), "devices", DEVICE, "requests", "r3")));
+    await assertFails(deleteDoc(doc(parent(), "devices", DEVICE, "requests", "r3")));
+    await assertSucceeds(deleteDoc(doc(child(), "devices", DEVICE, "requests", "r3")));
+  });
+});

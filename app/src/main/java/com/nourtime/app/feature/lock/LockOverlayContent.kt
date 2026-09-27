@@ -15,6 +15,7 @@ import com.nourtime.app.feature.pin.AnswerCheckController
 import com.nourtime.app.feature.pin.PinCheckController
 import com.nourtime.app.feature.pin.PinPanel
 import com.nourtime.app.feature.pin.SecurityAnswerPanel
+import com.nourtime.app.remote.model.AskState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -80,6 +81,8 @@ fun LockOverlayContent(
     parentFlow: OverlayParentFlow,
     onChildOk: () -> Unit,
     onOpenApp: (String) -> Unit,
+    ask: AskState? = null,
+    onAsk: () -> Unit = {},
 ) {
     val settingsCover = state.decision.reason == BlockReason.SYSTEM_SETTINGS
     LaunchedEffect(settingsCover) {
@@ -91,6 +94,8 @@ fun LockOverlayContent(
             onOk = if (state.decision.wholeDevice) null else onChildOk,
             onParents = parentFlow::openParent,
             onOpenApp = onOpenApp,
+            ask = ask,
+            onAsk = onAsk,
         )
         ParentStage.PIN -> ParentPanelFrame(onBack = parentFlow::back) {
             val pin by parentFlow.pin.state.collectAsStateWithLifecycle()

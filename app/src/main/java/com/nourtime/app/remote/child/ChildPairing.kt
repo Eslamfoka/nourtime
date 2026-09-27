@@ -119,7 +119,7 @@ class ChildPairing @Inject constructor(
             runCatching {
                 if (device.get(Source.SERVER).await().exists()) {
                     // Subcollections first: their rules look the device up.
-                    for (name in listOf(RemotePaths.USAGE, RemotePaths.META, RemotePaths.COMMANDS)) {
+                    for (name in listOf(RemotePaths.USAGE, RemotePaths.META, RemotePaths.COMMANDS, RemotePaths.REQUESTS)) {
                         deleteAll(device.collection(name).get(Source.SERVER).await().documents.map { it.reference })
                     }
                     device.delete().await()

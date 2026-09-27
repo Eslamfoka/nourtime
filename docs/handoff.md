@@ -348,3 +348,18 @@ per-app minutes: from Room on the child (`UsageRepository.observeRange`) and fro
 on the parent (`ParentDevices.usageRange`, a document-id range query). `WeekCard` shows it on both. The
 child re-uploads the finished day after midnight (and yesterday at start) and deletes server usage
 older than 14 days (`RemoteSync.uploadUsage`).
+
+### 4c. Asking for more time
+On a time-up lock (not bedtime or the Settings cover, which a bonus can't lift) a paired child's
+"Time's up" screen shows **Ask for more time** (`TimeRequests.state` → `AskPolicy`). The child creates
+`devices/{id}/requests/{auto}` (`status: pending`, server `createdAt`) and sets the device's `askingAt`,
+so the parent's list shows "Asking for more time". The parent's child screen shows the pending request
+with +15 / +30 / Not now; `ParentDevices.answer` updates the request and (on approval) sends an ordinary
+BONUS command in **one batch**, so a request answered twice never sends two bonuses (the rules allow
+one answer). The child's `RemoteSync.followRequests` clears `askingAt` whenever the newest request isn't
+pending and deletes requests older than a day; `ChildPairing.disconnect` deletes them too.
+Timings (`AskPolicy`): a pending request lapses after 30 min; after "Not now" the child waits 10 min;
+"Yes! +15 min" shows for up to 2 min (the bonus usually closes the screen first). Works offline: the
+request is queued and shows "Waiting…" at once. There is no push notification to the parent (needs FCM +
+Cloud Functions); the parent sees it on opening the app.
+

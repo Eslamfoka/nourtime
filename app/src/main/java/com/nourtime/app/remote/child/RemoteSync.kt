@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldPath
@@ -23,6 +24,7 @@ import com.nourtime.app.data.apps.InstalledAppsRepository
 import com.nourtime.app.data.settings.ParentSettingsRepository
 import com.nourtime.app.data.usage.UsageRepository
 import com.nourtime.app.remote.RemotePaths
+import com.nourtime.app.remote.model.AskPolicy
 import com.nourtime.app.remote.model.RemoteSettings
 import com.nourtime.app.remote.model.SettingsSync
 import com.nourtime.app.remote.model.StatusThrottle
@@ -39,12 +41,15 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.util.Date
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -67,6 +72,7 @@ class RemoteSync @Inject constructor(
     private val trustedClock: TrustedClock,
     private val clock: DeviceClock,
     private val pairing: ChildPairing,
+    private val timeRequests: TimeRequests,
 ) {
     suspend fun run() {
         identity.pairedOwner.collectLatest { owner ->
@@ -86,6 +92,7 @@ class RemoteSync @Inject constructor(
                         launch { uploadStatus(device) }
                         launch { uploadUsage(device) }
                         launch { uploadApps(device) }
+                        launch { followRequests(device) }
                     }
                 }
                 false
@@ -247,6 +254,23 @@ class RemoteSync @Inject constructor(
         }
     }
 
+    /**
+     * Requests for more time (Phase 4c). The parent's list shows "asking for more time" from the
+     * device's `askingAt`, cleared here whenever the newest request isn't pending (so also after a
+     * restart). Requests older than a day are deleted.
+     */
+    private suspend fun followRequests(device: DocumentReference) {
+        runCatching {
+            val cutoff = Timestamp(Date(trustedClock.now().toInstant().toEpochMilli() - REQUESTS_KEEP_MS))
+            device.collection(RemotePaths.REQUESTS).whereLessThan("createdAt", cutoff).get().await()
+                .documents.forEach { it.reference.delete() }
+        }
+        timeRequests.latest()
+            .map { it?.status == AskPolicy.PENDING }
+            .distinctUntilChanged()
+            .collect { pending -> if (!pending) device.update("askingAt", null) }
+    }
+
     /** The launchable apps, so the parent can choose limited and allowed apps remotely. */
     private suspend fun uploadApps(device: DocumentReference) {
         var lastHash: Int? = null
@@ -267,6 +291,9 @@ class RemoteSync @Inject constructor(
         const val TAG = "RemoteSync"
         const val LOCAL_SETTINGS_DEBOUNCE_MS = 2_000L
         const val USAGE_EVERY_MS = 5 * 60_000L
+        /** Answered or lapsed requests for more time are deleted after a day. */
+        const val REQUESTS_KEEP_MS = 24 * 60 * 60_000L
+
         /** Usage history kept on the server; the parent's weekly report needs 14 days. */
         const val USAGE_KEEP_DAYS = 14L
         const val APPS_EVERY_MS = 6 * 60 * 60_000L

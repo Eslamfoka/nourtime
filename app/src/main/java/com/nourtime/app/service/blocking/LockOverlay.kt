@@ -19,6 +19,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleRegistry
@@ -31,6 +32,7 @@ import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.nourtime.app.R
+import com.nourtime.app.core.blocking.BlockReason
 import com.nourtime.app.core.blocking.ParentPass
 import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.core.time.DeviceClock
@@ -39,12 +41,14 @@ import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.feature.lock.LockOverlayContent
 import com.nourtime.app.feature.lock.LockScreenState
 import com.nourtime.app.feature.lock.OverlayParentFlow
+import com.nourtime.app.remote.child.TimeRequests
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -59,6 +63,7 @@ class LockOverlay @Inject constructor(
     private val security: SecurityRepository,
     private val pass: ParentPass,
     private val clock: DeviceClock,
+    private val timeRequests: TimeRequests,
 ) {
     private var accessibility: AccessibilityService? = null
     private var window: OverlayWindow? = null
@@ -224,12 +229,20 @@ class LockOverlay @Inject constructor(
                         AnimatedContent(s != null, transitionSpec = { fadeIn() togetherWith fadeOut() }, label = "overlay") { visible ->
                             val current = s
                             if (visible && current != null) {
+                                // Only a time-up lock can be shortened by a bonus; bedtime and Settings can't.
+                                val ask = if (current.decision.reason == BlockReason.TIME_UP) {
+                                    remember { timeRequests.state }.collectAsStateWithLifecycle(null).value
+                                } else {
+                                    null
+                                }
                                 LockOverlayContent(
                                     state = current,
                                     stage = stage,
                                     parentFlow = parentFlow,
                                     onChildOk = { onChildDismiss() },
                                     onOpenApp = ::openApp,
+                                    ask = ask,
+                                    onAsk = { scope.launch { runCatching { timeRequests.ask() } } },
                                 )
                             }
                         }
