@@ -299,3 +299,19 @@ The rules tests use project `demo-nourtime-test` because they clear the database
 - The parent's phone uses its own date for "today's" usage; a parent in another time zone sees the
   child's day shifted.
 
+### Deferred from the final review (minor)
+- Pairing codes are never cleaned up and the code space can be squatted: add a Firestore TTL policy, a
+  `^[0-9]{6}$` id check in the create rule, and let a child replace an expired code.
+- A lost anonymous account leaves the child phone "Connected" but failing: on PERMISSION_DENIED for its
+  own device, create a new device id and unpair.
+- Status uploads every 60 s even when idle (~1,440 writes/day/phone): upload on change plus a
+  10–15 min heartbeat. Related: a bonus while the apps are available shows on the parent's phone only
+  with the next minute's upload; upload when the remaining time jumps up.
+- `TimeEngine.apply` does nothing before the first saved timer state, yet the command is marked applied.
+- A later budget edit clamps remaining time that a bonus had pushed above the budget (Phase 1 rule).
+- Old commands never expire (e.g. a LOCK_NOW sent at night applies the next morning).
+- `RemoteSync` (and so Firebase) is instantiated on unpaired child phones; inject `dagger.Lazy`.
+- Lint: check `credential.type` before `GoogleIdTokenCredential.createFrom`.
+- App-wide: AlertDialog buttons are gold on cream (low contrast); full-screen app pickers put Done
+  partly under the gesture bar on Android 15.
+
