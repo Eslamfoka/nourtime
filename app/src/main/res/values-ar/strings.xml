@@ -60,6 +60,7 @@
     <string name="sq_show_answer">إظهار الإجابة</string>
     <string name="sq_hide_answer">إخفاء الإجابة</string>
     <string name="sq_save">حفظ ومتابعة</string>
+    <string name="sq_save_change">حفظ</string>
 
     <!-- Permissions -->
     <string name="perm_accessibility_title">خدمة إمكانية الوصول</string>
@@ -133,7 +134,7 @@
     <string name="profile_girl">بنت</string>
     <string name="profile_age_label">العمر</string>
     <string name="age_3_6">٣–٦ سنوات</string>
-    <string name="age_3_6_desc">صور كبيرة ورسالة صوتية قصيرة، ونص قليل جدًا</string>
+    <string name="age_3_6_desc">صور كبيرة ونص قليل جدًا</string>
     <string name="age_7_9">٧–٩ سنوات</string>
     <string name="age_7_9_desc">رسائل قصيرة وعدّ تنازلي واقتراحات لأنشطة بعيدًا عن الشاشة</string>
     <string name="age_10_12">١٠–١٢ سنة</string>

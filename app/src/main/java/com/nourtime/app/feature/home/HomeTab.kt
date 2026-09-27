@@ -155,7 +155,11 @@ private fun BudgetRing(status: TimerStatus) {
             val arcSize = Size(size.width - stroke, size.height - stroke)
             drawArc(track, 0f, 360f, false, Offset(inset, inset), arcSize, style = Stroke(stroke))
             if (animated > 0f) {
-                drawArc(gold, -90f, 360f * animated, false, Offset(inset, inset), arcSize, style = Stroke(stroke, cap = StrokeCap.Round))
+                // Near a full ring the rounded ends would overlap into a notch; square them off there.
+                val sweep = 360f * animated
+                val capDegrees = Math.toDegrees((stroke / (arcSize.width / 2)).toDouble()).toFloat()
+                val cap = if (sweep >= 360f - capDegrees) StrokeCap.Butt else StrokeCap.Round
+                drawArc(gold, -90f, sweep, false, Offset(inset, inset), arcSize, style = Stroke(stroke, cap = cap))
             }
         }
         Column(horizontalAlignment = Alignment.CenterHorizontally) {

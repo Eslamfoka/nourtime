@@ -57,6 +57,7 @@ import androidx.lifecycle.viewModelScope
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.NourCard
 import com.nourtime.app.core.designsystem.component.NourDangerButton
+import com.nourtime.app.core.designsystem.component.NourDialogButton
 import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.designsystem.component.NourStar
@@ -363,10 +364,8 @@ private fun PeriodDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = { onSave(period) }, enabled = period.startMinute != period.endMinute) {
-                Text(stringResource(R.string.schedule_save))
-            }
+            NourDialogButton(stringResource(R.string.schedule_save), { onSave(period) }, enabled = period.startMinute != period.endMinute)
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
+        dismissButton = { NourDialogButton(stringResource(R.string.action_cancel), onDismiss) },
     )
 }

@@ -60,6 +60,7 @@
     <string name="sq_show_answer">Show answer</string>
     <string name="sq_hide_answer">Hide answer</string>
     <string name="sq_save">Save and continue</string>
+    <string name="sq_save_change">Save</string>
 
     <!-- Permissions -->
     <string name="perm_accessibility_title">Accessibility service</string>
@@ -133,7 +134,7 @@
     <string name="profile_girl">Girl</string>
     <string name="profile_age_label">Age</string>
     <string name="age_3_6">3–6 years</string>
-    <string name="age_3_6_desc">Big pictures and a short voice message, almost no text</string>
+    <string name="age_3_6_desc">Big pictures and almost no text</string>
     <string name="age_7_9">7–9 years</string>
     <string name="age_7_9_desc">Short messages, a countdown and off-screen activity ideas</string>
     <string name="age_10_12">10–12 years</string>

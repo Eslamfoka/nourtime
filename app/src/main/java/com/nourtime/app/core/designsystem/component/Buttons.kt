@@ -100,3 +100,26 @@ fun NourTextButton(
         Text(text, style = MaterialTheme.typography.labelLarge)
     }
 }
+
+/**
+ * An AlertDialog action. Material's default text-button color is the gold primary, too faint on the
+ * cream background; this uses the text color, or the error color for an action that removes something.
+ */
+@Composable
+fun NourDialogButton(
+    text: String,
+    onClick: () -> Unit,
+    enabled: Boolean = true,
+    destructive: Boolean = false,
+) {
+    TextButton(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = Modifier.heightIn(min = 48.dp),
+        colors = ButtonDefaults.textButtonColors(
+            contentColor = if (destructive) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface,
+        ),
+    ) {
+        Text(text, style = MaterialTheme.typography.labelLarge)
+    }
+}

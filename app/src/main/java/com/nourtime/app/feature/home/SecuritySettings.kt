@@ -9,13 +9,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.nourtime.app.R
+import com.nourtime.app.core.designsystem.component.FullScreenDialog
 import com.nourtime.app.core.security.PinCreation
 import com.nourtime.app.core.security.PinCreationState
 import com.nourtime.app.core.security.SecurityQuestionValidator
@@ -114,7 +113,7 @@ internal fun SecurityEditDialog(edit: SecurityEdit, onClose: () -> Unit, viewMod
         viewModel.consumeSaved()
         onClose()
     }
-    Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+    FullScreenDialog(onDismissRequest = onClose) {
         Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             when (edit) {
                 SecurityEdit.PIN -> {
@@ -138,6 +137,7 @@ internal fun SecurityEditDialog(edit: SecurityEdit, onClose: () -> Unit, viewMod
                         onAnswerChange = viewModel::onAnswerChange,
                         onConfirmationChange = viewModel::onConfirmationChange,
                         onSave = viewModel::saveQuestion,
+                        saveLabel = R.string.sq_save_change,
                     )
                 }
             }

@@ -72,6 +72,7 @@ fun SecurityQuestionStep(
     onAnswerChange: (String) -> Unit,
     onConfirmationChange: (String) -> Unit,
     onSave: () -> Unit,
+    @StringRes saveLabel: Int = R.string.sq_save,
 ) {
     var showAnswer by rememberSaveable { mutableStateOf(false) }
     val errors = form.errors
@@ -88,7 +89,7 @@ fun SecurityQuestionStep(
     StepLayout(
         progress = progress,
         onBack = onBack,
-        actions = { NourPrimaryButton(stringResource(R.string.sq_save), onSave, enabled = !form.saving) },
+        actions = { NourPrimaryButton(stringResource(saveLabel), onSave, enabled = !form.saving) },
     ) {
         Text(stringResource(R.string.sq_title), style = MaterialTheme.typography.headlineMedium)
         Text(

@@ -312,6 +312,4 @@ The rules tests use project `demo-nourtime-test` because they clear the database
 - Old commands never expire (e.g. a LOCK_NOW sent at night applies the next morning).
 - `RemoteSync` (and so Firebase) is instantiated on unpaired child phones; inject `dagger.Lazy`.
 - Lint: check `credential.type` before `GoogleIdTokenCredential.createFrom`.
-- App-wide: AlertDialog buttons are gold on cream (low contrast); full-screen app pickers put Done
-  partly under the gesture bar on Android 15.
 

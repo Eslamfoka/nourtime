@@ -27,8 +27,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,6 +36,7 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.CenteredScrollColumn
+import com.nourtime.app.core.designsystem.component.FullScreenDialog
 import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.designsystem.component.NourTextButton
@@ -95,7 +94,7 @@ fun AddChildDialog(user: ParentUser, onClose: () -> Unit, viewModel: AddChildVie
             .addOnSuccessListener { barcode -> barcode.rawValue?.let { viewModel.claim(it, user) } }
     }
 
-    Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+    FullScreenDialog(onDismissRequest = onClose) {
         Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             CenteredScrollColumn(Modifier.fillMaxSize().safeDrawingPadding().imePadding().padding(24.dp)) {
                 Column(

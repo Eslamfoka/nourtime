@@ -63,7 +63,7 @@ Tip: `adb logcat -s NourA11y BlockCoordinator LockOverlay TimerService` shows ev
 - [x] Change PIN and security question from Settings.
 - [x] Home "Used today" shows the minutes per app after using limited apps.
 
-Run on the API 35 emulator, 2026-09-27: all pass. Dragging a short (1-hour) period didn't move it; fixed in `ScheduleTab.kt` (the drag now starts from where the finger went down). Open polish notes: the Apps tab keeps the search text typed during onboarding; the 3–6 age option mentions a voice message that isn't recorded yet; the budget ring's rounded end leaves a notch when nearly full; the "change security question" screen from Settings says "Save and continue"; its bottom button sits partly under the gesture bar.
+Run on the API 35 emulator, 2026-09-27: all pass. Dragging a short (1-hour) period didn't move it; fixed in `ScheduleTab.kt` (the drag now starts from where the finger went down). Polish found in the same run, all fixed afterwards: the Apps tab kept the search text typed during onboarding; the 3–6 age option mentioned a voice message that isn't recorded; the budget ring's rounded end left a notch when nearly full; the "change security question" screen from Settings said "Save and continue"; full-screen dialogs put their bottom button under the gesture bar (`FullScreenDialog`); dialog buttons were gold on cream (`NourDialogButton`).
 
 ## 7. Phase 2: parent's phone (needs two phones and a Firebase project or the emulator)
 - [ ] Fresh install asks "Whose phone is this?"; an already set-up child phone goes straight to its PIN.

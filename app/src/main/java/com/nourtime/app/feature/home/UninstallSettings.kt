@@ -21,14 +21,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.nourtime.app.R
 import com.nourtime.app.core.blocking.ParentPass
+import com.nourtime.app.core.designsystem.component.FullScreenDialog
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.data.security.SecurityRepository
 import com.nourtime.app.feature.pin.AnswerCheckController
@@ -105,7 +104,7 @@ internal fun UninstallDialog(onClose: () -> Unit, viewModel: UninstallViewModel 
         viewModel.consumeOutcome()
         onClose()
     }
-    Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+    FullScreenDialog(onDismissRequest = onClose) {
         Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(
                 Modifier.safeDrawingPadding().imePadding().verticalScroll(rememberScrollState()),

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
@@ -22,7 +23,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,15 +35,15 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.nourtime.app.R
+import com.nourtime.app.core.designsystem.component.FullScreenDialog
 import com.nourtime.app.core.designsystem.component.NourCard
 import com.nourtime.app.core.designsystem.component.NourDangerButton
+import com.nourtime.app.core.designsystem.component.NourDialogButton
 import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.designsystem.theme.NourTheme
@@ -216,12 +216,12 @@ fun ChildDeviceScreen(deviceId: String, user: ParentUser, onBack: () -> Unit, vi
             title = { Text(stringResource(R.string.device_remove_title)) },
             text = { Text(stringResource(R.string.device_remove_body)) },
             confirmButton = {
-                TextButton(onClick = {
+                NourDialogButton(stringResource(R.string.device_remove), {
                     removing = false
                     viewModel.remove(onBack)
-                }) { Text(stringResource(R.string.device_remove)) }
+                }, destructive = true)
             },
-            dismissButton = { TextButton(onClick = { removing = false }) { Text(stringResource(R.string.action_cancel)) } },
+            dismissButton = { NourDialogButton(stringResource(R.string.action_cancel), { removing = false }) },
         )
     }
     val settings = device?.settings
@@ -308,9 +308,9 @@ private fun RemoteAppsDialog(
         rows = filterApps(candidates, query, pinned).map { AppRow(it, it.packageName in chosen) },
         limitedCount = chosen.size,
     )
-    Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+    FullScreenDialog(onDismissRequest = onClose) {
         Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            Column(Modifier.safeDrawingPadding().padding(horizontal = 24.dp, vertical = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(Modifier.safeDrawingPadding().imePadding().padding(horizontal = 24.dp, vertical = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
                     stringResource(if (kind == AppListKind.LIMITED) R.string.device_limited_apps else R.string.allowed_section),
                     style = MaterialTheme.typography.headlineSmall,
@@ -337,7 +337,7 @@ private fun ConfirmCommandDialog(command: TimerCommand, onConfirm: () -> Unit, o
         onDismissRequest = onDismiss,
         title = { Text(title) },
         text = { Text(body) },
-        confirmButton = { TextButton(onClick = onConfirm) { Text(stringResource(R.string.device_send)) } },
-        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) } },
+        confirmButton = { NourDialogButton(stringResource(R.string.device_send), onConfirm) },
+        dismissButton = { NourDialogButton(stringResource(R.string.action_cancel), onDismiss) },
     )
 }

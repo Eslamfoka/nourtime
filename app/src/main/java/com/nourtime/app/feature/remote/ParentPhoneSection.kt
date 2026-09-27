@@ -13,7 +13,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,8 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,8 +34,10 @@ import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.CenteredScrollColumn
+import com.nourtime.app.core.designsystem.component.FullScreenDialog
 import com.nourtime.app.core.designsystem.component.NourCard
 import com.nourtime.app.core.designsystem.component.NourDangerButton
+import com.nourtime.app.core.designsystem.component.NourDialogButton
 import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.designsystem.component.NourTextButton
@@ -189,13 +188,13 @@ fun ParentPhoneSection(viewModel: ParentPhoneViewModel = hiltViewModel()) {
             title = { Text(stringResource(R.string.remote_disconnect_title)) },
             text = { Text(stringResource(R.string.remote_disconnect_body)) },
             confirmButton = {
-                TextButton(onClick = {
+                NourDialogButton(stringResource(R.string.remote_disconnect), {
                     confirmDisconnect = false
                     viewModel.disconnect()
-                }) { Text(stringResource(R.string.remote_disconnect)) }
+                }, destructive = true)
             },
             dismissButton = {
-                TextButton(onClick = { confirmDisconnect = false }) { Text(stringResource(R.string.action_cancel)) }
+                NourDialogButton(stringResource(R.string.action_cancel), { confirmDisconnect = false })
             },
         )
     }
@@ -205,7 +204,7 @@ fun ParentPhoneSection(viewModel: ParentPhoneViewModel = hiltViewModel()) {
 
 @Composable
 private fun PairingDialog(state: PairingState, onAllow: () -> Unit, onRetry: () -> Unit, onClose: () -> Unit) {
-    Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+    FullScreenDialog(onDismissRequest = onClose) {
         Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             CenteredScrollColumn(Modifier.fillMaxSize().safeDrawingPadding().padding(24.dp)) {
                 Column(

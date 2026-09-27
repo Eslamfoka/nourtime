@@ -178,8 +178,9 @@ internal fun PermissionsSection(viewModel: PermissionsViewModel) {
     }
 }
 
+// Keyed: view models are activity-scoped here, and the onboarding apps step's search text shouldn't carry over.
 @Composable
-private fun AppsTab(padding: PaddingValues, viewModel: AppsViewModel = hiltViewModel()) {
+private fun AppsTab(padding: PaddingValues, viewModel: AppsViewModel = hiltViewModel(key = "apps-tab")) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     AppList(
         state = state,

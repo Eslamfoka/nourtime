@@ -22,11 +22,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.nourtime.app.R
 import com.nourtime.app.core.blocking.BlockDecision
 import com.nourtime.app.core.blocking.BlockReason
+import com.nourtime.app.core.designsystem.component.FullScreenDialog
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
 import com.nourtime.app.feature.setup.titleRes
@@ -36,7 +35,7 @@ import com.nourtime.app.feature.setup.titleRes
 fun TimeUpPreviewDialog(ageGroup: AgeGroup, gender: ChildGender, onDismiss: () -> Unit) {
     var kind by remember { mutableStateOf(TemplateKind.DEFAULT) }
     var age by remember { mutableStateOf(ageGroup) }
-    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+    FullScreenDialog(onDismissRequest = onDismiss) {
         Box(Modifier.fillMaxSize()) {
             TimeUpScreen(
                 state = LockScreenState(
