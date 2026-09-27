@@ -55,8 +55,14 @@ service cloud.firestore {
         && (resource == null || isGoogle() || resource.data.childUid == request.auth.uid);
       allow list: if false;
 
+      // expireAt is for the Firestore TTL policy that deletes abandoned codes (README); it may be up to
+      // 2 days away but never shorter than a code's 10 minutes.
       allow create: if signedIn()
-        && request.resource.data.keys().hasOnly(['deviceId', 'childUid', 'createdAt', 'claimedBy', 'claimedEmail', 'claimedName'])
+        && code.matches('^[0-9]{6}$')
+        && request.resource.data.keys().hasOnly(['deviceId', 'childUid', 'createdAt', 'expireAt', 'claimedBy', 'claimedEmail', 'claimedName'])
+        && request.resource.data.expireAt is timestamp
+        && request.resource.data.expireAt > request.time + duration.value(10, 'm')
+        && request.resource.data.expireAt < request.time + duration.value(2, 'd')
         && request.resource.data.childUid == request.auth.uid
         && request.resource.data.claimedBy == null
         && request.resource.data.createdAt == request.time

@@ -68,7 +68,9 @@ object TimeRules {
         var s = state
         if (budgetMs != s.budgetMs) {
             s = if (s.phase == TimerPhase.AVAILABLE) {
-                s.copy(remainingMs = (s.remainingMs + budgetMs - s.budgetMs).coerceIn(0, budgetMs), budgetMs = budgetMs)
+                // Moves the time left by the change. Without a bonus it stays within the budget; extra
+                // time a bonus added above the budget is kept.
+                s.copy(remainingMs = (s.remainingMs + budgetMs - s.budgetMs).coerceIn(0, MAX_REMAINING_MS), budgetMs = budgetMs)
             } else {
                 s.copy(budgetMs = budgetMs)
             }

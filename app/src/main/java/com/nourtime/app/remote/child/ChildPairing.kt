@@ -1,6 +1,7 @@
 package com.nourtime.app.remote.child
 
 import android.os.Build
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withTimeoutOrNull
+import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -57,6 +59,9 @@ class ChildPairing @Inject constructor(
                             "deviceId" to device.id,
                             "childUid" to uid,
                             "createdAt" to FieldValue.serverTimestamp(),
+                            // For the TTL policy that deletes abandoned codes; a day leaves room for a
+                            // wrong phone clock (the rules accept 10 minutes to 2 days from server time).
+                            "expireAt" to Timestamp(Date(System.currentTimeMillis() + CODE_CLEANUP_MS)),
                             "claimedBy" to null,
                             "claimedEmail" to null,
                             "claimedName" to null,
@@ -146,6 +151,7 @@ class ChildPairing @Inject constructor(
     private companion object {
         const val CODE_ATTEMPTS = 5
         const val ERASE_TIMEOUT_MS = 20_000L
+        const val CODE_CLEANUP_MS = 24 * 60 * 60_000L
         const val BATCH_LIMIT = 400
     }
 }

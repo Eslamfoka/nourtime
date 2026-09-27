@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.firebase.auth.FirebaseAuth
+import dagger.Lazy
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
@@ -25,8 +26,11 @@ data class PairedOwner(val uid: String, val email: String?, val name: String?)
 @Singleton
 class DeviceIdentity @Inject constructor(
     private val store: DataStore<Preferences>,
-    private val auth: FirebaseAuth,
+    // Lazy: reading the pairing must not start Firebase on phones that never pair.
+    private val authLazy: Lazy<FirebaseAuth>,
 ) {
+    private val auth: FirebaseAuth get() = authLazy.get()
+
     val pairedOwner: Flow<PairedOwner?> = store.data.map { prefs ->
         prefs[OWNER_UID]?.let { PairedOwner(it, prefs[OWNER_EMAIL], prefs[OWNER_NAME]) }
     }.distinctUntilChanged()
@@ -48,6 +52,21 @@ class DeviceIdentity @Inject constructor(
     /** Account deletion: removes this phone's anonymous account (a new one is made if it pairs again). */
     suspend fun deleteAccount() {
         auth.currentUser?.takeIf { it.isAnonymous }?.delete()?.await()
+    }
+
+    /**
+     * Starts over after this phone lost access to its device document (its anonymous account is
+     * gone): a new device id, not paired, and signed out so the next pairing makes a new account.
+     */
+    suspend fun reset() {
+        auth.signOut()
+        store.edit { prefs ->
+            prefs.remove(DEVICE_ID)
+            prefs.remove(OWNER_UID)
+            prefs.remove(OWNER_EMAIL)
+            prefs.remove(OWNER_NAME)
+            prefs.remove(ERASE_PENDING)
+        }
     }
 
     suspend fun deviceId(): String {

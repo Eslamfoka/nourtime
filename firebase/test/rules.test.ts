@@ -67,7 +67,7 @@ const unpairedDevice = { childUid: CHILD, ownerUid: null, ownerEmail: null, name
 const pairedDevice = { ...unpairedDevice, ownerUid: PARENT, ownerEmail: "parent-uid@example.com", settings };
 const openPairing = { deviceId: DEVICE, childUid: CHILD, createdAt: Timestamp.now(), claimedBy: null, claimedEmail: null, claimedName: null };
 /** What the child's phone writes: the server sets createdAt, and codes expire 10 minutes later. */
-const newPairing = { ...openPairing, createdAt: serverTimestamp() };
+const newPairing = { ...openPairing, createdAt: serverTimestamp(), expireAt: minutesFromNow(24 * 60) };
 
 beforeAll(async () => {
   env = await initializeTestEnvironment({
@@ -179,6 +179,21 @@ describe("pairings", () => {
   it("nobody can create a pairing for someone else's device", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
     await assertFails(setDoc(doc(anonymous(), "pairings", CODE), { ...newPairing, childUid: "someone-else" }));
+  });
+
+  it("pairing codes are exactly 6 digits", async () => {
+    await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
+    await assertFails(setDoc(doc(child(), "pairings", "12345"), newPairing));
+    await assertFails(setDoc(doc(child(), "pairings", "abcdef"), newPairing));
+    await assertFails(setDoc(doc(child(), "pairings", "1234567"), newPairing));
+  });
+
+  it("a pairing carries a clean-up time between 10 minutes and 2 days away (Firestore TTL)", async () => {
+    await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
+    const { expireAt: _, ...withoutExpiry } = newPairing;
+    await assertFails(setDoc(doc(child(), "pairings", CODE), withoutExpiry));
+    await assertFails(setDoc(doc(child(), "pairings", CODE), { ...newPairing, expireAt: minutesFromNow(5) }));
+    await assertFails(setDoc(doc(child(), "pairings", CODE), { ...newPairing, expireAt: minutesFromNow(3 * 24 * 60) }));
   });
 
   it("a pairing's start time is the server's, not the phone's clock", async () => {

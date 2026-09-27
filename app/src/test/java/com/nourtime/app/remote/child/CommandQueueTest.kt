@@ -17,7 +17,7 @@ class CommandQueueTest {
 
     @Test
     fun `applies in the order the parent sent them`() {
-        val due = CommandQueue.due(ownerUid = OWNER, docs = 
+        val due = CommandQueue.due(ownerUid = OWNER, nowMs = NOW, docs = 
             listOf(doc("b", 2_000, "LOCK_NOW"), doc("a", 1_000, "BONUS", 15), doc("c", 3_000, "END_LOCK")),
             alreadyApplied = emptySet(),
         )
@@ -27,20 +27,20 @@ class CommandQueueTest {
 
     @Test
     fun `a command delivered again is skipped`() {
-        val due = CommandQueue.due(ownerUid = OWNER, docs = listOf(doc("a", 1_000, "BONUS", 15), doc("b", 2_000, "LOCK_NOW")), alreadyApplied = setOf("a"))
+        val due = CommandQueue.due(ownerUid = OWNER, nowMs = NOW, docs = listOf(doc("a", 1_000, "BONUS", 15), doc("b", 2_000, "LOCK_NOW")), alreadyApplied = setOf("a"))
         assertEquals(listOf("b"), due.map { it.id })
     }
 
     @Test
     fun `invalid commands are consumed without effect`() {
-        val due = CommandQueue.due(ownerUid = OWNER, docs = listOf(doc("x", 1_000, "BONUS", 999), doc("y", 2_000, "WIPE")), alreadyApplied = emptySet())
+        val due = CommandQueue.due(ownerUid = OWNER, nowMs = NOW, docs = listOf(doc("x", 1_000, "BONUS", 999), doc("y", 2_000, "WIPE")), alreadyApplied = emptySet())
         assertEquals(listOf("x", "y"), due.map { it.id })
         assertEquals(listOf(null, null), due.map { it.command })
     }
 
     @Test
     fun `commands without a server time yet wait`() {
-        val due = CommandQueue.due(ownerUid = OWNER, docs = listOf(doc("a", null, "LOCK_NOW"), doc("b", 1_000, "END_LOCK")), alreadyApplied = emptySet())
+        val due = CommandQueue.due(ownerUid = OWNER, nowMs = NOW, docs = listOf(doc("a", null, "LOCK_NOW"), doc("b", 1_000, "END_LOCK")), alreadyApplied = emptySet())
         assertEquals(listOf("b"), due.map { it.id })
     }
 
@@ -55,7 +55,7 @@ class CommandQueueTest {
     @Test
     fun `commands from anyone but the current owner are consumed without effect`() {
         // A removed parent's commands, or ones sent before another parent paired (review I3).
-        val due = CommandQueue.due(ownerUid = OWNER, docs = listOf(doc("old", 1_000, "BONUS", 60, by = "removed-parent")), alreadyApplied = emptySet())
+        val due = CommandQueue.due(ownerUid = OWNER, nowMs = NOW, docs = listOf(doc("old", 1_000, "BONUS", 60, by = "removed-parent")), alreadyApplied = emptySet())
         assertEquals(listOf(DueCommand("old", null)), due)
     }
 
@@ -73,7 +73,23 @@ class CommandQueueTest {
         assertEquals(listOf("remember a", "apply Bonus(minutes=15)", "remember b", "apply LockNow"), events)
     }
 
+    @Test
+    fun `commands older than an hour are consumed without effect`() {
+        // Deferred review item: a "lock now" sent at night must not lock the phone the next morning.
+        val old = NOW - CommandQueue.EXPIRES_AFTER_MS - 1
+        val fresh = NOW - CommandQueue.EXPIRES_AFTER_MS + 60_000
+        val due = CommandQueue.due(ownerUid = OWNER, nowMs = NOW, docs = listOf(doc("a", old, "LOCK_NOW"), doc("b", fresh, "BONUS", 15)), alreadyApplied = emptySet())
+        assertEquals(listOf(DueCommand("a", null), DueCommand("b", TimerCommand.Bonus(15))), due)
+    }
+
+    @Test
+    fun `the parent's phone calls a command expired when it was applied too late`() {
+        assertEquals(false, CommandQueue.expired(createdAtMs = 0, appliedAtMs = CommandQueue.EXPIRES_AFTER_MS))
+        assertEquals(true, CommandQueue.expired(createdAtMs = 0, appliedAtMs = CommandQueue.EXPIRES_AFTER_MS + 1))
+    }
+
     private companion object {
         const val OWNER = "parent-uid"
+        const val NOW = 1_000_000L
     }
 }

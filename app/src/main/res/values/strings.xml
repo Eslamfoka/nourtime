@@ -364,6 +364,7 @@
     <string name="device_send">Send</string>
     <string name="device_command_pending">Sent · waiting for your child\'s phone…</string>
     <string name="device_command_applied">Done on your child\'s phone.</string>
+    <string name="device_command_expired">Not applied: your child\'s phone was offline for over an hour. Send it again if you still want it.</string>
     <string name="device_today">Today</string>
     <string name="device_today_none">No limited apps used yet today.</string>
     <string name="device_settings">Settings</string>

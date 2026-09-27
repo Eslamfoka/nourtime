@@ -38,14 +38,23 @@ fun statusMap(s: TimerStatus): Map<String, Any> = mapOf(
     "protectionDegraded" to s.protectionDegraded,
 )
 
-/** Uploads on anything the parent should see at once, and otherwise once a minute. */
+/**
+ * Uploads anything the parent should see at once; the remaining time once a minute while it counts
+ * down; and otherwise only a heartbeat, so an idle or locked phone doesn't write every minute (the
+ * parent's phone counts a lock down itself).
+ */
 object StatusThrottle {
     const val INTERVAL_MS = 60_000L
+    const val HEARTBEAT_MS = 10 * 60_000L
 
     fun shouldUpload(prev: TimerStatus?, next: TimerStatus, sinceLastMs: Long): Boolean =
         prev == null ||
             prev.phase != next.phase ||
             prev.protectionDegraded != next.protectionDegraded ||
             prev.budgetMs != next.budgetMs ||
-            sinceLastMs >= INTERVAL_MS
+            prev.counting != next.counting ||
+            next.remainingMs > prev.remainingMs ||
+            next.lockRemainingMs > prev.lockRemainingMs ||
+            (next.counting && sinceLastMs >= INTERVAL_MS) ||
+            sinceLastMs >= HEARTBEAT_MS
 }

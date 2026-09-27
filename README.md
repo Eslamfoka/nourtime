@@ -51,7 +51,10 @@ On the parent's phone, "Use a test account (emulator)" signs in without a real G
    Signing key. Google sign-in fails without them.
 5. Download **`google-services.json`** into **`app/`** (not `app/src/debug/`).
 6. Deploy the rules: `cd firebase && npx firebase deploy --only firestore:rules --project <your-project-id>`.
-7. Release builds now build and use it. To run a **debug** build against the real project, delete
+7. Turn on clean-up of abandoned pairing codes: Firestore → **TTL policies** → collection group
+   `pairings`, timestamp field `expireAt` (or `gcloud firestore fields ttls update expireAt
+   --collection-group=pairings --enable-ttl --project <your-project-id>`).
+8. Release builds now build and use it. To run a **debug** build against the real project, delete
    `app/src/debug/google-services.json` and build with `./gradlew assembleDebug -Pnourtime.firebaseEmulator=false`.
 
 The free Spark plan is enough to start (no Cloud Functions are used).

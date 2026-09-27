@@ -313,17 +313,21 @@ drops the `adb reverse` tunnels; add them again).
 - The parent's phone uses its own date for "today's" usage; a parent in another time zone sees the
   child's day shifted.
 
-### Deferred from the final review (minor)
-- Pairing codes are never cleaned up and the code space can be squatted: add a Firestore TTL policy, a
-  `^[0-9]{6}$` id check in the create rule, and let a child replace an expired code.
-- A lost anonymous account leaves the child phone "Connected" but failing: on PERMISSION_DENIED for its
-  own device, create a new device id and unpair.
-- Status uploads every 60 s even when idle (~1,440 writes/day/phone): upload on change plus a
-  10–15 min heartbeat. Related: a bonus while the apps are available shows on the parent's phone only
-  with the next minute's upload; upload when the remaining time jumps up.
-- `TimeEngine.apply` does nothing before the first saved timer state, yet the command is marked applied.
-- A later budget edit clamps remaining time that a bonus had pushed above the budget (Phase 1 rule).
-- Old commands never expire (e.g. a LOCK_NOW sent at night applies the next morning).
-- `RemoteSync` (and so Firebase) is instantiated on unpaired child phones; inject `dagger.Lazy`.
-- Lint: check `credential.type` before `GoogleIdTokenCredential.createFrom`.
+### Deferred review items (resolved 2026-09-27)
+- Pairing codes: the rules accept only 6-digit ids and require an `expireAt` 10 min–2 days ahead, for a
+  Firestore **TTL policy** on `pairings.expireAt` (README step 7) that deletes abandoned codes.
+- Lost anonymous account: if the child's phone can no longer read its own device (PERMISSION_DENIED,
+  checked again with a server read) it starts over, unpaired, with a new device id
+  (`DeviceIdentity.reset`); the parent removes the stale entry. Not reproducible on the emulator
+  (it doesn't verify accounts), so only covered by reasoning.
+- Status uploads: on every change the parent sees, once a minute while the timer counts, otherwise a
+  10-minute heartbeat (`StatusThrottle`, below the parent's 15-minute "not seen").
+- Commands wait for the timer's first state before applying (`TimeEngine.apply` needs one).
+- A budget edit moves the time left by the change and keeps extra time a bonus added above the budget.
+- Commands expire after an hour (`CommandQueue.EXPIRES_AFTER_MS`, by the child's trusted clock); the
+  parent's phone shows "Not applied: … offline for over an hour" (applied − created > 1 h).
+- Firebase starts only once the phone pairs: the timer service waits for a pairing before creating
+  `RemoteSync`, and `DeviceIdentity` gets `FirebaseAuth` lazily.
+- Sign-in checks the credential type. Lint's `CredentialManagerSignInWithGoogle` still warns
+  (false positive: the check is there).
 

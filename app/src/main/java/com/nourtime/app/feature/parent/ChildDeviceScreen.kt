@@ -256,7 +256,13 @@ private fun ActionsCard(summary: DeviceSummary, commands: List<SentCommand>, onC
         val latest = commands.firstOrNull()
         if (latest != null) {
             Text(
-                stringResource(if (latest.applied) R.string.device_command_applied else R.string.device_command_pending),
+                stringResource(
+                    when {
+                        latest.expired -> R.string.device_command_expired
+                        latest.applied -> R.string.device_command_applied
+                        else -> R.string.device_command_pending
+                    },
+                ),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

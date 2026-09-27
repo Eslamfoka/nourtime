@@ -17,6 +17,14 @@ class TimerCommandTest {
             .copy(phase = TimerPhase.LOCKED, remainingMs = 0, lockRemainingMs = lockLeft)
 
     @Test
+    fun `a later budget change keeps extra time above the budget`() {
+        // Deferred review item: 20 min left + a 60 min bonus, then the parent trims the budget by 15 min.
+        val withBonus = TimeRules.apply(available(remaining = 20 * min), TimerCommand.Bonus(60))
+        assertEquals(65 * min, TimeRules.applySettings(withBonus, budgetMs = 45 * min, lockMs = 6 * hour).remainingMs)
+        assertEquals(110 * min, TimeRules.applySettings(withBonus, budgetMs = 90 * min, lockMs = 6 * hour).remainingMs)
+    }
+
+    @Test
     fun `bonus while available adds to what is left`() {
         assertEquals(40 * min, TimeRules.apply(available(remaining = 10 * min), TimerCommand.Bonus(30)).remainingMs)
     }

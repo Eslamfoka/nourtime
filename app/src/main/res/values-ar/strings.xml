@@ -376,6 +376,7 @@
     <string name="device_send">إرسال</string>
     <string name="device_command_pending">أُرسل · بانتظار هاتف طفلك…</string>
     <string name="device_command_applied">تم على هاتف طفلك.</string>
+    <string name="device_command_expired">لم يُطبَّق: كان هاتف طفلك غير متصل لأكثر من ساعة. أرسله مرة أخرى إن كنت ما زلت تريده.</string>
     <string name="device_today">اليوم</string>
     <string name="device_today_none">لم تُستخدم التطبيقات المحددة اليوم بعد.</string>
     <string name="device_settings">الإعدادات</string>

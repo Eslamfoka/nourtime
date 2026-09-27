@@ -20,13 +20,26 @@ object CommandQueue {
     const val REMEMBERED = 50
 
     /**
-     * Commands to act on, oldest first. Only the current owner's commands take effect: one from a
-     * removed parent (or sent before another parent paired) is consumed without effect.
+     * A command that reaches the phone later than this (it was off or offline) is consumed without
+     * effect: a "lock now" sent at night must not lock the phone the next morning.
      */
-    fun due(ownerUid: String, docs: List<CommandDoc>, alreadyApplied: Set<String>): List<DueCommand> = docs
+    const val EXPIRES_AFTER_MS = 60 * 60_000L
+
+    /** For the parent's phone: an applied command that arrived too late did nothing. */
+    fun expired(createdAtMs: Long, appliedAtMs: Long): Boolean = appliedAtMs - createdAtMs > EXPIRES_AFTER_MS
+
+    /**
+     * Commands to act on, oldest first. Only the current owner's commands take effect: one from a
+     * removed parent (or sent before another parent paired) is consumed without effect, and so is one
+     * older than [EXPIRES_AFTER_MS] at [nowMs] (wall time).
+     */
+    fun due(ownerUid: String, nowMs: Long, docs: List<CommandDoc>, alreadyApplied: Set<String>): List<DueCommand> = docs
         .filter { it.id !in alreadyApplied && it.createdAtMs != null }
         .sortedWith(compareBy<CommandDoc> { it.createdAtMs }.thenBy { it.id })
-        .map { DueCommand(it.id, if (it.data["by"] == ownerUid) remoteCommandOf(it.data) else null) }
+        .map { doc ->
+            val live = doc.data["by"] == ownerUid && nowMs - doc.createdAtMs!! <= EXPIRES_AFTER_MS
+            DueCommand(doc.id, if (live) remoteCommandOf(doc.data) else null)
+        }
 
     /**
      * Remembers each command before applying it, one at a time: if the process dies in between, the

@@ -11,6 +11,7 @@ import com.google.firebase.firestore.Source
 import com.nourtime.app.core.timer.TimerCommand
 import com.nourtime.app.data.apps.InstalledApp
 import com.nourtime.app.remote.RemotePaths
+import com.nourtime.app.remote.child.CommandQueue
 import com.nourtime.app.remote.model.RemoteSettings
 import com.nourtime.app.remote.model.RemoteStatus
 import com.nourtime.app.remote.model.commandMap
@@ -36,8 +37,11 @@ data class ChildDevice(
     val settingsRev: Long,
 )
 
-/** A command the parent sent, and whether the child's phone has applied it yet. */
-data class SentCommand(val id: String, val command: TimerCommand?, val applied: Boolean)
+/**
+ * A command the parent sent, and whether the child's phone has applied it yet; [expired] when it
+ * arrived too late to take effect (the phone was off or offline, see CommandQueue.EXPIRES_AFTER_MS).
+ */
+data class SentCommand(val id: String, val command: TimerCommand?, val applied: Boolean, val expired: Boolean = false)
 
 /** The parent's side of Firestore (Phase 2). Every call needs a signed-in [ParentUser]. */
 @Singleton
@@ -130,7 +134,14 @@ class ParentDevices @Inject constructor(
                 } else if (snap != null) {
                     trySend(
                         snap.documents.map {
-                            SentCommand(it.id, remoteCommandOf(it.data.orEmpty()), it.getTimestamp("appliedAt") != null)
+                            val created = it.getTimestamp("createdAt")?.toDate()?.time
+                            val applied = it.getTimestamp("appliedAt")?.toDate()?.time
+                            SentCommand(
+                                it.id,
+                                remoteCommandOf(it.data.orEmpty()),
+                                applied = applied != null,
+                                expired = created != null && applied != null && CommandQueue.expired(created, applied),
+                            )
                         },
                     )
                 }

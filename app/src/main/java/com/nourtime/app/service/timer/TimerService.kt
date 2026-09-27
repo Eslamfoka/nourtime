@@ -19,8 +19,10 @@ import com.nourtime.app.core.timer.TimeEngine
 import com.nourtime.app.core.timer.TimerPhase
 import com.nourtime.app.data.settings.ParentSettingsRepository
 import com.nourtime.app.data.usage.UsageRepository
+import com.nourtime.app.remote.child.DeviceIdentity
 import com.nourtime.app.remote.child.RemoteSync
 import com.nourtime.app.service.blocking.BlockCoordinator
+import dagger.Lazy
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +35,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -53,7 +56,9 @@ class TimerService : Service() {
     @Inject lateinit var blocking: BlockCoordinator
     @Inject lateinit var usage: UsageRepository
     @Inject lateinit var trustedClock: TrustedClock
-    @Inject lateinit var remoteSync: RemoteSync
+    // Lazy: Firebase is only started once this phone pairs with a parent's phone.
+    @Inject lateinit var remoteSync: Lazy<RemoteSync>
+    @Inject lateinit var deviceIdentity: DeviceIdentity
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -91,8 +96,11 @@ class TimerService : Service() {
         scope.launch { resilient("degraded alert") { runDegradedAlert() } }
         scope.launch { resilient("blocking") { blocking.run() } }
         scope.launch { resilient("stats cleanup") { runStatsCleanup() } }
-        // Phase 2: only does anything while this phone is paired with a parent's phone.
-        scope.launch { resilient("remote sync") { remoteSync.run() } }
+        // Phase 2: only starts once this phone is paired with a parent's phone.
+        scope.launch {
+            deviceIdentity.pairedOwner.filterNotNull().first()
+            resilient("remote sync") { remoteSync.get().run() }
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_STICKY

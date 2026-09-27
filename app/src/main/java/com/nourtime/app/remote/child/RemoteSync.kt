@@ -10,8 +10,10 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.MetadataChanges
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.Source
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
@@ -87,6 +89,13 @@ class RemoteSync @Inject constructor(
                 false
             } catch (e: RemovedByParent) {
                 true
+            } catch (e: FirebaseFirestoreException) {
+                if (e.code != FirebaseFirestoreException.Code.PERMISSION_DENIED || canStillRead(device)) throw e
+                // This phone's anonymous account no longer owns the device (it was lost or deleted):
+                // it would fail every few seconds while showing "Connected". Start over, unpaired.
+                Log.w(TAG, "lost access to the device document; unpairing")
+                identity.reset()
+                false
             }
             if (removed) {
                 // Unpairs and deletes this phone's data from the server (see ChildPairing.disconnect).
@@ -94,6 +103,13 @@ class RemoteSync @Inject constructor(
                 withContext(NonCancellable) { pairing.disconnect() }
             }
         }
+    }
+
+    private suspend fun canStillRead(device: DocumentReference): Boolean = try {
+        device.get(Source.SERVER).await()
+        true
+    } catch (e: FirebaseFirestoreException) {
+        e.code != FirebaseFirestoreException.Code.PERMISSION_DENIED
     }
 
     /** Two-way settings sync, and noticing that the parent removed this phone. */
@@ -157,10 +173,13 @@ class RemoteSync @Inject constructor(
     }
 
     private suspend fun applyCommands(device: DocumentReference, owner: PairedOwner) {
+        // TimeEngine.apply needs a timer state; before the service's first update there is none, and
+        // the command would be consumed without effect.
+        engine.status.filterNotNull().first()
         device.collection(RemotePaths.COMMANDS).whereEqualTo("appliedAt", null).snapshots().collect { snap ->
             val docs = snap.documents.map { CommandDoc(it.id, it.getTimestamp("createdAt")?.toDate()?.time, it.data.orEmpty()) }
             var applied = store.data.first()[APPLIED_COMMANDS]?.split(",")?.filter { it.isNotEmpty() }.orEmpty()
-            val due = CommandQueue.due(owner.uid, docs, applied.toSet())
+            val due = CommandQueue.due(owner.uid, trustedClock.now().toInstant().toEpochMilli(), docs, applied.toSet())
             CommandQueue.runEach(
                 due,
                 remember = { id ->
