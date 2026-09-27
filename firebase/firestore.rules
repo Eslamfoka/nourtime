@@ -54,8 +54,10 @@ service cloud.firestore {
     }
 
     match /devices/{id} {
+      // A missing device can be "read" (it reveals nothing), so the child's phone can check
+      // whether its device exists before creating it.
       allow get: if signedIn()
-        && (resource.data.childUid == request.auth.uid || resource.data.ownerUid == request.auth.uid);
+        && (resource == null || resource.data.childUid == request.auth.uid || resource.data.ownerUid == request.auth.uid);
       allow list: if signedIn() && resource.data.ownerUid == request.auth.uid;
 
       allow create: if signedIn()

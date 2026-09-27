@@ -7,6 +7,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import com.nourtime.app.remote.model.RemoteSettings
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -77,5 +78,19 @@ class ParentSettingsRepositoryTest {
         assertEquals(40, TimeLimits.budget(41))
         assertEquals(1, TimeLimits.lockPeriod(0))
         assertEquals(24, TimeLimits.lockPeriod(30))
+    }
+
+    @Test
+    fun `settings from the parent's phone keep the child-only ones`() = runTest {
+        repo.setSoundEnabled(false)
+        repo.setAgeGroup(AgeGroup.AGES_7_9)
+        val remote = RemoteSettings.of(ParentSettings(budgetMinutes = 90, limitedApps = setOf("a"), allowedDuringLock = setOf("b")))
+        repo.replaceWith(remote)
+        val s = repo.settings.first()
+        assertEquals(90, s.budgetMinutes)
+        assertEquals(setOf("a"), s.limitedApps)
+        assertEquals(setOf("b"), s.allowedDuringLock)
+        assertEquals(false, s.soundEnabled)
+        assertEquals(AgeGroup.AGES_7_9, s.ageGroup)
     }
 }

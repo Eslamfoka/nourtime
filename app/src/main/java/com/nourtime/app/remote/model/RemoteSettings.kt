@@ -32,6 +32,19 @@ data class RemoteSettings(
         "by" to by,
     )
 
+    /** A compact string for the local sync state (package names never contain the separators). */
+    fun encode(): String = listOf(
+        budgetMinutes.toString(),
+        lockPeriodHours.toString(),
+        lockType.name,
+        limitedApps.sorted().joinToString(LIST_SEP),
+        allowedDuringLock.sorted().joinToString(LIST_SEP),
+        bedtime.enabled.toString(),
+        bedtime.startMinute.toString(),
+        bedtime.endMinute.toString(),
+        dailyResetMinute?.toString().orEmpty(),
+    ).joinToString(FIELD_SEP)
+
     /** [base] with these values; the child-only settings are kept. */
     fun applyTo(base: ParentSettings): ParentSettings = base.copy(
         budgetMinutes = budgetMinutes,
@@ -44,6 +57,26 @@ data class RemoteSettings(
     )
 
     companion object {
+        private const val FIELD_SEP = ""
+        private const val LIST_SEP = ","
+        private const val FIELDS = 9
+
+        fun decode(text: String?): RemoteSettings? {
+            val f = text?.split(FIELD_SEP)?.takeIf { it.size == FIELDS } ?: return null
+            fun set(s: String) = if (s.isEmpty()) emptySet() else s.split(LIST_SEP).toSet()
+            return runCatching {
+                RemoteSettings(
+                    budgetMinutes = f[0].toInt(),
+                    lockPeriodHours = f[1].toInt(),
+                    lockType = LockType.valueOf(f[2]),
+                    limitedApps = set(f[3]),
+                    allowedDuringLock = set(f[4]),
+                    bedtime = Bedtime(f[5].toBooleanStrict(), f[6].toInt(), f[7].toInt()),
+                    dailyResetMinute = f[8].ifEmpty { null }?.toInt(),
+                )
+            }.getOrNull()
+        }
+
         const val BY_CHILD = "child"
         const val BY_PARENT = "parent"
         private const val MINUTES_PER_DAY = 24 * 60

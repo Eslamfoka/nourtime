@@ -70,4 +70,17 @@ class RemoteSettingsTest {
         assertEquals(false, merged.soundEnabled)
         assertEquals(false, merged.protectSystemSettings)
     }
+
+    @Test
+    fun `the stored snapshot round-trips`() {
+        val r = RemoteSettings.of(local)
+        assertEquals(r, RemoteSettings.decode(r.encode()))
+        assertEquals(RemoteSettings.of(ParentSettings()), RemoteSettings.decode(RemoteSettings.of(ParentSettings()).encode()))
+    }
+
+    @Test
+    fun `a damaged snapshot reads as none`() {
+        assertNull(RemoteSettings.decode("garbage"))
+        assertNull(RemoteSettings.decode(null))
+    }
 }

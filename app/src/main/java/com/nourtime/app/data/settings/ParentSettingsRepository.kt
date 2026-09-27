@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import com.nourtime.app.remote.model.RemoteSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -110,6 +111,20 @@ class ParentSettingsRepository @Inject constructor(
         it[BEDTIME_ON] = bedtime.enabled
         it[BEDTIME_START] = bedtime.startMinute.coerceIn(0, MINUTES_PER_DAY - 1)
         it[BEDTIME_END] = bedtime.endMinute.coerceIn(0, MINUTES_PER_DAY - 1)
+    }
+
+    /** Settings from the parent's phone (Phase 2); the child-only settings stay as they are. */
+    suspend fun replaceWith(r: RemoteSettings) = store.edit { prefs ->
+        prefs[BUDGET] = TimeLimits.budget(r.budgetMinutes)
+        prefs[LOCK_HOURS] = TimeLimits.lockPeriod(r.lockPeriodHours)
+        prefs[LOCK_TYPE] = r.lockType.name
+        prefs[LIMITED_APPS] = r.limitedApps
+        prefs[ALLOWED_DURING_LOCK] = r.allowedDuringLock - r.limitedApps
+        prefs[BEDTIME_ON] = r.bedtime.enabled
+        prefs[BEDTIME_START] = r.bedtime.startMinute.coerceIn(0, MINUTES_PER_DAY - 1)
+        prefs[BEDTIME_END] = r.bedtime.endMinute.coerceIn(0, MINUTES_PER_DAY - 1)
+        val reset = r.dailyResetMinute
+        if (reset == null) prefs.remove(DAILY_RESET) else prefs[DAILY_RESET] = reset.coerceIn(0, MINUTES_PER_DAY - 1)
     }
 
     /** Limiting an app takes it off the allowed-during-lock list. */

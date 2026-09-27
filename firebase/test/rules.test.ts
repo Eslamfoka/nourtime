@@ -71,7 +71,8 @@ const newPairing = { ...openPairing, createdAt: serverTimestamp() };
 
 beforeAll(async () => {
   env = await initializeTestEnvironment({
-    projectId: "demo-nourtime",
+    // Separate from the app's demo-nourtime data: these tests clear the database.
+    projectId: "demo-nourtime-test",
     firestore: { rules: readFileSync("firestore.rules", "utf8"), host: "127.0.0.1", port: 8080 },
   });
 });
@@ -88,6 +89,10 @@ describe("devices", () => {
   it("can't be read without signing in", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), pairedDevice));
     await assertFails(getDoc(doc(unauthenticated(), "devices", DEVICE)));
+  });
+
+  it("a signed-in phone can see that a device doesn't exist yet", async () => {
+    await assertSucceeds(getDoc(doc(child(), "devices", "not-created-yet")));
   });
 
   it("the child phone creates its own unpaired device", async () => {

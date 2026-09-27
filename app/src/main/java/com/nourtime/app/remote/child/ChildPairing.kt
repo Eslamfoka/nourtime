@@ -1,19 +1,15 @@
 package com.nourtime.app.remote.child
 
 import android.os.Build
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
 import com.nourtime.app.remote.RemotePaths
 import com.nourtime.app.remote.model.PairingCode
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,27 +22,23 @@ import javax.inject.Singleton
 class ChildPairing @Inject constructor(
     private val identity: DeviceIdentity,
     private val firestore: FirebaseFirestore,
-    private val store: DataStore<Preferences>,
 ) {
     /** Makes sure the device document exists, then stores a fresh unused code. Needs the network. */
     suspend fun createCode(): String {
         val uid = identity.ensureSignedIn()
         val device = deviceRef()
-        if (store.data.first()[DEVICE_CREATED] != true) {
-            // A new device id is never in use, so this is a create (the rules need ownerUid == null).
-            device.set(
-                mapOf(
-                    "childUid" to uid,
-                    "ownerUid" to null,
-                    "ownerEmail" to null,
-                    "name" to deviceName(),
-                    "createdAt" to FieldValue.serverTimestamp(),
-                ),
-            ).await()
-            store.edit { it[DEVICE_CREATED] = true }
-        } else {
-            // Never set(): it would clear ownerUid on a paired device.
+        val create = mapOf(
+            "childUid" to uid,
+            "ownerUid" to null,
+            "ownerEmail" to null,
+            "name" to deviceName(),
+            "createdAt" to FieldValue.serverTimestamp(),
+        )
+        // Never set() an existing device: it would clear ownerUid. The server copy decides.
+        if (device.get(Source.SERVER).await().exists()) {
             device.update("name", deviceName()).await()
+        } else {
+            device.set(create).await()
         }
         repeat(CODE_ATTEMPTS) {
             val code = PairingCode.generate()
@@ -113,6 +105,5 @@ class ChildPairing @Inject constructor(
 
     private companion object {
         const val CODE_ATTEMPTS = 5
-        val DEVICE_CREATED = booleanPreferencesKey("remote_device_created")
     }
 }
