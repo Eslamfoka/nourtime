@@ -1,6 +1,7 @@
 # Nour Time: progress against the brief
 
-Status as of 2026-09-27. Legend: ✅ done · 🟡 done with a noted difference · ⏳ pending.
+Status as of 2026-09-27. A copy of the brief with the status of every requirement, plus Phase 4, is in
+[`brief-with-status.md`](brief-with-status.md). Legend: ✅ done · 🟡 done with a noted difference · ⏳ pending.
 
 Phase 1 is feature-complete on the emulator (Android 12 and 15). What's left is testing on real
 phones, recorded audio, release plumbing, Phase 1.5 (below) and Phase 2.
@@ -79,8 +80,8 @@ reason · PIN + security question · apps, time and lock type, child's gender an
 
 ### §10 Google Play readiness (Phase 3)
 🟡 Drafts done: [`privacy-policy.md`](privacy-policy.md), [`play-compliance.md`](play-compliance.md)
-(Accessibility declaration text, permission justifications, Data safety answers). No `INTERNET`
-permission; backups disabled. ⏳ Release signing, store listing, Accessibility demo video.
+(Accessibility declaration text, permission justifications, Data safety answers). `INTERNET` is used only by Phase 2
+(Firebase, after pairing); backups disabled. ⏳ Release signing, store listing, Accessibility demo video.
 
 ### §12 Design and UX
 ✅ Palette, bundled Cairo/Nunito, 16 dp cards, bottom bar (Home / Apps / Schedule / Settings), gold
