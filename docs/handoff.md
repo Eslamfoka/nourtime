@@ -363,3 +363,41 @@ Timings (`AskPolicy`): a pending request lapses after 30 min; after "Not now" th
 request is queued and shows "Waiting…" at once. There is no push notification to the parent (needs FCM +
 Cloud Functions); the parent sees it on opening the app.
 
+## 9. Resume here (2026-09-28, real Firebase project)
+
+**State:** branch `phase4` (not merged into `master`): 4a weekend limits, 4b usage history, 4c ask for
+more time, all tested on the emulators with the Firebase emulator. Status against the brief, for outside
+review: [`brief-with-status.md`](brief-with-status.md).
+
+**Real Firebase project `nourtime-8d4ce`** (Spark plan, no billing):
+- Anonymous + Google sign-in enabled; debug-key SHA-1/SHA-256 added
+  (SHA-1 `CA:D6:D5:08:12:A6:FF:34:9C:77:73:02:31:BE:FA:1F:DD:66:D9:BA`).
+- `app/google-services.json` is the real config (**not committed**, by the owner's choice).
+- Firestore rules were **published by hand in the console** from `firebase/firestore.rules`. Whenever the
+  rules change, publish them again (console, or `node node_modules/firebase-tools/lib/bin/firebase.js
+  deploy --only firestore:rules --project nourtime-8d4ce` from `firebase/` after a login; `npx firebase`
+  hangs on this PC and the CLI isn't logged in).
+- No TTL policy (needs billing); the app deletes codes itself (README step 7).
+
+**Build against the real project** (debug build, real Firebase instead of the local emulator):
+```
+mv app/src/debug/google-services.json <somewhere-outside>/   # the demo config would win for debug
+./gradlew :app:assembleDebug -Pnourtime.firebaseEmulator=false
+mv <somewhere-outside>/google-services.json app/src/debug/   # restore for emulator work
+```
+Built once on 2026-09-28 00:19 (OK). Rebuild after any code change. Don't run `adb reverse` for 8080/9099
+with this build (it ignores them anyway).
+
+**Next steps, in order:**
+1. **Emulator vs the real project:** install that APK on `nourdm-api35` (child) and `nourdm-api31`
+   (parent). The parent needs a real Google account on the emulator (Settings → Accounts; the owner types
+   the password), then *Sign in with Google*. Pair with the 6-digit code; check status, extra time, lock /
+   end lock, settings both ways, ask for more time, and the documents in the Firebase console.
+2. **Real devices:** child = the owner's **HONOR VNE-N41** (Android 12) over USB (uninstall any old Nour
+   Time first; it was removed earlier), parent = the `nourdm-api31` emulator with the 6-digit code (the
+   emulator has no camera). Run [`testing-checklist.md`](testing-checklist.md) §7 (remote) and §8 (Phase
+   4), plus the Phase 1.5 re-tests on Honor (detection freeze, Settings cover, onboarding brand texts).
+   Watch `adb logcat -s NourA11y BlockCoordinator LockOverlay TimerService RemoteSync`. Don't run
+   `uiautomator dump` while testing detection; the phone may be in use, so check before sending input.
+3. Then ask the owner whether to merge `phase4` into `master`.
+
