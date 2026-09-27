@@ -30,23 +30,23 @@ service cloud.firestore {
       return signedIn() && device(id).ownerUid == request.auth.uid;
     }
 
-    // Short-lived pairing codes. Claiming one does nothing until the child's phone confirms.
+    // Pairing codes, valid 10 minutes from createdAt (server time, so the phone's clock doesn't
+    // matter). Claiming one does nothing until the child's phone confirms.
     match /pairings/{code} {
       allow get: if signedIn();
       allow list: if false;
 
       allow create: if signedIn()
-        && request.resource.data.keys().hasOnly(['deviceId', 'childUid', 'expiresAt', 'claimedBy', 'claimedEmail', 'claimedName'])
+        && request.resource.data.keys().hasOnly(['deviceId', 'childUid', 'createdAt', 'claimedBy', 'claimedEmail', 'claimedName'])
         && request.resource.data.childUid == request.auth.uid
         && request.resource.data.claimedBy == null
-        && request.resource.data.expiresAt is timestamp
-        && request.resource.data.expiresAt <= request.time + duration.value(11, 'm')
+        && request.resource.data.createdAt == request.time
         && exists(/databases/$(database)/documents/devices/$(request.resource.data.deviceId))
         && device(request.resource.data.deviceId).childUid == request.auth.uid;
 
       allow update: if isGoogle()
         && resource.data.claimedBy == null
-        && request.time < resource.data.expiresAt
+        && request.time < resource.data.createdAt + duration.value(10, 'm')
         && changedOnly(['claimedBy', 'claimedEmail', 'claimedName'])
         && request.resource.data.claimedBy == request.auth.uid;
 
@@ -69,7 +69,7 @@ service cloud.firestore {
           && request.resource.data.childUid == resource.data.childUid)
         || (resource.data.ownerUid == request.auth.uid
           && (changedOnly(['settings'])
-            || (changedOnly(['ownerUid', 'ownerEmail']) && request.resource.data.ownerUid == null)))
+            || (changedOnly(['ownerUid', 'ownerEmail', 'ownerName']) && request.resource.data.ownerUid == null)))
       );
 
       allow delete: if false;

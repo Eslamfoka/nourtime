@@ -65,7 +65,9 @@ async function seed(write: (db: Firestore) => Promise<unknown>) {
 
 const unpairedDevice = { childUid: CHILD, ownerUid: null, ownerEmail: null, name: "Pixel", createdAt: Timestamp.now() };
 const pairedDevice = { ...unpairedDevice, ownerUid: PARENT, ownerEmail: "parent-uid@example.com", settings };
-const openPairing = { deviceId: DEVICE, childUid: CHILD, expiresAt: minutesFromNow(10), claimedBy: null, claimedEmail: null, claimedName: null };
+const openPairing = { deviceId: DEVICE, childUid: CHILD, createdAt: Timestamp.now(), claimedBy: null, claimedEmail: null, claimedName: null };
+/** What the child's phone writes: the server sets createdAt, and codes expire 10 minutes later. */
+const newPairing = { ...openPairing, createdAt: serverTimestamp() };
 
 beforeAll(async () => {
   env = await initializeTestEnvironment({
@@ -132,7 +134,7 @@ describe("devices", () => {
 
   it("the parent can remove itself", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), pairedDevice));
-    await assertSucceeds(updateDoc(doc(parent(), "devices", DEVICE), { ownerUid: null, ownerEmail: null }));
+    await assertSucceeds(updateDoc(doc(parent(), "devices", DEVICE), { ownerUid: null, ownerEmail: null, ownerName: null }));
   });
 
   it("the child writes its status and can disconnect", async () => {
@@ -151,17 +153,23 @@ describe("devices", () => {
 describe("pairings", () => {
   it("the child creates a pairing for its own device", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
-    await assertSucceeds(setDoc(doc(child(), "pairings", CODE), openPairing));
+    await assertSucceeds(setDoc(doc(child(), "pairings", CODE), newPairing));
   });
 
   it("nobody can create a pairing for someone else's device", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
-    await assertFails(setDoc(doc(anonymous(), "pairings", CODE), { ...openPairing, childUid: "someone-else" }));
+    await assertFails(setDoc(doc(anonymous(), "pairings", CODE), { ...newPairing, childUid: "someone-else" }));
   });
 
-  it("a pairing can't be valid for more than 11 minutes", async () => {
+  it("a pairing's start time is the server's, not the phone's clock", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
-    await assertFails(setDoc(doc(child(), "pairings", CODE), { ...openPairing, expiresAt: minutesFromNow(60) }));
+    await assertFails(setDoc(doc(child(), "pairings", CODE), { ...openPairing, createdAt: minutesFromNow(60) }));
+  });
+
+  it("an existing code can't be overwritten", async () => {
+    await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
+    await seed((db) => setDoc(doc(db, "pairings", CODE), { ...openPairing, childUid: "someone-else" }));
+    await assertFails(setDoc(doc(child(), "pairings", CODE), newPairing));
   });
 
   it("a Google-signed-in parent claims an open code", async () => {
@@ -183,7 +191,7 @@ describe("pairings", () => {
   });
 
   it("an expired code can't be claimed", async () => {
-    await seed((db) => setDoc(doc(db, "pairings", CODE), { ...openPairing, expiresAt: minutesFromNow(-1) }));
+    await seed((db) => setDoc(doc(db, "pairings", CODE), { ...openPairing, createdAt: minutesFromNow(-11) }));
     await assertFails(updateDoc(doc(parent(), "pairings", CODE), { claimedBy: PARENT }));
   });
 

@@ -58,6 +58,7 @@ import com.nourtime.app.core.ui.startFirstAvailable
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
 import com.nourtime.app.feature.lock.TimeUpPreviewDialog
+import com.nourtime.app.feature.remote.ParentPhoneSection
 import com.nourtime.app.feature.onboarding.ui
 import com.nourtime.app.feature.schedule.ScheduleTab
 import com.nourtime.app.feature.setup.AppList
@@ -236,6 +237,8 @@ private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewMod
             if (previewing) {
                 TimeUpPreviewDialog(s.ageGroup ?: AgeGroup.AGES_3_6, s.gender ?: ChildGender.GIRL) { previewing = false }
             }
+            Text(stringResource(R.string.remote_section), style = MaterialTheme.typography.titleLarge)
+            ParentPhoneSection()
             var uninstalling by remember { mutableStateOf(false) }
             NourDangerButton(stringResource(R.string.uninstall_button), { uninstalling = true })
             if (uninstalling) UninstallDialog(onClose = { uninstalling = false })
