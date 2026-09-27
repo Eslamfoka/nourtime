@@ -2,6 +2,7 @@ package com.nourtime.app.remote.child
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.firebase.auth.FirebaseAuth
@@ -30,9 +31,24 @@ class DeviceIdentity @Inject constructor(
         prefs[OWNER_UID]?.let { PairedOwner(it, prefs[OWNER_EMAIL], prefs[OWNER_NAME]) }
     }.distinctUntilChanged()
 
+    /** True while this phone's data is still in Firestore after a disconnect that couldn't finish. */
+    val erasePending: Flow<Boolean> = store.data.map { it[ERASE_PENDING] == true }.distinctUntilChanged()
+
+    suspend fun setErasePending(pending: Boolean) {
+        store.edit { if (pending) it[ERASE_PENDING] = true else it.remove(ERASE_PENDING) }
+    }
+
     /** Signs in anonymously if needed and returns the account id. */
     suspend fun ensureSignedIn(): String =
         auth.currentUser?.uid ?: auth.signInAnonymously().await().user?.uid ?: error("Anonymous sign-in returned no user")
+
+    /** True once this phone has started pairing at least once, so it may have data in Firestore. */
+    suspend fun usedRemote(): Boolean = store.data.first()[DEVICE_ID] != null && auth.currentUser != null
+
+    /** Account deletion: removes this phone's anonymous account (a new one is made if it pairs again). */
+    suspend fun deleteAccount() {
+        auth.currentUser?.takeIf { it.isAnonymous }?.delete()?.await()
+    }
 
     suspend fun deviceId(): String {
         store.data.first()[DEVICE_ID]?.let { return it }
@@ -62,5 +78,6 @@ class DeviceIdentity @Inject constructor(
         val OWNER_UID = stringPreferencesKey("remote_owner_uid")
         val OWNER_EMAIL = stringPreferencesKey("remote_owner_email")
         val OWNER_NAME = stringPreferencesKey("remote_owner_name")
+        val ERASE_PENDING = booleanPreferencesKey("remote_erase_pending")
     }
 }

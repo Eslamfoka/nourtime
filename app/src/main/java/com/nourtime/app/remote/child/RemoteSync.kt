@@ -10,6 +10,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.MetadataChanges
 import com.google.firebase.firestore.QuerySnapshot
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.time.TrustedClock
@@ -26,6 +27,7 @@ import com.nourtime.app.remote.model.SyncAction
 import com.nourtime.app.remote.model.statusMap
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -38,6 +40,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -59,6 +62,7 @@ class RemoteSync @Inject constructor(
     private val apps: InstalledAppsRepository,
     private val trustedClock: TrustedClock,
     private val clock: DeviceClock,
+    private val pairing: ChildPairing,
 ) {
     suspend fun run() {
         identity.pairedOwner.collectLatest { owner ->
@@ -69,15 +73,25 @@ class RemoteSync @Inject constructor(
             // paired: a parent who removed it while it was offline gets no commands applied and no
             // more uploads.
             val confirmed = CompletableDeferred<Unit>()
-            coroutineScope {
-                launch { syncSettings(device, owner, confirmed) }
-                launch {
-                    confirmed.await()
-                    launch { applyCommands(device, owner) }
-                    launch { uploadStatus(device) }
-                    launch { uploadUsage(device) }
-                    launch { uploadApps(device) }
+            val removed = try {
+                coroutineScope {
+                    launch { syncSettings(device, owner, confirmed) }
+                    launch {
+                        confirmed.await()
+                        launch { applyCommands(device, owner) }
+                        launch { uploadStatus(device) }
+                        launch { uploadUsage(device) }
+                        launch { uploadApps(device) }
+                    }
                 }
+                false
+            } catch (e: RemovedByParent) {
+                true
+            }
+            if (removed) {
+                // Unpairs and deletes this phone's data from the server (see ChildPairing.disconnect).
+                // Clearing the owner cancels this block, so the erase must not be cancelled with it.
+                withContext(NonCancellable) { pairing.disconnect() }
             }
         }
     }
@@ -91,10 +105,9 @@ class RemoteSync @Inject constructor(
         val localChanges = settings.settings.debounce(LOCAL_SETTINGS_DEBOUNCE_MS)
         combine(localChanges, device.snapshots()) { _, snap -> snap }.collect { snap ->
             val localSettings = RemoteSettings.of(settings.settings.first())
-            if (!PairingCheck.stillPaired(owner, snap.exists(), snap.getString("ownerUid"))) {
+            if (!PairingCheck.stillPaired(owner, snap.exists(), snap.metadata.isFromCache, snap.getString("ownerUid"))) {
                 Log.i(TAG, "the parent removed this phone")
-                identity.setPairedOwner(null)
-                return@collect
+                throw RemovedByParent()
             }
             if (snap.exists() && !snap.metadata.isFromCache) confirmed.complete(Unit)
             @Suppress("UNCHECKED_CAST")
@@ -214,8 +227,16 @@ class RemoteSync @Inject constructor(
     }
 }
 
+/**
+ * Includes metadata-only changes: when the cached copy already equals the server's (after an app
+ * restart, or re-pairing in the same process), the server's confirmation changes only
+ * `isFromCache`, and without this that event never arrives, so the sync would wait forever.
+ */
+/** Ends the sync for this pairing; the phone then unpairs and deletes its server data. */
+private class RemovedByParent : Exception()
+
 private fun DocumentReference.snapshots(): Flow<DocumentSnapshot> = callbackFlow {
-    val registration = addSnapshotListener { snap, error ->
+    val registration = addSnapshotListener(MetadataChanges.INCLUDE) { snap, error ->
         if (error != null) close(error) else if (snap != null) trySend(snap)
     }
     awaitClose { registration.remove() }

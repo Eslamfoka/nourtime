@@ -297,7 +297,10 @@
     <string name="remote_connected">Connected to %1$s</string>
     <string name="remote_disconnect">Disconnect</string>
     <string name="remote_disconnect_title">Disconnect the parent\'s phone?</string>
-    <string name="remote_disconnect_body">It will no longer see or control this phone. You can connect again at any time.</string>
+    <string name="remote_disconnect_body">It will no longer see or control this phone, and this phone\'s data (usage, app list, commands) is deleted from the server. You can connect again at any time.</string>
+    <string name="remote_erasing">Deleting this phone\'s data from the server…</string>
+    <string name="remote_erase_pending">This phone\'s data couldn\'t be deleted from the server (no internet connection).</string>
+    <string name="remote_erase_retry">Try again</string>
     <string name="pair_title">Connect a parent\'s phone</string>
     <string name="pair_scan">On your phone, open Nour Time, tap \"Add a child\'s phone\" and scan this code.</string>
     <string name="pair_qr_description">Pairing QR code</string>
@@ -321,6 +324,12 @@
     <string name="parent_signin_error">Couldn\'t sign in. Check the internet connection and try again.</string>
     <string name="parent_home_title">Your children\'s phones</string>
     <string name="parent_sign_out">Sign out</string>
+    <string name="parent_delete_account">Delete my account</string>
+    <string name="parent_delete_title">Delete your account?</string>
+    <string name="parent_delete_body">Your children\'s phones will be disconnected from you, and your account and the commands you sent are deleted. Nour Time keeps working on those phones with their current settings.</string>
+    <string name="parent_delete_confirm">Delete</string>
+    <string name="parent_deleting">Deleting your account…</string>
+    <string name="parent_delete_error">Couldn\'t delete the account. Check the internet connection and try again.</string>
     <string name="parent_no_children">No phones yet. On your child\'s phone open Nour Time, go to Settings → Parent\'s phone and tap \"Connect a parent\'s phone\".</string>
     <string name="parent_add_child">Add a child\'s phone</string>
     <string name="parent_summary_unknown">Waiting for the first update</string>

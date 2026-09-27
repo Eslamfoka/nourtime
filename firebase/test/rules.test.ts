@@ -162,10 +162,11 @@ describe("devices", () => {
     await assertSucceeds(updateDoc(doc(child(), "devices", DEVICE), { ownerUid: null, ownerEmail: null }));
   });
 
-  it("devices are never deleted", async () => {
+  it("only the child phone deletes its device (account deletion)", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), pairedDevice));
-    await assertFails(deleteDoc(doc(child(), "devices", DEVICE)));
     await assertFails(deleteDoc(doc(parent(), "devices", DEVICE)));
+    await assertFails(deleteDoc(doc(anonymous(), "devices", DEVICE)));
+    await assertSucceeds(deleteDoc(doc(child(), "devices", DEVICE)));
   });
 });
 
@@ -265,6 +266,17 @@ describe("usage and app list", () => {
     await assertSucceeds(getDoc(doc(parent(), "devices", DEVICE, "meta", "apps")));
   });
 
+  it("the child deletes them", async () => {
+    await seed(async (db) => {
+      await setDoc(doc(db, "devices", DEVICE), pairedDevice);
+      await setDoc(doc(db, "devices", DEVICE, "usage", "2026-09-27"), { ms: { a: 1 } });
+      await setDoc(doc(db, "devices", DEVICE, "meta", "apps"), { apps: [] });
+    });
+    await assertFails(deleteDoc(doc(parent(), "devices", DEVICE, "usage", "2026-09-27")));
+    await assertSucceeds(deleteDoc(doc(child(), "devices", DEVICE, "usage", "2026-09-27")));
+    await assertSucceeds(deleteDoc(doc(child(), "devices", DEVICE, "meta", "apps")));
+  });
+
   it("the parent can't write them and strangers can't read them", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), pairedDevice));
     await assertFails(setDoc(doc(parent(), "devices", DEVICE, "usage", "2026-09-27"), { ms: {} }));
@@ -317,5 +329,20 @@ describe("commands", () => {
     await assertSucceeds(updateDoc(doc(child(), "devices", DEVICE, "commands", "c1"), { appliedAt: serverTimestamp() }));
     await assertSucceeds(getDoc(doc(parent(), "devices", DEVICE, "commands", "c1")));
     await assertFails(updateDoc(doc(child(), "devices", DEVICE, "commands", "c1"), { appliedAt: serverTimestamp() }));
+  });
+
+  it("the child deletes any command; the owner deletes only its own", async () => {
+    await seed(async (db) => {
+      await setDoc(doc(db, "devices", DEVICE, "commands", "mine"), { type: "LOCK_NOW", createdAt: Timestamp.now(), by: PARENT, appliedAt: null });
+      await setDoc(doc(db, "devices", DEVICE, "commands", "old"), { type: "LOCK_NOW", createdAt: Timestamp.now(), by: OTHER_PARENT, appliedAt: null });
+    });
+    await assertFails(deleteDoc(doc(parent(), "devices", DEVICE, "commands", "old")));
+    await assertFails(deleteDoc(doc(parent(OTHER_PARENT), "devices", DEVICE, "commands", "old")));
+    await assertSucceeds(deleteDoc(doc(parent(), "devices", DEVICE, "commands", "mine")));
+    await assertSucceeds(deleteDoc(doc(child(), "devices", DEVICE, "commands", "old")));
+  });
+
+  it("the owner finds its own commands to delete them", async () => {
+    await assertSucceeds(getDocs(query(commands(parent()), where("by", "==", PARENT))));
   });
 });

@@ -71,6 +71,12 @@ class ParentPhoneViewModel @Inject constructor(
 
     val owner: StateFlow<PairedOwner?> = identity.pairedOwner.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
+    /** A disconnect couldn't delete this phone's data (offline); the parent can try again. */
+    val erasePending: StateFlow<Boolean> = identity.erasePending.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    private val _erasing = MutableStateFlow(false)
+    val erasing: StateFlow<Boolean> = _erasing.asStateFlow()
+
     private val _state = MutableStateFlow<PairingState?>(null)
     /** Null while no pairing dialog is open. */
     val state: StateFlow<PairingState?> = _state.asStateFlow()
@@ -149,8 +155,17 @@ class ParentPhoneViewModel @Inject constructor(
         if (c != null && !paired) viewModelScope.launch { pairing.forget(c) }
     }
 
+    /** Disconnects and deletes this phone's data from the server; also the retry after an offline attempt. */
     fun disconnect() {
-        viewModelScope.launch { pairing.disconnect() }
+        if (_erasing.value) return
+        viewModelScope.launch {
+            _erasing.value = true
+            try {
+                pairing.disconnect()
+            } finally {
+                _erasing.value = false
+            }
+        }
     }
 
     private fun Exception.isOffline(): Boolean =
@@ -162,6 +177,8 @@ class ParentPhoneViewModel @Inject constructor(
 fun ParentPhoneSection(viewModel: ParentPhoneViewModel = hiltViewModel()) {
     val owner by viewModel.owner.collectAsStateWithLifecycle()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val erasePending by viewModel.erasePending.collectAsStateWithLifecycle()
+    val erasing by viewModel.erasing.collectAsStateWithLifecycle()
     var confirmDisconnect by remember { mutableStateOf(false) }
 
     NourCard {
@@ -173,6 +190,14 @@ fun ParentPhoneSection(viewModel: ParentPhoneViewModel = hiltViewModel()) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             NourSecondaryButton(stringResource(R.string.remote_connect), viewModel::start)
+            if (erasePending || erasing) {
+                Text(
+                    stringResource(if (erasing) R.string.remote_erasing else R.string.remote_erase_pending),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                if (!erasing) NourTextButton(stringResource(R.string.remote_erase_retry), viewModel::disconnect)
+            }
         } else {
             Text(
                 stringResource(R.string.remote_connected, current.email ?: current.name ?: current.uid),

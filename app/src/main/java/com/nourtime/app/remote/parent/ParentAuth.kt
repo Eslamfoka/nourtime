@@ -1,11 +1,15 @@
 package com.nourtime.app.remote.parent
 
 import android.content.Context
+import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.nourtime.app.R
 import com.nourtime.app.remote.FirebaseModule
@@ -41,21 +45,33 @@ class ParentAuth @Inject constructor(
 
     /** Shows the Google account picker; [activityContext] must be an Activity. */
     suspend fun signInWithGoogle(activityContext: Context) {
+        auth.signInWithCredential(googleCredential(activityContext)).await()
+        _user.value = current()
+    }
+
+    private suspend fun googleCredential(activityContext: Context): AuthCredential {
         val option = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
             .setServerClientId(activityContext.getString(R.string.default_web_client_id))
             .build()
-        val response = CredentialManager.create(activityContext)
+        val credential = CredentialManager.create(activityContext)
             .getCredential(activityContext, GetCredentialRequest.Builder().addCredentialOption(option).build())
-        val idToken = GoogleIdTokenCredential.createFrom(response.credential.data).idToken
-        auth.signInWithCredential(GoogleAuthProvider.getCredential(idToken, null)).await()
-        _user.value = current()
+            .credential
+        check(credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+            "Unexpected credential type ${credential.type}"
+        }
+        return GoogleAuthProvider.getCredential(GoogleIdTokenCredential.createFrom(credential.data).idToken, null)
     }
 
     val testAccountAvailable: Boolean get() = FirebaseModule.usesEmulator
 
     /** Debug + emulator only: signs in as a made-up Google account. */
     suspend fun signInTestAccount(email: String, name: String) {
+        auth.signInWithCredential(testCredential(email, name)).await()
+        _user.value = current()
+    }
+
+    private fun testCredential(email: String, name: String?): AuthCredential {
         check(testAccountAvailable) { "Test accounts only work with the Firebase emulator" }
         val token = JSONObject()
             .put("sub", "test-" + email.substringBefore('@'))
@@ -63,8 +79,26 @@ class ParentAuth @Inject constructor(
             .put("email_verified", true)
             .put("name", name)
             .toString()
-        auth.signInWithCredential(GoogleAuthProvider.getCredential(token, null)).await()
-        _user.value = current()
+        return GoogleAuthProvider.getCredential(token, null)
+    }
+
+    /**
+     * Account deletion: deletes the Firebase account. Firebase asks for a recent sign-in first, so
+     * the Google account picker may appear once more. Call after the data is gone.
+     */
+    suspend fun deleteAccount(activityContext: Context) {
+        val user = auth.currentUser ?: return
+        try {
+            user.delete().await()
+        } catch (e: FirebaseAuthRecentLoginRequiredException) {
+            val email = user.email
+            // The emulator only knows test accounts; a real project needs a fresh Google token.
+            val credential = if (testAccountAvailable && email != null) testCredential(email, user.displayName) else googleCredential(activityContext)
+            user.reauthenticate(credential).await()
+            user.delete().await()
+        }
+        runCatching { CredentialManager.create(activityContext).clearCredentialState(ClearCredentialStateRequest()) }
+        _user.value = null
     }
 
     fun signOut() {

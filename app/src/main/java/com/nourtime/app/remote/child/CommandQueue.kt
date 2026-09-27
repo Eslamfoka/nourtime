@@ -46,9 +46,9 @@ object CommandQueue {
 object PairingCheck {
     /**
      * False once the device document no longer names [owner]: the parent removed this phone (maybe
-     * while it was offline) or another parent was confirmed. A snapshot that isn't loaded yet isn't
-     * a removal.
+     * while it was offline) or another parent was confirmed; or the server says the document is gone
+     * (its data was deleted). A missing document in the local cache only means "not loaded yet".
      */
-    fun stillPaired(owner: PairedOwner, docExists: Boolean, docOwnerUid: String?): Boolean =
-        !docExists || docOwnerUid == owner.uid
+    fun stillPaired(owner: PairedOwner, docExists: Boolean, fromCache: Boolean, docOwnerUid: String?): Boolean =
+        if (docExists) docOwnerUid == owner.uid else fromCache
 }

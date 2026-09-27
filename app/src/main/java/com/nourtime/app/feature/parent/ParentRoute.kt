@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PhoneAndroid
 import androidx.compose.material.icons.rounded.WarningAmber
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -41,6 +42,7 @@ import androidx.lifecycle.viewModelScope
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.CenteredScrollColumn
 import com.nourtime.app.core.designsystem.component.IconBadge
+import com.nourtime.app.core.designsystem.component.NourDialogButton
 import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourStar
 import com.nourtime.app.core.designsystem.component.NourTextButton
@@ -105,15 +107,41 @@ class ParentViewModel @Inject constructor(
         auth.signOut()
     }
 
+    private val _deletion = MutableStateFlow(DeletionState.IDLE)
+    val deletion: StateFlow<DeletionState> = _deletion.asStateFlow()
+
+    /** Account deletion (Play requirement): unlinks every child's phone, then deletes the account. */
+    fun deleteAccount(activityContext: Context) {
+        val uid = user.value?.uid ?: return
+        if (_deletion.value == DeletionState.DELETING) return
+        viewModelScope.launch {
+            _deletion.value = DeletionState.DELETING
+            val ok = runCatching {
+                remote.forgetParent(uid)
+                auth.deleteAccount(activityContext)
+            }.isSuccess
+            if (ok) _selected.value = null
+            _deletion.value = if (ok) DeletionState.IDLE else DeletionState.FAILED
+        }
+    }
+
     fun open(deviceId: String?) {
         _selected.value = deviceId
     }
 }
 
+enum class DeletionState { IDLE, DELETING, FAILED }
+
 @Composable
 fun ParentRoute(viewModel: ParentViewModel = hiltViewModel()) {
     val user by viewModel.user.collectAsStateWithLifecycle()
     val selected by viewModel.selected.collectAsStateWithLifecycle()
+    val devices by viewModel.devices.collectAsStateWithLifecycle()
+    // The open phone left the list: the child disconnected it (or deleted its data), or it was removed.
+    LaunchedEffect(selected, devices) {
+        val list = devices ?: return@LaunchedEffect
+        if (selected != null && list.none { it.id == selected }) viewModel.open(null)
+    }
     val current = user
     when {
         current == null -> SignInScreen(viewModel)
@@ -157,7 +185,10 @@ private fun SignInScreen(viewModel: ParentViewModel) {
 @Composable
 private fun ParentHomeScreen(user: ParentUser, viewModel: ParentViewModel) {
     val devices by viewModel.devices.collectAsStateWithLifecycle()
+    val deletion by viewModel.deletion.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     var adding by remember { mutableStateOf(false) }
+    var confirmDelete by remember { mutableStateOf(false) }
     val now by rememberNow()
     Column(
         Modifier
@@ -185,8 +216,30 @@ private fun ParentHomeScreen(user: ParentUser, viewModel: ParentViewModel) {
             DeviceCard(device, now) { viewModel.open(device.id) }
         }
         NourPrimaryButton(stringResource(R.string.parent_add_child), { adding = true })
+        if (deletion == DeletionState.DELETING) {
+            Text(stringResource(R.string.parent_deleting), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        } else {
+            NourTextButton(stringResource(R.string.parent_delete_account), { confirmDelete = true })
+        }
+        if (deletion == DeletionState.FAILED) {
+            Text(stringResource(R.string.parent_delete_error), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error)
+        }
     }
     if (adding) AddChildDialog(user = user, onClose = { adding = false })
+    if (confirmDelete) {
+        AlertDialog(
+            onDismissRequest = { confirmDelete = false },
+            title = { Text(stringResource(R.string.parent_delete_title)) },
+            text = { Text(stringResource(R.string.parent_delete_body)) },
+            confirmButton = {
+                NourDialogButton(stringResource(R.string.parent_delete_confirm), {
+                    confirmDelete = false
+                    viewModel.deleteAccount(context)
+                }, destructive = true)
+            },
+            dismissButton = { NourDialogButton(stringResource(R.string.action_cancel), { confirmDelete = false }) },
+        )
+    }
 }
 
 @Composable

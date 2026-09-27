@@ -309,7 +309,10 @@
     <string name="remote_connected">مرتبط بـ %1$s</string>
     <string name="remote_disconnect">إلغاء الربط</string>
     <string name="remote_disconnect_title">إلغاء ربط هاتف ولي الأمر؟</string>
-    <string name="remote_disconnect_body">لن يتمكن بعد الآن من رؤية هذا الهاتف أو التحكم فيه. يمكنك الربط مرة أخرى في أي وقت.</string>
+    <string name="remote_disconnect_body">لن يتمكن بعد الآن من رؤية هذا الهاتف أو التحكم فيه، وتُحذف بيانات هذا الهاتف (الاستخدام وقائمة التطبيقات والأوامر) من الخادم. يمكنك الربط مرة أخرى في أي وقت.</string>
+    <string name="remote_erasing">جارٍ حذف بيانات هذا الهاتف من الخادم…</string>
+    <string name="remote_erase_pending">تعذّر حذف بيانات هذا الهاتف من الخادم (لا يوجد اتصال بالإنترنت).</string>
+    <string name="remote_erase_retry">حاول مرة أخرى</string>
     <string name="pair_title">ربط هاتف ولي الأمر</string>
     <string name="pair_scan">على هاتفك، افتح وقت نور، واضغط \"إضافة هاتف طفل\"، وامسح هذا الرمز.</string>
     <string name="pair_qr_description">رمز QR للربط</string>
@@ -333,6 +336,12 @@
     <string name="parent_signin_error">تعذّر تسجيل الدخول. تحقق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
     <string name="parent_home_title">هواتف أطفالك</string>
     <string name="parent_sign_out">تسجيل الخروج</string>
+    <string name="parent_delete_account">حذف حسابي</string>
+    <string name="parent_delete_title">حذف حسابك؟</string>
+    <string name="parent_delete_body">سيُلغى ربط هواتف أطفالك بك، ويُحذف حسابك والأوامر التي أرسلتها. يستمر وقت نور في العمل على تلك الهواتف بإعداداتها الحالية.</string>
+    <string name="parent_delete_confirm">حذف</string>
+    <string name="parent_deleting">جارٍ حذف حسابك…</string>
+    <string name="parent_delete_error">تعذّر حذف الحساب. تحقق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
     <string name="parent_no_children">لا توجد هواتف بعد. على هاتف طفلك افتح وقت نور، ثم الإعدادات ← هاتف ولي الأمر، واضغط \"ربط هاتف ولي الأمر\".</string>
     <string name="parent_add_child">إضافة هاتف طفل</string>
     <string name="parent_summary_unknown">بانتظار أول تحديث</string>

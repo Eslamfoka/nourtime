@@ -99,7 +99,9 @@ service cloud.firestore {
             || (changedOnly(['ownerUid', 'ownerEmail', 'ownerName']) && request.resource.data.ownerUid == null)))
       );
 
-      allow delete: if false;
+      // Account deletion: the child's phone removes its device (after its subcollections, which
+      // the rules check against this document).
+      allow delete: if signedIn() && resource.data.childUid == request.auth.uid;
 
       match /usage/{day} {
         allow read: if isChildOf(id) || isOwnerOf(id);
@@ -134,7 +136,8 @@ service cloud.firestore {
           && changedOnly(['appliedAt'])
           && request.resource.data.appliedAt != null;
 
-        allow delete: if false;
+        // Account deletion: the child's phone clears all of them; a parent clears the ones it sent.
+        allow delete: if isChildOf(id) || (isOwnerOf(id) && resource.data.by == request.auth.uid);
       }
     }
   }

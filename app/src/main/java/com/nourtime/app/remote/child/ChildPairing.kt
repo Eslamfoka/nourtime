@@ -1,6 +1,7 @@
 package com.nourtime.app.remote.child
 
 import android.os.Build
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -12,6 +13,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -87,6 +89,7 @@ class ChildPairing @Inject constructor(
             mapOf("ownerUid" to owner.uid, "ownerEmail" to owner.email, "ownerName" to owner.name, "pairingCode" to code),
         ).await()
         identity.setPairedOwner(owner)
+        identity.setErasePending(false)
         forget(code)
     }
 
@@ -95,11 +98,40 @@ class ChildPairing @Inject constructor(
         runCatching { firestore.collection(RemotePaths.PAIRINGS).document(code).delete().await() }
     }
 
-    /** Stops the parent's phone from seeing or controlling this phone. Works offline (queued). */
-    suspend fun disconnect() {
+    /**
+     * Stops the parent's phone from seeing or controlling this phone and deletes everything this
+     * phone stored in Firestore (usage, app list, commands, the device), then its anonymous account.
+     * Needs the network: offline it only unlinks (queued), and returns false.
+     */
+    suspend fun disconnect(): Boolean {
         identity.setPairedOwner(null)
-        runCatching {
-            deviceRef().update(mapOf("ownerUid" to null, "ownerEmail" to null, "ownerName" to null))
+        if (!identity.usedRemote()) {
+            identity.setErasePending(false)
+            return true
+        }
+        val device = deviceRef()
+        val erased = withTimeoutOrNull(ERASE_TIMEOUT_MS) {
+            runCatching {
+                if (device.get(Source.SERVER).await().exists()) {
+                    // Subcollections first: their rules look the device up.
+                    for (name in listOf(RemotePaths.USAGE, RemotePaths.META, RemotePaths.COMMANDS)) {
+                        deleteAll(device.collection(name).get(Source.SERVER).await().documents.map { it.reference })
+                    }
+                    device.delete().await()
+                }
+                identity.deleteAccount()
+            }.isSuccess
+        } ?: false
+        if (!erased) {
+            runCatching { device.update(mapOf("ownerUid" to null, "ownerEmail" to null, "ownerName" to null)) }
+        }
+        identity.setErasePending(!erased)
+        return erased
+    }
+
+    private suspend fun deleteAll(refs: List<DocumentReference>) {
+        refs.chunked(BATCH_LIMIT).forEach { chunk ->
+            firestore.batch().apply { chunk.forEach(::delete) }.commit().await()
         }
     }
 
@@ -113,5 +145,7 @@ class ChildPairing @Inject constructor(
 
     private companion object {
         const val CODE_ATTEMPTS = 5
+        const val ERASE_TIMEOUT_MS = 20_000L
+        const val BATCH_LIMIT = 400
     }
 }

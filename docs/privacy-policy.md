@@ -46,8 +46,8 @@ phone uses an anonymous Firebase account that contains no personal information.
 Not sent, ever: the child's name, age group or gender, the PIN or the security answer, what is shown on
 the screen or typed, location, contacts, photos or messages.
 
-Data is encrypted in transit (HTTPS). Disconnecting (on either phone) stops all uploads. [Retention
-and deletion: see "Deleting data".]
+Data is encrypted in transit (HTTPS). It is kept only while the phones are connected; see "Deleting
+data".
 
 ## What the app does not do
 
@@ -66,10 +66,23 @@ settings.
 ## Deleting data
 
 Uninstalling Nour Time deletes all of its data on that phone. The parent can uninstall from Nour Time's
-Settings → Uninstall Nour Time (after the security question). Removing a phone from the parent's list,
-or disconnecting on the child's phone, stops all uploads. [Before publishing: describe how the stored
-copy in Firebase is deleted, and the in-app and web way to delete the parent's account and its data, as
-Google Play requires for apps with sign-in.]
+Settings → Uninstall Nour Time (after the security question).
+
+When a parent's phone is connected, the child's phone's copy in Firebase (status, usage, app list,
+settings and commands) is deleted, together with its anonymous account, when:
+
+- the child's phone is disconnected (Settings → Parent's phone → Disconnect);
+- the parent removes the phone from their list, or deletes their account (the child's phone deletes
+  its data the next time it is online);
+- Nour Time is uninstalled from Settings → Uninstall Nour Time while the phone is online.
+
+**Deleting the parent's account:** on the parent's phone, open Nour Time → *Delete my account*. This
+deletes the parent's account and the commands they sent, and disconnects every child's phone (which
+then deletes its own data as above). Without the app, ask for deletion at
+[account-deletion page URL] or by email to [contact email]; requests are handled within 30 days.
+
+If a phone was offline or uninstalled without the app's own uninstall button, its copy may stay in
+Firebase; ask for its deletion as above.
 
 ## Children
 

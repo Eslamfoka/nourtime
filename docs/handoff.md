@@ -277,8 +277,19 @@ devices/{id}/commands/{auto}     type BONUS|LOCK_NOW|END_LOCK, minutes 1..240, c
 - **Commands** (`remote/child/CommandQueue`): at most once each, in `createdAt` order: each id is saved
   before its command is applied. Only the current owner's commands take effect; others (a removed
   parent's) are consumed without effect. Nothing but the settings listener runs until a server (not
-  cache) snapshot confirms the phone is still paired.
-- **Removal:** the parent clears `ownerUid`; the child notices (`PairingCheck`) and drops its pairing.
+  cache) snapshot confirms the phone is still paired. That listener includes **metadata changes**: when
+  the cached copy equals the server's (app restart, re-pairing in the same process) the confirmation
+  only flips `isFromCache`, and without `MetadataChanges.INCLUDE` it never arrives (found 2026-09-27:
+  after a restart nothing synced until the document changed).
+- **Removal:** the parent clears `ownerUid` (or the server says the device is gone); the child notices
+  (`PairingCheck`), unpairs and deletes its own data (below).
+- **Account deletion** (2026-09-27): server data exists only while paired. The child's phone deletes
+  `usage`, `meta`, `commands`, the device and its anonymous account on *Disconnect*, on removal by the
+  parent, and before *Uninstall Nour Time* (`ChildPairing.disconnect`, subcollections first because
+  their rules read the device). Offline it only unlinks and shows "couldn't be deleted… Try again". The
+  parent's *Delete my account* deletes the commands it sent, unlinks its phones
+  (`ParentDevices.forgetParent`) and deletes the Firebase user, re-authenticating if Firebase asks for a
+  recent sign-in. Web deletion page: `docs/account-deletion.md`.
 - **Device document:** created after a server-side existence check (rules allow reading a missing
   device); `set()` is never used on an existing one because it would clear `ownerUid`.
 - **Google sign-in:** Credential Manager + `googleid`, `default_web_client_id` from google-services.json.
@@ -288,11 +299,14 @@ devices/{id}/commands/{auto}     type BONUS|LOCK_NOW|END_LOCK, minutes 1..240, c
 See the README ("Phase 2"). Useful: the emulator's REST API with `Authorization: Bearer owner` bypasses
 rules, e.g. `curl -H "Authorization: Bearer owner" "http://127.0.0.1:8080/v1/projects/demo-nourtime/databases/(default)/documents/devices"`.
 The rules tests use project `demo-nourtime-test` because they clear the database.
+If the emulator has been running for hours, Android clients may get `RESOURCE_EXHAUSTED … too_many_pings`
+and stop receiving snapshots; restart it (`npm run emulators`). After a restart the phones' cached
+Firebase accounts no longer exist: clear the parent app's data, and on a rooted emulator delete the
+child's `shared_prefs/com.google.firebase.auth.api.Store.*.xml` and `databases/firestore.*` (`adb root`
+drops the `adb reverse` tunnels; add them again).
 
 ### Not done yet
-- **Account deletion** (Play requirement): parent's phone "Delete my account and data" (remove ownerUid
-  from their devices, delete their Auth user) plus a web deletion URL; and deleting a child device's
-  Firestore data when Nour Time is uninstalled/disconnected (today the document stays, only unlinked).
+- Publish the account-deletion web page and fill in its contact email (`docs/account-deletion.md`).
 - Real-phone test incl. QR scanning (emulators have no camera) and real Google sign-in (needs SHA-1).
 - Push notifications to the parent (e.g. "protection needs attention") would need FCM + Cloud Functions
   (Blaze plan); today the parent sees it when opening the app.

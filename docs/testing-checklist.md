@@ -74,6 +74,8 @@ Run on the API 35 emulator, 2026-09-27: all pass. Dragging a short (1-hour) peri
 - [ ] Parent changes the budget / lock type / limited apps / allowed apps / bedtime → the child's Settings show it within seconds; a change on the child shows up on the parent.
 - [ ] Child phone offline (airplane mode) → parent sends extra time → nothing happens; back online → applied once.
 - [ ] Parent: Remove this phone → the child's Settings show "Connect a parent's phone" again. Child: Disconnect → the phone disappears from the parent's list.
+- [ ] Account deletion: child *Disconnect*, parent *Remove this phone*, parent *Delete my account* and child *Uninstall Nour Time* (cancel at Android's dialog) each leave no device, usage, app list or commands in Firestore (emulator REST, see handoff §7); the parent's account is gone after *Delete my account*. Child offline during *Disconnect* → "couldn't be deleted… Try again" → works once online. (Emulator, 2026-09-27: all pass.)
+- [ ] Restart the child's phone while paired (or re-pair in the same session) → the parent's "Updated" time refreshes and a command still applies.
 - [ ] Turn Accessibility off on the child → the parent sees "Protection needs attention" within about a minute.
 - [ ] Arabic and English on both phones.
 

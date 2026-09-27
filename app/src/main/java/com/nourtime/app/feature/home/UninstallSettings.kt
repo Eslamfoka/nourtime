@@ -32,7 +32,9 @@ import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.data.security.SecurityRepository
 import com.nourtime.app.feature.pin.AnswerCheckController
 import com.nourtime.app.feature.pin.SecurityAnswerPanel
+import com.nourtime.app.remote.child.ChildPairing
 import com.nourtime.app.service.admin.NourDeviceAdminReceiver
+import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
@@ -50,6 +52,7 @@ enum class UninstallOutcome { READY, FAILED }
  * period. Nour Time then removes its own Device admin (Android refuses to uninstall an active
  * admin) and grants the parent pass, so the system uninstall dialog isn't covered. If the parent
  * cancels that dialog, Home shows Device admin as needing attention, with a button to turn it back on.
+ * A phone that was ever paired first deletes its data from Firestore (Phase 2, account deletion).
  */
 @HiltViewModel
 class UninstallViewModel @Inject constructor(
@@ -57,6 +60,8 @@ class UninstallViewModel @Inject constructor(
     security: SecurityRepository,
     clock: DeviceClock,
     private val pass: ParentPass,
+    // Lazy: phones that never paired don't start Firebase here.
+    private val pairing: Lazy<ChildPairing>,
 ) : ViewModel() {
 
     val answer = AnswerCheckController(viewModelScope, security, clock) { removeProtection() }
@@ -67,6 +72,8 @@ class UninstallViewModel @Inject constructor(
     private fun removeProtection() {
         viewModelScope.launch {
             pass.grantFull()
+            // Best effort: offline, the data stays (the privacy policy says how to ask for its deletion).
+            runCatching { pairing.get().disconnect() }
             val dpm = context.getSystemService(DevicePolicyManager::class.java)
             val admin = ComponentName(context, NourDeviceAdminReceiver::class.java)
             if (dpm.isAdminActive(admin)) runCatching { dpm.removeActiveAdmin(admin) }

@@ -15,6 +15,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +46,7 @@ import com.nourtime.app.remote.parent.ClaimResult
 import com.nourtime.app.remote.parent.ParentDevices
 import com.nourtime.app.remote.parent.ParentUser
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -64,6 +66,7 @@ class AddChildViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableStateFlow<AddChildState>(AddChildState.Idle)
     val state: StateFlow<AddChildState> = _state.asStateFlow()
+    private var job: Job? = null
 
     /** [input] is a scanned QR link or a typed code. */
     fun claim(input: String, user: ParentUser) {
@@ -73,10 +76,12 @@ class AddChildViewModel @Inject constructor(
             return
         }
         _state.value = AddChildState.Working
-        viewModelScope.launch { _state.value = AddChildState.Done(remote.claim(code, user)) }
+        job = viewModelScope.launch { _state.value = AddChildState.Done(remote.claim(code, user)) }
     }
 
+    /** View models live as long as the activity here, so the dialog starts over each time it opens. */
     fun reset() {
+        job?.cancel()
         _state.value = AddChildState.Idle
     }
 }
@@ -87,6 +92,7 @@ fun AddChildDialog(user: ParentUser, onClose: () -> Unit, viewModel: AddChildVie
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var typed by remember { mutableStateOf("") }
+    DisposableEffect(Unit) { onDispose { viewModel.reset() } }
 
     fun scan() {
         val options = GmsBarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build()

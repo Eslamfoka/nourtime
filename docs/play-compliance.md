@@ -43,9 +43,10 @@ reason.
 - No ads, no analytics SDKs. Network access only for the optional parent's-phone connection.
 - Parents sign in with Google on their own phone; the child's phone uses an anonymous account. No
   personal data of the child (name, age, photos, location) is collected.
-- **Account deletion (required by Play for apps with sign-in):** not built yet. Needed before
-  publishing: an in-app "Delete my account and data" on the parent's phone, plus a web page/URL for the
-  Play Console. See `docs/handoff.md` §7.
+- **Account deletion (required by Play for apps with sign-in):** in-app on the parent's phone
+  (*Delete my account*, built 2026-09-27); the child's phone deletes its own data on disconnect, removal
+  or uninstall. Play Console also needs a **web URL** for deletion requests: publish
+  [`account-deletion.md`](account-deletion.md) (e.g. GitHub Pages) and fill in its contact email.
 
 ## Data safety form (Phase 1)
 
@@ -65,11 +66,14 @@ reason.
   - **Personal info → Name, Email:** the parent's Google account (parent's phone only).
 - Purpose: app functionality (parental control). Not used for ads or analytics; not sold.
 - Optional for the user: yes (only after connecting a parent's phone).
-- Deletion: by request / in-app (to be built, see Families notes).
+- Deletion: in-app (parent's *Delete my account*; child's phone on disconnect/uninstall) and by request
+  through the web page ([`account-deletion.md`](account-deletion.md)). Data is also deleted when a phone
+  is disconnected.
 
 ## Open items before publishing
 
 - Release signing (keystore) and Play App Signing.
 - Final privacy policy URL (see `privacy-policy.md`).
 - Store listing, screenshots, and the Accessibility demo video that Play asks for.
-- Real Firebase project (see README), Firestore rules deployed, and the account-deletion flow.
+- Real Firebase project (see README), Firestore rules deployed, and the account-deletion web page
+  published (URL in Play Console → Data safety).

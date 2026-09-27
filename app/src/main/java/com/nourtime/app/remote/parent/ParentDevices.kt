@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.Source
 import com.nourtime.app.core.timer.TimerCommand
 import com.nourtime.app.data.apps.InstalledApp
 import com.nourtime.app.remote.RemotePaths
@@ -190,6 +191,21 @@ class ParentDevices @Inject constructor(
         devices.document(deviceId).update(mapOf("ownerUid" to null, "ownerEmail" to null, "ownerName" to null)).await()
     }
 
+    /**
+     * Account deletion: deletes the commands this parent sent and unlinks every phone it controls
+     * (the phones keep working with their current settings). Needs the network; safe to repeat.
+     */
+    suspend fun forgetParent(uid: String) {
+        val owned = devices.whereEqualTo("ownerUid", uid).get(Source.SERVER).await().documents
+        for (device in owned) {
+            val sent = device.reference.collection(RemotePaths.COMMANDS).whereEqualTo("by", uid).get(Source.SERVER).await().documents
+            sent.chunked(BATCH_LIMIT).forEach { chunk ->
+                firestore.batch().apply { chunk.forEach { delete(it.reference) } }.commit().await()
+            }
+            device.reference.update(mapOf("ownerUid" to null, "ownerEmail" to null, "ownerName" to null)).await()
+        }
+    }
+
     private fun toDevice(doc: DocumentSnapshot): ChildDevice {
         @Suppress("UNCHECKED_CAST")
         val settingsMap = doc.get("settings") as? Map<String, Any?>
@@ -215,5 +231,6 @@ class ParentDevices @Inject constructor(
     private companion object {
         const val WAIT_FOR_CHILD_MS = 3 * 60_000L
         const val RECENT_COMMANDS = 5
+        const val BATCH_LIMIT = 400
     }
 }

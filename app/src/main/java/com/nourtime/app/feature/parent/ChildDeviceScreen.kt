@@ -129,7 +129,13 @@ class ChildDeviceViewModel @Inject constructor(
 private val BONUS_CHOICES = listOf(15, 30, 60)
 
 @Composable
-fun ChildDeviceScreen(deviceId: String, user: ParentUser, onBack: () -> Unit, viewModel: ChildDeviceViewModel = hiltViewModel()) {
+fun ChildDeviceScreen(
+    deviceId: String,
+    user: ParentUser,
+    onBack: () -> Unit,
+    // Keyed: view models live as long as the activity, and another phone's data must never show here.
+    viewModel: ChildDeviceViewModel = hiltViewModel(key = deviceId),
+) {
     LaunchedEffect(deviceId) { viewModel.bind(deviceId) }
     val device by viewModel.device.collectAsStateWithLifecycle()
     val usage by viewModel.usage.collectAsStateWithLifecycle()
