@@ -217,6 +217,7 @@
     <!-- Parent check on lock screens -->
     <string name="action_cancel">إلغاء</string>
     <string name="action_back">رجوع</string>
+    <string name="pin_digits_entered">تم إدخال %1$d من %2$d أرقام</string>
     <string name="answer_title">سؤال الأمان</string>
     <string name="answer_body">فترة القفل جارية. أجب عن سؤال الأمان للمتابعة.</string>
     <string name="answer_wrong">هذه ليست الإجابة.</string>

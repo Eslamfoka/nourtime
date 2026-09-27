@@ -41,6 +41,7 @@ import com.nourtime.app.core.designsystem.component.FullScreenDialog
 import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.designsystem.component.NourTextButton
+import com.nourtime.app.core.designsystem.component.nourTextFieldColors
 import com.nourtime.app.remote.model.PairingCode
 import com.nourtime.app.remote.parent.ClaimResult
 import com.nourtime.app.remote.parent.ParentDevices
@@ -119,6 +120,7 @@ fun AddChildDialog(user: ParentUser, onClose: () -> Unit, viewModel: AddChildVie
                             NourPrimaryButton(stringResource(R.string.add_child_scan), ::scan)
                             Text(stringResource(R.string.add_child_or_type), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             OutlinedTextField(
+                                colors = nourTextFieldColors(),
                                 value = typed,
                                 onValueChange = { typed = it.take(12) },
                                 label = { Text(stringResource(R.string.add_child_code_label)) },

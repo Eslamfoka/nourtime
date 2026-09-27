@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.NourPrimaryButton
+import com.nourtime.app.core.designsystem.component.nourTextFieldColors
 import com.nourtime.app.core.security.PinCreationState
 import com.nourtime.app.core.security.SecurityQuestionValidator
 import com.nourtime.app.feature.pin.PinEntryLayout
@@ -99,6 +100,7 @@ fun SecurityQuestionStep(
         )
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             OutlinedTextField(
+                colors = nourTextFieldColors(),
                 value = form.question,
                 onValueChange = onQuestionChange,
                 label = { Text(stringResource(R.string.sq_question_label)) },
@@ -110,6 +112,7 @@ fun SecurityQuestionStep(
                 modifier = Modifier.fillMaxWidth(),
             )
             OutlinedTextField(
+                colors = nourTextFieldColors(),
                 value = form.answer,
                 onValueChange = onAnswerChange,
                 label = { Text(stringResource(R.string.sq_answer_label)) },
@@ -123,6 +126,7 @@ fun SecurityQuestionStep(
                 modifier = Modifier.fillMaxWidth(),
             )
             OutlinedTextField(
+                colors = nourTextFieldColors(),
                 value = form.confirmation,
                 onValueChange = onConfirmationChange,
                 label = { Text(stringResource(R.string.sq_answer_confirm_label)) },

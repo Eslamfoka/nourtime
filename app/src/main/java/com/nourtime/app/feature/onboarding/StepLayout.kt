@@ -50,7 +50,7 @@ fun StepLayout(
         ) {
             if (onBack != null) {
                 IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = null)
+                    Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.action_back))
                 }
             } else {
                 Spacer(Modifier.size(48.dp))

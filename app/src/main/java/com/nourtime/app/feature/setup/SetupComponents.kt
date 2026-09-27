@@ -54,6 +54,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.NourCard
+import com.nourtime.app.core.designsystem.component.nourTextFieldColors
 import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.core.ui.formatDuration
 import com.nourtime.app.data.settings.AgeGroup
@@ -262,6 +263,7 @@ private fun ValueSliderCard(
 @Composable
 fun AppSearchField(query: String, onQueryChange: (String) -> Unit, modifier: Modifier = Modifier) {
     OutlinedTextField(
+        colors = nourTextFieldColors(),
         value = query,
         onValueChange = onQueryChange,
         leadingIcon = { Icon(Icons.Rounded.Search, contentDescription = null) },

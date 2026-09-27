@@ -31,6 +31,7 @@ import com.nourtime.app.core.designsystem.component.NourPose
 import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourStar
 import com.nourtime.app.core.designsystem.component.NourTextButton
+import com.nourtime.app.core.designsystem.component.nourTextFieldColors
 import com.nourtime.app.core.ui.formatCountdown
 
 @Composable
@@ -118,6 +119,7 @@ fun SecurityAnswerPanel(
         )
         Text(state.question, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
         OutlinedTextField(
+            colors = nourTextFieldColors(),
             value = state.answer,
             onValueChange = onAnswerChange,
             label = { Text(stringResource(R.string.sq_answer_label)) },

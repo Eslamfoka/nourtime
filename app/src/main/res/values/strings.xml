@@ -205,6 +205,7 @@
     <!-- Parent check on lock screens -->
     <string name="action_cancel">Cancel</string>
     <string name="action_back">Back</string>
+    <string name="pin_digits_entered">%1$d of %2$d digits entered</string>
     <string name="answer_title">Security question</string>
     <string name="answer_body">A lock period is running. Answer your security question to continue.</string>
     <string name="answer_wrong">That\'s not the answer.</string>

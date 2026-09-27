@@ -29,7 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
@@ -122,9 +125,16 @@ fun PinDots(
         )
     }
 
+    val description = stringResource(R.string.pin_digits_entered, filled, length)
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         Row(
-            modifier = modifier.offset { IntOffset(offset.value.dp.roundToPx(), 0) },
+            modifier = modifier
+                .offset { IntOffset(offset.value.dp.roundToPx(), 0) }
+                // TalkBack reads the progress instead of four unlabeled circles, and announces changes.
+                .clearAndSetSemantics {
+                    contentDescription = description
+                    liveRegion = LiveRegionMode.Polite
+                },
             horizontalArrangement = Arrangement.spacedBy(18.dp),
         ) {
             repeat(length) { i ->

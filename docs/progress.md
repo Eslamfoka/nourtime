@@ -88,8 +88,14 @@ budget ring, status card, per-app bars, Apps list with switches and search, colo
 edit, drag to move; resize through the edit dialog), gold / outline / coral buttons ≥ 48 dp, large
 PIN pad with dots and a light vibration, parent dark mode, RTL with mirrored icons, fade + scale
 transition, friendly empty states, subtle "للأهل" button, positive child copy.
-🟡 Lottie → code-drawn animations. ⏳ Lullaby for the sleep screen. ⏳ A formal WCAG AA/TalkBack
-audit (key contrasts were checked by hand).
+🟡 Lottie → code-drawn animations. ⏳ Lullaby for the sleep screen.
+✅ Accessibility pass (2026-09-27): palette contrast computed for both themes. Text passes WCAG AA
+(the error coral was darkened to `#B84232`, 5.2:1 on cream); field and button outlines now reach 3:1
+(`#958870` light, `#6F7CA8` dark); focused text fields use the text color instead of gold (1.5:1);
+dialog buttons use the text color. TalkBack: the PIN dots announce "2 of 4 digits entered" (live
+region), the onboarding back button is labeled. Kept on purpose: the faint "For parents" button on the
+"Time's up" screen (the brief wants it subtle) and gold for the budget ring/filled PIN dots (the numbers
+and announcements carry the information). ⏳ A full TalkBack walk-through on a real phone.
 
 ## Phase 1.5 (scheduled 2026-09-26)
 

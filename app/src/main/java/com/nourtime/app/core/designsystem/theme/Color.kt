@@ -16,7 +16,7 @@ object NourPalette {
     val NavySoft = Color(0xFF2B3960)
     val Cream = Color(0xFFFFF8EC)
     val Coral = Color(0xFFFF7A6B)
-    val CoralDeep = Color(0xFFC94A3C)
+    val CoralDeep = Color(0xFFB84232)
     val Mint = Color(0xFF5CC8A8)
     val MintDeep = Color(0xFF1F7A61)
     val White = Color(0xFFFFFFFF)
@@ -43,7 +43,8 @@ internal val LightColors = lightColorScheme(
     surfaceContainerLow = Color(0xFFFFFBF4),
     surfaceContainer = Color(0xFFFBF1E0),
     surfaceContainerHigh = Color(0xFFF6ECD9),
-    outline = Color(0xFFCFC3AC),
+    // Borders of fields and outlined buttons: at least 3:1 against the background (WCAG 1.4.11).
+    outline = Color(0xFF958870),
     outlineVariant = Color(0xFFE9DEC8),
     error = NourPalette.CoralDeep,
     onError = NourPalette.White,
@@ -68,7 +69,7 @@ internal val DarkColors = darkColorScheme(
     surfaceContainerLow = Color(0xFF1A2440),
     surfaceContainer = NourPalette.Navy,
     surfaceContainerHigh = Color(0xFF26335A),
-    outline = Color(0xFF55618A),
+    outline = Color(0xFF6F7CA8),
     outlineVariant = Color(0xFF34416A),
     error = NourPalette.Coral,
     onError = NourPalette.Navy,
