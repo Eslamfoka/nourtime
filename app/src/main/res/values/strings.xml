@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Nour Time</string>
+    <string name="mode_title">Whose phone is this?</string>
+    <string name="mode_body">Nour Time runs on your child\'s phone. You can also install it on your own phone to follow and control your child\'s phone from there.</string>
+    <string name="mode_child_title">My child\'s phone</string>
+    <string name="mode_child_body">Set the time limits and protection here.</string>
+    <string name="mode_parent_title">My phone (parent)</string>
+    <string name="mode_parent_body">Follow and control your child\'s phone from here.</string>
 
     <!-- Common -->
     <string name="action_continue">Continue</string>

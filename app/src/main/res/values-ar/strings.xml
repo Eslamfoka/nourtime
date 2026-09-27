@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">وقت نور</string>
+    <string name="mode_title">هاتف مَن هذا؟</string>
+    <string name="mode_body">يعمل وقت نور على هاتف طفلك. ويمكنك أيضًا تثبيته على هاتفك لمتابعة هاتف طفلك والتحكم فيه من هنا.</string>
+    <string name="mode_child_title">هاتف طفلي</string>
+    <string name="mode_child_body">اضبط حدود الوقت والحماية هنا.</string>
+    <string name="mode_parent_title">هاتفي (ولي الأمر)</string>
+    <string name="mode_parent_body">تابع هاتف طفلك وتحكم فيه من هنا.</string>
 
     <!-- Common -->
     <string name="action_continue">متابعة</string>

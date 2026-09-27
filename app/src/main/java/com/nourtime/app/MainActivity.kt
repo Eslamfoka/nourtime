@@ -26,7 +26,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.data.onboarding.OnboardingRepository
 import com.nourtime.app.feature.home.MainRoute
+import com.nourtime.app.feature.mode.ModeChooserScreen
 import com.nourtime.app.feature.onboarding.OnboardingRoute
+import com.nourtime.app.feature.parent.ParentRoute
 import com.nourtime.app.feature.pin.UnlockRoute
 import com.nourtime.app.service.timer.TimerService
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,6 +72,8 @@ private fun NourApp(viewModel: AppViewModel = hiltViewModel()) {
         ) { target ->
             when (target) {
                 AppDestination.LOADING -> Box(Modifier.fillMaxSize())
+                AppDestination.MODE_CHOICE -> ModeChooserScreen(onChoose = viewModel::chooseMode)
+                AppDestination.PARENT -> ParentRoute()
                 AppDestination.ONBOARDING -> OnboardingRoute()
                 AppDestination.UNLOCK -> UnlockRoute()
                 AppDestination.HOME -> MainRoute()
