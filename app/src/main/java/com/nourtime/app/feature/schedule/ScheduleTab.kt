@@ -191,6 +191,9 @@ private fun Timeline(periods: List<SchedulePeriod>, onTap: (SchedulePeriod) -> U
     val currentPeriods by rememberUpdatedState(periods)
     var dragging by remember { mutableStateOf<SchedulePeriod?>(null) }
     var dragDelta by remember { mutableFloatStateOf(0f) }
+    // Where the finger went down: onDragStart only reports where the drag threshold was crossed,
+    // which can already be past the end of a short block.
+    var pressX by remember { mutableFloatStateOf(0f) }
     val track = MaterialTheme.colorScheme.surfaceVariant
     val tick = MaterialTheme.colorScheme.outline
 
@@ -211,13 +214,16 @@ private fun Timeline(periods: List<SchedulePeriod>, onTap: (SchedulePeriod) -> U
                     .height(56.dp)
                     .clip(MaterialTheme.shapes.small)
                     .pointerInput(Unit) {
-                        detectTapGestures { offset -> hit(offset.x, size.width.toFloat())?.let(onTap) }
+                        detectTapGestures(
+                            onPress = { offset -> pressX = offset.x },
+                            onTap = { offset -> hit(offset.x, size.width.toFloat())?.let(onTap) },
+                        )
                     }
                     .pointerInput(Unit) {
                         detectHorizontalDragGestures(
                             onDragStart = { offset ->
-                                dragging = hit(offset.x, size.width.toFloat())
-                                dragDelta = 0f
+                                dragging = hit(pressX, size.width.toFloat())
+                                dragDelta = offset.x - pressX
                             },
                             onHorizontalDrag = { _, amount -> dragDelta += amount },
                             onDragEnd = {

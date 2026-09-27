@@ -58,10 +58,12 @@ Tip: `adb logcat -s NourA11y BlockCoordinator LockOverlay TimerService` shows ev
 - [ ] **Battery saver / ultra power saving** (Samsung) and **MIUI battery saver:** timer keeps working after 30+ minutes idle.
 
 ## 6. Parent UI
-- [ ] Arabic and English, light and dark mode, all four tabs.
-- [ ] Schedule: suggested day, tap to edit, drag to move, delete with confirmation.
-- [ ] Change PIN and security question from Settings.
-- [ ] Home "Used today" shows the minutes per app after using limited apps.
+- [x] Arabic and English, light and dark mode, all four tabs.
+- [x] Schedule: suggested day, tap to edit, drag to move, delete with confirmation.
+- [x] Change PIN and security question from Settings.
+- [x] Home "Used today" shows the minutes per app after using limited apps.
+
+Run on the API 35 emulator, 2026-09-27: all pass. Dragging a short (1-hour) period didn't move it; fixed in `ScheduleTab.kt` (the drag now starts from where the finger went down). Open polish notes: the Apps tab keeps the search text typed during onboarding; the 3–6 age option mentions a voice message that isn't recorded yet; the budget ring's rounded end leaves a notch when nearly full; the "change security question" screen from Settings says "Save and continue"; its bottom button sits partly under the gesture bar.
 
 ## 7. Phase 2: parent's phone (needs two phones and a Firebase project or the emulator)
 - [ ] Fresh install asks "Whose phone is this?"; an already set-up child phone goes straight to its PIN.
