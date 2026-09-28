@@ -67,6 +67,7 @@
     <string name="perm_accessibility_short">Sees which apps are on screen (including picture-in-picture and split screen), so the timer only runs while a selected app is in use. It never reads what\'s on the screen.</string>
     <string name="perm_accessibility_why">Nour Time uses the Accessibility service only to know which apps are on the screen, including small picture-in-picture windows and split screen. For each window it reads just the name of the app that owns it. It never reads the text, pictures or anything else shown in an app, and never what your child types. That way the timer runs only while a selected app is in use, and the \"Time\'s up\" screen appears at the right moment. What it sees stays on this phone. If you connect your own phone, only the time left and the minutes used are shared with you.</string>
     <string name="perm_accessibility_how">In Settings, open \"Installed apps\" (or \"Downloaded apps\"), tap Nour Time, and turn it on.</string>
+    <string name="perm_accessibility_how_honor">On the Accessibility page, scroll down: Nour Time is listed there. Tap it and turn it on.</string>
     <string name="perm_accessibility_restricted">Is the switch greyed out? On Android 13 and newer: open App info, tap the ⋮ menu, choose \"Allow restricted settings\", then try again.</string>
     <string name="perm_open_app_info">Open App info</string>
 
@@ -79,6 +80,7 @@
     <string name="perm_overlay_short">Shows the friendly \"Time\'s up\" screen on top of the selected apps.</string>
     <string name="perm_overlay_why">When the time runs out, Nour Time shows a friendly \"Time\'s up\" screen on top of the selected apps. Android needs this permission to allow that.</string>
     <string name="perm_overlay_how">Turn on \"Allow display over other apps\" for Nour Time.</string>
+    <string name="perm_overlay_how_honor">This phone opens the list of all apps. Search for Nour Time (or scroll to it), tap it and turn on \"Allow display over other apps\".</string>
 
     <string name="perm_admin_title">Device admin</string>
     <string name="perm_admin_short">Locks the screen when time is up and protects Nour Time from being removed.</string>

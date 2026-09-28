@@ -102,6 +102,7 @@ fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
                         progress = progress,
                         onBack = onBack,
                         permission = permission,
+                        brand = OemAutostart.brand(),
                         granted = permissionStatus[permission] == true,
                         onGrant = {
                             if (permission == NourPermission.NOTIFICATIONS &&

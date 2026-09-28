@@ -67,6 +67,7 @@ fun SelectAppsStep(
         progress = progress,
         onBack = onBack,
         scrollable = false,
+        hideActionsWhileTyping = true,
         actions = {
             Text(
                 pluralStringResource(R.plurals.apps_selected_count, state.limitedCount, state.limitedCount),

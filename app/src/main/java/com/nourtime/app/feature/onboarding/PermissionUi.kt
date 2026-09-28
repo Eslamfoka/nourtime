@@ -11,6 +11,7 @@ import androidx.compose.material.icons.rounded.QueryStats
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.nourtime.app.R
 import com.nourtime.app.core.permissions.NourPermission
+import com.nourtime.app.core.permissions.OemBrand
 
 /** Icon and copy for each permission, shared by the disclosure, the grant steps and home. */
 data class PermissionUi(
@@ -20,6 +21,14 @@ data class PermissionUi(
     @StringRes val why: Int,
     @StringRes val how: Int,
 )
+
+/** How to grant it on this phone: some brands' Settings screens differ from the generic text. */
+@StringRes
+fun NourPermission.how(brand: OemBrand?): Int = when {
+    brand == OemBrand.HONOR_HUAWEI && this == NourPermission.ACCESSIBILITY -> R.string.perm_accessibility_how_honor
+    brand == OemBrand.HONOR_HUAWEI && this == NourPermission.OVERLAY -> R.string.perm_overlay_how_honor
+    else -> ui.how
+}
 
 val NourPermission.ui: PermissionUi
     get() = when (this) {

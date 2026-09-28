@@ -35,6 +35,7 @@ fun PermissionStep(
     progress: Pair<Int, Int>?,
     onBack: (() -> Unit)?,
     permission: NourPermission,
+    brand: OemBrand?,
     granted: Boolean,
     onGrant: () -> Unit,
     onContinue: () -> Unit,
@@ -61,7 +62,7 @@ fun PermissionStep(
             pendingText = stringResource(R.string.status_not_allowed),
         )
         Text(stringResource(ui.why), style = MaterialTheme.typography.bodyLarge)
-        HowToCard(stringResource(ui.how))
+        HowToCard(stringResource(permission.how(brand)))
         // Sideloaded apps on Android 13+ can't enable accessibility until "restricted settings" are allowed.
         if (onOpenAppInfo != null && !granted && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             NourCard(containerColor = MaterialTheme.colorScheme.surfaceVariant) {

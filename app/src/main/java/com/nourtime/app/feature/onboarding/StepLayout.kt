@@ -3,12 +3,15 @@ package com.nourtime.app.feature.onboarding
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
@@ -34,12 +37,15 @@ import com.nourtime.app.R
  * Frame for every onboarding step: optional back button and progress at the top, scrollable content,
  * and actions pinned to the bottom.
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun StepLayout(
     progress: Pair<Int, Int>?,
     onBack: (() -> Unit)?,
     modifier: Modifier = Modifier,
     scrollable: Boolean = true,
+    /** Hides [actions] while the keyboard is open, so a list above it keeps its room on small screens. */
+    hideActionsWhileTyping: Boolean = false,
     actions: @Composable ColumnScope.() -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -80,11 +86,13 @@ fun StepLayout(
             content = content,
         )
 
-        Column(
-            Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            content = actions,
-        )
+        if (!(hideActionsWhileTyping && WindowInsets.isImeVisible)) {
+            Column(
+                Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                content = actions,
+            )
+        }
     }
 }
