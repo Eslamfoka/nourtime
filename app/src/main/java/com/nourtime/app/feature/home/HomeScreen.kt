@@ -1,5 +1,6 @@
 package com.nourtime.app.feature.home
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -82,7 +83,10 @@ class PermissionsViewModel @Inject constructor(
     val status: StateFlow<Map<NourPermission, Boolean>> = _status.asStateFlow()
 
     fun refresh() {
-        _status.value = permissions.statusOfAll()
+        val status = permissions.statusOfAll()
+        // Seen once on the Honor right after the system restarted the app: one briefly read as off.
+        status.filterValues { !it }.keys.takeIf { it.isNotEmpty() }?.let { Log.i("Permissions", "missing: $it") }
+        _status.value = status
     }
 
     fun settingsIntents(permission: NourPermission) = permissions.settingsIntents(permission)
