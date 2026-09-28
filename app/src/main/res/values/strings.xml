@@ -22,12 +22,12 @@
     <string name="welcome_body">Nour Time helps your child enjoy screen time in a healthy amount. You choose the apps and the time. When the time runs out, Nour kindly lets your child know it\'s time for something else.</string>
     <string name="welcome_point_budget">One shared time budget for the apps you choose</string>
     <string name="welcome_point_lock">Locks automatically when the time is up</string>
-    <string name="welcome_point_private">Everything stays on this device</string>
+    <string name="welcome_point_private">Private: nothing is shared unless you connect your own phone</string>
     <string name="welcome_cta">Let\'s start</string>
 
     <!-- Prominent disclosure -->
     <string name="disclosure_title">What Nour Time needs, and why</string>
-    <string name="disclosure_intro">Nour Time is a parental control app. To limit your child\'s time on the apps you choose, it needs the permissions below. Everything stays on this device. Nour Time doesn\'t collect, upload or share any personal data.</string>
+    <string name="disclosure_intro">Nour Time is a parental control app. To limit your child\'s time on the apps you choose, it needs the permissions below. Nour Time never reads what\'s on the screen and has no ads or tracking. Nothing leaves this phone unless you connect your own phone as a parent. Then only the time left, the minutes used on each app, the list of apps and Nour Time\'s settings are shared with your Google account.</string>
     <string name="disclosure_footer">You\'ll grant each permission yourself, one at a time, and you can turn any of them off later from the phone\'s settings.</string>
     <string name="disclosure_accept">I agree, continue</string>
     <string name="disclosure_decline">Not now</string>
@@ -65,14 +65,14 @@
     <!-- Permissions -->
     <string name="perm_accessibility_title">Accessibility service</string>
     <string name="perm_accessibility_short">Sees which apps are on screen (including picture-in-picture and split screen), so the timer only runs while a selected app is in use. It never reads what\'s on the screen.</string>
-    <string name="perm_accessibility_why">Nour Time uses the Accessibility service only to know which apps are on the screen, including small picture-in-picture windows and split screen. For each window it reads just the name of the app that owns it. It never reads the text, pictures or anything else shown in an app, and never what your child types. That way the timer runs only while a selected app is in use, and the \"Time\'s up\" screen appears at the right moment. Nothing leaves this device.</string>
+    <string name="perm_accessibility_why">Nour Time uses the Accessibility service only to know which apps are on the screen, including small picture-in-picture windows and split screen. For each window it reads just the name of the app that owns it. It never reads the text, pictures or anything else shown in an app, and never what your child types. That way the timer runs only while a selected app is in use, and the \"Time\'s up\" screen appears at the right moment. What it sees stays on this phone. If you connect your own phone, only the time left and the minutes used are shared with you.</string>
     <string name="perm_accessibility_how">In Settings, open \"Installed apps\" (or \"Downloaded apps\"), tap Nour Time, and turn it on.</string>
     <string name="perm_accessibility_restricted">Is the switch greyed out? On Android 13 and newer: open App info, tap the ⋮ menu, choose \"Allow restricted settings\", then try again.</string>
     <string name="perm_open_app_info">Open App info</string>
 
     <string name="perm_usage_title">Usage access</string>
     <string name="perm_usage_short">A backup way to detect the open app, and the source of your daily usage stats.</string>
-    <string name="perm_usage_why">Nour Time uses usage access as a backup way to know which app is in the foreground, and to show you how long each app was used today. This information stays on this device.</string>
+    <string name="perm_usage_why">Nour Time uses usage access as a backup way to know which app is in the foreground, and to show you how long each app was used today. This stays on this phone unless you connect your own phone. Then the minutes used on each limited app are shared with you.</string>
     <string name="perm_usage_how">Find Nour Time in the list and turn on \"Permit usage access\".</string>
 
     <string name="perm_overlay_title">Display over other apps</string>
@@ -406,7 +406,7 @@
     <string name="stats_under_minute">Less than a minute</string>
 
     <!-- Services -->
-    <string name="accessibility_service_description">Nour Time detects which apps are on the screen (including picture-in-picture and split screen) to limit your child\'s time on the apps you choose. It reads only the name of the app that owns each window, never the text or content shown in it or anything your child types. No data leaves this device.</string>
+    <string name="accessibility_service_description">Nour Time detects which apps are on the screen (including picture-in-picture and split screen) to limit your child\'s time on the apps you choose. It reads only the name of the app that owns each window, never the text or content shown in it or anything your child types. Nothing leaves this device unless a parent connects their own phone, and then only the time left and the minutes used on each app are shared with that parent.</string>
     <string name="device_admin_label">Nour Time protection</string>
     <string name="device_admin_description">Locks the screen when time is up and prevents uninstalling Nour Time without the parent PIN.</string>
 </resources>
