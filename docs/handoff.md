@@ -482,7 +482,7 @@ Still open: expired code (10 min), Honor as the
 
 **APK to install:** `dist/NourTime-2026-09-29-debug.apk` (real Firebase project, debug-signed like the
 builds on the Honor, so it installs over them and keeps the data: `adb install -r dist/NourTime-2026-09-29-debug.apk`,
-or copy it to the phone and open it). Everything below is on `master`; 271 unit tests pass, lint has no
+or copy it to the phone and open it). Everything below is on `master`; 272 unit tests pass, lint has no
 new warnings (same 61 older ones: library versions, battery-optimization permission, etc.).
 
 ### Commits tonight
@@ -506,6 +506,17 @@ new warnings (same 61 older ones: library versions, battery-optimization permiss
   Emulator-tested in Arabic: dial 5→65 min, coin drag 65→80, coin tap 80→75, liquid 75→175, and
   swipes starting on the dial centre / bottle bottom scroll the page without changing the value.
 
+- `6b097ab` Home logs which permission reads as off when "Some permissions are off" shows (seen once
+  on the Honor right after the system restarted the app; not reproduced, so no guessed fix).
+- `514068a` **Expired pairing code** (checklist §7, now tested): the child said "Something went wrong"
+  after 10 minutes because the watcher's catch-all swallowed its own cancellation. Now "The code has
+  expired" + "New code" (makes a fresh code); Cancel shows no error. The parent typing the old code gets
+  "No phone is showing this code… get a new code" (the child deletes expired codes).
+- Checked, no change needed: weekend days are saved the moment weekends are turned on, so the
+  language-based default is only a suggestion while they're off (the earlier mismatch came from
+  changing the phone's language after pairing). A claim timeout counts as offline even when the
+  claim's own catch-all swallows the cancellation (test added).
+
 ### Owner's rules recorded
 - Every fix must work on all Android brands; brand-specific only as runtime-chosen text/behaviour with a
   generic fallback (tonight's fixes are standard Android; the Honor setup hints are chosen by brand).
@@ -516,7 +527,7 @@ new warnings (same 61 older ones: library versions, battery-optimization permiss
 3. The Honor currently has a lock running on Chrome (debug box → "End lock now" ends it).
 
 ### Still open
-- Weekend default days follow the phone's current language (low).
-- Expired pairing code (10 min) not tested; restart-while-paired and Firestore deletion are done.
+- Phase 2 checklist §7 is complete except the Honor pass re-test above.
+- Phase 1.5 "educational content during lock" still needs the owner's decisions (see §6).
 - The earlier "Some permissions are off" flash on Home right after Nour Time was restarted by the
   Honor (it cleared by itself) — not reproduced since.
