@@ -414,4 +414,17 @@
     <string name="accessibility_service_description">Nour Time detects which apps are on the screen (including picture-in-picture and split screen) to limit your child\'s time on the apps you choose. It reads only the name of the app that owns each window, never the text or content shown in it or anything your child types. Nothing leaves this device unless a parent connects their own phone, and then only the time left and the minutes used on each app are shared with that parent.</string>
     <string name="device_admin_label">Nour Time protection</string>
     <string name="device_admin_description">Locks the screen when time is up and prevents uninstalling Nour Time without the parent PIN.</string>
+
+    <!-- Time pickers (U1) -->
+    <string name="picker_style_title">Time picker style</string>
+    <string name="picker_style_body">How times are set on this phone. Surprise me picks a different one each time.</string>
+    <string name="picker_style_dial">Dial</string>
+    <string name="picker_style_tokens">Coins</string>
+    <string name="picker_style_liquid">Liquid</string>
+    <string name="picker_style_surprise">Surprise me</string>
+    <string name="picker_tokens_hint">Drag a coin into the jar, or tap it. Tap a coin in the jar to take it out.</string>
+    <string name="picker_token_add">Add %1$s</string>
+    <string name="picker_token_remove">Take out %1$s</string>
+    <string name="picker_token_hours">%1$d h</string>
+    <string name="picker_token_minutes">%1$d min</string>
 </resources>

@@ -65,6 +65,7 @@ import com.nourtime.app.feature.setup.AppSearchField
 import com.nourtime.app.feature.setup.AppsUiState
 import com.nourtime.app.feature.setup.TimeBudgetEditor
 import com.nourtime.app.feature.setup.durationText
+import com.nourtime.app.feature.setup.timepicker.TimePickerStyleSetting
 import com.nourtime.app.remote.model.AskPolicy
 import com.nourtime.app.remote.model.AskState
 import com.nourtime.app.remote.model.RemoteSettings
@@ -233,6 +234,7 @@ fun ChildDeviceScreen(
                 onBudgetMinutes = { v -> viewModel.edit { it.copy(budgetMinutes = v) } },
                 onLockPeriodHours = { v -> viewModel.edit { it.copy(lockPeriodHours = v) } },
             )
+            TimePickerStyleSetting()
             DailyResetCard(settings.dailyResetMinute) { v -> viewModel.edit { it.copy(dailyResetMinute = v) } }
             LockTypeEditor(settings.lockType) { v -> viewModel.edit { it.copy(lockType = v) } }
             BedtimeCard(settings.bedtime) { v -> viewModel.edit { it.copy(bedtime = v) } }

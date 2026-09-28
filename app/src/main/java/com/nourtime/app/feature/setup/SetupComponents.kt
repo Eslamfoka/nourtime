@@ -29,15 +29,13 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -60,7 +58,8 @@ import com.nourtime.app.core.ui.formatDuration
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
 import com.nourtime.app.data.settings.TimeLimits
-import kotlin.math.roundToInt
+import com.nourtime.app.feature.setup.timepicker.TimePicker
+import com.nourtime.app.feature.setup.timepicker.TimeUnitKind
 
 // ---------- Child profile ----------
 
@@ -171,23 +170,25 @@ fun TimeBudgetEditor(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        ValueSliderCard(
+        ValuePickerCard(
             title = stringResource(R.string.budget_title),
             hint = stringResource(R.string.budget_hint),
             value = budgetMinutes,
             range = TimeLimits.MIN_BUDGET_MINUTES..TimeLimits.MAX_BUDGET_MINUTES,
             step = TimeLimits.BUDGET_STEP_MINUTES,
             presets = BudgetPresets,
+            unit = TimeUnitKind.MINUTES,
             format = { durationText(it) },
             onValue = onBudgetMinutes,
         )
-        ValueSliderCard(
+        ValuePickerCard(
             title = stringResource(R.string.lock_period_title),
             hint = stringResource(R.string.lock_period_hint),
             value = lockPeriodHours,
             range = TimeLimits.MIN_LOCK_HOURS..TimeLimits.MAX_LOCK_HOURS,
             step = 1,
             presets = LockPresets,
+            unit = TimeUnitKind.HOURS,
             format = { pluralStringResource(R.plurals.duration_hours, it, it) },
             onValue = onLockPeriodHours,
         )
@@ -203,19 +204,20 @@ fun durationText(minutes: Int): String {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun ValueSliderCard(
+private fun ValuePickerCard(
     title: String,
     hint: String,
     value: Int,
     range: IntRange,
     step: Int,
     presets: List<Int>,
+    unit: TimeUnitKind,
     format: @Composable (Int) -> String,
     onValue: (Int) -> Unit,
 ) {
     // Local while dragging; saved when the finger lifts.
-    var dragging by remember { mutableFloatStateOf(Float.NaN) }
-    val shown = if (dragging.isNaN()) value else ((dragging / step).roundToInt() * step).coerceIn(range)
+    var dragging by remember { mutableStateOf<Int?>(null) }
+    val shown = dragging ?: value
 
     NourCard {
         Text(title, style = MaterialTheme.typography.titleMedium)
@@ -225,22 +227,18 @@ private fun ValueSliderCard(
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(top = 8.dp),
         )
-        Slider(
-            value = shown.toFloat(),
-            onValueChange = { dragging = it },
-            onValueChangeFinished = {
-                onValue(shown)
-                dragging = Float.NaN
+        // U1: a dial, coins in a jar or a liquid fill, as chosen for this phone.
+        TimePicker(
+            value = shown,
+            range = range,
+            step = step,
+            unit = unit,
+            valueText = format(shown),
+            onPreview = { dragging = it },
+            onCommit = {
+                onValue(it)
+                dragging = null
             },
-            valueRange = range.first.toFloat()..range.last.toFloat(),
-            steps = (range.last - range.first) / step - 1,
-            colors = SliderDefaults.colors(
-                thumbColor = MaterialTheme.colorScheme.secondary,
-                activeTrackColor = MaterialTheme.colorScheme.primary,
-                activeTickColor = MaterialTheme.colorScheme.primary,
-                inactiveTrackColor = MaterialTheme.colorScheme.surfaceVariant,
-                inactiveTickColor = MaterialTheme.colorScheme.surfaceVariant,
-            ),
         )
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             presets.forEach { preset ->

@@ -67,6 +67,7 @@ import com.nourtime.app.feature.setup.AppsViewModel
 import com.nourtime.app.feature.setup.ChildProfileEditor
 import com.nourtime.app.feature.setup.ParentSettingsViewModel
 import com.nourtime.app.feature.setup.TimeBudgetEditor
+import com.nourtime.app.feature.setup.timepicker.TimePickerStyleSetting
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -219,6 +220,7 @@ private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewMod
             ChildProfileEditor(s.gender, s.ageGroup, viewModel::setGender, viewModel::setAgeGroup)
             Text(stringResource(R.string.settings_time_section), style = MaterialTheme.typography.titleLarge)
             TimeBudgetEditor(s.budgetMinutes, s.lockPeriodHours, viewModel::setBudgetMinutes, viewModel::setLockPeriodHours)
+            TimePickerStyleSetting()
             DailyResetCard(s.dailyResetMinute, viewModel::setDailyResetMinute)
             Text(stringResource(R.string.settings_lock_section), style = MaterialTheme.typography.titleLarge)
             LockTypeEditor(s.lockType, viewModel::setLockType)

@@ -426,4 +426,17 @@
     <string name="accessibility_service_description">يعرف وقت نور التطبيقات الظاهرة على الشاشة (بما فيها الصورة داخل الصورة وتقسيم الشاشة) ليحدّ من وقت طفلك على التطبيقات التي تختارها. يقرأ فقط اسم التطبيق الذي يملك كل نافذة، ولا يقرأ أبدًا النصوص أو المحتوى الظاهر فيها ولا ما يكتبه طفلك. لا تخرج أي بيانات من هذا الجهاز إلا إذا ربط ولي الأمر هاتفه، وعندها يُشارَك معه فقط الوقت المتبقي ودقائق استخدام كل تطبيق.</string>
     <string name="device_admin_label">حماية وقت نور</string>
     <string name="device_admin_description">يقفل الشاشة عند انتهاء الوقت ويمنع إلغاء تثبيت وقت نور دون رمز الأهل.</string>
+
+    <!-- Time pickers (U1) -->
+    <string name="picker_style_title">شكل اختيار الوقت</string>
+    <string name="picker_style_body">طريقة ضبط الأوقات على هذا الهاتف. \"فاجئني\" يختار شكلًا مختلفًا في كل مرة.</string>
+    <string name="picker_style_dial">القرص</string>
+    <string name="picker_style_tokens">العملات</string>
+    <string name="picker_style_liquid">السائل</string>
+    <string name="picker_style_surprise">فاجئني</string>
+    <string name="picker_tokens_hint">اسحب عملة إلى الجرة أو اضغط عليها. اضغط على عملة داخل الجرة لإخراجها.</string>
+    <string name="picker_token_add">أضف %1$s</string>
+    <string name="picker_token_remove">أخرج %1$s</string>
+    <string name="picker_token_hours">%1$d س</string>
+    <string name="picker_token_minutes">%1$d د</string>
 </resources>
