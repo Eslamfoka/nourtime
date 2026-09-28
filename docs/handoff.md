@@ -451,8 +451,9 @@ so pairing failed for anyone typing the Arabic screen; security question directi
 Earlier today: privacy wording (a74dd74), privacy policy + Play notes mention ask-for-time (df45c98).
 
 Open findings (not fixed, need the owner's call):
-- Lowering the budget right after an approved bonus can take the bonus away and start a lock
-  (`TimeRules.applySettings`: time left moves by the budget change; 15 left − 15 → lock).
+- ~~Lowering the budget right after an approved bonus took the bonus away~~ **fixed 6677bfd**
+  (`TimerState.bonusMs`; verified on the emulators: lock → +15 → budget 45→30 keeps 15 min).
+  `phase4` fast-forward merged into `master` at 6677bfd (2026-09-28).
 - The parent shows "Now tap Allow on your child's phone" even when its claim is only queued offline
   (seen with broken emulator DNS); it should wait for the server.
 - Weekend default days follow the phone's current language at read time (changing the language
