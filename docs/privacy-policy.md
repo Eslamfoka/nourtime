@@ -38,6 +38,8 @@ account can read it:
   choose limited and allowed apps);
 - the Nour Time settings the parent can change remotely (time budget, lock period, lock type, bedtime,
   daily reset, limited apps and apps allowed during the lock).
+- "Ask for more time" requests the child sends from the "Time's up" screen: only when the request
+  was made and the parent's answer (approved with how many minutes, or not now), no message text.
 
 The parent's phone stores the parent's Google account name and email (to show the child's phone who
 wants to connect) and the commands the parent sends (extra time, lock now, end the lock). The child's
@@ -113,7 +115,8 @@ version is released, and the app will ask for consent where required.
 - **رمز الأهل وإجابة سؤال الأمان:** يُحفظان بصيغة مشفرة أحادية الاتجاه فقط.
 - **عند ربط هاتف ولي الأمر (اختياري):** بعد موافقة ولي الأمر على هاتف الطفل، يرسل هاتف الطفل إلى Google
   Firebase ما يلي فقط، ولا يراه إلا حساب ولي الأمر: طراز الهاتف، وحالة المؤقت (الوقت المتبقي والقفل وحالة
-  الحماية)، ودقائق اليوم لكل تطبيق محدد، وأسماء التطبيقات القابلة للفتح، وإعدادات وقت نور. يحفظ هاتف ولي الأمر
+  الحماية)، ودقائق اليوم لكل تطبيق محدد، وأسماء التطبيقات القابلة للفتح، وإعدادات وقت نور، وطلبات "أريد وقتًا
+  إضافيًا" التي يرسلها الطفل من شاشة "خلص الوقت" (وقت الطلب ورد ولي الأمر فقط، دون أي نص). يحفظ هاتف ولي الأمر
   اسم حساب Google وبريده. لا يُرسل أبدًا اسم الطفل ولا عمره ولا الرمز ولا محتوى الشاشة ولا الموقع.
 - لا إعلانات، ولا تتبع، ولا نسخ احتياطي سحابي. إلغاء الربط يوقف كل الإرسال.
 - حذف التطبيق يحذف كل بياناته.
