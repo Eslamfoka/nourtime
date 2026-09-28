@@ -106,6 +106,12 @@ fun TimePicker(
     val chosen = LocalTimePickerStyle.current
     // "Surprise me" picks once per appearance, so the theme doesn't change mid-drag.
     val style = remember(chosen) { chosen.resolve() }
+    // Gesture handlers live across recompositions: they must call the latest callbacks, or a drag
+    // saves a stale copy of the settings (seen: a weekend drag reverted the weekend lock period).
+    val latestCommit by rememberUpdatedState(onCommit)
+    val latestPreview by rememberUpdatedState(onPreview)
+    val commit = remember { { v: Int -> latestCommit(v) } }
+    val preview = remember { { v: Int? -> latestPreview(v) } }
     val a11y = Modifier.semantics {
         stateDescription = valueText
         progressBarRangeInfo = ProgressBarRangeInfo(
@@ -114,15 +120,15 @@ fun TimePicker(
             steps = ((range.last - range.first) / step - 1).coerceAtLeast(0),
         )
         setProgress { target ->
-            onCommit(TimePickerMath.snap(target, range, step))
+            commit(TimePickerMath.snap(target, range, step))
             true
         }
     }
     Box(modifier.fillMaxWidth().then(a11y), contentAlignment = Alignment.Center) {
         when (style) {
-            TimePickerStyle.TOKENS -> TimeTokens(value, range, step, unit, onCommit)
-            TimePickerStyle.LIQUID -> TimeLiquid(value, range, step, onPreview, onCommit)
-            else -> TimeDial(value, range, step, onPreview, onCommit)
+            TimePickerStyle.TOKENS -> TimeTokens(value, range, step, unit, commit)
+            TimePickerStyle.LIQUID -> TimeLiquid(value, range, step, preview, commit)
+            else -> TimeDial(value, range, step, preview, commit)
         }
     }
 }
