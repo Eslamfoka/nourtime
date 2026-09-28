@@ -473,5 +473,7 @@ real camera** → "Now tap Allow" → Allow → paired; +15 while locked; Lock n
 now" on the Honor, +15 applied → 44:53 left of 30 min). Child Disconnect with the parent online
 removed the phone from the parent's list at once (the earlier stale entry was the offline cache).
 After a child reboot the emulator DNS fix must be re-applied (`adb root` + iptables).
-Still open: expired code (10 min), Firestore console check after Remove/Disconnect, Honor as the
+**Firestore console check passed** (owner, 2026-09-28): after child Disconnect the `devices/{id}` document
+and all subcollections were gone, the anonymous user was deleted, the Honor showed "No phones yet".
+Still open: expired code (10 min), Honor as the
 **child** (Phase 1.5 re-tests and Honor hint issues 2–4).
