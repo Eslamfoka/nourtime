@@ -23,6 +23,24 @@ class ClaimFlowTest {
     }
 
     @Test
+    fun `a timeout counts as offline even if the claim catches everything`() = runTest {
+        var toldToTapAllow = false
+        val result = ClaimFlow.run(
+            claimOnServer = {
+                try {
+                    awaitCancellation()
+                } catch (e: Exception) {
+                    ClaimResult.FAILED
+                }
+            },
+            onClaimed = { toldToTapAllow = true },
+            waitForChild = { ClaimResult.PAIRED },
+        )
+        assertEquals(ClaimResult.OFFLINE, result)
+        assertFalse(toldToTapAllow)
+    }
+
+    @Test
     fun `after the server confirms, the parent is told to tap Allow and waits for the child`() = runTest {
         val steps = mutableListOf<String>()
         val result = ClaimFlow.run(

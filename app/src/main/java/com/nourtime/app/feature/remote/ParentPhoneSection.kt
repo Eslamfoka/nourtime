@@ -51,6 +51,7 @@ import com.nourtime.app.remote.child.PairingState
 import com.nourtime.app.remote.child.PairingStates
 import com.nourtime.app.remote.model.PairingCode
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -93,6 +94,8 @@ class ParentPhoneViewModel @Inject constructor(
         job = viewModelScope.launch {
             val newCode = try {
                 pairing.createCode()
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 _state.value = PairingState.Failed(if (e.isOffline()) PairingError.OFFLINE else PairingError.OTHER)
                 return@launch
@@ -124,6 +127,10 @@ class ParentPhoneViewModel @Inject constructor(
                         job?.cancel()
                     }
                 }
+            } catch (e: CancellationException) {
+                // Our own cancel (expired, closed, or allowed): not an error. Catching it below showed
+                // "Something went wrong" instead of "This code has expired".
+                throw e
             } catch (e: Exception) {
                 if (_state.value !is PairingState.Paired) {
                     _state.value = PairingState.Failed(if (e.isOffline()) PairingError.OFFLINE else PairingError.OTHER)
