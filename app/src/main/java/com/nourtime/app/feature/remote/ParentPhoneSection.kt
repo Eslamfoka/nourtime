@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
@@ -295,7 +296,9 @@ private fun WaitingContent(state: PairingState.Waiting) {
     Text(stringResource(R.string.pair_or_type), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     Text(
         state.code.chunked(3).joinToString(" "),
-        style = MaterialTheme.typography.displaySmall,
+        // Always left to right: in an RTL layout the two groups would swap places ("413 255" shows
+        // as "255 413") and the parent would type the wrong code.
+        style = MaterialTheme.typography.displaySmall.copy(textDirection = TextDirection.Ltr),
         fontWeight = FontWeight.Bold,
     )
     var now by remember { mutableStateOf(System.currentTimeMillis()) }

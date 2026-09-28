@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -117,7 +118,12 @@ fun SecurityAnswerPanel(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
-        Text(state.question, style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
+        // The parent typed the question in any language: lay it out by its own text, not the app's.
+        Text(
+            state.question,
+            style = MaterialTheme.typography.titleMedium.copy(textDirection = TextDirection.Content),
+            textAlign = TextAlign.Center,
+        )
         OutlinedTextField(
             colors = nourTextFieldColors(),
             value = state.answer,

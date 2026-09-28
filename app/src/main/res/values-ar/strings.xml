@@ -300,7 +300,7 @@
 
     <!-- Stats -->
     <string name="stats_today">الاستخدام اليوم</string>
-    <string name="stats_week">آخر 7 أيام</string>
+    <string name="stats_week">آخر ٧ أيام</string>
     <string name="stats_week_average">نحو %1$s في اليوم</string>
     <string name="stats_week_top">الأكثر استخدامًا: %1$s (%2$s)</string>
     <string name="stats_week_more">أكثر بنسبة %1$d%% من الأيام السبعة السابقة</string>
@@ -371,7 +371,7 @@
     <string name="parent_protection_warning">الحماية تحتاج إلى انتباه على هذا الهاتف</string>
     <string name="add_child_body">على هاتف طفلك: وقت نور ← الإعدادات ← هاتف ولي الأمر ← ربط هاتف ولي الأمر. ثم امسح رمز QR الظاهر.</string>
     <string name="add_child_scan">امسح رمز QR</string>
-    <string name="add_child_or_type">أو اكتب الرمز المكوّن من 6 أرقام:</string>
+    <string name="add_child_or_type">أو اكتب الرمز المكوّن من ٦ أرقام:</string>
     <string name="add_child_code_label">الرمز</string>
     <string name="add_child_bad_code">أدخل الأرقام الستة الظاهرة على هاتف طفلك.</string>
     <string name="add_child_connect">ربط</string>
