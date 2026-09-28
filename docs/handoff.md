@@ -454,8 +454,13 @@ Open findings (not fixed, need the owner's call):
 - ~~Lowering the budget right after an approved bonus took the bonus away~~ **fixed 6677bfd**
   (`TimerState.bonusMs`; verified on the emulators: lock → +15 → budget 45→30 keeps 15 min).
   `phase4` fast-forward merged into `master` at 6677bfd (2026-09-28).
-- The parent shows "Now tap Allow on your child's phone" even when its claim is only queued offline
-  (seen with broken emulator DNS); it should wait for the server.
+- ~~The parent showed "Now tap Allow" while its claim was only queued offline~~ **fixed**: the claim is a
+  transaction (fails offline instead of queueing), `ClaimFlow` shows "Connecting…" until the server has
+  it and gives up after 20 s as offline. Emulator: offline → "Connecting…" → "No internet", and the
+  child never got the request after the parent came back online; online → "tap Allow" in <1 s → paired.
+- Unverified: once, right after a child Disconnect, the parent's list still showed the phone (the parent
+  app had just been reinstalled and then went offline, so possibly its cache). Re-check the Disconnect
+  case with the parent online.
 - Weekend default days follow the phone's current language at read time (changing the language
   changes an unset default); only matters if the language changes after pairing.
 Emulator notes: see memory — DNS fix via iptables, never `emu kill` (snapshot restore), Nouri disabled.

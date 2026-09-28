@@ -2,6 +2,7 @@ package com.nourtime.app.remote.parent
 
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
@@ -76,38 +77,52 @@ class ParentDevices @Inject constructor(
     }
 
     /**
-     * Claims [code] and waits (up to [WAIT_FOR_CHILD_MS]) for the child's phone to confirm. The
-     * rules check the expiry with server time; the local check only gives a clearer message.
+     * Claims [code], calls [onClaimed] once the server has the claim, then waits (up to
+     * [WAIT_FOR_CHILD_MS]) for the child's phone to confirm. The rules check the expiry with server
+     * time; the local check only gives a clearer message.
      */
-    suspend fun claim(code: String, user: ParentUser): ClaimResult {
+    suspend fun claim(code: String, user: ParentUser, onClaimed: () -> Unit): ClaimResult {
         val ref = firestore.collection(RemotePaths.PAIRINGS).document(code)
-        val snap = try {
-            ref.get().await()
-        } catch (e: Exception) {
-            return e.toClaimResult()
-        }
-        val deviceId = snap.getString("deviceId")
-        val precheck = ClaimCheck.before(
-            exists = snap.exists(),
-            createdAtMs = snap.getTimestamp("createdAt")?.toDate()?.time,
-            claimedBy = snap.getString("claimedBy"),
-            myUid = user.uid,
-            nowMs = System.currentTimeMillis(),
+        var deviceId: String? = null
+        return ClaimFlow.run(
+            claimOnServer = {
+                // A transaction, not a plain update: offline it fails instead of waiting in the local
+                // write queue, so the claim can't reach the child long after the parent gave up.
+                try {
+                    val (id, refusal) = firestore.runTransaction { tx ->
+                        val snap = tx.get(ref)
+                        val precheck = ClaimCheck.before(
+                            exists = snap.exists(),
+                            createdAtMs = snap.getTimestamp("createdAt")?.toDate()?.time,
+                            claimedBy = snap.getString("claimedBy"),
+                            myUid = user.uid,
+                            nowMs = System.currentTimeMillis(),
+                        )
+                        if (precheck == null) {
+                            tx.update(ref, mapOf("claimedBy" to user.uid, "claimedEmail" to user.email, "claimedName" to user.name))
+                        }
+                        snap.getString("deviceId") to precheck?.takeIf { it != ClaimResult.WAITING_FOR_CHILD }
+                    }.await()
+                    deviceId = id
+                    refusal
+                } catch (e: FirebaseFirestoreException) {
+                    if (e.code == FirebaseFirestoreException.Code.PERMISSION_DENIED) {
+                        // Claimed by someone else a moment ago, or expired by server time.
+                        val other = runCatching { ref.get(Source.SERVER).await() }.getOrNull()?.getString("claimedBy")
+                        if (other != null && other != user.uid) ClaimResult.ALREADY_CLAIMED else ClaimResult.EXPIRED
+                    } else {
+                        e.toClaimResult()
+                    }
+                } catch (e: Exception) {
+                    e.toClaimResult()
+                }
+            },
+            onClaimed = onClaimed,
+            waitForChild = { waitForChild(ref, user, deviceId) },
         )
-        if (precheck != null && precheck != ClaimResult.WAITING_FOR_CHILD) return precheck
-        if (precheck == null) {
-            try {
-                ref.update(mapOf("claimedBy" to user.uid, "claimedEmail" to user.email, "claimedName" to user.name)).await()
-            } catch (e: FirebaseFirestoreException) {
-                if (e.code != FirebaseFirestoreException.Code.PERMISSION_DENIED) return e.toClaimResult()
-                // Claimed by someone else a moment ago, or expired by server time.
-                val again = runCatching { ref.get().await() }.getOrNull()
-                val other = again?.getString("claimedBy")
-                return if (other != null && other != user.uid) ClaimResult.ALREADY_CLAIMED else ClaimResult.EXPIRED
-            } catch (e: Exception) {
-                return e.toClaimResult()
-            }
-        }
+    }
+
+    private suspend fun waitForChild(ref: DocumentReference, user: ParentUser, deviceId: String?): ClaimResult {
         val pairingGone = callbackFlow {
             val registration = ref.addSnapshotListener { s, _ -> trySend(s?.exists() == false) }
             awaitClose { registration.remove() }

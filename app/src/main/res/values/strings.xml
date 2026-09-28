@@ -364,6 +364,7 @@
     <string name="add_child_bad_code">Enter the 6 digits shown on your child\'s phone.</string>
     <string name="add_child_connect">Connect</string>
     <string name="add_child_confirm_on_child">Now tap \"Allow\" on your child\'s phone.</string>
+    <string name="add_child_sending">Connecting…</string>
     <string name="add_child_paired">Connected! Your child\'s phone is now in your list.</string>
     <string name="add_child_not_found">No phone is showing this code. Check the digits, or get a new code on your child\'s phone.</string>
     <string name="add_child_expired">This code has expired. Get a new code on your child\'s phone.</string>

@@ -376,6 +376,7 @@
     <string name="add_child_bad_code">أدخل الأرقام الستة الظاهرة على هاتف طفلك.</string>
     <string name="add_child_connect">ربط</string>
     <string name="add_child_confirm_on_child">اضغط الآن \"اسمح\" على هاتف طفلك.</string>
+    <string name="add_child_sending">جارٍ الربط…</string>
     <string name="add_child_paired">تم الربط! أصبح هاتف طفلك في قائمتك.</string>
     <string name="add_child_not_found">لا يوجد هاتف يعرض هذا الرمز. تحقق من الأرقام، أو اطلب رمزًا جديدًا على هاتف طفلك.</string>
     <string name="add_child_expired">انتهت صلاحية هذا الرمز. اطلب رمزًا جديدًا على هاتف طفلك.</string>

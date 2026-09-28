@@ -56,7 +56,10 @@ import javax.inject.Inject
 
 sealed interface AddChildState {
     data object Idle : AddChildState
-    data object Working : AddChildState
+    /** The claim is on its way to the server. */
+    data object Sending : AddChildState
+    /** The server has the claim; the child's phone now shows "Allow this parent?". */
+    data object WaitingForChild : AddChildState
     data class Done(val result: ClaimResult) : AddChildState
     data object BadCode : AddChildState
 }
@@ -76,8 +79,11 @@ class AddChildViewModel @Inject constructor(
             _state.value = AddChildState.BadCode
             return
         }
-        _state.value = AddChildState.Working
-        job = viewModelScope.launch { _state.value = AddChildState.Done(remote.claim(code, user)) }
+        _state.value = AddChildState.Sending
+        job = viewModelScope.launch {
+            val result = remote.claim(code, user, onClaimed = { _state.value = AddChildState.WaitingForChild })
+            _state.value = AddChildState.Done(result)
+        }
     }
 
     /** View models live as long as the activity here, so the dialog starts over each time it opens. */
@@ -135,9 +141,10 @@ fun AddChildDialog(user: ParentUser, onClose: () -> Unit, viewModel: AddChildVie
                             NourSecondaryButton(stringResource(R.string.add_child_connect), { viewModel.claim(typed, user) })
                             NourTextButton(stringResource(R.string.action_cancel), onClose)
                         }
-                        AddChildState.Working -> {
+                        AddChildState.Sending, AddChildState.WaitingForChild -> {
                             CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
-                            Text(stringResource(R.string.add_child_confirm_on_child), style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
+                            val message = if (s == AddChildState.Sending) R.string.add_child_sending else R.string.add_child_confirm_on_child
+                            Text(stringResource(message), style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
                         }
                         is AddChildState.Done -> {
                             Text(stringResource(messageFor(s.result)), style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
