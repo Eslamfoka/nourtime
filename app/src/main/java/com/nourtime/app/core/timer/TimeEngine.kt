@@ -154,6 +154,7 @@ class TimeEngine @Inject constructor(
             bootCount = p[BOOT] ?: 0,
             lastResetDay = p[LAST_RESET_DAY]?.let(LocalDate::ofEpochDay),
             sinceResetMs = p[SINCE_RESET] ?: 0,
+            bonusMs = p[BONUS] ?: 0,
         )
     }
 
@@ -171,6 +172,7 @@ class TimeEngine @Inject constructor(
         this[BOOT] = s.bootCount
         if (s.lastResetDay == null) remove(LAST_RESET_DAY) else this[LAST_RESET_DAY] = s.lastResetDay.toEpochDay()
         this[SINCE_RESET] = s.sinceResetMs
+        this[BONUS] = s.bonusMs
     }
 
     private companion object {
@@ -188,6 +190,7 @@ class TimeEngine @Inject constructor(
         val BOOT = intPreferencesKey("timer_boot")
         val LAST_RESET_DAY = longPreferencesKey("timer_last_reset_day")
         val SINCE_RESET = longPreferencesKey("timer_since_reset")
+        val BONUS = longPreferencesKey("timer_bonus")
     }
 }
 

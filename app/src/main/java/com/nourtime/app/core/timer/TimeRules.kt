@@ -25,6 +25,11 @@ data class TimerState(
     val lastResetDay: LocalDate? = null,
     /** Real time elapsed since the last daily reset, so a clock change can't trigger an early one. */
     val sinceResetMs: Long = 0,
+    /**
+     * The part of [remainingMs] the parent gave as extra time and that isn't used yet. It counts as
+     * the last part of the time left, and a lower budget never takes it away.
+     */
+    val bonusMs: Long = 0,
 ) {
     companion object {
         fun fresh(budgetMs: Long, lockMs: Long, nowElapsed: Long, bootCount: Int) = TimerState(
@@ -56,7 +61,7 @@ object TimeRules {
             TimerPhase.AVAILABLE -> {
                 if (!wasInUse || dt == 0L) return moved
                 val used = minOf(dt, moved.remainingMs)
-                val left = moved.copy(remainingMs = moved.remainingMs - used)
+                val left = moved.copy(remainingMs = moved.remainingMs - used).let { it.copy(bonusMs = minOf(it.bonusMs, it.remainingMs)) }
                 if (left.remainingMs > 0) left else progressLock(startLock(left), dt - used)
             }
             TimerPhase.LOCKED -> progressLock(moved, dt)
@@ -68,9 +73,9 @@ object TimeRules {
         var s = state
         if (budgetMs != s.budgetMs) {
             s = if (s.phase == TimerPhase.AVAILABLE) {
-                // Moves the time left by the change. Without a bonus it stays within the budget; extra
-                // time a bonus added above the budget is kept.
-                s.copy(remainingMs = (s.remainingMs + budgetMs - s.budgetMs).coerceIn(0, MAX_REMAINING_MS), budgetMs = budgetMs)
+                // Moves the time left by the change, but never below the unused extra time the parent gave.
+                val moved = (s.remainingMs + budgetMs - s.budgetMs).coerceIn(0, MAX_REMAINING_MS)
+                s.copy(remainingMs = maxOf(moved, s.bonusMs), budgetMs = budgetMs)
             } else {
                 s.copy(budgetMs = budgetMs)
             }
@@ -111,9 +116,11 @@ object TimeRules {
         is TimerCommand.Bonus -> {
             val bonusMs = command.minutes * 60_000L
             if (state.phase == TimerPhase.LOCKED) {
-                state.copy(phase = TimerPhase.AVAILABLE, remainingMs = bonusMs.coerceAtMost(MAX_REMAINING_MS), lockRemainingMs = 0)
+                val remaining = bonusMs.coerceAtMost(MAX_REMAINING_MS)
+                state.copy(phase = TimerPhase.AVAILABLE, remainingMs = remaining, lockRemainingMs = 0, bonusMs = remaining)
             } else {
-                state.copy(remainingMs = (state.remainingMs + bonusMs).coerceAtMost(MAX_REMAINING_MS))
+                val remaining = (state.remainingMs + bonusMs).coerceAtMost(MAX_REMAINING_MS)
+                state.copy(remainingMs = remaining, bonusMs = minOf(state.bonusMs + bonusMs, remaining))
             }
         }
         TimerCommand.LockNow -> if (state.phase == TimerPhase.AVAILABLE) startLock(state) else state
@@ -121,11 +128,11 @@ object TimeRules {
     }
 
     private fun startLock(state: TimerState) =
-        state.copy(phase = TimerPhase.LOCKED, remainingMs = 0, lockRemainingMs = state.lockMs)
+        state.copy(phase = TimerPhase.LOCKED, remainingMs = 0, lockRemainingMs = state.lockMs, bonusMs = 0)
 
     private fun progressLock(state: TimerState, dt: Long): TimerState =
         if (dt >= state.lockRemainingMs) refill(state) else state.copy(lockRemainingMs = state.lockRemainingMs - dt)
 
     private fun refill(state: TimerState) =
-        state.copy(phase = TimerPhase.AVAILABLE, remainingMs = state.budgetMs, lockRemainingMs = 0)
+        state.copy(phase = TimerPhase.AVAILABLE, remainingMs = state.budgetMs, lockRemainingMs = 0, bonusMs = 0)
 }

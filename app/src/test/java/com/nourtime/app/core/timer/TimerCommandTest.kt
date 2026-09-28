@@ -25,6 +25,31 @@ class TimerCommandTest {
     }
 
     @Test
+    fun `lowering the budget right after an approved bonus keeps the bonus`() {
+        // Seen on the real project: locked, parent approves +15, then lowers the budget by 15 min.
+        val approved = TimeRules.apply(locked(lockLeft = 3 * hour), TimerCommand.Bonus(15))
+        val s = TimeRules.applySettings(approved, budgetMs = 45 * min, lockMs = 6 * hour)
+        assertEquals(TimerPhase.AVAILABLE, s.phase)
+        assertEquals(15 * min, s.remainingMs)
+    }
+
+    @Test
+    fun `only the unused part of a bonus is kept when the budget is lowered`() {
+        // 10 left + 15 bonus = 25; 20 min used leaves 5, all of it bonus time.
+        val used = TimeRules.advance(TimeRules.apply(available(remaining = 10 * min), TimerCommand.Bonus(15)), 20 * min, 1, wasInUse = true)
+        assertEquals(5 * min, TimeRules.applySettings(used, budgetMs = 30 * min, lockMs = 6 * hour).remainingMs)
+    }
+
+    @Test
+    fun `after the lock ends a lowered budget can lock again`() {
+        // The bonus is gone once a lock ends: the refilled budget is ordinary time.
+        val bonusThenLock = TimeRules.advance(TimeRules.apply(locked(lockLeft = hour), TimerCommand.Bonus(15)), 15 * min, 1, wasInUse = true)
+        val refilled = TimeRules.apply(bonusThenLock, TimerCommand.EndLock)
+        val used = TimeRules.advance(refilled, 15 * min + 50 * min, 1, wasInUse = true) // 10 left
+        assertEquals(TimerPhase.LOCKED, TimeRules.applySettings(used, budgetMs = 45 * min, lockMs = 6 * hour).phase)
+    }
+
+    @Test
     fun `bonus while available adds to what is left`() {
         assertEquals(40 * min, TimeRules.apply(available(remaining = 10 * min), TimerCommand.Bonus(30)).remainingMs)
     }
