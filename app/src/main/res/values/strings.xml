@@ -344,6 +344,8 @@
     <string name="parent_signin_google">Sign in with Google</string>
     <string name="parent_signin_test">Use a test account (emulator)</string>
     <string name="parent_signin_error">Couldn\'t sign in. Check the internet connection and try again.</string>
+    <string name="parent_signin_no_account">There\'s no Google account on this phone. Add one in the phone\'s Settings → Accounts, then try again.</string>
+    <string name="parent_signin_failed">Couldn\'t sign in. Try again.</string>
     <string name="parent_home_title">Your children\'s phones</string>
     <string name="parent_sign_out">Sign out</string>
     <string name="parent_delete_account">Delete my account</string>

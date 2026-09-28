@@ -356,6 +356,8 @@
     <string name="parent_signin_google">تسجيل الدخول بحساب Google</string>
     <string name="parent_signin_test">استخدام حساب تجريبي (المحاكي)</string>
     <string name="parent_signin_error">تعذّر تسجيل الدخول. تحقق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
+    <string name="parent_signin_no_account">لا يوجد حساب Google على هذا الهاتف. أضف حسابًا من إعدادات الهاتف ← الحسابات، ثم حاول مرة أخرى.</string>
+    <string name="parent_signin_failed">تعذّر تسجيل الدخول. حاول مرة أخرى.</string>
     <string name="parent_home_title">هواتف أطفالك</string>
     <string name="parent_sign_out">تسجيل الخروج</string>
     <string name="parent_delete_account">حذف حسابي</string>

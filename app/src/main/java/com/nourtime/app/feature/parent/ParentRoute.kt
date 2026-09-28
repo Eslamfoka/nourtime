@@ -56,6 +56,7 @@ import com.nourtime.app.remote.parent.DeviceSummary
 import com.nourtime.app.remote.parent.ParentAuth
 import com.nourtime.app.remote.parent.ParentDevices
 import com.nourtime.app.remote.parent.ParentUser
+import com.nourtime.app.remote.parent.SignInFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -88,8 +89,8 @@ class ParentViewModel @Inject constructor(
     private val _selected = MutableStateFlow<String?>(null)
     val selected: StateFlow<String?> = _selected.asStateFlow()
 
-    private val _signInError = MutableStateFlow(false)
-    val signInError: StateFlow<Boolean> = _signInError.asStateFlow()
+    private val _signInError = MutableStateFlow<SignInFailure?>(null)
+    val signInError: StateFlow<SignInFailure?> = _signInError.asStateFlow()
 
     val testAccountAvailable: Boolean get() = auth.testAccountAvailable
 
@@ -97,13 +98,14 @@ class ParentViewModel @Inject constructor(
         viewModelScope.launch {
             _signInError.value = runCatching { auth.signInWithGoogle(activityContext) }
                 .onFailure { Log.w("ParentSignIn", "Google sign-in failed", it) }
-                .isFailure
+                .exceptionOrNull()?.let(SignInFailure::of)
         }
     }
 
     fun signInTestAccount() {
         viewModelScope.launch {
-            _signInError.value = runCatching { auth.signInTestAccount("parent@example.com", "Test Parent") }.isFailure
+            _signInError.value = runCatching { auth.signInTestAccount("parent@example.com", "Test Parent") }
+                .exceptionOrNull()?.let(SignInFailure::of)
         }
     }
 
@@ -180,8 +182,13 @@ private fun SignInScreen(viewModel: ParentViewModel) {
             if (viewModel.testAccountAvailable) {
                 NourTextButton(stringResource(R.string.parent_signin_test), viewModel::signInTestAccount)
             }
-            if (error) {
-                Text(stringResource(R.string.parent_signin_error), color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
+            error?.let { failure ->
+                val message = when (failure) {
+                    SignInFailure.NO_ACCOUNT -> R.string.parent_signin_no_account
+                    SignInFailure.OFFLINE -> R.string.parent_signin_error
+                    SignInFailure.OTHER -> R.string.parent_signin_failed
+                }
+                Text(stringResource(message), color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
             }
         }
     }

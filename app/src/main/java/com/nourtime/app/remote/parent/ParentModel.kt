@@ -1,9 +1,13 @@
 package com.nourtime.app.remote.parent
 
+import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.credentials.exceptions.NoCredentialException
+import com.google.firebase.FirebaseNetworkException
 import com.nourtime.app.core.timer.TimerPhase
 import com.nourtime.app.remote.child.PairingStates
 import com.nourtime.app.remote.model.RemoteStatus
 import kotlinx.coroutines.withTimeoutOrNull
+import java.io.IOException
 
 /** Outcome of typing or scanning a child's pairing code on the parent's phone. */
 enum class ClaimResult { NOT_FOUND, EXPIRED, ALREADY_CLAIMED, WAITING_FOR_CHILD, REFUSED, PAIRED, OFFLINE, FAILED }
@@ -70,6 +74,20 @@ sealed interface DeviceSummary {
                 // The lock counts down in real time.
                 TimerPhase.LOCKED -> Locked((status.lockRemainingMs - age).coerceAtLeast(0), status.protectionDegraded)
             }
+        }
+    }
+}
+
+/** Why Google sign-in failed on the parent's phone, for a message that fits; null when the parent cancelled. */
+enum class SignInFailure {
+    NO_ACCOUNT, OFFLINE, OTHER;
+
+    companion object {
+        fun of(error: Throwable): SignInFailure? = when (error) {
+            is GetCredentialCancellationException -> null
+            is NoCredentialException -> NO_ACCOUNT
+            is FirebaseNetworkException, is IOException -> OFFLINE
+            else -> OTHER
         }
     }
 }
