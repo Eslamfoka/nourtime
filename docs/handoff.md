@@ -477,3 +477,46 @@ After a child reboot the emulator DNS fix must be re-applied (`adb root` + iptab
 and all subcollections were gone, the anonymous user was deleted, the Honor showed "No phones yet".
 Still open: expired code (10 min), Honor as the
 **child** (Phase 1.5 re-tests and Honor hint issues 2–4).
+
+## 10. Morning of 2026-09-29 (overnight work, owner asleep)
+
+**APK to install:** `dist/NourTime-2026-09-29-debug.apk` (real Firebase project, debug-signed like the
+builds on the Honor, so it installs over them and keeps the data: `adb install -r dist/NourTime-2026-09-29-debug.apk`,
+or copy it to the phone and open it). Everything below is on `master`; 271 unit tests pass, lint has no
+new warnings (same 61 older ones: library versions, battery-optimization permission, etc.).
+
+### Commits tonight
+- `f8e4cf2` **Protection after screen off/on** (found on the Honor, fixed for every phone): the screen
+  receiver is exported (Honor's System UI sends USER_PRESENT from its own uid; a not-exported receiver
+  dropped it, so after the first unlock nothing was blocked or counted), and the parent pass now ends
+  straight from SCREEN_OFF (`ParentPass.onScreenOff`) instead of when the blocker happens to look.
+  Verified on the emulator with a fast off/on: the blocker never saw the screen off, the pass still
+  ended, Chrome was blocked. Block decisions now log what they were based on (screen, lock, pass).
+  **Still to confirm on the Honor** (the last run was cut short by USB): open Nour Time with the PIN or
+  use "For parents" on the Time's up screen, screen off/on, open the limited app → Time's up.
+- `3d0d169` **Parent sign-in messages**: cancelled → no message; no Google account → "add one in
+  Settings → Accounts"; offline → the old text; anything else → "try again". Verified cancel on API 35.
+- `ea3a866` **U1 playful time pickers** (owner's idea, merged to master as asked): wherever a time is
+  set (onboarding, Settings, weekend limits, the parent's screen) the slider is replaced by the theme
+  chosen in Settings → "Time picker style": **Dial** (drag around the ring), **Coins** (drag or tap
+  5/15/60-minute coins into the jar, tap a jar coin to take it out), **Liquid** (drag the handle on the
+  surface), **Surprise me** (a different one each time). Preset chips stay for quick picks. Only touches
+  on the ring/handle move a value, so scrolling Settings can't change the budget by accident (that
+  happened in the first version on the emulator and was fixed). TalkBack sees each picker as a slider.
+  Emulator-tested in Arabic: dial 5→65 min, coin drag 65→80, coin tap 80→75, liquid 75→175, and
+  swipes starting on the dial centre / bottle bottom scroll the page without changing the value.
+
+### Owner's rules recorded
+- Every fix must work on all Android brands; brand-specific only as runtime-chosen text/behaviour with a
+  generic fallback (tonight's fixes are standard Android; the Honor setup hints are chosen by brand).
+
+### To test first on the Honor
+1. Install the APK above. Settings → Time picker style → try Dial, Coins, Liquid, Surprise me.
+2. The pass re-test from the top of this section.
+3. The Honor currently has a lock running on Chrome (debug box → "End lock now" ends it).
+
+### Still open
+- Weekend default days follow the phone's current language (low).
+- Expired pairing code (10 min) not tested; restart-while-paired and Firestore deletion are done.
+- The earlier "Some permissions are off" flash on Home right after Nour Time was restarted by the
+  Honor (it cleared by itself) — not reproduced since.
