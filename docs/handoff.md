@@ -433,3 +433,28 @@ protection" saw NourTube in ~0.3 s and came back.
    Settings cover (PIN pad, no flashing), in-app uninstall.
 5. Fix issues 1–5 above, then ask the owner about merging `phase4`.
 Watch: `adb -s AAYSNU2712209663 logcat -s NourA11y BlockCoordinator LockOverlay TimerService RemoteSync`.
+
+### 2026-09-28 afternoon: Phase 2 tested against the real project (emulators)
+The Honor no longer had Nour Time installed; the owner chose to test on emulators instead
+(child = `nourdm-api31` emulator-5556, parent = `nourdm-api35` emulator-5554 signed in with the test
+Google account). Checklist §7 against `nourtime-8d4ce`, all passing: Google sign-in; typed-code pairing;
+wrong code and "Don't allow" messages; Lock now; ask for more time → +15 (lock ends with 15 min) and
+Not now; End the lock (full budget); settings both ways (lock period parent→child, budget child→parent);
+child offline → +15 applied once ~5 s after reconnecting; Accessibility off → "Protection needs
+attention" and back within 5 s; usage (Chrome 1 min) on the parent; Remove this phone; child Disconnect;
+Arabic on both phones; weekend section on the parent.
+Not done: QR scan with a real camera, expired code (10 min), restart while paired, Firestore
+console check that data is gone after remove/disconnect, Honor re-tests (§9 steps 4).
+
+Fixed (678a3d3): **Arabic pairing code showed its two groups swapped** ("413 255" drawn as "255 413"),
+so pairing failed for anyone typing the Arabic screen; security question direction; Arabic digits.
+Earlier today: privacy wording (a74dd74), privacy policy + Play notes mention ask-for-time (df45c98).
+
+Open findings (not fixed, need the owner's call):
+- Lowering the budget right after an approved bonus can take the bonus away and start a lock
+  (`TimeRules.applySettings`: time left moves by the budget change; 15 left − 15 → lock).
+- The parent shows "Now tap Allow on your child's phone" even when its claim is only queued offline
+  (seen with broken emulator DNS); it should wait for the server.
+- Weekend default days follow the phone's current language at read time (changing the language
+  changes an unset default); only matters if the language changes after pairing.
+Emulator notes: see memory — DNS fix via iptables, never `emu kill` (snapshot restore), Nouri disabled.
