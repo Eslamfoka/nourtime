@@ -11,6 +11,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
+import com.nourtime.app.core.blocking.ParentPass
 import com.nourtime.app.core.detection.DetectionSource
 import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.UsageStatsSource
@@ -50,6 +51,7 @@ import javax.inject.Inject
 class TimerService : Service() {
 
     @Inject lateinit var tracker: ForegroundAppTracker
+    @Inject lateinit var pass: ParentPass
     @Inject lateinit var engine: TimeEngine
     @Inject lateinit var settings: ParentSettingsRepository
     @Inject lateinit var usageStats: UsageStatsSource
@@ -63,7 +65,10 @@ class TimerService : Service() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     private val screenReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) = tracker.refreshScreen()
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == Intent.ACTION_SCREEN_OFF) pass.onScreenOff()
+            tracker.refreshScreen()
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -85,7 +90,10 @@ class TimerService : Service() {
                 addAction(Intent.ACTION_SCREEN_OFF)
                 addAction(Intent.ACTION_USER_PRESENT)
             },
-            ContextCompat.RECEIVER_NOT_EXPORTED,
+            // Exported: on Honor, USER_PRESENT comes from System UI's own uid, and a not-exported
+            // receiver drops it, so the phone stayed "locked" after the first unlock (no blocking,
+            // no counting). Only the system can send these protected broadcasts.
+            ContextCompat.RECEIVER_EXPORTED,
         )
         tracker.refreshScreen()
         if (!tracker.accessibilityConnected) tracker.onAccessibilityDisconnected(usageStats.available)

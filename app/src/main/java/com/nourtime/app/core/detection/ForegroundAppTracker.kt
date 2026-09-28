@@ -3,6 +3,7 @@ package com.nourtime.app.core.detection
 import android.app.KeyguardManager
 import android.content.Context
 import android.os.PowerManager
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -70,7 +71,9 @@ class ForegroundAppTracker @Inject constructor(
     }
 
     fun refreshScreen() {
-        _state.update { it.copy(screen = readScreen()) }
+        val screen = readScreen()
+        Log.i(TAG, "screen interactive=${screen.interactive} keyguard=${screen.keyguardLocked}")
+        _state.update { it.copy(screen = screen) }
         ignoredPackages = computeIgnored()
     }
 
@@ -87,6 +90,7 @@ class ForegroundAppTracker @Inject constructor(
     }
 
     private companion object {
+        const val TAG = "ForegroundTracker"
         val TRANSPARENT_PACKAGES = setOf(
             "com.android.systemui",
             "com.android.permissioncontroller",

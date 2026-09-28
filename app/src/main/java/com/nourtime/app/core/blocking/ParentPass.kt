@@ -37,6 +37,12 @@ class ParentPass @Inject constructor(
         _state.update { State() }
     }
 
+    /**
+     * Called straight from the SCREEN_OFF broadcast. Waiting for the blocker to notice the screen was
+     * off isn't enough: the phone often sleeps first, and SCREEN_ON then replaces the "off" state.
+     */
+    fun onScreenOff() = revoke()
+
     fun deviceActive(): Boolean = clock.elapsedRealtime() < maxOf(_state.value.deviceUntil, _state.value.fullUntil)
 
     fun fullActive(): Boolean = clock.elapsedRealtime() < _state.value.fullUntil

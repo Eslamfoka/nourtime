@@ -147,14 +147,18 @@ class BlockCoordinator @Inject constructor(
         )
         if (turnScreenOff) Log.i(TAG, "whole-device lock started: screen off=${screenLocker.lockNow()}")
 
-        if (decision != lastDecision) {
-            Log.i(TAG, "decision=$decision fg=${fg.foreground} visible=${fg.visible} source=${fg.source} hidden=$hidden")
-            lastDecision = decision
+        // Logged on any change of what the decision depends on, so "why wasn't it blocked" can be read later.
+        val why = "decision=$decision fg=${fg.foreground} visible=${fg.visible} source=${fg.source} hidden=$hidden " +
+            "usable=${fg.screen.usable} interactive=${fg.screen.interactive} keyguard=${fg.screen.keyguardLocked} " +
+            "timeUp=$timeUp pass=${pass.deviceActive()}/${pass.fullActive()}"
+        if (why != lastWhy) {
+            Log.i(TAG, why)
+            lastWhy = why
         }
         withContext(Dispatchers.Main) { overlay.render(screen) }
     }
 
-    private var lastDecision: BlockDecision? = null
+    private var lastWhy: String? = null
 
     private val audioManager by lazy { context.getSystemService(AudioManager::class.java) }
     private val telecom by lazy { context.getSystemService(TelecomManager::class.java) }
