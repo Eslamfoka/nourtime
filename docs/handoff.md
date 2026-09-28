@@ -464,3 +464,14 @@ Open findings (not fixed, need the owner's call):
 - Weekend default days follow the phone's current language at read time (changing the language
   changes an unset default); only matters if the language changes after pairing.
 Emulator notes: see memory — DNS fix via iptables, never `emu kill` (snapshot restore), Nouri disabled.
+
+### 2026-09-28 evening: real Honor as the parent
+Owner's Honor = **parent** (real camera), child = `nourdm-api31` emulator. Passing: **QR scan with the
+real camera** → "Now tap Allow" → Allow → paired; +15 while locked; Lock now; ask for more time →
++30 from the Honor (~1 s); Lock now + End the lock (full 30 min budget); **restart while paired**
+(normal `adb reboot` of the child: Nour Time + Accessibility came back by themselves, "Updated just
+now" on the Honor, +15 applied → 44:53 left of 30 min). Child Disconnect with the parent online
+removed the phone from the parent's list at once (the earlier stale entry was the offline cache).
+After a child reboot the emulator DNS fix must be re-applied (`adb root` + iptables).
+Still open: expired code (10 min), Firestore console check after Remove/Disconnect, Honor as the
+**child** (Phase 1.5 re-tests and Honor hint issues 2–4).
