@@ -512,6 +512,10 @@ new warnings (same 61 older ones: library versions, battery-optimization permiss
   after 10 minutes because the watcher's catch-all swallowed its own cancellation. Now "The code has
   expired" + "New code" (makes a fresh code); Cancel shows no error. The parent typing the old code gets
   "No phone is showing this code… get a new code" (the child deletes expired codes).
+- `262cd4d` **Time pickers use the latest callbacks** (found in a review pass, reproduced first): a
+  second drag on the weekend budget saved a stale copy of the weekend settings and reverted the weekend
+  lock period (8 h → 4 h). Fixed with stable forwarders to the latest onCommit/onPreview; the same run
+  now keeps 8 h.
 - Checked, no change needed: weekend days are saved the moment weekends are turned on, so the
   language-based default is only a suggestion while they're off (the earlier mismatch came from
   changing the phone's language after pairing). A claim timeout counts as offline even when the
