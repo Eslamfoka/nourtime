@@ -22,6 +22,16 @@ class ParentSessionTest {
     }
 
     @Test
+    fun `turning the screen off locks the session even within the grace time`() {
+        // Seen on the emulator: a minute after the parent locked the screen, Nour Time opened without the PIN.
+        session.unlock()
+        session.onBackground(1_000)
+        session.onScreenOff()
+        session.onForeground(5_000)
+        assertFalse(session.isUnlocked.value)
+    }
+
+    @Test
     fun `long absence locks again`() {
         session.unlock()
         session.onBackground(1_000)

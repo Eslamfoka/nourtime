@@ -32,6 +32,9 @@ class ParentSession(private val graceMs: Long) {
         _isUnlocked.value = false
     }
 
+    /** Like the parent pass, the session ends when the screen turns off: the phone may be handed to the child. */
+    fun onScreenOff() = lock()
+
     fun onBackground(nowElapsed: Long) {
         if (_isUnlocked.value) backgroundedAt = nowElapsed
     }

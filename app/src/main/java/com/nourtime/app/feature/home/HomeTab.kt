@@ -13,17 +13,24 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Apps
+import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.HourglassTop
+import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.LockClock
+import androidx.compose.material.icons.rounded.LockOpen
 import androidx.compose.material.icons.rounded.PlayCircle
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.WarningAmber
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -45,17 +53,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
-import com.nourtime.app.BuildConfig
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.IconBadge
 import com.nourtime.app.core.designsystem.component.NourCard
 import com.nourtime.app.core.designsystem.component.NourDangerButton
+import com.nourtime.app.core.designsystem.component.NourDialogButton
 import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.core.detection.ForegroundAppTracker
-import com.nourtime.app.core.detection.ForegroundState
 import com.nourtime.app.core.permissions.NourPermission
 import com.nourtime.app.core.permissions.PermissionChecker
 import com.nourtime.app.core.time.TrustedClock
@@ -119,18 +128,37 @@ class HomeViewModel @Inject constructor(
 
     fun accessibilitySettings() = permissions.settingsIntents(NourPermission.ACCESSIBILITY)
 
-    fun debugSkip(endBudget: Boolean) {
-        viewModelScope.launch { engine.apply(if (endBudget) TimerCommand.LockNow else TimerCommand.EndLock) }
+    /** Dashboard quick actions: the same commands the parent's phone sends. */
+    fun lockNow() {
+        viewModelScope.launch { engine.apply(TimerCommand.LockNow) }
+    }
+
+    fun endLock() {
+        viewModelScope.launch { engine.apply(TimerCommand.EndLock) }
     }
 }
 
+/** Where a dashboard tile leads. */
+enum class Section { APPS, SCHEDULE, SETTINGS, PERMISSIONS }
+
+/**
+ * The parent's single dashboard: time left, the two quick actions, and tiles to Apps, Schedule and
+ * Settings (no bottom bar). Usage stays below; the permission list lives in Settings.
+ */
 @Composable
-internal fun HomeTab(padding: PaddingValues, viewModel: HomeViewModel = hiltViewModel(), permissionsViewModel: PermissionsViewModel = hiltViewModel()) {
+internal fun Dashboard(
+    padding: PaddingValues,
+    onOpen: (Section) -> Unit,
+    viewModel: HomeViewModel = hiltViewModel(),
+    permissionsViewModel: PermissionsViewModel = hiltViewModel(),
+) {
     val status by viewModel.status.collectAsStateWithLifecycle()
-    val detection by viewModel.detection.collectAsStateWithLifecycle()
+    val permissions by permissionsViewModel.status.collectAsStateWithLifecycle()
     val today by viewModel.today.collectAsStateWithLifecycle()
     val week by viewModel.week.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { permissionsViewModel.refresh() }
+    var confirm by remember { mutableStateOf<TimerCommand?>(null) }
 
     TabColumn(padding) {
         val s = status
@@ -143,18 +171,115 @@ internal fun HomeTab(padding: PaddingValues, viewModel: HomeViewModel = hiltView
                         Toast.makeText(context, R.string.cannot_open_settings, Toast.LENGTH_LONG).show()
                     }
                 })
+            } else if (permissions.values.any { !it }) {
+                PermissionsWarningCard(onFix = { onOpen(Section.PERMISSIONS) })
             }
             BudgetRing(s)
             StatusCard(s, viewModel::label)
+            QuickActions(
+                locked = s.phase == TimerPhase.LOCKED,
+                onLockNow = { confirm = TimerCommand.LockNow },
+                onEndLock = { confirm = TimerCommand.EndLock },
+            )
         }
+        SectionTiles(onOpen)
         TodayCard(today, viewModel::label)
         week?.let { report ->
             var topName by remember(report.topApp) { mutableStateOf<String?>(null) }
             LaunchedEffect(report.topApp) { topName = report.topApp?.let { viewModel.label(it) } }
             WeekCard(report, topName)
         }
-        if (BuildConfig.DEBUG) DebugDetectionCard(detection, viewModel::debugSkip)
-        PermissionsSection(permissionsViewModel)
+    }
+
+    confirm?.let { command ->
+        val lockNow = command == TimerCommand.LockNow
+        AlertDialog(
+            onDismissRequest = { confirm = null },
+            title = { Text(stringResource(if (lockNow) R.string.device_lock_now else R.string.device_end_lock)) },
+            text = { Text(stringResource(if (lockNow) R.string.device_lock_now_body else R.string.device_end_lock_body)) },
+            confirmButton = {
+                NourDialogButton(stringResource(if (lockNow) R.string.device_lock_now else R.string.device_end_lock), {
+                    if (lockNow) viewModel.lockNow() else viewModel.endLock()
+                    confirm = null
+                })
+            },
+            dismissButton = { NourDialogButton(stringResource(R.string.action_cancel), { confirm = null }) },
+        )
+    }
+}
+
+/** "Lock now" and "End the lock": always on the dashboard, only the one that fits is enabled. */
+@Composable
+private fun QuickActions(locked: Boolean, onLockNow: () -> Unit, onEndLock: () -> Unit) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        ActionTile(
+            icon = Icons.Rounded.Lock,
+            label = stringResource(R.string.device_lock_now),
+            enabled = !locked,
+            onClick = onLockNow,
+            container = MaterialTheme.colorScheme.secondary,
+            content = MaterialTheme.colorScheme.onSecondary,
+            modifier = Modifier.weight(1f),
+        )
+        ActionTile(
+            icon = Icons.Rounded.LockOpen,
+            label = stringResource(R.string.device_end_lock),
+            enabled = locked,
+            onClick = onEndLock,
+            container = MaterialTheme.colorScheme.primary,
+            content = MaterialTheme.colorScheme.onPrimary,
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
+
+/** Apps, Schedule and Settings, replacing the old bottom bar. */
+@Composable
+private fun SectionTiles(onOpen: (Section) -> Unit) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        val tile = MaterialTheme.colorScheme.surface
+        val onTile = MaterialTheme.colorScheme.onSurface
+        ActionTile(Icons.Rounded.Apps, stringResource(R.string.nav_apps), true, { onOpen(Section.APPS) }, tile, onTile, Modifier.weight(1f))
+        ActionTile(Icons.Rounded.CalendarMonth, stringResource(R.string.nav_schedule), true, { onOpen(Section.SCHEDULE) }, tile, onTile, Modifier.weight(1f))
+        ActionTile(Icons.Rounded.Settings, stringResource(R.string.nav_settings), true, { onOpen(Section.SETTINGS) }, tile, onTile, Modifier.weight(1f))
+    }
+}
+
+@Composable
+private fun ActionTile(
+    icon: ImageVector,
+    label: String,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    container: Color,
+    content: Color,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        onClick = onClick,
+        enabled = enabled,
+        shape = MaterialTheme.shapes.large,
+        color = if (enabled) container else MaterialTheme.colorScheme.surfaceVariant,
+        contentColor = if (enabled) content else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+        shadowElevation = if (enabled) 2.dp else 0.dp,
+        modifier = modifier.heightIn(min = 96.dp),
+    ) {
+        Column(
+            Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+        ) {
+            Icon(icon, contentDescription = null, modifier = Modifier.size(32.dp))
+            Text(label, style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center)
+        }
+    }
+}
+
+@Composable
+private fun PermissionsWarningCard(onFix: () -> Unit) {
+    NourCard(containerColor = NourTheme.colors.danger.copy(alpha = 0.16f)) {
+        StatusRow(Icons.Rounded.WarningAmber, stringResource(R.string.home_permissions_title), stringResource(R.string.home_permissions_missing))
+        NourDangerButton(stringResource(R.string.action_fix), onFix)
     }
 }
 
@@ -168,7 +293,7 @@ private fun BudgetRing(status: TimerStatus) {
     val gold = MaterialTheme.colorScheme.primary
 
     Box(Modifier.fillMaxWidth().padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
-        Canvas(Modifier.size(232.dp)) {
+        Canvas(Modifier.size(200.dp)) {
             val stroke = 22.dp.toPx()
             val inset = stroke / 2
             val arcSize = Size(size.width - stroke, size.height - stroke)
@@ -247,9 +372,10 @@ private fun DegradedCard(onFix: () -> Unit) {
     }
 }
 
-/** Debug builds only: what detection sees, to verify on real Samsung/Xiaomi phones. */
+/** Debug builds only (Settings): what detection sees, to verify on real phones. */
 @Composable
-private fun DebugDetectionCard(state: ForegroundState, onSkip: (endBudget: Boolean) -> Unit) {
+internal fun DebugDetectionCard(viewModel: HomeViewModel = hiltViewModel()) {
+    val state by viewModel.detection.collectAsStateWithLifecycle()
     NourCard(containerColor = MaterialTheme.colorScheme.surfaceVariant) {
         Text("Detection (debug)", style = MaterialTheme.typography.titleSmall)
         Text(
@@ -257,11 +383,6 @@ private fun DebugDetectionCard(state: ForegroundState, onSkip: (endBudget: Boole
                 "screenUsable=${state.screen.usable}",
             style = MaterialTheme.typography.bodySmall,
         )
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            val colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurface)
-            OutlinedButton(onClick = { onSkip(true) }, colors = colors) { Text("End budget now") }
-            OutlinedButton(onClick = { onSkip(false) }, colors = colors) { Text("End lock now") }
-        }
     }
 }
 

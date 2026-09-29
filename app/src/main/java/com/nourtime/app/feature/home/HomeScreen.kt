@@ -2,6 +2,7 @@ package com.nourtime.app.feature.home
 
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,34 +11,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Apps
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.VerifiedUser
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -47,6 +45,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nourtime.app.BuildConfig
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.NourCard
 import com.nourtime.app.core.designsystem.component.NourDangerButton
@@ -59,8 +58,8 @@ import com.nourtime.app.core.ui.startFirstAvailable
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
 import com.nourtime.app.feature.lock.TimeUpPreviewDialog
-import com.nourtime.app.feature.remote.ParentPhoneSection
 import com.nourtime.app.feature.onboarding.ui
+import com.nourtime.app.feature.remote.ParentPhoneSection
 import com.nourtime.app.feature.schedule.ScheduleTab
 import com.nourtime.app.feature.setup.AppList
 import com.nourtime.app.feature.setup.AppSearchField
@@ -92,41 +91,35 @@ class PermissionsViewModel @Inject constructor(
     fun settingsIntents(permission: NourPermission) = permissions.settingsIntents(permission)
 }
 
-private enum class Tab(val icon: ImageVector, val label: Int) {
-    HOME(Icons.Rounded.Home, R.string.nav_home),
-    APPS(Icons.Rounded.Apps, R.string.nav_apps),
-    SCHEDULE(Icons.Rounded.CalendarMonth, R.string.nav_schedule),
-    SETTINGS(Icons.Rounded.Settings, R.string.nav_settings),
-}
-
-/** Parent UI with the brief's bottom bar: Home, Apps, Schedule, Settings. */
+/**
+ * Parent UI: one dashboard (no bottom bar). Its tiles open Apps, Schedule and Settings full screen
+ * with a back arrow; Permissions opens from Settings.
+ */
 @Composable
 fun MainRoute() {
-    var tab by rememberSaveable { mutableIntStateOf(Tab.HOME.ordinal) }
+    var section by rememberSaveable { mutableStateOf<Section?>(null) }
+    val back = { section = if (section == Section.PERMISSIONS) Section.SETTINGS else null }
+    BackHandler(enabled = section != null) { back() }
+    val current = section
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = {
-            NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
-                Tab.entries.forEach { t ->
-                    NavigationBarItem(
-                        selected = tab == t.ordinal,
-                        onClick = { tab = t.ordinal },
-                        icon = { Icon(t.icon, contentDescription = null) },
-                        label = { Text(stringResource(t.label)) },
-                        colors = NavigationBarItemDefaults.colors(
-                            indicatorColor = MaterialTheme.colorScheme.primary,
-                            selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                        ),
-                    )
-                }
-            }
-        },
+        topBar = { if (current != null) BackBar(onBack = back) },
     ) { padding ->
-        when (Tab.entries[tab]) {
-            Tab.HOME -> HomeTab(padding)
-            Tab.APPS -> AppsTab(padding)
-            Tab.SCHEDULE -> ScheduleTab(padding)
-            Tab.SETTINGS -> SettingsTab(padding)
+        when (current) {
+            null -> Dashboard(padding, onOpen = { section = it })
+            Section.APPS -> AppsTab(padding)
+            Section.SCHEDULE -> ScheduleTab(padding)
+            Section.SETTINGS -> SettingsTab(padding, onPermissions = { section = Section.PERMISSIONS })
+            Section.PERMISSIONS -> TabColumn(padding) { PermissionsSection(hiltViewModel()) }
+        }
+    }
+}
+
+@Composable
+private fun BackBar(onBack: () -> Unit) {
+    Row(Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 8.dp, vertical = 4.dp)) {
+        IconButton(onClick = onBack) {
+            Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.action_back))
         }
     }
 }
@@ -215,10 +208,18 @@ private fun AppsTab(padding: PaddingValues, viewModel: AppsViewModel = hiltViewM
 }
 
 @Composable
-private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewModel = hiltViewModel()) {
+private fun SettingsTab(
+    padding: PaddingValues,
+    onPermissions: () -> Unit,
+    viewModel: ParentSettingsViewModel = hiltViewModel(),
+    permissionsViewModel: PermissionsViewModel = hiltViewModel(),
+) {
     val settings by viewModel.settings.collectAsStateWithLifecycle()
+    val permissions by permissionsViewModel.status.collectAsStateWithLifecycle()
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { permissionsViewModel.refresh() }
     TabColumn(padding) {
         Text(stringResource(R.string.nav_settings), style = MaterialTheme.typography.headlineMedium)
+        PermissionsRow(allowed = permissions.values.all { it }, onClick = onPermissions)
         settings?.let { s ->
             Text(stringResource(R.string.settings_child_section), style = MaterialTheme.typography.titleLarge)
             ChildProfileEditor(s.gender, s.ageGroup, viewModel::setGender, viewModel::setAgeGroup)
@@ -250,6 +251,35 @@ private fun SettingsTab(padding: PaddingValues, viewModel: ParentSettingsViewMod
             var uninstalling by remember { mutableStateOf(false) }
             NourDangerButton(stringResource(R.string.uninstall_button), { uninstalling = true })
             if (uninstalling) UninstallDialog(onClose = { uninstalling = false })
+            if (BuildConfig.DEBUG) DebugDetectionCard()
+        }
+    }
+}
+
+/** Settings entry for the permission list, with a one-line status. */
+@Composable
+private fun PermissionsRow(allowed: Boolean, onClick: () -> Unit) {
+    Surface(
+        onClick = onClick,
+        shape = MaterialTheme.shapes.large,
+        color = if (allowed) MaterialTheme.colorScheme.surface else NourTheme.colors.danger.copy(alpha = 0.16f),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Row(
+            Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Icon(Icons.Rounded.VerifiedUser, contentDescription = null)
+            Column(Modifier.weight(1f)) {
+                Text(stringResource(R.string.home_permissions_title), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    stringResource(if (allowed) R.string.settings_permissions_ok else R.string.home_permissions_missing),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, contentDescription = null)
         }
     }
 }

@@ -15,6 +15,7 @@ import com.nourtime.app.core.blocking.ParentPass
 import com.nourtime.app.core.detection.DetectionSource
 import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.UsageStatsSource
+import com.nourtime.app.core.security.ParentSession
 import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
 import com.nourtime.app.core.timer.TimerPhase
@@ -52,6 +53,7 @@ class TimerService : Service() {
 
     @Inject lateinit var tracker: ForegroundAppTracker
     @Inject lateinit var pass: ParentPass
+    @Inject lateinit var session: ParentSession
     @Inject lateinit var engine: TimeEngine
     @Inject lateinit var settings: ParentSettingsRepository
     @Inject lateinit var usageStats: UsageStatsSource
@@ -66,7 +68,10 @@ class TimerService : Service() {
 
     private val screenReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == Intent.ACTION_SCREEN_OFF) pass.onScreenOff()
+            if (intent.action == Intent.ACTION_SCREEN_OFF) {
+                pass.onScreenOff()
+                session.onScreenOff()
+            }
             tracker.refreshScreen()
         }
     }
