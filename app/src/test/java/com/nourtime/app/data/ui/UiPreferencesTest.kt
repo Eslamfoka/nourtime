@@ -52,6 +52,16 @@ class UiPreferencesTest {
     }
 
     @Test
+    fun `surprise never repeats the theme it showed last`() {
+        var last: TimePickerStyle? = null
+        repeat(300) { seed ->
+            val next = TimePickerStyle.SURPRISE.resolve(Random(seed), avoid = last)
+            assert(next != last) { "repeated $next" }
+            last = next
+        }
+    }
+
+    @Test
     fun `a chosen theme resolves to itself`() {
         assertEquals(TimePickerStyle.LIQUID, TimePickerStyle.LIQUID.resolve(Random(1)))
     }

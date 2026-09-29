@@ -15,11 +15,11 @@ import kotlin.random.Random
 enum class TimePickerStyle {
     DIAL, TOKENS, LIQUID,
 
-    /** A different real theme each time a picker appears. */
+    /** A different real theme each time a picker appears, never the one shown just before. */
     SURPRISE;
 
-    fun resolve(random: Random = Random.Default): TimePickerStyle =
-        if (this == SURPRISE) listOf(DIAL, TOKENS, LIQUID).random(random) else this
+    fun resolve(random: Random = Random.Default, avoid: TimePickerStyle? = null): TimePickerStyle =
+        if (this == SURPRISE) listOf(DIAL, TOKENS, LIQUID).filter { it != avoid }.random(random) else this
 }
 
 /** Look-and-feel choices that belong to this phone only (not synced to the other phone). */

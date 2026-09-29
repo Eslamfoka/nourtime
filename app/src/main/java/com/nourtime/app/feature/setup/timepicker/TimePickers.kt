@@ -84,6 +84,9 @@ import kotlin.math.sin
 /** The time-picker theme for this phone (U1), provided at the app root from [com.nourtime.app.data.ui.UiPreferences]. */
 val LocalTimePickerStyle = staticCompositionLocalOf { TimePickerStyle.DIAL }
 
+/** The theme "Surprise me" showed last (this process), so the next one differs. */
+private var lastSurprise: TimePickerStyle? = null
+
 /** What a picker's value counts: the budget is in minutes, the lock period in hours. */
 enum class TimeUnitKind { MINUTES, HOURS }
 
@@ -104,8 +107,11 @@ fun TimePicker(
     modifier: Modifier = Modifier,
 ) {
     val chosen = LocalTimePickerStyle.current
-    // "Surprise me" picks once per appearance, so the theme doesn't change mid-drag.
-    val style = remember(chosen) { chosen.resolve() }
+    // "Surprise me" picks once per appearance (so the theme doesn't change mid-drag), never the
+    // theme it showed last, so every appearance visibly changes.
+    val style = remember(chosen) {
+        chosen.resolve(avoid = lastSurprise).also { if (chosen == TimePickerStyle.SURPRISE) lastSurprise = it }
+    }
     // Gesture handlers live across recompositions: they must call the latest callbacks, or a drag
     // saves a stale copy of the settings (seen: a weekend drag reverted the weekend lock period).
     val latestCommit by rememberUpdatedState(onCommit)
