@@ -129,6 +129,8 @@
     <!-- Home -->
     <string name="home_permissions_title">الأذونات</string>
     <string name="settings_permissions_ok">كلها مسموحة. يستطيع وقت نور حماية هذا الهاتف.</string>
+    <string name="settings_language">اللغة</string>
+    <string name="language_system">لغة الهاتف</string>
     <string name="home_permissions_missing">بعض الأذونات متوقفة. لن يستطيع وقت نور حماية الجهاز بالكامل حتى تفعّلها.</string>
     <string name="action_fix">إصلاح</string>
 

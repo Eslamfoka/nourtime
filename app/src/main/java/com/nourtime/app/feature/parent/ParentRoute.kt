@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.PhoneAndroid
 import androidx.compose.material.icons.rounded.MoreTime
+import androidx.compose.material.icons.rounded.PhoneAndroid
 import androidx.compose.material.icons.rounded.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -49,6 +49,7 @@ import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourStar
 import com.nourtime.app.core.designsystem.component.NourTextButton
 import com.nourtime.app.core.designsystem.theme.NourTheme
+import com.nourtime.app.feature.language.LanguageCard
 import com.nourtime.app.feature.setup.durationText
 import com.nourtime.app.remote.model.AskPolicy
 import com.nourtime.app.remote.parent.ChildDevice
@@ -228,6 +229,7 @@ private fun ParentHomeScreen(user: ParentUser, viewModel: ParentViewModel) {
             DeviceCard(device, now) { viewModel.open(device.id) }
         }
         NourPrimaryButton(stringResource(R.string.parent_add_child), { adding = true })
+        LanguageCard()
         if (deletion == DeletionState.DELETING) {
             Text(stringResource(R.string.parent_deleting), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         } else {

@@ -57,6 +57,7 @@ import com.nourtime.app.core.permissions.PermissionChecker
 import com.nourtime.app.core.ui.startFirstAvailable
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
+import com.nourtime.app.feature.language.LanguageCard
 import com.nourtime.app.feature.lock.TimeUpPreviewDialog
 import com.nourtime.app.feature.onboarding.ui
 import com.nourtime.app.feature.remote.ParentPhoneSection
@@ -220,6 +221,7 @@ private fun SettingsTab(
     TabColumn(padding) {
         Text(stringResource(R.string.nav_settings), style = MaterialTheme.typography.headlineMedium)
         PermissionsRow(allowed = permissions.values.all { it }, onClick = onPermissions)
+        LanguageCard()
         settings?.let { s ->
             Text(stringResource(R.string.settings_child_section), style = MaterialTheme.typography.titleLarge)
             ChildProfileEditor(s.gender, s.ageGroup, viewModel::setGender, viewModel::setAgeGroup)

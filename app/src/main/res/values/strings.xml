@@ -129,6 +129,10 @@
     <!-- Home -->
     <string name="home_permissions_title">Permissions</string>
     <string name="settings_permissions_ok">All allowed. Nour Time can protect this phone.</string>
+    <string name="settings_language">Language</string>
+    <string name="language_system">Phone language</string>
+    <string name="language_arabic" translatable="false">العربية</string>
+    <string name="language_english" translatable="false">English</string>
     <string name="home_permissions_missing">Some permissions are off. Nour Time can\'t fully protect the device until they\'re on.</string>
     <string name="action_fix">Fix</string>
 
