@@ -41,6 +41,7 @@ import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.feature.lock.LockOverlayContent
 import com.nourtime.app.feature.lock.LockScreenState
 import com.nourtime.app.feature.lock.OverlayParentFlow
+import com.nourtime.app.feature.pin.ForgotPinRequest
 import com.nourtime.app.remote.child.TimeRequests
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -205,7 +206,12 @@ class LockOverlay @Inject constructor(
         override val viewModelStore = ViewModelStore()
 
         private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
-        private val parentFlow = OverlayParentFlow(scope, security, clock, pass)
+        private val parentFlow = OverlayParentFlow(scope, security, clock, pass).also {
+            it.onForgotPin = {
+                ForgotPinRequest.request()
+                openApp(appContext.packageName)
+            }
+        }
         private val wm = context.getSystemService(WindowManager::class.java)
 
         private val root = object : FrameLayout(context) {

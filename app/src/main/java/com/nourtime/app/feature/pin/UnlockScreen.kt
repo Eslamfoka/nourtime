@@ -33,6 +33,7 @@ import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourStar
 import com.nourtime.app.core.designsystem.component.NourTextButton
 import com.nourtime.app.core.designsystem.component.nourTextFieldColors
+import com.nourtime.app.core.security.PinCreationState
 import com.nourtime.app.core.ui.formatCountdown
 
 @Composable
@@ -40,10 +41,15 @@ fun UnlockRoute(viewModel: UnlockViewModel = hiltViewModel()) {
     val askAnswer by viewModel.askAnswer.collectAsStateWithLifecycle()
     val pin by viewModel.pin.state.collectAsStateWithLifecycle()
     val answer by viewModel.answer.state.collectAsStateWithLifecycle()
+    val recovery by viewModel.recovery.collectAsStateWithLifecycle()
 
     BackHandler(enabled = askAnswer) { viewModel.cancelAnswer() }
+    BackHandler(enabled = recovery != null) { viewModel.cancelRecovery() }
     CenteredScrollColumn(Modifier.fillMaxSize().safeDrawingPadding().imePadding()) {
-        if (askAnswer) {
+        val flow = recovery
+        if (flow != null) {
+            PinRecoveryPanel(flow, onCancel = viewModel::cancelRecovery)
+        } else if (askAnswer) {
             SecurityAnswerPanel(
                 state = answer,
                 onAnswerChange = viewModel.answer::onAnswerChange,
@@ -58,7 +64,49 @@ fun UnlockRoute(viewModel: UnlockViewModel = hiltViewModel()) {
                 body = stringResource(R.string.pin_unlock_body),
                 onDigit = viewModel.pin::onDigit,
                 onDelete = viewModel.pin::onDelete,
+                onForgot = viewModel::startRecovery,
             )
+        }
+    }
+}
+
+/** "Forgot PIN?": the security question, then a new PIN twice. */
+@Composable
+private fun PinRecoveryPanel(flow: PinRecoveryController, onCancel: () -> Unit) {
+    val stage by flow.stage.collectAsStateWithLifecycle()
+    when (stage) {
+        PinRecoveryStage.ANSWER -> {
+            val answer by flow.answer.state.collectAsStateWithLifecycle()
+            SecurityAnswerPanel(
+                state = answer,
+                onAnswerChange = flow.answer::onAnswerChange,
+                onSubmit = flow.answer::submit,
+                secondaryText = stringResource(R.string.action_cancel),
+                onSecondary = onCancel,
+                title = stringResource(R.string.pin_forgot),
+                body = stringResource(R.string.pin_recovery_body),
+            )
+        }
+        PinRecoveryStage.NEW_PIN, PinRecoveryStage.DONE -> {
+            val pin by flow.pin.collectAsStateWithLifecycle()
+            val confirming = pin.stage == PinCreationState.Stage.CONFIRM
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                PinEntryLayout(
+                    title = stringResource(if (confirming) R.string.pin_confirm_title else R.string.pin_recovery_new_title),
+                    body = stringResource(if (confirming) R.string.pin_confirm_body else R.string.pin_create_body),
+                    message = when (pin.error) {
+                        PinCreationState.Error.TOO_SIMPLE -> stringResource(R.string.pin_error_too_simple)
+                        PinCreationState.Error.MISMATCH -> stringResource(R.string.pin_error_mismatch)
+                        null -> null
+                    },
+                    filled = pin.input.length,
+                    shakeKey = pin.rejections,
+                    onDigit = flow::onPinDigit,
+                    onDelete = flow::onPinDelete,
+                    enabled = pin.completedPin == null,
+                )
+                NourTextButton(stringResource(R.string.action_cancel), onCancel)
+            }
         }
     }
 }
@@ -71,6 +119,7 @@ fun PinPanel(
     onDigit: (Char) -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
+    onForgot: (() -> Unit)? = null,
 ) {
     val attemptsLeft = state.attemptsLeft
     val message = when {
@@ -79,17 +128,19 @@ fun PinPanel(
         attemptsLeft > 0 -> stringResource(R.string.pin_wrong_attempts_left, attemptsLeft)
         else -> stringResource(R.string.pin_wrong)
     }
-    PinEntryLayout(
-        title = title,
-        body = body,
-        message = message,
-        filled = state.entered,
-        shakeKey = state.rejections,
-        onDigit = onDigit,
-        onDelete = onDelete,
-        enabled = state.lockoutRemainingMs == 0L && !state.checking,
-        modifier = modifier,
-    )
+    Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        PinEntryLayout(
+            title = title,
+            body = body,
+            message = message,
+            filled = state.entered,
+            shakeKey = state.rejections,
+            onDigit = onDigit,
+            onDelete = onDelete,
+            enabled = state.lockoutRemainingMs == 0L && !state.checking,
+        )
+        if (onForgot != null) NourTextButton(stringResource(R.string.pin_forgot), onForgot)
+    }
 }
 
 /** Asks the parent's own security question (brief §3 layer 2). */

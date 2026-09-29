@@ -41,6 +41,9 @@
     <string name="pin_error_too_simple">This PIN is easy to guess. Please choose another one.</string>
     <string name="pin_unlock_title">Enter parent PIN</string>
     <string name="pin_unlock_body">Settings are for parents only.</string>
+    <string name="pin_forgot">Forgot PIN?</string>
+    <string name="pin_recovery_body">Answer your security question to choose a new PIN.</string>
+    <string name="pin_recovery_new_title">Choose a new PIN</string>
     <string name="pin_wrong">Wrong PIN</string>
     <string name="pin_wrong_attempts_left">Wrong PIN. Attempts left before a wait: %1$d</string>
     <string name="pin_locked_out">Too many attempts. Try again in %1$s</string>

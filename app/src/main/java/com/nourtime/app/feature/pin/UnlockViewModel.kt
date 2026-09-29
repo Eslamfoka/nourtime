@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,8 +22,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class UnlockViewModel @Inject constructor(
-    security: SecurityRepository,
-    clock: DeviceClock,
+    private val security: SecurityRepository,
+    private val clock: DeviceClock,
     private val session: ParentSession,
     private val pass: ParentPass,
     private val lockPeriod: LockPeriodState,
@@ -38,6 +39,28 @@ class UnlockViewModel @Inject constructor(
 
     val answer = AnswerCheckController(viewModelScope, security, clock) { unlock() }
 
+    /** "Forgot PIN?" in progress: a fresh flow each time, so an earlier correct answer doesn't carry over. */
+    private val _recovery = MutableStateFlow<PinRecoveryController?>(null)
+    val recovery: StateFlow<PinRecoveryController?> = _recovery.asStateFlow()
+
+    init {
+        // Tapped on a lock overlay, which opened (or brought back) the app for this.
+        viewModelScope.launch {
+            ForgotPinRequest.requestedAt.filterNotNull().collect { if (ForgotPinRequest.consume()) startRecovery() }
+        }
+    }
+
+    fun startRecovery() {
+        _askAnswer.value = false
+        // The security answer was just checked, so this also covers the lock period's second step.
+        _recovery.value = PinRecoveryController(viewModelScope, security, clock) { unlock() }
+    }
+
+    fun cancelRecovery() {
+        _recovery.value = null
+        pin.reset()
+    }
+
     fun cancelAnswer() {
         _askAnswer.value = false
         pin.reset()
@@ -45,6 +68,7 @@ class UnlockViewModel @Inject constructor(
 
     private fun unlock() {
         _askAnswer.value = false
+        _recovery.value = null
         // The parent is here: let them use Settings (e.g. to fix a permission) and trust the clock again.
         pass.grantFull()
         viewModelScope.launch { trustedClock.trustSystemClock() }

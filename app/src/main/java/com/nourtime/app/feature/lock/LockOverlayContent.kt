@@ -40,6 +40,9 @@ class OverlayParentFlow(
 ) {
     var decision: () -> BlockDecision? = { null }
 
+    /** "Forgot PIN?": opens Nour Time's own recovery (security question, then a new PIN). */
+    var onForgotPin: () -> Unit = {}
+
     private val _stage = MutableStateFlow(ParentStage.CHILD)
     val stage: StateFlow<ParentStage> = _stage.asStateFlow()
 
@@ -56,6 +59,11 @@ class OverlayParentFlow(
 
     fun back() {
         _stage.value = ParentStage.CHILD
+    }
+
+    fun forgotPin() {
+        _stage.value = ParentStage.CHILD
+        onForgotPin()
     }
 
     fun phoneOnly() {
@@ -105,6 +113,7 @@ fun LockOverlayContent(
                 body = stringResource(if (settingsCover) R.string.lock_settings_pin_body else R.string.lock_parent_pin_body),
                 onDigit = parentFlow.pin::onDigit,
                 onDelete = parentFlow.pin::onDelete,
+                onForgot = parentFlow::forgotPin,
             )
         }
         ParentStage.ANSWER -> ParentPanelFrame(onBack = parentFlow::back) {

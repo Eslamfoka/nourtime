@@ -41,6 +41,9 @@
     <string name="pin_error_too_simple">هذا الرمز سهل التخمين. يُرجى اختيار رمز آخر.</string>
     <string name="pin_unlock_title">أدخل رمز الأهل</string>
     <string name="pin_unlock_body">الإعدادات للأهل فقط.</string>
+    <string name="pin_forgot">نسيت الرمز؟</string>
+    <string name="pin_recovery_body">أجب عن سؤال الأمان لتختار رمزًا جديدًا.</string>
+    <string name="pin_recovery_new_title">اختر رمزًا جديدًا</string>
     <string name="pin_wrong">رمز غير صحيح</string>
     <string name="pin_wrong_attempts_left">رمز غير صحيح. المحاولات المتبقية قبل الانتظار: %1$d</string>
     <string name="pin_locked_out">محاولات كثيرة. حاول مرة أخرى بعد %1$s</string>
