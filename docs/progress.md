@@ -1,10 +1,14 @@
 # Nour Time: progress against the brief
 
-Status as of 2026-09-27. A copy of the brief with the status of every requirement, plus Phase 4, is in
+Status as of 2026-09-29 (latest work: [`handoff.md` §11](handoff.md#11-evening-of-2026-09-29-overnight-2-request-all-on-master)). A copy of the brief with the status of every requirement, plus Phase 4, is in
 [`brief-with-status.md`](brief-with-status.md). Legend: ✅ done · 🟡 done with a noted difference · ⏳ pending.
 
 Phase 1 is feature-complete on the emulator (Android 12 and 15). What's left is testing on real
 phones, recorded audio, release plumbing, Phase 1.5 (below) and Phase 2.
+
+**2026-09-29:** Phase 2 and Phase 4 are merged and tested against the real Firebase project; the UX
+backlog items U1–U4 (time pickers, single dashboard, Forgot PIN, language switcher) are built and
+emulator-tested, waiting for the owner's test on the Honor.
 
 ## Implementation order (brief §11)
 

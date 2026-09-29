@@ -3,6 +3,10 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
+> **Resume here (2026-09-29 evening):** go to [§11](#11-evening-of-2026-09-29-overnight-2-request-all-on-master).
+> Everything is on `master`; the APK for the owner is `dist/NourTime-2026-09-29-debug.apk`. First step:
+> ask the owner for the Honor results of the §11 test list.
+
 ## 1. Architecture at a glance
 
 Single `:app` module · Kotlin · Jetpack Compose + Material 3 · Hilt · MVVM · DataStore + Room ·
@@ -567,3 +571,14 @@ test); api35 is back to Arabic.
 4. Settings → Language → English: app, notification and Time's up screen should be English and left-to-right. Switch back to Phone language.
 5. Time's up screen → For parents → **Forgot the PIN?** → answer → new PIN twice → the new PIN works.
 6. Unlock the app, lock the screen, unlock the phone, open Nour Time: it must ask for the PIN again.
+
+### Still open (after §11)
+- Owner's Honor test of §11 (dashboard, quick actions, Permissions in Settings, language, Forgot PIN,
+  PIN after screen off) and of the U1 time-picker styles (the owner tried them; "Surprise me" picks a
+  different style each time, as designed).
+- Phase 2: expired pairing code on a real phone, and the Honor as the child while paired.
+- Phase 1.5 "educational content during lock" still needs the owner's decisions (§6).
+- Device tests on Samsung and Xiaomi; release items (upload key, screenshots, account-deletion page).
+- Emulator state: api31 (5556, child, PIN 4827 / blue) has a lock running from the Lock now test;
+  api35 (5554, parent, eslamy319 signed in) is back to Arabic. After an emulator reboot, re-apply the
+  DNS iptables fix (see memory / §9). Never `emu kill`.
