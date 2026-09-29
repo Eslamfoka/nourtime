@@ -543,3 +543,27 @@ the owner set it up again (child, Chrome limited, 1 h). The new dial showed at t
 off/on → Chrome: `05:00:51 decision=TIME_UP … usable=true timeUp=true pass=false/false`, 10 ms after the
 screen-on refresh. Both f8e4cf2 fixes (unlock broadcast, pass ends at SCREEN_OFF) are confirmed on the
 real phone.
+
+## 11. Evening of 2026-09-29 (overnight-2 request, all on master)
+
+The morning APK `dist/NourTime-2026-09-29-debug.apk` was rebuilt after `e6a3f23` (real project
+`nourtime-8d4ce`) and contains everything below. All unit tests pass.
+
+| Commit | What |
+|---|---|
+| `06e0163` | **Forgot PIN.** "Forgot the PIN?" under the PIN pad (app and Time's up overlay). The security question → a new PIN twice → done. From the overlay it opens the app straight on the recovery screen. |
+| `1aa5f8e` | **Single dashboard.** No bottom bar: ring + status, quick actions (**Lock now** / **End the lock**, with a confirmation), three tiles (Apps, Schedule, Settings), today/week cards. **Permissions** moved into Settings (red warning card on the dashboard if one is missing). Back goes Permissions → Settings → dashboard. The PIN session now also ends when the screen turns off. |
+| `e6a3f23` | **Language switcher** (Settings in child mode, and the parent home): Phone language / العربية / English. Android 13+ uses the system per-app language; older phones store it and apply it to the app, the lock overlay and notifications. The layout direction follows the chosen language. |
+
+Tested on the emulators: Forgot PIN from app and overlay (api31); dashboard actions, tiles, Back
+(api31); English on api31 (app, overlay, notification, LTR) and back to Arabic; English/Arabic on api35
+parent (`cmd locale get-app-locales` shows `[en]`/`[ar]`). The api31 child is in a running lock (Lock now
+test); api35 is back to Arabic.
+
+### To test on the Honor (Android 12, the "older phone" language path)
+1. Install the APK over the current one (setup and PIN are kept).
+2. Dashboard: tap **Lock now** → Chrome shows Time's up; tap **End the lock** → Chrome opens.
+3. Settings tile → Permissions (all green) → Back → Back.
+4. Settings → Language → English: app, notification and Time's up screen should be English and left-to-right. Switch back to Phone language.
+5. Time's up screen → For parents → **Forgot the PIN?** → answer → new PIN twice → the new PIN works.
+6. Unlock the app, lock the screen, unlock the phone, open Nour Time: it must ask for the PIN again.

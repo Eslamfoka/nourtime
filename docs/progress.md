@@ -179,6 +179,9 @@ and parent sign-in failed with a misleading message when the phone had no Google
 | # | Item | Priority | Status |
 |---|---|---|---|
 | U1 | **Playful time pickers.** Replace the plain slider (time budget) and the fixed extra-time buttons with three interactive themes the parent chooses from in Settings, or sets to switch randomly: **(1) circular timer dial**, like a smart stopwatch, drag around the ring to set the time; **(2) drag-and-drop time blocks/tokens**, gamified, each token worth a set amount (e.g. 15 min); **(3) liquid fill**, a shape fills up as time is added. Needs: works on both phones (child Settings and the parent's remote screen), RTL for Arabic, TalkBack (each theme must still expose the value and +/- actions), large touch targets, and reduced-motion support. Keep the quick +15/+30/+1 h answers for "ask for more time". Requested by the owner 2026-09-28. | **High** | ✅ Built 2026-09-29 (`ea3a866`, on master): Dial / Coins / Liquid / Surprise me, chosen in Settings; emulator-tested in Arabic. Waiting for the owner's test on the Honor |
+| U2 | **Single dashboard** instead of the bottom bar: quick actions (Lock now / End the lock), tiles for Apps, Schedule and Settings; Permissions inside Settings. Requested 2026-09-29. | High | ✅ Built 2026-09-29 (`1aa5f8e`); emulator-tested. Waiting for the Honor test |
+| U3 | **Forgot PIN** recovery with the security question, from the app and the Time's up screen. Requested 2026-09-29. | High | ✅ Built 2026-09-29 (`06e0163`); emulator-tested. Waiting for the Honor test |
+| U4 | **Language switcher** (Phone language / Arabic / English), all Android versions. Requested 2026-09-29. | High | ✅ Built 2026-09-29 (`e6a3f23`); tested on Android 12 and 15 emulators. Waiting for the Honor test |
 
 ## Strictly pending
 
