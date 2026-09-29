@@ -535,3 +535,11 @@ new warnings (same 61 older ones: library versions, battery-optimization permiss
 - Phase 1.5 "educational content during lock" still needs the owner's decisions (see §6).
 - The earlier "Some permissions are off" flash on Home right after Nour Time was restarted by the
   Honor (it cleared by itself) — not reproduced since.
+
+### 2026-09-29 morning: confirmed on the Honor
+Nour Time had been uninstalled from the Honor overnight; the morning APK went in as a fresh install and
+the owner set it up again (child, Chrome limited, 1 h). The new dial showed at the "How much time?" step.
+**Pass re-test passed:** End budget → Time's up → For parents + PIN/answer (Chrome opened) → screen
+off/on → Chrome: `05:00:51 decision=TIME_UP … usable=true timeUp=true pass=false/false`, 10 ms after the
+screen-on refresh. Both f8e4cf2 fixes (unlock broadcast, pass ends at SCREEN_OFF) are confirmed on the
+real phone.
