@@ -745,7 +745,9 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
   eyeballed on a contact sheet before going into the pack. New test: each drawing is never more than
   one dot easier than the one before, and the last has ≥ 15 dots. Start levels: 7–9 at the
   lightning, 10–12 at the arrow.
-- Fix found while testing: a fast flick sometimes didn't start a line (the drag starts after the touch
-  slop, already a little way from the dot). The start circle is now 1.5 × the touch radius.
+- While testing, a few injected emulator swipes didn't draw a line; the same fast swipe worked when
+  repeated, so the cause looks like emulator input, **not confirmed as an app bug**. As a precaution the
+  circle a drag may start in is now 1.5 × the touch radius (the drag starts after the touch slop, a
+  little way from the dot). Worth watching on the Honor: does a quick flick ever fail to draw?
 - Tested: emulator preview, level 32 (castle, 16 dots with a curved door) drawn to the end, filled and
   celebrated ("رائعة! 🏰").
