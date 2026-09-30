@@ -178,6 +178,99 @@ privacy wording says nothing leaves the phone (wrong once paired: **Play policy*
 Accessibility and overlay hints, the app-search list is cramped on 720p screens with the keyboard open,
 and parent sign-in failed with a misleading message when the phone had no Google account (fixed).
 
+## Learning Hub: Gamification & Education (planned 2026-09-30)
+
+The owner's "Phase 3". When the time is up, the child sees a **Learning Hub** next to the usual
+Time's up screen: a menu of mini-games (later also videos). Winning levels earns screen time.
+Branch `learning-hub`.
+
+### Games
+
+| # | Game | Interaction | Status |
+|---|---|---|---|
+| L1 | **Smart Math** | Multiple choice. +, −, ×, ÷ and comparisons (<, >, =), 12 levels from "add within 5" (with dots to count) to mixed operations up to 100. Tap any number to hear it (TTS). Western (123) / Eastern (١٢٣) numerals toggle. | 🟡 Building first |
+| L2 | **Letters & Words** (Arabic + English) | Multiple choice with audio. Letter → word, letter → picture, word → picture (body, animals, food), color name → color. Tap the letter or word to hear "A, Apple" / "أ، أرنب". | 🟡 Building first |
+| L3 | **Number Connect** | Drawing: drag from dot 1 to 2 to 3 over a faded outline; segments can be lines or curves. | ⏳ Designed below |
+| L4 | **Coloring Match** | Tap a palette color, then tap a region of a black-and-white drawing to fill it, matching a colored reference. | ⏳ Designed below |
+
+### Architecture
+
+```
+core/learning/          pure Kotlin, unit tested, no Android
+  GameId, LevelProgress   which games exist; per-game unlocked level + best stars
+  Round                   state machine for one level: questions, first-try score, stars
+  Numerals                123 ⇄ ١٢٣ formatting
+  MathLevels              level table + seeded question generator
+  LettersContent/Levels   Arabic + English catalog (letter, word, picture, color) + generator
+  RewardPolicy            how many minutes a won level earns (parent limits, daily cap)
+data/learning/
+  LearningRepository      DataStore: progress, tutorial seen, numeral style, minute bank,
+                          minutes earned today, parent's learning settings
+feature/learning/
+  Speaker                 Android TextToSpeech wrapper (per language, graceful when missing)
+  LearningHub             game menu + minute bank + "Use my minutes"
+  RoundScreen             shared frame: progress dots, feedback, tutorial hint, level-done screen
+  MathGame / LettersGame  question cards for each game
+  LearningSettingsCard    parent: on/off, minutes per level, daily max, "Try the games"
+```
+
+**Mini-games engine.** Every game supplies a list of levels; a level produces a list of
+questions from a seed. Math and Letters share one question model (a prompt plus 3–4 choices), so
+they share the round runner, feedback, scoring and level-done screen. Number Connect and Coloring
+have their own interaction but report the same result (`stars`, `passed`) to the same engine, so
+progress, tutorials and rewards work the same for all four.
+
+**Levels and tutorials.** Levels unlock one by one; the first unlocked level depends on the child's
+age group (3–6 starts at the beginning, older children skip the easiest). The first time a game
+opens, its first question is a **tutorial**: a pulsing hand points at the right answer and the
+question is read aloud; it doesn't count toward the score. Stars come from first-try accuracy
+(3 stars ≥ 90 %, 2 stars ≥ 70 %, 1 star otherwise). A wrong tap shakes the card and the child tries
+again, so every level ends on success.
+
+**Text-to-speech.** One `Speaker` per open hub (created on open, shut down on close). It speaks
+with the game's language (`ar` or `en`), independent of the app language. Numbers are given to the
+engine as digits with the right locale, so it says "eighty-nine" / "تسعة وثمانون" itself. If the
+phone has no voice for that language (some OEM engines lack Arabic), the games still work without
+sound and the speaker icon is hidden; the parent's Settings card says how to install the voice.
+
+**Rewards.** Two decisions made here, for the owner to confirm:
+1. **Earned time is a break inside the lock, not a parent bonus.** `TimerCommand.Bonus` ends a lock
+   and, when the bonus runs out, a *full new* lock period starts (6 h by default). That's fine for a
+   parent's gift but would punish a child who earns 5 minutes near the end of a lock. So a sibling
+   command, `TimerCommand.Reward`, opens the apps for the earned minutes while the lock clock keeps
+   running in the background: when the minutes run out the lock continues with what's left; if the
+   lock ends meanwhile, the normal full refill happens.
+2. **Minutes are banked.** Each won level (at least 2 stars, so random tapping doesn't pay) adds
+   the parent's "minutes per level" to a bank, up to the parent's daily maximum. The child taps
+   **Use my minutes** when ready, so the hub doesn't vanish after every level.
+
+Parent limits (Settings → Learning): Learning Hub on/off (default on), minutes per won level
+(default 5), daily maximum (default 15 min; "0" = learning without rewards). The hub only appears in
+**time's up** locks, not at bedtime or on protected Settings screens. Syncing these settings to the
+parent's phone, and showing "minutes earned today" there, comes after the games work.
+
+**Pictures.** Emoji for now: they work offline on every Android 8+ phone and need no licensing.
+Real artwork can replace them later through the same content catalog.
+
+### Later: Number Connect (L3)
+- A shape is a list of dots in 0..1 coordinates; each segment to the next dot is a line or a curve
+  (quadratic, with a control point). The faded outline is drawn from the same data, so one file
+  describes the whole level. Shapes live in `assets/learning/shapes/*.json`.
+- A drag that starts near dot *k* and ends near dot *k+1* completes a segment (animated along the
+  path); other drags snap back. Tolerance grows for ages 3–6.
+- Tutorial level: an animated hand drags 1 → 2. Difficulty: more dots, curves, numbers beyond 10,
+  then counting by 2s or letters (أ ب ت) instead of numbers.
+- Content tool: a small script that turns an SVG path into sampled dots with curve hints.
+
+### Later: Coloring Match (L4)
+- A drawing is a list of closed regions (SVG path data parsed with Compose `PathParser`), each with
+  its target color. The colored reference is the **same drawing** rendered with the target colors,
+  so no second image is needed.
+- Tap-to-fill: hit-test with `android.graphics.Region` built from each path (smallest region wins).
+- Win when every region matches; the palette shows only the colors used (plus one distractor from
+  level 3 on). Tutorial: hand taps a color, then the matching region.
+- Content: original SVGs or openly licensed ones (license checked), converted at build time.
+
 ## UX backlog (future polish phase)
 
 | # | Item | Priority | Status |

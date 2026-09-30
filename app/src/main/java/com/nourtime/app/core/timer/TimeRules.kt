@@ -30,6 +30,12 @@ data class TimerState(
      * the last part of the time left, and a lower budget never takes it away.
      */
     val bonusMs: Long = 0,
+    /**
+     * While AVAILABLE on a break the child earned during a lock ([TimeRules.reward]): the lock
+     * time still left. It keeps counting down; when the break's minutes run out the lock resumes
+     * with it, and when it reaches zero first the budget refills as usual. 0 = no break.
+     */
+    val lockPendingMs: Long = 0,
 ) {
     companion object {
         fun fresh(budgetMs: Long, lockMs: Long, nowElapsed: Long, bootCount: Int) = TimerState(
@@ -58,21 +64,33 @@ object TimeRules {
         val dt = if (bootCount != state.bootCount || nowElapsed < state.lastElapsed) 0 else nowElapsed - state.lastElapsed
         val moved = state.copy(lastElapsed = nowElapsed, bootCount = bootCount, sinceResetMs = state.sinceResetMs + dt)
         return when (moved.phase) {
-            TimerPhase.AVAILABLE -> {
-                if (!wasInUse || dt == 0L) return moved
-                val used = minOf(dt, moved.remainingMs)
-                val left = moved.copy(remainingMs = moved.remainingMs - used).let { it.copy(bonusMs = minOf(it.bonusMs, it.remainingMs)) }
-                if (left.remainingMs > 0) left else progressLock(startLock(left), dt - used)
-            }
+            TimerPhase.AVAILABLE -> advanceAvailable(moved, dt, wasInUse)
             TimerPhase.LOCKED -> progressLock(moved, dt)
         }
+    }
+
+    private fun advanceAvailable(state: TimerState, dt: Long, inUse: Boolean): TimerState {
+        if (dt == 0L) return state
+        val pending = state.lockPendingMs
+        // On a break, only the part of the interval before the paused lock would end counts here.
+        val span = if (pending > 0) minOf(dt, pending) else dt
+        val used = if (inUse) minOf(span, state.remainingMs) else 0
+        val left = state.copy(remainingMs = state.remainingMs - used).let { it.copy(bonusMs = minOf(it.bonusMs, it.remainingMs)) }
+        // The break and the paused lock end together: the lock is over, so refill.
+        if (pending > 0 && used == pending) return advanceAvailable(refill(left), dt - span, inUse)
+        if (inUse && left.remainingMs == 0L) {
+            val resumed = if (pending > 0) left.copy(lockPendingMs = pending - used) else left
+            return progressLock(startLock(resumed), dt - used)
+        }
+        if (pending == 0L) return left
+        return if (span == pending) advanceAvailable(refill(left), dt - span, inUse) else left.copy(lockPendingMs = pending - span)
     }
 
     /** Applies a changed budget or lock length from the parent settings. */
     fun applySettings(state: TimerState, budgetMs: Long, lockMs: Long): TimerState {
         var s = state
         if (budgetMs != s.budgetMs) {
-            s = if (s.phase == TimerPhase.AVAILABLE) {
+            s = if (s.phase == TimerPhase.AVAILABLE && s.lockPendingMs == 0L) {
                 // Moves the time left by the change, but never below the unused extra time the parent gave.
                 val moved = (s.remainingMs + budgetMs - s.budgetMs).coerceIn(0, MAX_REMAINING_MS)
                 s.copy(remainingMs = maxOf(moved, s.bonusMs), budgetMs = budgetMs)
@@ -83,6 +101,9 @@ object TimeRules {
         if (lockMs != s.lockMs) {
             s = if (s.phase == TimerPhase.LOCKED) {
                 progressLock(s.copy(lockRemainingMs = (s.lockRemainingMs + lockMs - s.lockMs).coerceIn(0, lockMs), lockMs = lockMs), 0)
+            } else if (s.lockPendingMs > 0) {
+                val pending = (s.lockPendingMs + lockMs - s.lockMs).coerceIn(0, lockMs)
+                if (pending == 0L) refill(s.copy(lockMs = lockMs)) else s.copy(lockPendingMs = pending, lockMs = lockMs)
             } else {
                 s.copy(lockMs = lockMs)
             }
@@ -123,16 +144,33 @@ object TimeRules {
                 state.copy(remainingMs = remaining, bonusMs = minOf(state.bonusMs + bonusMs, remaining))
             }
         }
-        TimerCommand.LockNow -> if (state.phase == TimerPhase.AVAILABLE) startLock(state) else state
-        TimerCommand.EndLock -> if (state.phase == TimerPhase.LOCKED) refill(state) else state
+        TimerCommand.LockNow -> if (state.phase == TimerPhase.AVAILABLE) startLock(state.copy(lockPendingMs = 0)) else state
+        TimerCommand.EndLock -> if (state.phase == TimerPhase.LOCKED || state.lockPendingMs > 0) refill(state) else state
     }
 
-    private fun startLock(state: TimerState) =
-        state.copy(phase = TimerPhase.LOCKED, remainingMs = 0, lockRemainingMs = state.lockMs, bonusMs = 0)
+    /**
+     * Minutes the child earned in the Learning Hub. During a lock period they open the apps for these
+     * minutes while the lock keeps counting down (a break, see [TimerState.lockPendingMs]); unlike a
+     * parent's bonus, no fresh lock period follows. Outside a lock they add to the time left.
+     */
+    fun reward(state: TimerState, minutes: Int): TimerState {
+        if (state.phase != TimerPhase.LOCKED) return apply(state, TimerCommand.Bonus(minutes))
+        val remaining = (minutes * 60_000L).coerceAtMost(MAX_REMAINING_MS)
+        return state.copy(phase = TimerPhase.AVAILABLE, remainingMs = remaining, lockRemainingMs = 0, bonusMs = remaining, lockPendingMs = state.lockRemainingMs)
+    }
+
+    /** Starts a lock period, or resumes the one a break paused. */
+    private fun startLock(state: TimerState) = state.copy(
+        phase = TimerPhase.LOCKED,
+        remainingMs = 0,
+        lockRemainingMs = if (state.lockPendingMs > 0) state.lockPendingMs else state.lockMs,
+        bonusMs = 0,
+        lockPendingMs = 0,
+    )
 
     private fun progressLock(state: TimerState, dt: Long): TimerState =
         if (dt >= state.lockRemainingMs) refill(state) else state.copy(lockRemainingMs = state.lockRemainingMs - dt)
 
     private fun refill(state: TimerState) =
-        state.copy(phase = TimerPhase.AVAILABLE, remainingMs = state.budgetMs, lockRemainingMs = 0, bonusMs = 0)
+        state.copy(phase = TimerPhase.AVAILABLE, remainingMs = state.budgetMs, lockRemainingMs = 0, bonusMs = 0, lockPendingMs = 0)
 }

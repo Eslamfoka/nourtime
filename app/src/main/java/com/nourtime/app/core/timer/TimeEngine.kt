@@ -105,9 +105,11 @@ class TimeEngine @Inject constructor(
     suspend fun isLocked(): Boolean = mutex.withLock { (state ?: load())?.phase == TimerPhase.LOCKED }
 
     /** Applies a command from the parent's phone (or the debug tools on Home) and saves it at once. */
-    suspend fun apply(command: TimerCommand) = mutex.withLock {
+    suspend fun apply(command: TimerCommand) = change { TimeRules.apply(it, command) }
+
+    private suspend fun change(rule: (TimerState) -> TimerState) = mutex.withLock {
         val current = state ?: load() ?: return@withLock
-        val next = TimeRules.apply(current, command)
+        val next = rule(current)
         state = next
         save(next)
         lastSavedElapsed = clock.elapsedRealtime()
@@ -119,6 +121,9 @@ class TimeEngine @Inject constructor(
             lockElapsedMs = next.lockElapsedMs(),
         )
     }
+
+    /** Minutes earned in the Learning Hub; see [TimeRules.reward]. */
+    suspend fun reward(minutes: Int) = change { TimeRules.reward(it, minutes) }
 
     /** Persists the latest state, e.g. when the service stops. */
     suspend fun flush() = mutex.withLock {
@@ -155,6 +160,7 @@ class TimeEngine @Inject constructor(
             lastResetDay = p[LAST_RESET_DAY]?.let(LocalDate::ofEpochDay),
             sinceResetMs = p[SINCE_RESET] ?: 0,
             bonusMs = p[BONUS] ?: 0,
+            lockPendingMs = p[LOCK_PENDING] ?: 0,
         )
     }
 
@@ -173,6 +179,7 @@ class TimeEngine @Inject constructor(
         if (s.lastResetDay == null) remove(LAST_RESET_DAY) else this[LAST_RESET_DAY] = s.lastResetDay.toEpochDay()
         this[SINCE_RESET] = s.sinceResetMs
         this[BONUS] = s.bonusMs
+        this[LOCK_PENDING] = s.lockPendingMs
     }
 
     private companion object {
@@ -191,6 +198,7 @@ class TimeEngine @Inject constructor(
         val LAST_RESET_DAY = longPreferencesKey("timer_last_reset_day")
         val SINCE_RESET = longPreferencesKey("timer_since_reset")
         val BONUS = longPreferencesKey("timer_bonus")
+        val LOCK_PENDING = longPreferencesKey("timer_lock_pending")
     }
 }
 
