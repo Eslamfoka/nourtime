@@ -22,6 +22,9 @@ data class LettersLevel(
 object LettersGame {
     const val QUESTIONS = 6
 
+    /** The tasks a Letters & Words level may use. */
+    val TASKS = setOf(Task.LETTER_TO_PICTURE, Task.LETTER_TO_WORD, Task.WORD_TO_PICTURE, Task.NAME_TO_COLOR, Task.COLOR_TO_NAME, Task.PICTURE_TO_WORD)
+
     fun questions(spec: LettersLevel, content: LettersLanguagePack, random: Random, count: Int = spec.questions): List<Question> {
         val language = content.language
         val letters = content.letters.let { if (spec.firstLettersOnly) it.take(it.size / 2) else it }

@@ -4,7 +4,7 @@ package com.nourtime.app.core.learning
  * The Learning Hub's mini-games. The name is part of the saved progress key: never rename one.
  * Adding a game: an entry here plus its entry in the hub's game registry (`GameRegistry`).
  */
-enum class GameId { MATH, LETTERS, CONNECT, COLORING, LISTEN }
+enum class GameId { MATH, LETTERS, CONNECT, COLORING, LISTEN, PATTERNS }
 
 /** Language of a game's content and voice, independent of the app language. */
 enum class LearnLanguage(val tag: String) { ARABIC("ar"), ENGLISH("en") }
@@ -83,6 +83,9 @@ enum class Task {
 
     /** Listen & Find: hear a word, a color, a letter's name or a number and tap it. */
     LISTEN_TO_PICTURE, LISTEN_TO_COLOR, LISTEN_TO_LETTER, LISTEN_TO_NUMBER,
+
+    /** What Comes Next?: continue a sequence. */
+    PATTERN,
     ;
 
     val listening: Boolean get() = this == LISTEN_TO_PICTURE || this == LISTEN_TO_COLOR || this == LISTEN_TO_LETTER || this == LISTEN_TO_NUMBER

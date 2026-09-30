@@ -12,6 +12,7 @@ import com.nourtime.app.core.learning.DotShape
 import com.nourtime.app.core.learning.GamePack
 import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.learning.LetterEntry
+import com.nourtime.app.core.learning.LettersGame
 import com.nourtime.app.core.learning.LettersLanguagePack
 import com.nourtime.app.core.learning.LettersLevel
 import com.nourtime.app.core.learning.Level
@@ -19,6 +20,9 @@ import com.nourtime.app.core.learning.ListenLevel
 import com.nourtime.app.core.learning.LevelIds
 import com.nourtime.app.core.learning.MathLevel
 import com.nourtime.app.core.learning.MathOp
+import com.nourtime.app.core.learning.PatternGame
+import com.nourtime.app.core.learning.PatternKind
+import com.nourtime.app.core.learning.PatternLevel
 import com.nourtime.app.core.learning.Region
 import com.nourtime.app.core.learning.Task
 import com.nourtime.app.core.learning.WordEntry
@@ -64,6 +68,11 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
     fun listen(): GamePack<ListenLevel> = cached("listen") {
         val file = parse<ListenFile>(LISTEN) ?: return@cached GamePack(emptyList())
         pack(LISTEN, file.levels.mapNotNull { listenLevel(it) }, file.startAt)
+    }
+
+    fun patterns(): GamePack<PatternLevel> = cached("patterns") {
+        val file = parse<PatternsFile>(PATTERNS) ?: return@cached GamePack(emptyList())
+        pack(PATTERNS, file.levels.mapNotNull { patternLevel(it) }, file.startAt)
     }
 
     fun letters(language: LearnLanguage): LettersLanguagePack = cached("letters-${language.tag}") {
@@ -112,6 +121,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         checker.math()
         checker.letterLevels()
         checker.listen()
+        checker.patterns()
         LearnLanguage.entries.forEach { checker.letters(it) }
         checker.connect()
         val coloring = checker.coloring()
@@ -185,7 +195,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
     private fun lettersLevel(l: LettersLevelJson): LettersLevel? {
         if (!checkId(LETTER_LEVELS, l.id)) return null
         val tasks = l.tasks.map { key ->
-            Task.entries.firstOrNull { it.name.equals(key, ignoreCase = true) && it != Task.SOLVE && it != Task.COMPARE && !it.listening }
+            LettersGame.TASKS.firstOrNull { it.name.equals(key, ignoreCase = true) }
                 ?: return null.also { problem(LETTER_LEVELS, l.id, "unknown task $key") }
         }
         if (tasks.isEmpty()) return null.also { problem(LETTER_LEVELS, l.id, "no tasks") }
@@ -209,6 +219,27 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         }
         if (bad != null) return null.also { problem(LISTEN, l.id, bad) }
         return ListenLevel(l.id, tasks, l.choices, l.categories.toSet(), l.firstLettersOnly, l.maxNumber, l.questions)
+    }
+
+    private fun patternLevel(l: PatternLevelJson): PatternLevel? {
+        if (!checkId(PATTERNS, l.id)) return null
+        val kind = PatternKind.entries.firstOrNull { it.key == l.kind } ?: return null.also { problem(PATTERNS, l.id, "unknown kind ${l.kind}") }
+        val numbers = kind == PatternKind.NUMBERS
+        val allowed = if (numbers) PatternGame.NUMBER_RULES else PatternGame.UNITS
+        val badRule = l.rules.firstOrNull { it !in allowed }
+        if (badRule != null) return null.also { problem(PATTERNS, l.id, "rule $badRule doesn't fit ${l.kind}") }
+        val bad = when {
+            l.rules.isEmpty() -> "no rules"
+            l.choices !in 2..4 -> "choices must be 2..4"
+            l.shown !in 3..6 -> "shown must be 3..6"
+            l.questions !in 1..30 -> "questions must be 1..30"
+            numbers && "step" in l.rules && (l.steps.isEmpty() || 0 in l.steps) -> "steps must be set and not 0"
+            numbers && "step" in l.rules && l.steps.any { kotlin.math.abs(it) * l.shown > l.max } -> "max is too small for the steps"
+            numbers && "double" in l.rules && l.max < (1 shl l.shown) -> "max must be at least 2^shown for double"
+            else -> null
+        }
+        if (bad != null) return null.also { problem(PATTERNS, l.id, bad) }
+        return PatternLevel(l.id, kind, l.rules, l.shown, l.steps, l.max, l.categories.toSet(), l.choices, l.questions)
     }
 
     private fun lettersLanguage(language: LearnLanguage): LettersLanguagePack {
@@ -300,6 +331,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         const val MATH = "math/levels.json"
         const val LETTER_LEVELS = "letters/levels.json"
         const val LISTEN = "listen/levels.json"
+        const val PATTERNS = "patterns/levels.json"
         const val CONCEPTS = "concepts.json"
         const val CONNECT = "connect/shapes.json"
         const val COLORING = "coloring/pictures.json"

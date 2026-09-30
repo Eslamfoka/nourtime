@@ -11,6 +11,7 @@ assets/learning/
   letters/ar.json          Arabic: alphabet + words + color names
   letters/en.json          English: the same for English
   listen/levels.json       Listen & Find levels (uses the words, colors and letters above)
+  patterns/levels.json     What Comes Next? levels
   math/levels.json         Smart Math levels
   connect/shapes.json      Number Connect drawings
   coloring/pictures.json   Coloring Match pictures
@@ -71,6 +72,21 @@ Each language names the concepts and lists its alphabet:
 - `choices` 2–4; `categories` and `firstLettersOnly` as in Letters & Words; words come from
   `letters/<language>.json`, in the language chosen on the level screen.
 - Without a voice for that language on the phone, the word (or number) is shown written instead.
+
+## What Comes Next? levels (`patterns/levels.json`)
+```json
+{"id": "colors-ab", "kind": "colors", "rules": ["ab"], "shown": 4, "choices": 2}
+{"id": "twos", "kind": "numbers", "rules": ["step"], "steps": [2], "max": 20, "shown": 4}
+```
+- `kind`: `colors` (the language pack's colors, never white), `shapes` (● ■ ▲ ★ ♥ ◆), `pictures`
+  (words' pictures, narrowed by `categories`) or `numbers`.
+- Colors, shapes and pictures repeat a unit from `rules`: `ab`, `aab`, `abb`, `abc`, `aabb`, `abbc`,
+  `abcd` (each letter a different item). Several units are mixed; the tests check that no wrong
+  choice also fits any unit of the level.
+- Numbers use `step` (one of `steps` added each time; negative counts down) or `double`. Every number,
+  the answer included, stays in 0..`max`; `max` must be at least |step| × `shown` (and 2^`shown` for
+  `double`).
+- `shown` 3–6 items before the "?", `choices` 2–4.
 
 ## Smart Math levels (`math/levels.json`)
 ```json

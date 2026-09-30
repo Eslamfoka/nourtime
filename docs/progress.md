@@ -204,6 +204,7 @@ list: [`handoff.md` §12](handoff.md#12-learning-hub-2026-09-30-overnight).
 | L3 | **Number Connect** | Drawing: drag from dot 1 to 2 to 3 over a faded outline; segments can be lines or curves. | ✅ 33 drawings from a 3-dot triangle to a 16-point sun, numbers spoken as reached (2026-09-30 night) |
 | L4 | **Coloring Match** | Tap a palette color, then tap a region of a black-and-white drawing to fill it, matching a colored reference. | ✅ 26 pictures from a 2-color balloon to a 7-color rainbow, up to 2 wrong colors in the palette (2026-09-30 night) |
 | G1 | **Listen & Find** | Multiple choice by ear: a big speaker button says a word, color, letter name or number (TTS, in the chosen words language); the child taps the picture, swatch, letter or number. Written fallback without a voice. | ✅ 20 levels from 2 animal pictures to a mixed 10-question champion (2026-09-30 night) |
+| G2 | **What Comes Next?** | Multiple choice: a row of colors, shapes, pictures or numbers ends in "?"; pick what continues it. Numbers read right to left with ١٢٣, each on its own chip. | ✅ 23 levels from red-green-red-green to doubling and steps of 25 up to 200 (2026-10-01 night) |
 
 ### Goal: Google Play at scale
 The four games prove the engine; the shipped **content** (45 math levels, 27 letters levels with 176
@@ -309,7 +310,7 @@ stars → `RewardPolicy`, the tutorial hand, TTS and the Learning Hub menu. What
 | # | Game | Ages | Engine (new or reused) | Content pack | Phase |
 |---|---|---|---|---|---|
 | G1 | **Listen & Find**: hear a word, color, letter or number, tap it | 3–6 | Choice round (reused) with a new speaker prompt card; own pack `listen/levels.json` | concepts + language packs (reused) | A · ✅ built 2026-09-30 night, 20 levels |
-| G2 | **What Comes Next?**: continue a pattern of shapes, colors or numbers | 4–9 | Choice round (reused; a pattern generator like `MathGame`) | `patterns/levels.json`: rule types (ABAB, +2, …), lengths | A |
+| G2 | **What Comes Next?**: continue a pattern of shapes, colors, pictures or numbers | 4–9 | Choice round (reused) + `PatternGame` generator; compact prompt row | `patterns/levels.json`: kind, units (ab, aab, …), number steps / doubling | A · ✅ built 2026-10-01 night, 23 levels |
 | G3 | **Tell the Time**: read an analog clock | 7–12 | Choice round with a clock card (new card type) | `clock/levels.json`: hours, halves, quarters, 5-minute steps | A |
 | G4 | **Letter Tracing**: trace a letter's strokes in order | 3–7 | **Path engine** (from Number Connect: dots become stroke paths with start points and direction) | `tracing/<language>.json`: SVG stroke paths per letter, stroke order | B |
 | G5 | **Memory Match**: flip cards to find pairs (word ↔ picture, number ↔ dots) | 4–12 | **Card grid engine** (new): flip, match, moves → stars | levels: grid size, pair kinds, categories (from concepts) | B |

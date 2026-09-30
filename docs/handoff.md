@@ -786,3 +786,27 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
   one right choice); emulator preview in Arabic: 5 tiles, level 1 played to the stars screen, level 15
   (letters, 4 choices) shown. **Not verified:** that the emulator actually played sound (no audio
   check here); please listen on the Honor.
+
+### 15.6 New game G2: What Comes Next? (Phase A)
+- **Engine:** `PatternGame` makes choice questions from a pattern level: repeating units (`ab`, `aab`,
+  `abb`, `abc`, `aabb`, `abbc`, `abcd`) of colors, plain shapes or pictures, and number sequences
+  (`step` with any steps, negative counts down, or `double`). Wrong choices are the pattern's own
+  other items first. Shapes are silent (a voice would read the symbol's name); white never appears
+  as a color. A new task `PATTERN` ("What comes next?" / "ماذا يأتي بعد ذلك؟").
+- **UI:** a compact prompt row for patterns (40 dp items, 6 dp gaps) so 7 items fit a 360 dp phone.
+  Number patterns follow the numerals like math (right to left with ١٢٣). Bug found on the emulator
+  and fixed: with the tight gaps "١ ٢ ٤ ٨ ١٦" read as one long number; each number now sits on its
+  own chip.
+- **Content:** `patterns/levels.json`, 23 levels: red/green `ab` with 2 choices, shapes and pictures,
+  counting to 6 → `aab/abb` → `abc` → counting down → twos → `aabb` → fives and tens → `abcd` →
+  steps of 3–4 → doubling → a 10-question champion (steps of 9, 11, −6, ±25 and doubling up to 200).
+  7–9 start at counting down, 10–12 at fives and tens. Menu title "ماذا بعد؟", hint "نكمل النمط".
+- Tested: unit tests (every level × 40 seeds × both languages: exactly the answer continues the
+  pattern and no wrong choice fits any rule of the level; loader rejects bad kinds, rules, zero steps,
+  too-small max); emulator preview in Arabic: level 1 (colors, RTL order, hand on the right answer),
+  level 23 (doubling with chips).
+- Test tooling note (for whoever drives the emulator next): `uiautomator dump` sometimes fails while
+  something animates and leaves the old file behind, and on the scrolled parent home its positions
+  lagged behind the screen. The helper now deletes the old dump and retries; the parent home is
+  scrolled to the top before tapping. One wrong PIN attempt was typed by the old script (lock ended
+  → the security-question taps landed on the PIN pad); the right PIN was entered right after.

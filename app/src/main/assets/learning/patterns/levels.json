@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "startAt": {"AGES_7_9": "count-down-10", "AGES_10_12": "fives-tens"},
+  "levels": [
+    {"id": "colors-ab", "kind": "colors", "rules": ["ab"], "shown": 4, "choices": 2},
+    {"id": "shapes-ab", "kind": "shapes", "rules": ["ab"], "shown": 4, "choices": 2},
+    {"id": "pictures-ab", "kind": "pictures", "rules": ["ab"], "shown": 4, "choices": 2, "categories": ["food", "animals"]},
+    {"id": "count-to-6", "kind": "numbers", "rules": ["step"], "steps": [1], "max": 6, "shown": 3, "choices": 2},
+    {"id": "colors-aab-abb", "kind": "colors", "rules": ["aab", "abb"], "shown": 5},
+    {"id": "shapes-aab-abb", "kind": "shapes", "rules": ["aab", "abb"], "shown": 5},
+    {"id": "count-to-10", "kind": "numbers", "rules": ["step"], "steps": [1], "max": 10, "shown": 4},
+    {"id": "animals-aab-abb", "kind": "pictures", "rules": ["aab", "abb"], "shown": 5, "categories": ["animals"]},
+    {"id": "colors-abc", "kind": "colors", "rules": ["abc"], "shown": 5},
+    {"id": "count-down-10", "kind": "numbers", "rules": ["step"], "steps": [-1], "max": 10, "shown": 4},
+    {"id": "shapes-abc", "kind": "shapes", "rules": ["abc"], "shown": 5},
+    {"id": "twos", "kind": "numbers", "rules": ["step"], "steps": [2], "max": 20, "shown": 4},
+    {"id": "food-abc", "kind": "pictures", "rules": ["abc"], "shown": 5, "categories": ["food"]},
+    {"id": "colors-aabb", "kind": "colors", "rules": ["aabb"], "shown": 6},
+    {"id": "fives-tens", "kind": "numbers", "rules": ["step"], "steps": [5, 10], "max": 100, "shown": 4, "choices": 4},
+    {"id": "shapes-abcd", "kind": "shapes", "rules": ["abcd"], "shown": 6, "choices": 4},
+    {"id": "count-down-2-5", "kind": "numbers", "rules": ["step"], "steps": [-2, -5], "max": 50, "shown": 4, "choices": 4},
+    {"id": "pictures-hard", "kind": "pictures", "rules": ["aabb", "abbc", "abcd"], "shown": 6, "choices": 4},
+    {"id": "threes-fours", "kind": "numbers", "rules": ["step"], "steps": [3, 4], "max": 50, "shown": 5, "choices": 4},
+    {"id": "doubles", "kind": "numbers", "rules": ["double"], "max": 100, "shown": 4, "choices": 4},
+    {"id": "colors-hard", "kind": "colors", "rules": ["abbc", "abcd"], "shown": 6, "choices": 4},
+    {"id": "numbers-mixed", "kind": "numbers", "rules": ["step", "double"], "steps": [3, -3, 6, 7, -4], "max": 100, "shown": 5, "choices": 4},
+    {"id": "champion", "kind": "numbers", "rules": ["step", "double"], "steps": [9, 11, -6, 25, -25], "max": 200, "shown": 5, "choices": 4, "questions": 10}
+  ]
+}

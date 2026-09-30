@@ -13,6 +13,7 @@ import com.nourtime.app.core.learning.LettersGame
 import com.nourtime.app.core.learning.Level
 import com.nourtime.app.core.learning.ListenGame
 import com.nourtime.app.core.learning.MathGame
+import com.nourtime.app.core.learning.PatternGame
 import com.nourtime.app.core.learning.Round
 import com.nourtime.app.data.learning.LearningContentRepository
 import kotlin.random.Random
@@ -103,6 +104,18 @@ internal object GameRegistry {
                 ListenGame.questions(packs.listen!!.levels[level], repo.letters(wordsLanguage), random)
                     .takeIf { it.isNotEmpty() }
                     ?.let { HubScreen.Playing(GameId.LISTEN, level, Round(it, tutorial = tutorial)) }
+            },
+        ),
+        GameSpec(
+            GameId.PATTERNS,
+            GameLook("🧩", Color(0xFFBA68C8), R.string.learn_game_patterns, R.string.learn_game_patterns_hint),
+            GameOption.NUMERALS,
+            wordsLanguage = false,
+            levels = { it.patterns },
+            start = { level, tutorial ->
+                PatternGame.questions(packs.patterns!!.levels[level], repo.letters(wordsLanguage), random)
+                    .takeIf { it.isNotEmpty() }
+                    ?.let { HubScreen.Playing(GameId.PATTERNS, level, Round(it, tutorial = tutorial)) }
             },
         ),
     )

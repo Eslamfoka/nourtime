@@ -85,12 +85,13 @@ private fun Task.instruction(): Int = when (this) {
     Task.LISTEN_TO_COLOR -> R.string.learn_task_listen_to_color
     Task.LISTEN_TO_LETTER -> R.string.learn_task_listen_to_letter
     Task.LISTEN_TO_NUMBER -> R.string.learn_task_listen_to_number
+    Task.PATTERN -> R.string.learn_task_pattern
 }
 
 /** What a card says when tapped: numbers and words; pictures and colors stay quiet (they are answers). */
 private fun Card.speech(): String? = when (this) {
     is Card.Number -> value.toString()
-    is Card.Text -> speech
+    is Card.Text -> speech.ifBlank { null }
     is Card.Sound -> speech
     else -> null
 }
@@ -183,17 +184,21 @@ private fun PromptCard(q: Question, numerals: NumeralStyle, language: LearnLangu
             verticalArrangement = Arrangement.Center,
         ) {
             // Math follows the numerals: right to left with ١٢٣ (Arabic schoolbooks), left to right with 123.
-            val direction = if (q.task == Task.SOLVE || q.task == Task.COMPARE) mathDirection(numerals) else LocalLayoutDirection.current
+            // A number pattern is read like math too; shapes, colors and pictures follow the app.
+            val numbers = q.task == Task.SOLVE || q.task == Task.COMPARE || (q.task == Task.PATTERN && q.prompt.any { it is Card.Number })
+            val direction = if (numbers) mathDirection(numerals) else LocalLayoutDirection.current
+            // A pattern shows up to seven small items in one line.
+            val compact = q.task == Task.PATTERN
             CompositionLocalProvider(LocalLayoutDirection provides direction) {
                 // Top-aligned: numbers with a column of dots below them keep the same line as the symbols.
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+                    horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 10.dp, Alignment.CenterHorizontally),
                     verticalAlignment = if (q.dots) Alignment.Top else Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    val size = MathWriting.promptSize(q.prompt).sp
+                    val size = if (compact && q.prompt.none { it is Card.Number }) 40.sp else MathWriting.promptSize(q.prompt).sp
                     q.prompt.forEach { card ->
-                        PromptItem(card, numerals, q.dots, big = q.prompt.size == 1, size = size, hasVoice = hasVoice, onSay = {
+                        PromptItem(card, numerals, q.dots, big = q.prompt.size == 1, compact = compact, size = size, hasVoice = hasVoice, onSay = {
                             // A number says itself; a letter says "A, Apple" (the owner's design).
                             (if (card is Card.Number) card.speech() else sayAll ?: card.speech())?.let(onSay)
                         })
@@ -215,10 +220,12 @@ private fun PromptCard(q: Question, numerals: NumeralStyle, language: LearnLangu
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: Boolean, size: TextUnit, hasVoice: Boolean, onSay: () -> Unit) {
+private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: Boolean, compact: Boolean, size: TextUnit, hasVoice: Boolean, onSay: () -> Unit) {
     when (card) {
         is Card.Number -> Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable(role = Role.Button, onClick = onSay)) {
-            Text(numerals.format(card.value), fontSize = size, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
+            // In a pattern each number sits on its own chip, so "1 2 4 8 16" never reads as one number.
+            val chip = if (compact) Modifier.background(NourPalette.GoldLight, RoundedCornerShape(12.dp)).padding(horizontal = 6.dp) else Modifier
+            Text(numerals.format(card.value), fontSize = size, fontWeight = FontWeight.Bold, color = NourPalette.Navy, modifier = chip)
             if (dots) {
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
@@ -233,13 +240,13 @@ private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: B
         is Card.Symbol -> SymbolText(card, numerals, size, if (card.text == "?") NourPalette.GoldDeep else NourPalette.Navy)
         is Card.Text -> Text(
             card.text,
-            fontSize = if (big) 96.sp else 44.sp,
+            fontSize = if (big) 96.sp else if (compact) 36.sp else 44.sp,
             fontWeight = FontWeight.Bold,
             color = NourPalette.Navy,
             textAlign = TextAlign.Center,
             modifier = Modifier.clickable(role = Role.Button, onClick = onSay).padding(horizontal = 8.dp),
         )
-        is Card.Picture -> LearningPicture(card.image, card.emoji, 112.dp, 72.sp)
+        is Card.Picture -> if (compact) LearningPicture(card.image, card.emoji, 40.dp, 30.sp) else LearningPicture(card.image, card.emoji, 112.dp, 72.sp)
         is Card.Sound -> Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Surface(onClick = onSay, shape = CircleShape, color = NourPalette.GoldLight, shadowElevation = 2.dp, modifier = Modifier.size(112.dp)) {
                 Box(contentAlignment = Alignment.Center) {
@@ -258,9 +265,9 @@ private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: B
         }
         is Card.Swatch -> Box(
             Modifier
-                .size(120.dp)
-                .background(Color(card.argb), RoundedCornerShape(28.dp))
-                .border(2.dp, NourPalette.Navy.copy(alpha = 0.15f), RoundedCornerShape(28.dp)),
+                .size(if (compact) 40.dp else 120.dp)
+                .background(Color(card.argb), RoundedCornerShape(if (compact) 12.dp else 28.dp))
+                .border(2.dp, NourPalette.Navy.copy(alpha = 0.15f), RoundedCornerShape(if (compact) 12.dp else 28.dp)),
         )
     }
 }

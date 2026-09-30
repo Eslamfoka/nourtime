@@ -13,6 +13,7 @@ import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.learning.LevelProgress
 import com.nourtime.app.core.learning.ListenLevel
 import com.nourtime.app.core.learning.NumeralStyle
+import com.nourtime.app.core.learning.PatternLevel
 import com.nourtime.app.core.learning.Round
 import com.nourtime.app.data.learning.LearningContentRepository
 import com.nourtime.app.data.learning.LearningRepository
@@ -68,6 +69,7 @@ data class HubContent(
     val connect: GamePack<DotShape>? = null,
     val coloring: ColoringPack? = null,
     val listen: GamePack<ListenLevel>? = null,
+    val patterns: GamePack<PatternLevel>? = null,
     /** Color names in the app language, spoken when a coloring color is picked. */
     val colorNames: Map<Long, String> = emptyMap(),
 ) {
@@ -117,6 +119,7 @@ class LearningHubController(
                 connect = content.connect(),
                 coloring = content.coloring(),
                 listen = content.listen(),
+                patterns = content.patterns(),
                 colorNames = content.letters(appLanguage).colors.associate { it.argb to it.name },
             )
         }

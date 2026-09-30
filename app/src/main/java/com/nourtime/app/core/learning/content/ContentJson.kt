@@ -4,6 +4,7 @@ import com.nourtime.app.core.learning.Concept
 import com.nourtime.app.core.learning.LettersGame
 import com.nourtime.app.core.learning.ListenGame
 import com.nourtime.app.core.learning.MathGame
+import com.nourtime.app.core.learning.PatternGame
 import kotlinx.serialization.Serializable
 
 // The file formats of the content packs under `assets/learning/`. See docs/content-packs.md.
@@ -66,6 +67,26 @@ data class ListenLevelJson(
     val firstLettersOnly: Boolean = false,
     val maxNumber: Int = 10,
     val questions: Int = ListenGame.QUESTIONS,
+)
+
+@Serializable
+data class PatternsFile(
+    override val schema: Int,
+    val startAt: Map<String, String> = emptyMap(),
+    val levels: List<PatternLevelJson>,
+) : Versioned
+
+@Serializable
+data class PatternLevelJson(
+    val id: String,
+    val kind: String,
+    val rules: List<String>,
+    val shown: Int = 4,
+    val steps: List<Int> = listOf(1),
+    val max: Int = 20,
+    val categories: List<String> = emptyList(),
+    val choices: Int = 3,
+    val questions: Int = PatternGame.QUESTIONS,
 )
 
 /** Things with a picture, shared by all languages; and colors. */
