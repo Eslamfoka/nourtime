@@ -696,7 +696,7 @@ Ask before starting; the owner said "next session".
 **Open items**
 - Owner's Honor test of the Learning Hub (§12 list), including whether the Arabic TTS voice speaks.
 - Merge `learning-hub` into master when the owner agrees.
-- No git remote is configured: the repository is only on this PC until one is added (see below).
+- GitHub: `origin` = https://github.com/Eslamfoka/nourtime (master and learning-hub pushed 2026-09-30). The repository is **public** for now; the owner will make it private.
 - Emulators: run only **one** at a time (16 GB PC; two emulators were killed for memory). The API 31
   emulator (child, PIN 4827 / answer blue) has the release build installed; after a restart it comes
   back from its old snapshot, so reinstall the APK (`./gradlew :app:assembleDebug
