@@ -12,8 +12,11 @@ lock, parent limits, and all content as data (JSON packs checked by the tests). 
 the roadmap. See [Learning Hub](#learning-hub-gamification--education-planned-and-built-2026-09-30).
 Next: the parent's phone shows the Learning Hub settings and the child's minutes.
 
-**2026-09-30 night (owner asleep):** content expansion of the four games and the first roadmap games,
-one commit each; see [`handoff.md` §15](handoff.md#15-night-of-2026-09-30--10-01-owner-asleep-more-content-then-new-games).
+**2026-09-30 night (owner asleep):** the four games got many more levels (45 math, 27 letters with 176
+words, 33 drawings, 26 pictures) and **eight new games** were built (G1–G8: Listen & Find, What Comes
+Next?, Tell the Time, Letter Tracing, Memory Match, Word Builder, Sorting, Little Shop), one commit
+each; G9 waits for a licensing decision. 12 games, 382 unit tests. See
+[`handoff.md` §15](handoff.md#15-night-of-2026-09-30--10-01-owner-asleep-more-content-then-new-games).
 
 **2026-09-29:** Phase 2 and Phase 4 are merged and tested against the real Firebase project; the UX
 backlog items U1–U4 (time pickers, single dashboard, Forgot PIN, language switcher) are built and

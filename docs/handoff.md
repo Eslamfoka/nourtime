@@ -705,6 +705,38 @@ Ask before starting; the owner said "next session".
 
 ## 15. Night of 2026-09-30 → 10-01 (owner asleep): more content, then new games
 
+**Morning summary (read this first).** Everything is on `learning-hub` (not merged, not pushed),
+one commit per task. 382 unit tests pass, lint clean.
+
+| Task | Result | Commit |
+|---|---|---|
+| Smart Math | 12 → 45 levels, missing numbers, up to 1000 and ×12 | `05e82e3` |
+| Letters & Words | 7 → 27 levels, 58 → 176 words, picture → word reading | `3e57900` |
+| Number Connect | 8 → 33 drawings (up to 16 dots) | `183a42f` |
+| Coloring Match | 6 → 26 pictures, two-row palette, canvas fits | `b6e6db6` |
+| G1 Listen & Find | new, 20 levels, + game registry | `a926596` |
+| G2 What Comes Next? | new, 23 levels | `f2f5d33` |
+| G3 Tell the Time | new, 17 levels | `a2c2a7c` |
+| G4 Letter Tracing | new, 28 Arabic + 26 English letters | `b8f7ee4` |
+| G5 Memory Match | new, 20 levels | `a09b33a` |
+| G6 Word Builder | new, 11 levels | `0b5de2e` |
+| G7 Sorting | new, 13 levels (+ RTL drag fix for G6) | `3a765f7` |
+| G8 Little Shop | new, 10 levels | `ff4a901` |
+| G9 surahs & du'as | **not started**: needs your decision on sources and licensing | — |
+
+**APK to install:** `dist/NourTime-2026-10-01-learning-hub-debug.apk` (real Firebase project, debug-signed
+like before, installs over the Honor build: `adb install -r dist/NourTime-2026-10-01-learning-hub-debug.apk`).
+Open Settings → "جرّب الألعاب" to try all 12 games with every level open (the preview saves nothing).
+
+**Please check on the Honor:** (1) the voice actually speaks in Listen & Find (the emulator can't be
+heard); (2) Letter Tracing shapes (simplified school forms, authored by me) and how tracing feels on
+a real finger; (3) a quick flick in Number Connect; (4) Memory Match: a mismatch turns back after
+1.2 s (only unit-tested; every turn on the emulator happened to match); (5) the menu with 12 tiles.
+
+**Decisions for you:** the coins in Little Shop have no currency (values only); Letter Tracing shapes
+may need a calligrapher's look; the minified **release** build was not re-run tonight (the new JSON
+classes follow the same pattern as the ones checked with R8 on 2026-09-30).
+
 Owner's plan for the night: (1) many more levels for each of the four games, easy → hard, one game at a
 time; (2) then build the roadmap games in order (Phase A first), each with its own engine, levels,
 test, commit and docs. Everything is on **`learning-hub`** (not merged, not pushed). G9 (surahs and
