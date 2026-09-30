@@ -189,7 +189,9 @@ private fun ConnectCanvas(
                 detectDragGestures(
                     onDragStart = { start ->
                         val p = norm(start)
-                        dragging = !finished && ConnectRules.near(shape.dots[from], p.x, p.y, radius)
+                        // The drag starts after the touch slop, so a quick flick is already a little way
+                        // from the dot here: accept a wider circle around the dot being drawn from.
+                        dragging = !finished && ConnectRules.near(shape.dots[from], p.x, p.y, radius * 1.5f)
                         finger = if (dragging) start else null
                     },
                     onDrag = { change, _ ->

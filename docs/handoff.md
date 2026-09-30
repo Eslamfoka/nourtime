@@ -735,3 +735,17 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
   ("أين الصورة المناسبة؟", "أين هذا اللون؟") so they fit boys and girls.
 - Tested: unit tests (every level × 30 seeds × both languages: one right answer, enough words per
   category); emulator preview: 27 levels, level 26 picture → word (👵 → Grandma) accepted.
+
+### 15.3 Number Connect: 8 → 33 drawings
+- 25 new drawings, ordered by dot count: square, diamond, balloon, envelope, snake (open wave), bell,
+  ice cream, umbrella, lightning, tent, cup, cloud, flower, arrow, crown, mountains, tree, rocket,
+  butterfly, snail (open spiral), car, mosque, pine, castle and a 16-point sun. Curves are used for
+  round parts (balloon, bell, cloud, petals, wheels, dome, door arch).
+- Every drawing was generated and checked by a script (inside the canvas, dots ≥ 0.13 apart) and
+  eyeballed on a contact sheet before going into the pack. New test: each drawing is never more than
+  one dot easier than the one before, and the last has ≥ 15 dots. Start levels: 7–9 at the
+  lightning, 10–12 at the arrow.
+- Fix found while testing: a fast flick sometimes didn't start a line (the drag starts after the touch
+  slop, already a little way from the dot). The start circle is now 1.5 × the touch radius.
+- Tested: emulator preview, level 32 (castle, 16 dots with a curved door) drawn to the end, filled and
+  celebrated ("رائعة! 🏰").

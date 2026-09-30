@@ -75,7 +75,14 @@ class DrawingGamesTest {
             }
         }
         assertEquals(3, TestContent.connect.levels.first().dots.size)
-        assertEquals(8, TestContent.connect.levels.size)
+        assertEquals(33, TestContent.connect.levels.size)
+    }
+
+    @Test
+    fun `drawings get harder, never more than one dot easier than the one before`() {
+        val counts = TestContent.connect.levels.map { it.dots.size }
+        counts.zipWithNext().forEach { (a, b) -> assertTrue("$counts", b >= a - 1) }
+        assertTrue(counts.last() >= 15)
     }
 
     // --- Coloring Match ---
