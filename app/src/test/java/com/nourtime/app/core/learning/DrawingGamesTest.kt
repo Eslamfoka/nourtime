@@ -109,7 +109,7 @@ class DrawingGamesTest {
 
     @Test
     fun `filling right colors finishes the picture, wrong ones count as mistakes`() {
-        val apple = TestContent.coloring.pack.levels.first()
+        val apple = TestContent.coloring.pack.levels.first { it.id == "apple" }
         var r = ColoringRound(apple, apple.colors)
         assertEquals(ColoringRound.Outcome.IGNORED, r.fill(0).second) // no color chosen yet
         r = r.select(0xFF43A047)
@@ -144,6 +144,11 @@ class DrawingGamesTest {
             assertEquals(picture.colors.size + picture.extraColors, palette.size)
         }
         assertEquals(0, pack.pack.levels[0].extraColors)
-        assertEquals(2, pack.pack.levels[4].extraColors)
+        assertEquals(2, pack.pack.levels.first { it.id == "flower" }.extraColors)
+        // Harder pictures: more colors and more wrong colors toward the end.
+        val half = pack.pack.levels.size / 2
+        val early = pack.pack.levels.take(half).map { it.colors.size + it.extraColors }.average()
+        val late = pack.pack.levels.drop(half).map { it.colors.size + it.extraColors }.average()
+        assertTrue("$early < $late", early + 2 < late)
     }
 }

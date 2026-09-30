@@ -31,7 +31,7 @@ class ContentPacksTest {
         assertEquals(176, TestContent.letters(LearnLanguage.ENGLISH).words.size)
         assertEquals(11, TestContent.letters(LearnLanguage.ENGLISH).colors.size)
         assertEquals(33, TestContent.connect.levels.size)
-        assertEquals(6, TestContent.coloring.pack.levels.size)
+        assertEquals(26, TestContent.coloring.pack.levels.size)
         assertEquals("letter-word-picture", TestContent.letterLevels.levels[TestContent.letterLevels.startIndex(AgeGroup.AGES_10_12)].id)
     }
 

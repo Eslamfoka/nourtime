@@ -202,11 +202,11 @@ list: [`handoff.md` §12](handoff.md#12-learning-hub-2026-09-30-overnight).
 | L1 | **Smart Math** | Multiple choice. +, −, ×, ÷, comparisons (<, >, =) and missing numbers (7 + ? = 12), 45 levels from "1 + 2" with dots to mixed operations up to 1000 and ×12. Tap any number to hear it (TTS). Western (123) / Eastern (١٢٣) numerals toggle. | ✅ 45 levels (2026-09-30 night) |
 | L2 | **Letters & Words** (Arabic + English) | Multiple choice with audio. Letter → word, letter → picture, word → picture, picture → word (reading), color name ↔ color, by category (animals, food, vehicles, body, nature, objects, clothes, toys, people, places). Tap the letter or word to hear "A, Apple" / "أ، أرنب". | ✅ 27 levels, 28 Arabic + 25 English letters, 176 words, 11 colors (2026-09-30 night) |
 | L3 | **Number Connect** | Drawing: drag from dot 1 to 2 to 3 over a faded outline; segments can be lines or curves. | ✅ 33 drawings from a 3-dot triangle to a 16-point sun, numbers spoken as reached (2026-09-30 night) |
-| L4 | **Coloring Match** | Tap a palette color, then tap a region of a black-and-white drawing to fill it, matching a colored reference. | ✅ 6 pictures (apple → car), extra colors from level 3 |
+| L4 | **Coloring Match** | Tap a palette color, then tap a region of a black-and-white drawing to fill it, matching a colored reference. | ✅ 26 pictures from a 2-color balloon to a 7-color rainbow, up to 2 wrong colors in the palette (2026-09-30 night) |
 
 ### Goal: Google Play at scale
-The four games prove the engine; the shipped **content** (12 math levels, 58 words, 8 drawings, 6
-pictures) is a prototype. A public release needs far more content in several languages, plus real
+The four games prove the engine; the shipped **content** (45 math levels, 27 letters levels with 176
+words, 33 drawings, 26 pictures after the 2026-09-30 night) is still a start. A public release needs far more content in several languages, plus real
 illustrations. So all content is **data** (JSON packs), not code: adding a level, word, language,
 drawing or illustration is a file edit, checked automatically by the tests. Authoring guide:
 [`content-packs.md`](content-packs.md).

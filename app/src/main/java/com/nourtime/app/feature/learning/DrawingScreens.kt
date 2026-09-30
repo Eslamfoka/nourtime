@@ -12,17 +12,18 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -76,6 +77,12 @@ import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
 import com.nourtime.app.feature.lock.Gendered
 
+/**
+ * The square drawing area: as big as the space left allows in both directions (a short phone or a
+ * two-row palette leaves less height than width), at most 520 dp.
+ */
+private fun BoxWithConstraintsScope.canvasSide() = minOf(maxWidth, maxHeight, 520.dp)
+
 // ---------------------------------------------------------------------------------------------
 // Number Connect
 // ---------------------------------------------------------------------------------------------
@@ -121,12 +128,12 @@ internal fun ColumnScope.ConnectScreen(controller: LearningHubController, state:
         textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
     )
-    Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+    BoxWithConstraints(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
         Surface(
             shape = RoundedCornerShape(32.dp),
             color = NourPalette.White,
             shadowElevation = 4.dp,
-            modifier = Modifier.fillMaxWidth().widthIn(max = 520.dp).aspectRatio(1f),
+            modifier = Modifier.size(canvasSide()),
         ) {
             ConnectCanvas(
                 shape = shape,
@@ -290,6 +297,7 @@ private fun DrawScope.drawPicture(picture: ColoringPicture, fill: (Int) -> Color
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun ColumnScope.ColoringScreen(controller: LearningHubController, state: LearningState?, s: HubScreen.Coloring, gender: ChildGender) {
     val numerals = controller.numerals(state)
@@ -326,12 +334,12 @@ internal fun ColumnScope.ColoringScreen(controller: LearningHubController, state
         0f, 1f, infiniteRepeatable(tween(700), RepeatMode.Reverse), label = "p",
     )
     val measurer = rememberTextMeasurer()
-    Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+    BoxWithConstraints(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
         Surface(
             shape = RoundedCornerShape(32.dp),
             color = NourPalette.White,
             shadowElevation = 4.dp,
-            modifier = Modifier.fillMaxWidth().widthIn(max = 520.dp).aspectRatio(1f),
+            modifier = Modifier.size(canvasSide()),
         ) {
             Canvas(
                 Modifier
@@ -354,8 +362,13 @@ internal fun ColumnScope.ColoringScreen(controller: LearningHubController, state
         }
     }
     Spacer(Modifier.height(12.dp))
-    Row(
+    // Up to five swatches in one row; bigger palettes wrap into two even rows, so every swatch keeps
+    // a finger-sized target on a narrow phone.
+    val perRow = round.palette.size.let { if (it <= 5) it else (it + 1) / 2 }
+    FlowRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        maxItemsInEachRow = perRow,
         modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
     ) {
         round.palette.forEach { argb ->
@@ -364,10 +377,7 @@ internal fun ColumnScope.ColoringScreen(controller: LearningHubController, state
             val name = colorNames[argb].orEmpty()
             Box(
                 Modifier
-                    .weight(1f, fill = false)
-                    .sizeIn(maxWidth = 56.dp)
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
+                    .size(52.dp)
                     .scale(if (selected) 1.15f else if (hinted) 1f + 0.12f * pulse else 1f)
                     .background(Color(argb), CircleShape)
                     .border(if (selected) 4.dp else 2.dp, if (selected) NourPalette.Navy else NourPalette.Navy.copy(alpha = 0.2f), CircleShape)

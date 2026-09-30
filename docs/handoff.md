@@ -751,3 +751,19 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
   little way from the dot). Worth watching on the Honor: does a quick flick ever fail to draw?
 - Tested: emulator preview, level 32 (castle, 16 dots with a curved door) drawn to the end, filled and
   celebrated ("رائعة! 🏰").
+
+### 15.4 Coloring Match: 6 → 26 pictures
+- 20 new pictures in a 100 × 100 viewBox, built from boxes, ovals and polygons by a script and checked
+  on a rendered contact sheet: balloon, ball, lollipop, mushroom, sun (8 rays), ice cream, cat,
+  butterfly, watermelon, traffic light, bee, snowman, sailboat, bus, owl, rocket, **rainbow** (6 bands),
+  castle, train, mosque. Difficulty grows from 2 colors / 2 regions to 6–7 colors with 2 wrong colors
+  in the palette. Small parts (eyes, seeds, hubcaps) are at least ~8 % of the canvas so a child's
+  finger can hit them. Start levels: 7–9 at the house, 10–12 at the butterfly.
+- UI fixes found on the emulator:
+  - The palette was one row; with 8–9 colors the swatches shrank to ~30 dp. It now wraps into two even
+    rows of 52 dp swatches when there are more than 5.
+  - The square canvas took the full width even when less height was left, so it slid under the palette
+    and header (seen with the two-row palette). The drawing area is now the largest square that fits
+    in both directions (Coloring and Number Connect).
+- Tested: unit tests (every region tappable, palettes hold the picture colors, later pictures use
+  more colors); emulator preview: level 23 rainbow colored band by band, finished and celebrated.
