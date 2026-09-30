@@ -594,8 +594,9 @@ Everything is on branch **`learning-hub`** (not merged into master).
   allows it; never at bedtime or on protected Settings screens).
 - **Hub menu:** four games, the minute bank, **Use my minutes**.
 - **Smart Math** (12 levels): +, −, ×, ÷ and < = >; dots to count on level 1; tap a number to hear it;
-  123 / ١٢٣ toggle (Arabic defaults to ١٢٣). Equations are always drawn left to right, so "3 < 5"
-  never flips in Arabic.
+  123 / ١٢٣ toggle (Arabic defaults to ١٢٣). With ١٢٣ equations are written right to left like
+  Arabic schoolbooks, and < / > are mirrored so the sign still opens toward the bigger number (owner's
+  decision 2026-09-30); with 123 they are left to right.
 - **Letters & Words** (7 levels, Arabic or English, chosen in the game): letter → picture, letter →
   word then picture (the owner's "A, Apple" flow), word → picture, color name ↔ color. Read aloud with
   the phone's text-to-speech (letter name + word: "ألف، أرنب").
@@ -648,8 +649,6 @@ APK (real Firebase project, debug): `dist/NourTime-2026-09-30-learning-hub-debug
 
 ### Open questions for the owner
 - Confirm the three reward decisions above (break vs. bonus, bank, defaults 5 / 15).
-- Arabic equations: always left to right now. Should Eastern-numeral mode write them right to left
-  (as some Arabic schoolbooks do)?
 - Pictures are emoji and code-drawn shapes: fine for now, or should we plan illustrations?
 - Syncing the Learning Hub settings and "minutes earned today" to the parent's phone isn't built yet.
 

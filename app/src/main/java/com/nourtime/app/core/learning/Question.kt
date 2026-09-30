@@ -17,11 +17,28 @@ enum class NumeralStyle {
     }
 }
 
+/**
+ * How an equation is written. With Eastern numerals (١٢٣) it follows Arabic schoolbooks: right to
+ * left, the first number on the right. A relation sign always opens toward the bigger number, so in
+ * right-to-left order "less than" is drawn as ">" (the same mirroring Unicode applies to < and >).
+ */
+object MathWriting {
+    fun rightToLeft(numerals: NumeralStyle): Boolean = numerals == NumeralStyle.EASTERN
+
+    /** The glyph to draw for a symbol card; the question itself keeps the logical symbol. */
+    fun glyph(symbol: String, rightToLeft: Boolean): String = if (!rightToLeft) symbol else when (symbol) {
+        "<" -> ">"
+        ">" -> "<"
+        "?" -> "؟"
+        else -> symbol
+    }
+}
+
 /** One thing on a question card: in the prompt or as a choice. */
 sealed interface Card {
     data class Number(val value: Int) : Card
 
-    /** An operator or relation: + − × ÷ = < > ?, drawn as is (never mirrored in Arabic). */
+    /** An operator or relation: + − × ÷ = < > ?, in logical form; [MathWriting] decides the glyph. */
     data class Symbol(val text: String) : Card
 
     /** A letter or a word, spoken as [speech] (a letter's name) or as itself. */

@@ -17,6 +17,19 @@ class LearningCoreTest {
         assertEquals("١٢٣٤٥٦٧٨٩٠", NumeralStyle.EASTERN.format(1234567890))
     }
 
+    @Test
+    fun `eastern numerals write math right to left with mirrored relation signs`() {
+        assertTrue(MathWriting.rightToLeft(NumeralStyle.EASTERN))
+        assertFalse(MathWriting.rightToLeft(NumeralStyle.WESTERN))
+        // "3 < 5" right to left: ٥ on the left, and the sign still opens toward it.
+        assertEquals(">", MathWriting.glyph("<", rightToLeft = true))
+        assertEquals("<", MathWriting.glyph(">", rightToLeft = true))
+        assertEquals("؟", MathWriting.glyph("?", rightToLeft = true))
+        assertEquals("=", MathWriting.glyph("=", rightToLeft = true))
+        assertEquals("−", MathWriting.glyph("−", rightToLeft = true))
+        assertEquals("<", MathWriting.glyph("<", rightToLeft = false))
+    }
+
     // --- math ---
 
     private fun solve(q: Question): Int {

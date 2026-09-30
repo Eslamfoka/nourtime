@@ -33,6 +33,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.VolumeUp
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -53,7 +54,9 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -62,6 +65,7 @@ import com.nourtime.app.core.designsystem.theme.NourPalette
 import com.nourtime.app.core.learning.Card
 import com.nourtime.app.core.learning.GameId
 import com.nourtime.app.core.learning.LearnLanguage
+import com.nourtime.app.core.learning.MathWriting
 import com.nourtime.app.core.learning.NumeralStyle
 import com.nourtime.app.core.learning.Question
 import com.nourtime.app.core.learning.Task
@@ -173,8 +177,8 @@ private fun PromptCard(q: Question, numerals: NumeralStyle, language: LearnLangu
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            // Math reads left to right in both languages here, so "3 < 5" never flips in Arabic.
-            val direction = if (q.task == Task.SOLVE || q.task == Task.COMPARE) LayoutDirection.Ltr else LocalLayoutDirection.current
+            // Math follows the numerals: right to left with ١٢٣ (Arabic schoolbooks), left to right with 123.
+            val direction = if (q.task == Task.SOLVE || q.task == Task.COMPARE) mathDirection(numerals) else LocalLayoutDirection.current
             CompositionLocalProvider(LocalLayoutDirection provides direction) {
                 // Top-aligned: numbers with a column of dots below them keep the same line as the symbols.
                 Row(
@@ -219,7 +223,7 @@ private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: B
                 }
             }
         }
-        is Card.Symbol -> Text(card.text, fontSize = 52.sp, fontWeight = FontWeight.Bold, color = if (card.text == "?") NourPalette.GoldDeep else NourPalette.Navy)
+        is Card.Symbol -> SymbolText(card, numerals, 52.sp, if (card.text == "?") NourPalette.GoldDeep else NourPalette.Navy)
         is Card.Text -> Text(
             card.text,
             fontSize = if (big) 96.sp else 44.sp,
@@ -248,7 +252,7 @@ private fun Choices(
     onPick: (Int) -> Unit,
 ) {
     val columns = if (q.choices.size == 3) 3 else 2
-    val direction = if (q.task == Task.COMPARE) LayoutDirection.Ltr else LocalLayoutDirection.current
+    val direction = if (q.task == Task.COMPARE) mathDirection(numerals) else LocalLayoutDirection.current
     CompositionLocalProvider(LocalLayoutDirection provides direction) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             q.choices.indices.chunked(columns).forEach { row ->
@@ -287,7 +291,7 @@ private fun ChoiceCard(
     }
     val description = when (card) {
         is Card.Number -> numerals.format(card.value)
-        is Card.Symbol -> card.text
+        is Card.Symbol -> MathWriting.glyph(card.text, MathWriting.rightToLeft(numerals))
         is Card.Text -> card.text
         is Card.Picture -> card.word
         is Card.Swatch -> card.name
@@ -314,7 +318,7 @@ private fun ChoiceCard(
             Box(Modifier.padding(8.dp).heightIn(min = 72.dp), contentAlignment = Alignment.Center) {
                 when (card) {
                     is Card.Number -> Text(numerals.format(card.value), fontSize = 36.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
-                    is Card.Symbol -> Text(card.text, fontSize = 40.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
+                    is Card.Symbol -> SymbolText(card, numerals, 40.sp, NourPalette.Navy)
                     is Card.Text -> Text(card.text, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy, textAlign = TextAlign.Center, maxLines = 2)
                     is Card.Picture -> Text(card.emoji, fontSize = 48.sp)
                     is Card.Swatch -> Box(
@@ -349,4 +353,22 @@ private fun TutorialHand(modifier: Modifier) {
         label = "bob",
     )
     Text("👆", fontSize = 44.sp, modifier = modifier.offset(y = (28 + bob * 10).dp).graphicsLayer { alpha = 0.95f })
+}
+
+private fun mathDirection(numerals: NumeralStyle) =
+    if (MathWriting.rightToLeft(numerals)) LayoutDirection.Rtl else LayoutDirection.Ltr
+
+/**
+ * A math sign, already mirrored by [MathWriting] where needed. Its text direction is pinned so the
+ * system's bidi mirroring of < and > can't flip it a second time.
+ */
+@Composable
+private fun SymbolText(card: Card.Symbol, numerals: NumeralStyle, size: TextUnit, color: Color) {
+    Text(
+        MathWriting.glyph(card.text, MathWriting.rightToLeft(numerals)),
+        fontSize = size,
+        fontWeight = FontWeight.Bold,
+        color = color,
+        style = LocalTextStyle.current.copy(textDirection = TextDirection.Ltr),
+    )
 }
