@@ -78,6 +78,7 @@ fun TimeUpScreen(
     onOpenApp: (String) -> Unit = {},
     ask: AskState? = null,
     onAsk: () -> Unit = {},
+    onLearn: (() -> Unit)? = null,
 ) {
     val style = styleFor(state.template).forAge(state.ageGroup)
     val text = if (style.dark) NourPalette.Cream else NourPalette.Navy
@@ -108,6 +109,7 @@ fun TimeUpScreen(
                         AgeGroup.AGES_10_12 -> OlderLayout(state, style, text)
                     }
                 }
+                if (onLearn != null) LearnButton(state, onLearn)
                 if (ask != null) AskRow(ask, state, text, onAsk)
                 if (state.allowedApps.isNotEmpty()) AllowedAppsRow(state, text, onOpenApp)
                 if (onOk != null) OkButton(onOk)
@@ -285,6 +287,33 @@ private fun AskRow(ask: AskState, state: LockScreenState, text: Color, onAsk: ()
             AskState.Waiting -> AskMessage(stringResource(Gendered(R.string.tu_ask_waiting_m, R.string.tu_ask_waiting_f).pick(state.gender)), text)
             is AskState.Approved -> AskMessage(stringResource(R.string.tu_ask_approved, durationText(ask.minutes)), text)
             is AskState.Declined -> AskMessage(stringResource(Gendered(R.string.tu_ask_declined_m, R.string.tu_ask_declined_f).pick(state.gender)), text)
+        }
+    }
+}
+
+/** Opens the Learning Hub: the most inviting thing on the screen. */
+@Composable
+private fun LearnButton(state: LockScreenState, onClick: () -> Unit) {
+    Surface(
+        onClick = onClick,
+        shape = MaterialTheme.shapes.extraLarge,
+        // Coral: stands apart from the mint OK button, readable on light and dark (sleep) themes.
+        color = NourPalette.Coral,
+        contentColor = NourPalette.Navy,
+        shadowElevation = 4.dp,
+        modifier = Modifier.fillMaxWidth().widthIn(max = 480.dp).padding(bottom = 12.dp),
+    ) {
+        Row(
+            Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Text("🧩", style = MaterialTheme.typography.headlineSmall)
+            Spacer(Modifier.size(12.dp))
+            Text(
+                stringResource(Gendered(R.string.learn_hub_button_m, R.string.learn_hub_button_f).pick(state.gender)),
+                style = MaterialTheme.typography.titleLarge,
+            )
         }
     }
 }

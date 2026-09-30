@@ -41,7 +41,15 @@ import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.feature.lock.LockOverlayContent
 import com.nourtime.app.feature.lock.LockScreenState
 import com.nourtime.app.feature.lock.OverlayParentFlow
+import com.nourtime.app.feature.lock.ParentStage
+import com.nourtime.app.feature.learning.LearningHub
+import com.nourtime.app.feature.learning.LearningHubController
+import com.nourtime.app.feature.learning.currentLearnLanguage
 import com.nourtime.app.feature.pin.ForgotPinRequest
+import com.nourtime.app.core.learning.LearnLanguage
+import com.nourtime.app.core.time.TrustedClock
+import com.nourtime.app.core.timer.TimeEngine
+import com.nourtime.app.data.learning.LearningRepository
 import com.nourtime.app.remote.child.TimeRequests
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -65,12 +73,20 @@ class LockOverlay @Inject constructor(
     private val pass: ParentPass,
     private val clock: DeviceClock,
     private val timeRequests: TimeRequests,
+    private val learning: LearningRepository,
+    private val engine: TimeEngine,
+    private val trustedClock: TrustedClock,
 ) {
     private var accessibility: AccessibilityService? = null
     private var window: OverlayWindow? = null
     private val state = MutableStateFlow<LockScreenState?>(null)
     /** When showing failed (e.g. no overlay permission), don't retry every second. */
     private var lastFailedOpen: Long? = null
+
+    /** True while the child plays in the Learning Hub (the whole-device screen-off waits). */
+    @Volatile
+    var learningOpen: Boolean = false
+        private set
 
     /** Called when the child taps "OK" on a dismissable screen. */
     var onChildDismiss: () -> Unit = {}
@@ -97,6 +113,41 @@ class LockOverlay @Inject constructor(
             next != null && !wasShown -> open(next)
             next == null && wasShown -> close()
         }
+        if (next == null) closeHub()
+    }
+
+    // --- Learning Hub: kept here, not in the window, so it survives the window being replaced when
+    // Accessibility reconnects (seen on Honor) ---
+
+    private val hub = MutableStateFlow<LearningHubController?>(null)
+    private var hubScope: CoroutineScope? = null
+
+    @MainThread
+    private fun openHub(screen: LockScreenState, language: LearnLanguage) {
+        closeHub()
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        hubScope = scope
+        hub.value = LearningHubController(
+            scope = scope,
+            repo = learning,
+            age = screen.ageGroup,
+            appLanguage = language,
+            rewards = true,
+            today = { trustedClock.now().toLocalDate() },
+            onUseMinutes = { minutes ->
+                Log.i(TAG, "learning reward: $minutes min")
+                engine.reward(minutes)
+            },
+        )
+        learningOpen = true
+    }
+
+    @MainThread
+    private fun closeHub() {
+        hub.value = null
+        hubScope?.cancel()
+        hubScope = null
+        learningOpen = false
     }
 
     /** Opens an app the parent allows during the lock; the coordinator then lifts the cover. */
@@ -217,7 +268,14 @@ class LockOverlay @Inject constructor(
         private val root = object : FrameLayout(context) {
             override fun dispatchKeyEvent(event: KeyEvent): Boolean {
                 if (event.keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (event.action == KeyEvent.ACTION_UP) parentFlow.back()
+                    if (event.action == KeyEvent.ACTION_UP) {
+                        val h = hub.value
+                        if (h != null && parentFlow.stage.value == ParentStage.CHILD) {
+                            if (!h.back()) closeHub()
+                        } else {
+                            parentFlow.back()
+                        }
+                    }
                     return true
                 }
                 return super.dispatchKeyEvent(event)
@@ -241,15 +299,26 @@ class LockOverlay @Inject constructor(
                                 } else {
                                     null
                                 }
-                                LockOverlayContent(
-                                    state = current,
-                                    stage = stage,
-                                    parentFlow = parentFlow,
-                                    onChildOk = { onChildDismiss() },
-                                    onOpenApp = ::openApp,
-                                    ask = ask,
-                                    onAsk = { scope.launch { runCatching { timeRequests.ask() } } },
-                                )
+                                // Learning games only in a time-up lock, and only if the parent allows them.
+                                val learnSettings = remember { learning.settings }.collectAsStateWithLifecycle(null).value
+                                val canLearn = current.decision.reason == BlockReason.TIME_UP && learnSettings?.enabled == true
+                                val hubController by hub.collectAsStateWithLifecycle()
+                                val language = currentLearnLanguage()
+                                val openHub = hubController
+                                if (openHub != null && canLearn && stage == ParentStage.CHILD) {
+                                    LearningHub(openHub, current.gender, onClose = ::closeHub)
+                                } else {
+                                    LockOverlayContent(
+                                        state = current,
+                                        stage = stage,
+                                        parentFlow = parentFlow,
+                                        onChildOk = { onChildDismiss() },
+                                        onOpenApp = ::openApp,
+                                        ask = ask,
+                                        onAsk = { scope.launch { runCatching { timeRequests.ask() } } },
+                                        onLearn = if (canLearn) ({ openHub(current, language) }) else null,
+                                    )
+                                }
                             }
                         }
                     }

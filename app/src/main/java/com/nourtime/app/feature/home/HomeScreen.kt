@@ -58,6 +58,7 @@ import com.nourtime.app.core.ui.startFirstAvailable
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
 import com.nourtime.app.feature.language.LanguageCard
+import com.nourtime.app.feature.learning.LearningSettingsCard
 import com.nourtime.app.feature.lock.TimeUpPreviewDialog
 import com.nourtime.app.feature.onboarding.ui
 import com.nourtime.app.feature.remote.ParentPhoneSection
@@ -235,6 +236,8 @@ private fun SettingsTab(
             WeekendSection(s.weekend, viewModel::setWeekend)
             Text(stringResource(R.string.allowed_section), style = MaterialTheme.typography.titleLarge)
             AllowedDuringLockCard(s.allowedDuringLock.size)
+            Text(stringResource(R.string.learn_settings_section), style = MaterialTheme.typography.titleLarge)
+            LearningSettingsCard(s.ageGroup, s.gender)
             Text(stringResource(R.string.settings_protection_section), style = MaterialTheme.typography.titleLarge)
             ToggleCard(stringResource(R.string.protect_settings_title), stringResource(R.string.protect_settings_hint), s.protectSystemSettings, viewModel::setProtectSystemSettings)
             ToggleCard(stringResource(R.string.sound_title), stringResource(R.string.sound_hint), s.soundEnabled, viewModel::setSoundEnabled)

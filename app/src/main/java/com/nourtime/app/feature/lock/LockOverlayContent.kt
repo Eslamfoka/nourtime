@@ -91,6 +91,7 @@ fun LockOverlayContent(
     onOpenApp: (String) -> Unit,
     ask: AskState? = null,
     onAsk: () -> Unit = {},
+    onLearn: (() -> Unit)? = null,
 ) {
     val settingsCover = state.decision.reason == BlockReason.SYSTEM_SETTINGS
     LaunchedEffect(settingsCover) {
@@ -104,6 +105,7 @@ fun LockOverlayContent(
             onOpenApp = onOpenApp,
             ask = ask,
             onAsk = onAsk,
+            onLearn = onLearn,
         )
         ParentStage.PIN -> ParentPanelFrame(onBack = parentFlow::back) {
             val pin by parentFlow.pin.state.collectAsStateWithLifecycle()

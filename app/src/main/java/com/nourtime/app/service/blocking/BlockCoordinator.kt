@@ -142,7 +142,8 @@ class BlockCoordinator @Inject constructor(
             nowElapsed = clock.elapsedRealtime(),
             lockPeriod = timeUp || bedtime,
             lockType = s.lockType,
-            wholeDeviceBlocking = decision?.wholeDevice == true,
+            // Not while the child is playing a learning game on the lock screen.
+            wholeDeviceBlocking = decision?.wholeDevice == true && !overlay.learningOpen,
             screenOn = fg.screen.interactive,
         )
         if (turnScreenOff) Log.i(TAG, "whole-device lock started: screen off=${screenLocker.lockNow()}")
