@@ -1,5 +1,6 @@
 package com.nourtime.app.core.learning.content
 
+import com.nourtime.app.core.learning.ClockGame
 import com.nourtime.app.core.learning.Concept
 import com.nourtime.app.core.learning.LettersGame
 import com.nourtime.app.core.learning.ListenGame
@@ -87,6 +88,22 @@ data class PatternLevelJson(
     val categories: List<String> = emptyList(),
     val choices: Int = 3,
     val questions: Int = PatternGame.QUESTIONS,
+)
+
+@Serializable
+data class ClockFile(
+    override val schema: Int,
+    val startAt: Map<String, String> = emptyMap(),
+    val levels: List<ClockLevelJson>,
+) : Versioned
+
+@Serializable
+data class ClockLevelJson(
+    val id: String,
+    val tasks: List<String>,
+    val precision: String,
+    val choices: Int = 3,
+    val questions: Int = ClockGame.QUESTIONS,
 )
 
 /** Things with a picture, shared by all languages; and colors. */

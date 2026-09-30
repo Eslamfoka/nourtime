@@ -810,3 +810,19 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
   lagged behind the screen. The helper now deletes the old dump and retries; the parent home is
   scrolled to the top before tapping. One wrong PIN attempt was typed by the old script (lock ended
   → the security-question taps landed on the PIN pad); the right PIN was entered right after.
+
+### 15.7 New game G3: Tell the Time (Phase A)
+- **Engine:** `ClockGame` with two new cards, `Card.Clock` (analog clock) and `Card.Time` ("h:mm"),
+  and tasks `clock_to_time` / `time_to_clock`. Times are generated per level precision (hour, half,
+  quarter, five, minute), different within a level. Wrong answers mix classic mistakes (the long hand
+  read as the hour: 3:30 → 6:15; the next/previous hour; a step off) with random times.
+- **Clock face** (`ClockFace.kt`): drawn in Compose, numbers in the child's numerals, minute ticks,
+  never mirrored (clocks turn clockwise in Arabic too). Found on the emulator: the long hand hid the
+  numbers it passed; shortening the hands then made minute-exact levels unreadable. Final design: the
+  minute hand reaches the ticks and each number sits on a small white disc drawn above the hands.
+- **Content:** `clock/levels.json`, 17 levels: o'clock with 2 choices → halves → quarters → 5 minutes
+  → any minute, each first as "read", then "show", then mixed with 4 choices; a 10-question
+  champion. 7–9 start at halves, 10–12 at quarters. Menu "ما الساعة؟" / "نقرأ الساعة".
+- Tested: unit tests (every level × 40 seeds: one right time, distinct valid times, the hand mix-up
+  is among the wrong answers, precision never gets easier level to level); emulator preview: level 6
+  (read 2:30 with 4 time choices, then "show 4:00" with 4 clocks), level 17 (minute precision).

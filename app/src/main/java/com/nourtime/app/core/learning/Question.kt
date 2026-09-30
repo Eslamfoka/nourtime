@@ -4,7 +4,7 @@ package com.nourtime.app.core.learning
  * The Learning Hub's mini-games. The name is part of the saved progress key: never rename one.
  * Adding a game: an entry here plus its entry in the hub's game registry (`GameRegistry`).
  */
-enum class GameId { MATH, LETTERS, CONNECT, COLORING, LISTEN, PATTERNS }
+enum class GameId { MATH, LETTERS, CONNECT, COLORING, LISTEN, PATTERNS, CLOCK }
 
 /** Language of a game's content and voice, independent of the app language. */
 enum class LearnLanguage(val tag: String) { ARABIC("ar"), ENGLISH("en") }
@@ -72,6 +72,12 @@ sealed interface Card {
      * child's numerals instead of [text] when it's set.
      */
     data class Sound(val speech: String, val text: String, val number: Int? = null) : Card
+
+    /** An analog clock showing [hour] (1–12) and [minute]. */
+    data class Clock(val hour: Int, val minute: Int) : Card
+
+    /** A written time "h:mm" in the child's numerals. */
+    data class Time(val hour: Int, val minute: Int) : Card
 }
 
 /** What the child is asked to do; the UI shows it as a short instruction. */
@@ -86,6 +92,9 @@ enum class Task {
 
     /** What Comes Next?: continue a sequence. */
     PATTERN,
+
+    /** Tell the Time: read a clock and pick the time, or read a time and pick the clock. */
+    CLOCK_TO_TIME, TIME_TO_CLOCK,
     ;
 
     val listening: Boolean get() = this == LISTEN_TO_PICTURE || this == LISTEN_TO_COLOR || this == LISTEN_TO_LETTER || this == LISTEN_TO_NUMBER

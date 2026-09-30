@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "startAt": {"AGES_7_9": "read-half", "AGES_10_12": "read-quarter"},
+  "levels": [
+    {"id": "read-oclock-2", "tasks": ["clock_to_time"], "precision": "hour", "choices": 2},
+    {"id": "read-oclock", "tasks": ["clock_to_time"], "precision": "hour"},
+    {"id": "show-oclock", "tasks": ["time_to_clock"], "precision": "hour"},
+    {"id": "read-half", "tasks": ["clock_to_time"], "precision": "half"},
+    {"id": "show-half", "tasks": ["time_to_clock"], "precision": "half"},
+    {"id": "hour-half-mixed", "tasks": ["clock_to_time", "time_to_clock"], "precision": "half", "choices": 4},
+    {"id": "read-quarter", "tasks": ["clock_to_time"], "precision": "quarter"},
+    {"id": "show-quarter", "tasks": ["time_to_clock"], "precision": "quarter"},
+    {"id": "quarter-mixed", "tasks": ["clock_to_time", "time_to_clock"], "precision": "quarter", "choices": 4},
+    {"id": "read-five", "tasks": ["clock_to_time"], "precision": "five"},
+    {"id": "show-five", "tasks": ["time_to_clock"], "precision": "five"},
+    {"id": "read-five-4", "tasks": ["clock_to_time"], "precision": "five", "choices": 4},
+    {"id": "show-five-4", "tasks": ["time_to_clock"], "precision": "five", "choices": 4},
+    {"id": "five-mixed", "tasks": ["clock_to_time", "time_to_clock"], "precision": "five", "choices": 4, "questions": 8},
+    {"id": "read-minute", "tasks": ["clock_to_time"], "precision": "minute"},
+    {"id": "show-minute", "tasks": ["time_to_clock"], "precision": "minute"},
+    {"id": "champion", "tasks": ["clock_to_time", "time_to_clock"], "precision": "minute", "choices": 4, "questions": 10}
+  ]
+}

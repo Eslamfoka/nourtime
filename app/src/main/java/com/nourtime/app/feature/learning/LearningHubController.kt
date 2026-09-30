@@ -1,5 +1,6 @@
 package com.nourtime.app.feature.learning
 
+import com.nourtime.app.core.learning.ClockLevel
 import com.nourtime.app.core.learning.ColoringPack
 import com.nourtime.app.core.learning.ColoringRound
 import com.nourtime.app.core.learning.DotShape
@@ -70,6 +71,7 @@ data class HubContent(
     val coloring: ColoringPack? = null,
     val listen: GamePack<ListenLevel>? = null,
     val patterns: GamePack<PatternLevel>? = null,
+    val clock: GamePack<ClockLevel>? = null,
     /** Color names in the app language, spoken when a coloring color is picked. */
     val colorNames: Map<Long, String> = emptyMap(),
 ) {
@@ -120,6 +122,7 @@ class LearningHubController(
                 coloring = content.coloring(),
                 listen = content.listen(),
                 patterns = content.patterns(),
+                clock = content.clock(),
                 colorNames = content.letters(appLanguage).colors.associate { it.argb to it.name },
             )
         }

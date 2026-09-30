@@ -460,6 +460,8 @@
     <string name="learn_game_listen_hint">Hear it, then find it</string>
     <string name="learn_game_patterns">What Comes Next?</string>
     <string name="learn_game_patterns_hint">Continue the pattern</string>
+    <string name="learn_game_clock">Tell the Time</string>
+    <string name="learn_game_clock_hint">Read the clock</string>
     <string name="learn_coming_soon">Coming soon</string>
     <string name="learn_level">Level %1$s</string>
     <string name="learn_level_locked">Level %1$s, locked</string>
@@ -478,6 +480,8 @@
     <string name="learn_task_listen_to_letter">Which letter did you hear?</string>
     <string name="learn_task_listen_to_number">Which number did you hear?</string>
     <string name="learn_task_pattern">What comes next?</string>
+    <string name="learn_task_clock_to_time">What time is it?</string>
+    <string name="learn_task_time_to_clock">Which clock shows this time?</string>
     <string name="learn_tutorial_m">Tap the right answer. Follow the hand!</string>
     <string name="learn_tutorial_f">Tap the right answer. Follow the hand!</string>
     <string name="learn_try_again_m">Try again!</string>

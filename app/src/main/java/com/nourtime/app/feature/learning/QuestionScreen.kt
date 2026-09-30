@@ -86,6 +86,8 @@ private fun Task.instruction(): Int = when (this) {
     Task.LISTEN_TO_LETTER -> R.string.learn_task_listen_to_letter
     Task.LISTEN_TO_NUMBER -> R.string.learn_task_listen_to_number
     Task.PATTERN -> R.string.learn_task_pattern
+    Task.CLOCK_TO_TIME -> R.string.learn_task_clock_to_time
+    Task.TIME_TO_CLOCK -> R.string.learn_task_time_to_clock
 }
 
 /** What a card says when tapped: numbers and words; pictures and colors stay quiet (they are answers). */
@@ -263,6 +265,14 @@ private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: B
                 Text(card.number?.let(numerals::format) ?: card.text, fontSize = 36.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
             }
         }
+        is Card.Clock -> ClockFace(card.hour, card.minute, numerals, 180.dp)
+        is Card.Time -> Text(
+            timeText(card.hour, card.minute, numerals),
+            fontSize = 64.sp,
+            fontWeight = FontWeight.Bold,
+            color = NourPalette.Navy,
+            style = LocalTextStyle.current.copy(textDirection = TextDirection.Ltr),
+        )
         is Card.Swatch -> Box(
             Modifier
                 .size(if (compact) 40.dp else 120.dp)
@@ -326,6 +336,8 @@ private fun ChoiceCard(
         is Card.Picture -> card.word
         is Card.Swatch -> card.name
         is Card.Sound -> card.text
+        is Card.Clock -> timeText(card.hour, card.minute, numerals)
+        is Card.Time -> timeText(card.hour, card.minute, numerals)
     }
     Box(modifier) {
         Surface(
@@ -361,6 +373,14 @@ private fun ChoiceCard(
                             .border(2.dp, NourPalette.Navy.copy(alpha = 0.15f), RoundedCornerShape(16.dp)),
                     )
                     is Card.Sound -> Unit
+                    is Card.Clock -> ClockFace(card.hour, card.minute, numerals, 104.dp)
+                    is Card.Time -> Text(
+                        timeText(card.hour, card.minute, numerals),
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = NourPalette.Navy,
+                        style = LocalTextStyle.current.copy(textDirection = TextDirection.Ltr),
+                    )
                 }
                 if (correct) {
                     Icon(

@@ -3,6 +3,7 @@ package com.nourtime.app.feature.learning
 import androidx.compose.ui.graphics.Color
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.theme.NourPalette
+import com.nourtime.app.core.learning.ClockGame
 import com.nourtime.app.core.learning.ColoringPalette
 import com.nourtime.app.core.learning.ColoringRound
 import com.nourtime.app.core.learning.ConnectRound
@@ -116,6 +117,16 @@ internal object GameRegistry {
                 PatternGame.questions(packs.patterns!!.levels[level], repo.letters(wordsLanguage), random)
                     .takeIf { it.isNotEmpty() }
                     ?.let { HubScreen.Playing(GameId.PATTERNS, level, Round(it, tutorial = tutorial)) }
+            },
+        ),
+        GameSpec(
+            GameId.CLOCK,
+            GameLook("🕒", Color(0xFF4FC3F7), R.string.learn_game_clock, R.string.learn_game_clock_hint),
+            GameOption.NUMERALS,
+            wordsLanguage = false,
+            levels = { it.clock },
+            start = { level, tutorial ->
+                HubScreen.Playing(GameId.CLOCK, level, Round(ClockGame.questions(packs.clock!!.levels[level], random), tutorial = tutorial))
             },
         ),
     )

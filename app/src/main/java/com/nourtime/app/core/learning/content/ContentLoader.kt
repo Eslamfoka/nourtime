@@ -1,6 +1,9 @@
 package com.nourtime.app.core.learning.content
 
 import com.nourtime.app.core.learning.Area
+import com.nourtime.app.core.learning.ClockGame
+import com.nourtime.app.core.learning.ClockLevel
+import com.nourtime.app.core.learning.ClockPrecision
 import com.nourtime.app.core.learning.ColorEntry
 import com.nourtime.app.core.learning.ColoringPack
 import com.nourtime.app.core.learning.ColoringPicture
@@ -75,6 +78,11 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         pack(PATTERNS, file.levels.mapNotNull { patternLevel(it) }, file.startAt)
     }
 
+    fun clock(): GamePack<ClockLevel> = cached("clock") {
+        val file = parse<ClockFile>(CLOCK) ?: return@cached GamePack(emptyList())
+        pack(CLOCK, file.levels.mapNotNull { clockLevel(it) }, file.startAt)
+    }
+
     fun letters(language: LearnLanguage): LettersLanguagePack = cached("letters-${language.tag}") {
         lettersLanguage(language)
     }
@@ -122,6 +130,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         checker.letterLevels()
         checker.listen()
         checker.patterns()
+        checker.clock()
         LearnLanguage.entries.forEach { checker.letters(it) }
         checker.connect()
         val coloring = checker.coloring()
@@ -242,6 +251,22 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         return PatternLevel(l.id, kind, l.rules, l.shown, l.steps, l.max, l.categories.toSet(), l.choices, l.questions)
     }
 
+    private fun clockLevel(l: ClockLevelJson): ClockLevel? {
+        if (!checkId(CLOCK, l.id)) return null
+        val tasks = l.tasks.map { key ->
+            ClockGame.TASKS.firstOrNull { it.name.equals(key, ignoreCase = true) } ?: return null.also { problem(CLOCK, l.id, "unknown task $key") }
+        }
+        val precision = ClockPrecision.entries.firstOrNull { it.key == l.precision } ?: return null.also { problem(CLOCK, l.id, "unknown precision ${l.precision}") }
+        val bad = when {
+            tasks.isEmpty() -> "no tasks"
+            l.choices !in 2..4 -> "choices must be 2..4"
+            l.questions !in 1..30 -> "questions must be 1..30"
+            else -> null
+        }
+        if (bad != null) return null.also { problem(CLOCK, l.id, bad) }
+        return ClockLevel(l.id, tasks, precision, l.choices, l.questions)
+    }
+
     private fun lettersLanguage(language: LearnLanguage): LettersLanguagePack {
         val path = "letters/${language.tag}.json"
         val empty = LettersLanguagePack(language, emptyList(), emptyList(), emptyList())
@@ -332,6 +357,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         const val LETTER_LEVELS = "letters/levels.json"
         const val LISTEN = "listen/levels.json"
         const val PATTERNS = "patterns/levels.json"
+        const val CLOCK = "clock/levels.json"
         const val CONCEPTS = "concepts.json"
         const val CONNECT = "connect/shapes.json"
         const val COLORING = "coloring/pictures.json"

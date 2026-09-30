@@ -12,6 +12,7 @@ assets/learning/
   letters/en.json          English: the same for English
   listen/levels.json       Listen & Find levels (uses the words, colors and letters above)
   patterns/levels.json     What Comes Next? levels
+  clock/levels.json        Tell the Time levels
   math/levels.json         Smart Math levels
   connect/shapes.json      Number Connect drawings
   coloring/pictures.json   Coloring Match pictures
@@ -87,6 +88,16 @@ Each language names the concepts and lists its alphabet:
   the answer included, stays in 0..`max`; `max` must be at least |step| × `shown` (and 2^`shown` for
   `double`).
 - `shown` 3–6 items before the "?", `choices` 2–4.
+
+## Tell the Time levels (`clock/levels.json`)
+```json
+{"id": "read-half", "tasks": ["clock_to_time"], "precision": "half", "choices": 3}
+```
+- `tasks`: `clock_to_time` (read the analog clock, pick the written time) and `time_to_clock` (read
+  the time, pick the clock); several take turns.
+- `precision`: `hour` (3:00), `half` (:00/:30), `quarter`, `five` (every 5 minutes) or `minute`.
+  Times are generated, so each level gives endless questions; wrong answers include the classic
+  mistakes (hands swapped, the next hour, a step off).
 
 ## Smart Math levels (`math/levels.json`)
 ```json

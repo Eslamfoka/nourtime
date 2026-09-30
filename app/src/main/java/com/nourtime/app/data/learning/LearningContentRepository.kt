@@ -2,6 +2,7 @@ package com.nourtime.app.data.learning
 
 import android.content.Context
 import android.util.Log
+import com.nourtime.app.core.learning.ClockLevel
 import com.nourtime.app.core.learning.ColoringPack
 import com.nourtime.app.core.learning.DotShape
 import com.nourtime.app.core.learning.GamePack
@@ -39,6 +40,7 @@ class LearningContentRepository @Inject constructor(
     suspend fun letters(language: LearnLanguage): LettersLanguagePack = io { loader.letters(language) }
     suspend fun listen(): GamePack<ListenLevel> = io { loader.listen() }
     suspend fun patterns(): GamePack<PatternLevel> = io { loader.patterns() }
+    suspend fun clock(): GamePack<ClockLevel> = io { loader.clock() }
     suspend fun connect(): GamePack<DotShape> = io { loader.connect() }
     suspend fun coloring(): ColoringPack = io { loader.coloring() }
 
