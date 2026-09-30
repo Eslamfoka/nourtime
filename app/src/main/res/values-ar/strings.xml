@@ -508,4 +508,11 @@
     <string name="learn_settings_earned_today">المكتسب اليوم: %1$s</string>
     <string name="learn_settings_try">جرّب الألعاب</string>
     <string name="learn_settings_voice_hint">تقرأ الألعاب الكلمات بصوت الهاتف (تحويل النص إلى كلام). إن لم تُسمع العربية، ثبّت الصوت العربي من إعدادات تحويل النص إلى كلام في الهاتف.</string>
+    <string name="learn_task_connect">صِل النقاط بالترتيب</string>
+    <string name="learn_tutorial_connect_m">اسحب إصبعك من %1$s إلى %2$s</string>
+    <string name="learn_tutorial_connect_f">اسحبي إصبعك من %1$s إلى %2$s</string>
+    <string name="learn_task_coloring_m">لوّن الرسمة مثل الصورة</string>
+    <string name="learn_task_coloring_f">لوّني الرسمة مثل الصورة</string>
+    <string name="learn_tutorial_coloring_m">اختر لونًا ثم اضغط على مكانه</string>
+    <string name="learn_tutorial_coloring_f">اختاري لونًا ثم اضغطي على مكانه</string>
 </resources>

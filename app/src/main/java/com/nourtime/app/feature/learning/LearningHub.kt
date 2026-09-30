@@ -108,6 +108,8 @@ fun LearningHub(controller: LearningHubController, gender: ChildGender, onClose:
                         HubScreen.Menu -> HubMenu(controller, state, gender, onClose)
                         is HubScreen.Levels -> LevelPicker(controller, state, s.game, gender)
                         is HubScreen.Playing -> QuestionScreen(controller, state, s, gender)
+                        is HubScreen.Connecting -> ConnectScreen(controller, state, s, gender, controller.age)
+                        is HubScreen.Coloring -> ColoringScreen(controller, state, s, gender)
                         is HubScreen.Done -> DoneScreen(controller, state, s, gender)
                     }
                 }
@@ -233,7 +235,7 @@ private fun ColumnScope.LevelPicker(controller: LearningHubController, state: Le
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         when (game) {
-            GameId.MATH -> OptionRow(stringResource(R.string.learn_numerals), NumeralStyle.entries, numerals, { it.format(123) }, controller::setNumerals)
+            GameId.MATH, GameId.CONNECT -> OptionRow(stringResource(R.string.learn_numerals), NumeralStyle.entries, numerals, { it.format(123) }, controller::setNumerals)
             GameId.LETTERS -> OptionRow(
                 stringResource(R.string.learn_language),
                 LearnLanguage.entries,

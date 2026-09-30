@@ -1,12 +1,15 @@
 package com.nourtime.app.feature.learning
 
+import com.nourtime.app.core.learning.ColoringLevels
+import com.nourtime.app.core.learning.ColoringRound
+import com.nourtime.app.core.learning.ConnectLevels
+import com.nourtime.app.core.learning.ConnectRound
 import com.nourtime.app.core.learning.GameId
 import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.learning.LettersLevels
 import com.nourtime.app.core.learning.LevelProgress
 import com.nourtime.app.core.learning.MathLevels
 import com.nourtime.app.core.learning.NumeralStyle
-import com.nourtime.app.core.learning.Question
 import com.nourtime.app.core.learning.Round
 import com.nourtime.app.data.learning.LearningRepository
 import com.nourtime.app.data.learning.LearningState
@@ -32,6 +35,18 @@ sealed interface HubScreen {
     /** [celebrating] is the choice just picked correctly, shown for a moment before moving on. */
     data class Playing(val game: GameId, val level: Int, val round: Round, val celebrating: Int? = null) : HubScreen
 
+    /** Number Connect. [celebrating]: the drawing is complete and shown for a moment. */
+    data class Connecting(val game: GameId, val level: Int, val round: ConnectRound, val celebrating: Boolean = false) : HubScreen
+
+    /** Coloring Match. [lastWrong]: the last fill didn't match the reference. */
+    data class Coloring(
+        val game: GameId,
+        val level: Int,
+        val round: ColoringRound,
+        val lastWrong: Boolean = false,
+        val celebrating: Boolean = false,
+    ) : HubScreen
+
     data class Done(
         val game: GameId,
         val level: Int,
@@ -43,12 +58,13 @@ sealed interface HubScreen {
 }
 
 /** Games that are playable today; the others show as "coming soon". */
-val PLAYABLE_GAMES = listOf(GameId.MATH, GameId.LETTERS)
+val PLAYABLE_GAMES = listOf(GameId.MATH, GameId.LETTERS, GameId.CONNECT, GameId.COLORING)
 
 fun levelCount(game: GameId): Int = when (game) {
     GameId.MATH -> MathLevels.all.size
     GameId.LETTERS -> LettersLevels.all.size
-    else -> 0
+    GameId.CONNECT -> ConnectLevels.all.size
+    GameId.COLORING -> ColoringLevels.all.size
 }
 
 /**
@@ -59,7 +75,7 @@ fun levelCount(game: GameId): Int = when (game) {
 class LearningHubController(
     private val scope: CoroutineScope,
     private val repo: LearningRepository,
-    private val age: AgeGroup?,
+    val age: AgeGroup?,
     /** The app's language: default for the letters game, the numerals and the math voice. */
     val appLanguage: LearnLanguage,
     val rewards: Boolean,
@@ -96,15 +112,68 @@ class LearningHubController(
     fun play(game: GameId, level: Int) {
         val s = state.value
         if (level > unlocked(s, game)) return
-        val questions: List<Question> = when (game) {
-            GameId.MATH -> MathLevels.questions(level, random)
-            GameId.LETTERS -> LettersLevels.questions(level, lettersLanguage(s), random)
-            else -> return
-        }
         // The preview shows the tutorial on the first level and changes nothing the child has done.
         val tutorial = if (rewards) s != null && game !in s.tutorialsSeen else level == 0
         advancing?.cancel()
-        _screen.value = HubScreen.Playing(game, level, Round(questions, tutorial = tutorial))
+        _screen.value = when (game) {
+            GameId.MATH -> HubScreen.Playing(game, level, Round(MathLevels.questions(level, random), tutorial = tutorial))
+            GameId.LETTERS -> HubScreen.Playing(game, level, Round(LettersLevels.questions(level, lettersLanguage(s), random), tutorial = tutorial))
+            GameId.CONNECT -> HubScreen.Connecting(game, level, ConnectRound(ConnectLevels.all[level], tutorial = tutorial))
+            GameId.COLORING -> HubScreen.Coloring(
+                game,
+                level,
+                ColoringRound(ColoringLevels.all[level], ColoringLevels.palette(level, random), tutorial = tutorial),
+            )
+        }
+    }
+
+    // --- Number Connect ---
+
+    /** The finger reached [dot] while drawing. */
+    fun connectReach(dot: Int) {
+        val c = _screen.value as? HubScreen.Connecting ?: return
+        if (c.celebrating) return
+        val next = c.round.reach(dot)
+        if (next == c.round) return
+        if (c.round.tutorial && c.round.drawn == 0) markTutorial(c.game)
+        _screen.value = c.copy(round = next, celebrating = next.done)
+        if (next.done) celebrateThenFinish(c.game, c.level, next.stars)
+    }
+
+    /** The finger let go near [dot] (null: nowhere near one). */
+    fun connectRelease(dot: Int?) {
+        val c = _screen.value as? HubScreen.Connecting ?: return
+        if (!c.celebrating) _screen.value = c.copy(round = c.round.release(dot))
+    }
+
+    // --- Coloring Match ---
+
+    fun colorSelect(color: Long) {
+        val c = _screen.value as? HubScreen.Coloring ?: return
+        if (!c.celebrating) _screen.value = c.copy(round = c.round.select(color), lastWrong = false)
+    }
+
+    /** Returns true when the fill was right. */
+    fun colorFill(region: Int): Boolean {
+        val c = _screen.value as? HubScreen.Coloring ?: return false
+        if (c.celebrating) return false
+        val (next, outcome) = c.round.fill(region)
+        if (outcome == ColoringRound.Outcome.IGNORED) return false
+        if (c.round.tutorial && outcome == ColoringRound.Outcome.RIGHT) markTutorial(c.game)
+        _screen.value = c.copy(round = next, lastWrong = outcome == ColoringRound.Outcome.WRONG, celebrating = next.done)
+        if (next.done) celebrateThenFinish(c.game, c.level, next.stars)
+        return outcome == ColoringRound.Outcome.RIGHT
+    }
+
+    private fun markTutorial(game: GameId) {
+        if (rewards) scope.launch { repo.markTutorialSeen(game) }
+    }
+
+    private fun celebrateThenFinish(game: GameId, level: Int, stars: Int) {
+        advancing = scope.launch {
+            delay(DRAWING_DONE_MS)
+            finish(game, level, stars)
+        }
     }
 
     /** The child tapped choice [index]. */
@@ -115,11 +184,11 @@ class LearningHubController(
         when (outcome) {
             Round.Outcome.WRONG -> _screen.value = playing.copy(round = next)
             Round.Outcome.CORRECT -> {
-                if (playing.round.isTutorialQuestion && rewards) scope.launch { repo.markTutorialSeen(playing.game) }
+                if (playing.round.isTutorialQuestion) markTutorial(playing.game)
                 _screen.value = playing.copy(celebrating = index)
                 advancing = scope.launch {
                     delay(CELEBRATE_MS)
-                    if (next.done) finish(playing, next) else _screen.value = playing.copy(round = next, celebrating = null)
+                    if (next.done) finish(playing.game, playing.level, next.stars) else _screen.value = playing.copy(round = next, celebrating = null)
                 }
             }
             Round.Outcome.IGNORED -> Unit
@@ -127,16 +196,16 @@ class LearningHubController(
         return outcome
     }
 
-    private suspend fun finish(playing: HubScreen.Playing, round: Round) {
-        val count = levelCount(playing.game)
-        val outcome = if (rewards) repo.finishLevel(playing.game, playing.level, round.stars, count, age, today(), rewards = true) else null
+    private suspend fun finish(game: GameId, level: Int, stars: Int) {
+        val count = levelCount(game)
+        val outcome = if (rewards) repo.finishLevel(game, level, stars, count, age, today(), rewards = true) else null
         _screen.value = HubScreen.Done(
-            game = playing.game,
-            level = playing.level,
-            stars = round.stars,
+            game = game,
+            level = level,
+            stars = stars,
             earnedMinutes = outcome?.earnedMinutes ?: 0,
             dailyMaxReached = outcome?.dailyMaxReached ?: false,
-            hasNext = playing.level + 1 < count,
+            hasNext = level + 1 < count,
         )
     }
 
@@ -147,6 +216,8 @@ class LearningHubController(
             HubScreen.Menu -> return false
             is HubScreen.Levels -> HubScreen.Menu
             is HubScreen.Playing -> HubScreen.Levels(s.game)
+            is HubScreen.Connecting -> HubScreen.Levels(s.game)
+            is HubScreen.Coloring -> HubScreen.Levels(s.game)
             is HubScreen.Done -> HubScreen.Levels(s.game)
         }
         return true
@@ -168,5 +239,8 @@ class LearningHubController(
 
     private companion object {
         const val CELEBRATE_MS = 900L
+
+        /** A finished drawing stays on screen this long before the stars. */
+        const val DRAWING_DONE_MS = 1_600L
     }
 }

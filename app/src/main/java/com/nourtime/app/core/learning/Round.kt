@@ -49,6 +49,13 @@ object Stars {
         }
     }
 
+    /** For the drawing games: 3 stars with at most 1 mistake, 2 with at most 3. */
+    fun fromMistakes(mistakes: Int): Int = when {
+        mistakes <= 1 -> 3
+        mistakes <= 3 -> 2
+        else -> 1
+    }
+
     /** Fewest stars a level needs to earn minutes, so tapping at random doesn't pay. */
     const val FOR_REWARD = 2
 }
