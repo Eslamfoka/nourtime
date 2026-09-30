@@ -629,9 +629,10 @@ Everything is on branch **`learning-hub`** (not merged into master).
 - System Back steps back through the hub, then to the Time's up screen.
 - Unit tests: timer reward rules (12), game engine (16), drawing games (12), repository (7).
 
-Not tested: the hub with the **app itself in English** (left-to-right layout); only the English
-letters content was played. Whole-phone lock mode with the hub (the screen-off delay) was checked in
-code only.
+- App in **English**: Time's up button, hub menu (daily-max message), Math level 1 left to right with
+  Western digits; switched back to Arabic afterwards.
+
+Not tested: whole-phone lock mode with the hub (the screen-off delay) was checked in code only.
 
 APK (real Firebase project, debug): `dist/NourTime-2026-09-30-learning-hub-debug.apk`.
 
