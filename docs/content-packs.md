@@ -13,6 +13,7 @@ assets/learning/
   listen/levels.json       Listen & Find levels (uses the words, colors and letters above)
   patterns/levels.json     What Comes Next? levels
   clock/levels.json        Tell the Time levels
+  tracing/<language>.json  Letter Tracing: the strokes of each letter
   math/levels.json         Smart Math levels
   connect/shapes.json      Number Connect drawings
   coloring/pictures.json   Coloring Match pictures
@@ -98,6 +99,19 @@ Each language names the concepts and lists its alphabet:
 - `precision`: `hour` (3:00), `half` (:00/:30), `quarter`, `five` (every 5 minutes) or `minute`.
   Times are generated, so each level gives endless questions; wrong answers include the classic
   mistakes (hands swapped, the next hour, a step off).
+
+## Letter Tracing (`tracing/<language>.json`)
+```json
+{"id": "ar-ba", "letter": "ب", "strokes": [{"path": "M86 40 Q88 70 62 70 L38 70 Q12 70 14 40"}, {"dot": [50, 84]}]}
+```
+- One file per language (`"language": "ar"`), levels in play order; ids must be unique across the
+  languages (`ar-…`, `en-…`), since stars are saved by id.
+- `strokes` in writing order. A stroke is SVG path data in a 100 × 100 box (`viewBox` can change it),
+  drawn **from its first point in its direction**: the child starts at the green dot and follows it.
+  One continuous line per stroke (no second `M`). A `dot` [x, y] is tapped instead of traced.
+- The app resamples each stroke every 0.02 of the canvas; the test traces every shipped letter point
+  by point, so a stroke that can't be finished (e.g. one that doubles back on itself too tightly)
+  fails the build.
 
 ## Smart Math levels (`math/levels.json`)
 ```json

@@ -12,6 +12,7 @@ import com.nourtime.app.core.learning.LettersLevel
 import com.nourtime.app.core.learning.ListenLevel
 import com.nourtime.app.core.learning.MathLevel
 import com.nourtime.app.core.learning.PatternLevel
+import com.nourtime.app.core.learning.TraceLetter
 import com.nourtime.app.core.learning.content.ContentLoader
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +42,7 @@ class LearningContentRepository @Inject constructor(
     suspend fun listen(): GamePack<ListenLevel> = io { loader.listen() }
     suspend fun patterns(): GamePack<PatternLevel> = io { loader.patterns() }
     suspend fun clock(): GamePack<ClockLevel> = io { loader.clock() }
+    suspend fun tracing(language: LearnLanguage): GamePack<TraceLetter> = io { loader.tracing(language) }
     suspend fun connect(): GamePack<DotShape> = io { loader.connect() }
     suspend fun coloring(): ColoringPack = io { loader.coloring() }
 

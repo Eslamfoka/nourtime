@@ -14,8 +14,11 @@ import kotlin.math.sqrt
  * path command (M L H V C S Q T A Z, absolute and relative).
  */
 object SvgPath {
-    /** Polygons (x0, y0, x1, y1, …) of each sub-path, scaled by 1 / [width] and 1 / [height]. */
-    fun flatten(d: String, width: Float = 1f, height: Float = 1f): List<FloatArray> {
+    /**
+     * Polygons (x0, y0, x1, y1, …) of each sub-path, scaled by 1 / [width] and 1 / [height]. Sub-paths
+     * with fewer than [minPoints] points are dropped (an area needs 3; a traced stroke only 2).
+     */
+    fun flatten(d: String, width: Float = 1f, height: Float = 1f, minPoints: Int = 3): List<FloatArray> {
         val out = mutableListOf<FloatArray>()
         var poly = mutableListOf<Float>()
         fun point(x: Float, y: Float) {
@@ -23,7 +26,7 @@ object SvgPath {
             poly += y / height
         }
         fun close() {
-            if (poly.size >= 6) out += poly.toFloatArray()
+            if (poly.size >= 2 * minPoints) out += poly.toFloatArray()
             poly = mutableListOf()
         }
 

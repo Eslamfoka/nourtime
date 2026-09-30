@@ -16,6 +16,8 @@ import com.nourtime.app.core.learning.ListenLevel
 import com.nourtime.app.core.learning.NumeralStyle
 import com.nourtime.app.core.learning.PatternLevel
 import com.nourtime.app.core.learning.Round
+import com.nourtime.app.core.learning.TraceLetter
+import com.nourtime.app.core.learning.TraceRound
 import com.nourtime.app.data.learning.LearningContentRepository
 import com.nourtime.app.data.learning.LearningRepository
 import com.nourtime.app.data.learning.LearningState
@@ -53,6 +55,9 @@ sealed interface HubScreen {
         val celebrating: Boolean = false,
     ) : HubScreen
 
+    /** Letter Tracing. [celebrating]: the letter is complete and shown for a moment. */
+    data class Tracing(val game: GameId, val level: Int, val round: TraceRound, val celebrating: Boolean = false) : HubScreen
+
     data class Done(
         val game: GameId,
         val level: Int,
@@ -72,10 +77,13 @@ data class HubContent(
     val listen: GamePack<ListenLevel>? = null,
     val patterns: GamePack<PatternLevel>? = null,
     val clock: GamePack<ClockLevel>? = null,
+    /** Letter Tracing has one pack per language. */
+    val tracing: Map<LearnLanguage, GamePack<TraceLetter>> = emptyMap(),
     /** Color names in the app language, spoken when a coloring color is picked. */
     val colorNames: Map<Long, String> = emptyMap(),
 ) {
-    fun levels(game: GameId): GamePack<out Level>? = GameRegistry.of(game).levels(this)
+    /** The levels of [game]; [language] is the words language (only Letter Tracing depends on it). */
+    fun levels(game: GameId, language: LearnLanguage): GamePack<out Level>? = GameRegistry.of(game).levels(this, language)
 }
 
 /**
@@ -123,6 +131,7 @@ class LearningHubController(
                 listen = content.listen(),
                 patterns = content.patterns(),
                 clock = content.clock(),
+                tracing = LearnLanguage.entries.associateWith { content.tracing(it) },
                 colorNames = content.letters(appLanguage).colors.associate { it.argb to it.name },
             )
         }
@@ -138,20 +147,23 @@ class LearningHubController(
 
     private fun progress(s: LearningState?, game: GameId) = s?.progress?.get(game) ?: LevelProgress()
 
+    /** The levels of [game] as the child sees them (in the chosen words language). */
+    fun levels(s: LearningState?, game: GameId): GamePack<out Level>? = _content.value.levels(game, lettersLanguage(s))
+
     /** In the parent's preview every level is open. */
     fun playable(s: LearningState?, game: GameId, index: Int): Boolean {
-        val pack = _content.value.levels(game) ?: return false
+        val pack = levels(s, game) ?: return false
         return if (!rewards) index in pack.levels.indices else progress(s, game).playable(pack, index, age)
     }
 
     /** The level the child is at now (highlighted); null in the preview. */
     fun current(s: LearningState?, game: GameId): Int? {
-        val pack = _content.value.levels(game) ?: return null
+        val pack = levels(s, game) ?: return null
         return if (!rewards) null else progress(s, game).current(pack, age)
     }
 
     fun stars(s: LearningState?, game: GameId, index: Int): Int {
-        val id = _content.value.levels(game)?.levels?.getOrNull(index)?.id ?: return 0
+        val id = levels(s, game)?.levels?.getOrNull(index)?.id ?: return 0
         return progress(s, game).starsOf(id)
     }
 
@@ -216,6 +228,34 @@ class LearningHubController(
         return outcome == ColoringRound.Outcome.RIGHT
     }
 
+    // --- Letter Tracing ---
+
+    /** True when a finger going down at ([x], [y]) (0..1 of the canvas) may trace on. */
+    fun traceCanStart(x: Float, y: Float): Boolean {
+        val t = _screen.value as? HubScreen.Tracing ?: return false
+        return !t.celebrating && t.round.canStart(x, y, young)
+    }
+
+    /** The finger moved while tracing; returns what happened (STRAYED ends the drag). */
+    fun traceMove(x: Float, y: Float): TraceRound.Outcome = trace { it.move(x, y, young) }
+
+    /** A tap, for the dots of a letter. */
+    fun traceTap(x: Float, y: Float): TraceRound.Outcome = trace { it.tap(x, y, young) }
+
+    private fun trace(step: (TraceRound) -> Pair<TraceRound, TraceRound.Outcome>): TraceRound.Outcome {
+        val t = _screen.value as? HubScreen.Tracing ?: return TraceRound.Outcome.IGNORED
+        if (t.celebrating) return TraceRound.Outcome.IGNORED
+        val (next, outcome) = step(t.round)
+        if (outcome == TraceRound.Outcome.IGNORED) return outcome
+        if (t.round.tutorial && outcome != TraceRound.Outcome.STRAYED && t.round.stroke == 0 && t.round.reached == 0) markTutorial(t.game)
+        _screen.value = t.copy(round = next, celebrating = next.done)
+        if (next.done) celebrateThenFinish(t.game, t.level, next.stars)
+        return outcome
+    }
+
+    /** Small children get a wider line to stay on. */
+    private val young: Boolean get() = age == null || age == AgeGroup.AGES_3_6
+
     private fun markTutorial(game: GameId) {
         if (rewards) scope.launch { repo.markTutorialSeen(game) }
     }
@@ -248,7 +288,7 @@ class LearningHubController(
     }
 
     private suspend fun finish(game: GameId, level: Int, stars: Int) {
-        val pack = _content.value.levels(game) ?: return
+        val pack = levels(state.value, game) ?: return
         val count = pack.levels.size
         val outcome = if (rewards) repo.finishLevel(game, pack.levels[level].id, stars, today(), rewards = true) else null
         _screen.value = HubScreen.Done(
@@ -270,6 +310,7 @@ class LearningHubController(
             is HubScreen.Playing -> HubScreen.Levels(s.game)
             is HubScreen.Connecting -> HubScreen.Levels(s.game)
             is HubScreen.Coloring -> HubScreen.Levels(s.game)
+            is HubScreen.Tracing -> HubScreen.Levels(s.game)
             is HubScreen.Done -> HubScreen.Levels(s.game)
         }
         return true

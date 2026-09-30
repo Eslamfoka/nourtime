@@ -462,6 +462,8 @@
     <string name="learn_game_patterns_hint">Continue the pattern</string>
     <string name="learn_game_clock">Tell the Time</string>
     <string name="learn_game_clock_hint">Read the clock</string>
+    <string name="learn_game_tracing">Letter Tracing</string>
+    <string name="learn_game_tracing_hint">Write letters with a finger</string>
     <string name="learn_coming_soon">Coming soon</string>
     <string name="learn_level">Level %1$s</string>
     <string name="learn_level_locked">Level %1$s, locked</string>
@@ -482,6 +484,14 @@
     <string name="learn_task_pattern">What comes next?</string>
     <string name="learn_task_clock_to_time">What time is it?</string>
     <string name="learn_task_time_to_clock">Which clock shows this time?</string>
+    <string name="learn_task_tracing_m">Trace the letter with your finger</string>
+    <string name="learn_task_tracing_f">Trace the letter with your finger</string>
+    <string name="learn_trace_dot_m">Now tap the dot</string>
+    <string name="learn_trace_dot_f">Now tap the dot</string>
+    <string name="learn_trace_stray_m">Stay on the line</string>
+    <string name="learn_trace_stray_f">Stay on the line</string>
+    <string name="learn_tutorial_tracing_m">Start at the green dot and follow the line</string>
+    <string name="learn_tutorial_tracing_f">Start at the green dot and follow the line</string>
     <string name="learn_tutorial_m">Tap the right answer. Follow the hand!</string>
     <string name="learn_tutorial_f">Tap the right answer. Follow the hand!</string>
     <string name="learn_try_again_m">Try again!</string>

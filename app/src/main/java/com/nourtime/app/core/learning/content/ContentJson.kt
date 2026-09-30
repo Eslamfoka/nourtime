@@ -106,6 +106,23 @@ data class ClockLevelJson(
     val questions: Int = ClockGame.QUESTIONS,
 )
 
+/** Letter Tracing, one file per language: `tracing/<language>.json`. */
+@Serializable
+data class TracingFile(
+    override val schema: Int,
+    val language: String,
+    val startAt: Map<String, String> = emptyMap(),
+    val viewBox: List<Float> = listOf(100f, 100f),
+    val levels: List<TraceLetterJson>,
+) : Versioned
+
+/** Strokes in writing order; each is SVG path data to follow from its start, or a dot [x, y] to tap. */
+@Serializable
+data class TraceLetterJson(val id: String, val letter: String, val strokes: List<TraceStrokeJson>)
+
+@Serializable
+data class TraceStrokeJson(val path: String? = null, val dot: List<Float>? = null)
+
 /** Things with a picture, shared by all languages; and colors. */
 @Serializable
 data class ConceptsFile(

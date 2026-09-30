@@ -27,7 +27,11 @@ import com.nourtime.app.core.learning.PatternGame
 import com.nourtime.app.core.learning.PatternKind
 import com.nourtime.app.core.learning.PatternLevel
 import com.nourtime.app.core.learning.Region
+import com.nourtime.app.core.learning.SvgPath
 import com.nourtime.app.core.learning.Task
+import com.nourtime.app.core.learning.TraceLetter
+import com.nourtime.app.core.learning.TraceRules
+import com.nourtime.app.core.learning.TraceStroke
 import com.nourtime.app.core.learning.WordEntry
 import com.nourtime.app.data.settings.AgeGroup
 import kotlinx.serialization.json.Json
@@ -83,6 +87,15 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         pack(CLOCK, file.levels.mapNotNull { clockLevel(it) }, file.startAt)
     }
 
+    fun tracing(language: LearnLanguage): GamePack<TraceLetter> = cached("tracing-${language.tag}") {
+        val path = "tracing/${language.tag}.json"
+        val file = parse<TracingFile>(path) ?: return@cached GamePack(emptyList())
+        if (file.language != language.tag) return@cached GamePack<TraceLetter>(emptyList()).also { problem(path, "-", "language is ${file.language}") }
+        val (vw, vh) = file.viewBox.takeIf { it.size == 2 && it.all { v -> v > 0 } }?.let { it[0] to it[1] }
+            ?: return@cached GamePack<TraceLetter>(emptyList()).also { problem(path, "-", "viewBox is [width, height]") }
+        pack(path, file.levels.mapNotNull { traceLetter(path, it, vw, vh) }, file.startAt)
+    }
+
     fun letters(language: LearnLanguage): LettersLanguagePack = cached("letters-${language.tag}") {
         lettersLanguage(language)
     }
@@ -131,6 +144,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         checker.listen()
         checker.patterns()
         checker.clock()
+        LearnLanguage.entries.forEach { checker.tracing(it) }
         LearnLanguage.entries.forEach { checker.letters(it) }
         checker.connect()
         val coloring = checker.coloring()
@@ -267,6 +281,24 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         return ClockLevel(l.id, tasks, precision, l.choices, l.questions)
     }
 
+    private fun traceLetter(path: String, l: TraceLetterJson, vw: Float, vh: Float): TraceLetter? {
+        if (!checkId(path, l.id)) return null
+        if (l.letter.isBlank() || l.strokes.isEmpty()) return null.also { problem(path, l.id, "needs a letter and strokes") }
+        val strokes = l.strokes.mapIndexed { i, s ->
+            val stroke = when {
+                s.dot?.size == 2 -> TraceStroke(listOf(Dot(s.dot[0] / vw, s.dot[1] / vh)), dot = true)
+                s.path != null -> runCatching { SvgPath.flatten(s.path, vw, vh, minPoints = 2) }.getOrNull()
+                    ?.singleOrNull()
+                    ?.let { f -> TraceStroke(TraceRules.resample(List(f.size / 2) { Dot(f[2 * it], f[2 * it + 1]) })) }
+                else -> null
+            } ?: return null.also { problem(path, l.id, "stroke ${i + 1} needs one path (a single line, no M in the middle) or a dot [x, y]") }
+            if (stroke.points.any { it.x !in 0f..1f || it.y !in 0f..1f }) return null.also { problem(path, l.id, "stroke ${i + 1} leaves the canvas") }
+            if (!stroke.dot && stroke.points.size < 3) return null.also { problem(path, l.id, "stroke ${i + 1} is too short") }
+            stroke
+        }
+        return TraceLetter(l.id, l.letter.trim(), strokes)
+    }
+
     private fun lettersLanguage(language: LearnLanguage): LettersLanguagePack {
         val path = "letters/${language.tag}.json"
         val empty = LettersLanguagePack(language, emptyList(), emptyList(), emptyList())
@@ -358,6 +390,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         const val LISTEN = "listen/levels.json"
         const val PATTERNS = "patterns/levels.json"
         const val CLOCK = "clock/levels.json"
+        fun tracingPath(language: LearnLanguage) = "tracing/${language.tag}.json"
         const val CONCEPTS = "concepts.json"
         const val CONNECT = "connect/shapes.json"
         const val COLORING = "coloring/pictures.json"

@@ -16,6 +16,7 @@ import com.nourtime.app.core.learning.ListenGame
 import com.nourtime.app.core.learning.MathGame
 import com.nourtime.app.core.learning.PatternGame
 import com.nourtime.app.core.learning.Round
+import com.nourtime.app.core.learning.TraceRound
 import com.nourtime.app.data.learning.LearningContentRepository
 import kotlin.random.Random
 
@@ -41,7 +42,7 @@ internal class GameSpec(
     val look: GameLook,
     val option: GameOption,
     val wordsLanguage: Boolean,
-    val levels: (HubContent) -> GamePack<out Level>?,
+    val levels: (HubContent, LearnLanguage) -> GamePack<out Level>?,
     val start: suspend GameStart.(level: Int, tutorial: Boolean) -> HubScreen?,
 )
 
@@ -56,7 +57,7 @@ internal object GameRegistry {
             GameLook("🔢", NourPalette.Mint, R.string.learn_game_math, R.string.learn_game_math_hint),
             GameOption.NUMERALS,
             wordsLanguage = false,
-            levels = { it.math },
+            levels = { c, _ -> c.math },
             start = { level, tutorial ->
                 HubScreen.Playing(GameId.MATH, level, Round(MathGame.questions(packs.math!!.levels[level], random), tutorial = tutorial))
             },
@@ -66,7 +67,7 @@ internal object GameRegistry {
             GameLook("🔤", NourPalette.Coral, R.string.learn_game_letters, R.string.learn_game_letters_hint),
             GameOption.LANGUAGE,
             wordsLanguage = true,
-            levels = { it.letters },
+            levels = { c, _ -> c.letters },
             start = { level, tutorial ->
                 LettersGame.questions(packs.letters!!.levels[level], repo.letters(wordsLanguage), random)
                     .takeIf { it.isNotEmpty() }
@@ -78,7 +79,7 @@ internal object GameRegistry {
             GameLook("✏️", Color(0xFF7E8CE0), R.string.learn_game_connect, R.string.learn_game_connect_hint),
             GameOption.NUMERALS,
             wordsLanguage = false,
-            levels = { it.connect },
+            levels = { c, _ -> c.connect },
             start = { level, tutorial ->
                 HubScreen.Connecting(GameId.CONNECT, level, ConnectRound(packs.connect!!.levels[level], tutorial = tutorial))
             },
@@ -88,7 +89,7 @@ internal object GameRegistry {
             GameLook("🎨", NourPalette.GoldDeep, R.string.learn_game_coloring, R.string.learn_game_coloring_hint),
             GameOption.NONE,
             wordsLanguage = false,
-            levels = { it.coloring?.pack },
+            levels = { c, _ -> c.coloring?.pack },
             start = { level, tutorial ->
                 val pack = packs.coloring!!
                 val picture = pack.pack.levels[level]
@@ -100,7 +101,7 @@ internal object GameRegistry {
             GameLook("👂", Color(0xFF4DB6AC), R.string.learn_game_listen, R.string.learn_game_listen_hint),
             GameOption.LANGUAGE,
             wordsLanguage = true,
-            levels = { it.listen },
+            levels = { c, _ -> c.listen },
             start = { level, tutorial ->
                 ListenGame.questions(packs.listen!!.levels[level], repo.letters(wordsLanguage), random)
                     .takeIf { it.isNotEmpty() }
@@ -112,7 +113,7 @@ internal object GameRegistry {
             GameLook("🧩", Color(0xFFBA68C8), R.string.learn_game_patterns, R.string.learn_game_patterns_hint),
             GameOption.NUMERALS,
             wordsLanguage = false,
-            levels = { it.patterns },
+            levels = { c, _ -> c.patterns },
             start = { level, tutorial ->
                 PatternGame.questions(packs.patterns!!.levels[level], repo.letters(wordsLanguage), random)
                     .takeIf { it.isNotEmpty() }
@@ -124,9 +125,19 @@ internal object GameRegistry {
             GameLook("🕒", Color(0xFF4FC3F7), R.string.learn_game_clock, R.string.learn_game_clock_hint),
             GameOption.NUMERALS,
             wordsLanguage = false,
-            levels = { it.clock },
+            levels = { c, _ -> c.clock },
             start = { level, tutorial ->
                 HubScreen.Playing(GameId.CLOCK, level, Round(ClockGame.questions(packs.clock!!.levels[level], random), tutorial = tutorial))
+            },
+        ),
+        GameSpec(
+            GameId.TRACING,
+            GameLook("✍️", Color(0xFFFF8A65), R.string.learn_game_tracing, R.string.learn_game_tracing_hint),
+            GameOption.LANGUAGE,
+            wordsLanguage = true,
+            levels = { c, language -> c.tracing[language] },
+            start = { level, tutorial ->
+                packs.tracing[wordsLanguage]?.levels?.getOrNull(level)?.let { HubScreen.Tracing(GameId.TRACING, level, TraceRound(it, tutorial = tutorial)) }
             },
         ),
     )

@@ -826,3 +826,24 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
 - Tested: unit tests (every level × 40 seeds: one right time, distinct valid times, the hand mix-up
   is among the wrong answers, precision never gets easier level to level); emulator preview: level 6
   (read 2:30 with 4 time choices, then "show 4:00" with 4 clocks), level 17 (minute precision).
+
+### 15.8 New game G4: Letter Tracing (Phase B)
+- **Engine:** `Tracing.kt`: a letter is strokes (lines resampled every 0.02 of the canvas, or dots to
+  tap). `TraceRound` advances to the path point **nearest** the finger within a short look-ahead
+  window, so a stroke must be traced from its start, in its direction, without jumping ahead;
+  straying beyond 1.7 × the tolerance is a mistake and ends the drag; lifting the finger keeps the
+  progress. Stars from mistakes like the other drawing games; wider tolerance for ages 3–6.
+- Found by the new test that traces every shipped letter: with "furthest point within tolerance",
+  ج (its top bar turns sharply back on itself) skipped the corner and counted 5 mistakes. Now the
+  nearest point wins, the earlier one on a tie.
+- **Screen:** the letter as a thick faded guide, traced parts in the game color, a pulsing green start
+  dot with an arrow for the direction, stroke numbers at each start, a tutorial hand the first time.
+  The gesture uses the finger's **down** position (a quick finger crosses the touch slop far from where
+  it went down). Messages are gendered in Arabic (اكتب/اكتبي، ابقَ/ابقَيْ على الخط …).
+- **Content:** `tracing/ar.json` (28 letters: ا ب ت ث د ذ ر ز ن ل و ي ف ق ك م ه ج ح خ ع غ س ش ص ض ط ظ,
+  simple shapes first, families together, dots after the body) and `tracing/en.json` (26 capitals:
+  L I T H E F V X N Z K Y A M W, then the curved C O U J D P B R G Q S). Strokes were authored in a
+  script and checked over the real font glyph on a contact sheet. Letter shapes are simplified
+  school forms, **worth a look by the owner** (or a calligrapher) before release.
+- Also: a game's level pack can now depend on the words language (`HubContent.levels(game, language)`),
+  since tracing has one pack per language.

@@ -105,6 +105,7 @@ fun LearningHub(controller: LearningHubController, gender: ChildGender, onClose:
                         is HubScreen.Playing -> QuestionScreen(controller, state, s, gender)
                         is HubScreen.Connecting -> ConnectScreen(controller, state, s, gender, controller.age)
                         is HubScreen.Coloring -> ColoringScreen(controller, state, s, gender)
+                        is HubScreen.Tracing -> TracingScreen(controller, state, s, gender)
                         is HubScreen.Done -> DoneScreen(controller, state, s, gender)
                     }
                 }
@@ -246,7 +247,7 @@ private fun ColumnScope.LevelPicker(controller: LearningHubController, state: Le
             GameOption.NONE -> Unit
         }
         val content by controller.hubContent.collectAsStateWithLifecycle()
-        val levels = content.levels(game)?.levels.orEmpty()
+        val levels = content.levels(game, controller.lettersLanguage(state))?.levels.orEmpty()
         val current = controller.current(state, game)
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),

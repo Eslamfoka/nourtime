@@ -472,6 +472,8 @@
     <string name="learn_game_patterns_hint">نكمل النمط</string>
     <string name="learn_game_clock">ما الساعة؟</string>
     <string name="learn_game_clock_hint">نقرأ الساعة</string>
+    <string name="learn_game_tracing">تتبّع الحروف</string>
+    <string name="learn_game_tracing_hint">نكتب الحروف بالإصبع</string>
     <string name="learn_coming_soon">قريبًا</string>
     <string name="learn_level">المرحلة %1$s</string>
     <string name="learn_level_locked">المرحلة %1$s، مقفلة</string>
@@ -492,6 +494,14 @@
     <string name="learn_task_pattern">ماذا يأتي بعد ذلك؟</string>
     <string name="learn_task_clock_to_time">كم الساعة؟</string>
     <string name="learn_task_time_to_clock">أي ساعة تُظهر هذا الوقت؟</string>
+    <string name="learn_task_tracing_m">اكتب الحرف بإصبعك فوق الخط</string>
+    <string name="learn_task_tracing_f">اكتبي الحرف بإصبعك فوق الخط</string>
+    <string name="learn_trace_dot_m">الآن اضغط على النقطة</string>
+    <string name="learn_trace_dot_f">الآن اضغطي على النقطة</string>
+    <string name="learn_trace_stray_m">ابقَ على الخط</string>
+    <string name="learn_trace_stray_f">ابقَيْ على الخط</string>
+    <string name="learn_tutorial_tracing_m">ابدأ من النقطة الخضراء واتبع الخط</string>
+    <string name="learn_tutorial_tracing_f">ابدئي من النقطة الخضراء واتبعي الخط</string>
     <string name="learn_tutorial_m">اضغط على الجواب الصحيح. اتبع اليد!</string>
     <string name="learn_tutorial_f">اضغطي على الجواب الصحيح. اتبعي اليد!</string>
     <string name="learn_try_again_m">حاول مرة أخرى!</string>

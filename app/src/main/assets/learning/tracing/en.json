@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "language": "en",
+  "startAt": {"AGES_7_9": "en-a", "AGES_10_12": "en-c"},
+  "levels": [
+    {"id": "en-l", "letter": "L", "strokes": [{"path": "M30 12 L30 88 L72 88"}]},
+    {"id": "en-i", "letter": "I", "strokes": [{"path": "M50 12 L50 88"}, {"path": "M32 12 L68 12"}, {"path": "M32 88 L68 88"}]},
+    {"id": "en-t", "letter": "T", "strokes": [{"path": "M22 12 L78 12"}, {"path": "M50 12 L50 88"}]},
+    {"id": "en-h", "letter": "H", "strokes": [{"path": "M28 12 L28 88"}, {"path": "M72 12 L72 88"}, {"path": "M28 50 L72 50"}]},
+    {"id": "en-e", "letter": "E", "strokes": [{"path": "M30 12 L30 88"}, {"path": "M30 12 L72 12"}, {"path": "M30 50 L64 50"}, {"path": "M30 88 L72 88"}]},
+    {"id": "en-f", "letter": "F", "strokes": [{"path": "M30 12 L30 88"}, {"path": "M30 12 L72 12"}, {"path": "M30 50 L64 50"}]},
+    {"id": "en-v", "letter": "V", "strokes": [{"path": "M22 12 L50 88 L78 12"}]},
+    {"id": "en-x", "letter": "X", "strokes": [{"path": "M24 12 L76 88"}, {"path": "M76 12 L24 88"}]},
+    {"id": "en-n", "letter": "N", "strokes": [{"path": "M26 88 L26 12 L74 88 L74 12"}]},
+    {"id": "en-z", "letter": "Z", "strokes": [{"path": "M24 12 L76 12 L24 88 L76 88"}]},
+    {"id": "en-k", "letter": "K", "strokes": [{"path": "M28 12 L28 88"}, {"path": "M72 12 L30 54"}, {"path": "M44 42 L74 88"}]},
+    {"id": "en-y", "letter": "Y", "strokes": [{"path": "M24 12 L50 50"}, {"path": "M76 12 L50 50 L50 88"}]},
+    {"id": "en-a", "letter": "A", "strokes": [{"path": "M50 12 L22 88"}, {"path": "M50 12 L78 88"}, {"path": "M34 60 L66 60"}]},
+    {"id": "en-m", "letter": "M", "strokes": [{"path": "M18 88 L18 12 L50 62 L82 12 L82 88"}]},
+    {"id": "en-w", "letter": "W", "strokes": [{"path": "M12 12 L30 88 L50 34 L70 88 L88 12"}]},
+    {"id": "en-c", "letter": "C", "strokes": [{"path": "M76 24 Q66 12 50 12 Q22 12 22 50 Q22 88 50 88 Q66 88 76 76"}]},
+    {"id": "en-o", "letter": "O", "strokes": [{"path": "M50 12 Q22 12 22 50 Q22 88 50 88 Q78 88 78 50 Q78 12 50 12"}]},
+    {"id": "en-u", "letter": "U", "strokes": [{"path": "M26 12 L26 64 Q26 88 50 88 Q74 88 74 64 L74 12"}]},
+    {"id": "en-j", "letter": "J", "strokes": [{"path": "M66 12 L66 68 Q66 88 46 88 Q28 88 26 72"}, {"path": "M46 12 L82 12"}]},
+    {"id": "en-d", "letter": "D", "strokes": [{"path": "M28 12 L28 88"}, {"path": "M28 12 L46 12 Q78 12 78 50 Q78 88 46 88 L28 88"}]},
+    {"id": "en-p", "letter": "P", "strokes": [{"path": "M28 12 L28 88"}, {"path": "M28 12 L56 12 Q76 12 76 32 Q76 52 56 52 L28 52"}]},
+    {"id": "en-b", "letter": "B", "strokes": [{"path": "M28 12 L28 88"}, {"path": "M28 12 L58 12 Q76 12 76 30 Q76 48 58 48 L28 48"}, {"path": "M28 48 L60 48 Q80 48 80 68 Q80 88 60 88 L28 88"}]},
+    {"id": "en-r", "letter": "R", "strokes": [{"path": "M28 12 L28 88"}, {"path": "M28 12 L56 12 Q76 12 76 32 Q76 52 56 52 L28 52"}, {"path": "M48 52 L76 88"}]},
+    {"id": "en-g", "letter": "G", "strokes": [{"path": "M76 24 Q66 12 50 12 Q22 12 22 50 Q22 88 50 88 Q76 88 76 62 L56 62"}]},
+    {"id": "en-q", "letter": "Q", "strokes": [{"path": "M50 12 Q22 12 22 50 Q22 88 50 88 Q78 88 78 50 Q78 12 50 12"}, {"path": "M58 70 L82 92"}]},
+    {"id": "en-s", "letter": "S", "strokes": [{"path": "M74 22 Q66 12 50 12 Q26 12 26 30 Q26 46 50 50 Q76 54 76 70 Q76 88 50 88 Q32 88 24 78"}]}
+  ]
+}
