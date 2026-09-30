@@ -656,3 +656,19 @@ APK (real Firebase project, debug): `dist/NourTime-2026-09-30-learning-hub-debug
 - Number Connect and Coloring are touch-only (no TalkBack alternative yet); Math and Letters are
   fully accessible (every choice has a description).
 - Levels are fixed content in Kotlin; no videos yet (the owner's "later").
+
+## 13. Content as data (2026-09-30, evening)
+
+On `learning-hub`. All Learning Hub content moved from Kotlin into JSON packs under
+`app/src/main/assets/learning/` (guide: [`content-packs.md`](content-packs.md)); the nine new games
+are on the roadmap in `progress.md`. Also: math with ١٢٣ is written right to left (owner's decision).
+
+- Nothing changed for the child except: **stars earned before this change are reset** (progress is
+  now saved per level id under new keys; the old per-position progress was never released).
+- Tests: 341 unit tests, including every shipped pack checked item by item and a 10,000-word pack
+  parsed and checked in 72 ms (JVM).
+- Verified on the API 31 emulator with a **minified release build** (signed with the debug key):
+  lock screen → hub; Math levels from JSON with right-to-left equations and mirrored < >;
+  Letters (7 levels), Number Connect (cat with curves), Coloring (car with 2 extra colors).
+- Bug found and fixed: a level whose pack had too little content (e.g. a missing language) looped
+  forever while making questions; it now returns no questions and the game stays on its level screen.
