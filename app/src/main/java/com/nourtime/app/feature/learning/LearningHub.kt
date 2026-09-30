@@ -106,6 +106,7 @@ fun LearningHub(controller: LearningHubController, gender: ChildGender, onClose:
                         is HubScreen.Connecting -> ConnectScreen(controller, state, s, gender, controller.age)
                         is HubScreen.Coloring -> ColoringScreen(controller, state, s, gender)
                         is HubScreen.Tracing -> TracingScreen(controller, state, s, gender)
+                        is HubScreen.Memory -> MemoryScreen(controller, state, s, gender)
                         is HubScreen.Done -> DoneScreen(controller, state, s, gender)
                     }
                 }

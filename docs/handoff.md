@@ -847,3 +847,19 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
   school forms, **worth a look by the owner** (or a calligrapher) before release.
 - Also: a game's level pack can now depend on the words language (`HubContent.levels(game, language)`),
   since tracing has one pack per language.
+
+### 15.9 New game G5: Memory Match (Phase B)
+- **Engine:** `Memory.kt`: `MemoryGame.deal` puts out the level's pairs from the words language pack
+  (same picture, word ↔ picture, letter ↔ picture, number ↔ a new `Card.Dots`, color ↔ name), never
+  two cards that show the same thing. `MemoryRound`: turn two, a pair stays, a mismatch waits and
+  the controller turns it back after 1.2 s; moves → stars (3 within 1.5 moves a pair, 2 within 2.5).
+- **Screen:** a grid (rows of 2/3/4) of cards that flip in 3D, sized to fit; turned cards say their
+  word, letter name, number or color. Moves counter. Arabic messages gendered.
+- **Content:** `memory/levels.json`, 20 levels: 2 pairs of animals → same pictures up to 8 pairs →
+  number ↔ dots, colors, words, letters with 3–8 pairs → mixed tables → an 8-pair champion. 7–9 start
+  at words, 10–12 at letters.
+- Tested: unit tests (every level × 30 seeds × both languages: each pair belongs together and no card
+  could match another pair; turn/mismatch/hide/match/done; stars; loader errors); emulator preview:
+  level 16 (mixed, 8 cards, 4 × 2): flips, spoken faces, fox ↔ ث, red ↔ أحمر, zebra ↔ حمار وحشي,
+  3 stars. Every turn there happened to match, so the mismatch turning back was **only checked by
+  the unit tests**, not seen on screen.

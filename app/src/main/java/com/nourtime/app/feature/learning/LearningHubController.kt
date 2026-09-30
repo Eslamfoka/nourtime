@@ -8,6 +8,8 @@ import com.nourtime.app.core.learning.GamePack
 import com.nourtime.app.core.learning.Level
 import com.nourtime.app.core.learning.LettersLevel
 import com.nourtime.app.core.learning.MathLevel
+import com.nourtime.app.core.learning.MemoryLevel
+import com.nourtime.app.core.learning.MemoryRound
 import com.nourtime.app.core.learning.ConnectRound
 import com.nourtime.app.core.learning.GameId
 import com.nourtime.app.core.learning.LearnLanguage
@@ -58,6 +60,9 @@ sealed interface HubScreen {
     /** Letter Tracing. [celebrating]: the letter is complete and shown for a moment. */
     data class Tracing(val game: GameId, val level: Int, val round: TraceRound, val celebrating: Boolean = false) : HubScreen
 
+    /** Memory Match. [celebrating]: all pairs found, shown for a moment. */
+    data class Memory(val game: GameId, val level: Int, val round: MemoryRound, val celebrating: Boolean = false) : HubScreen
+
     data class Done(
         val game: GameId,
         val level: Int,
@@ -77,6 +82,7 @@ data class HubContent(
     val listen: GamePack<ListenLevel>? = null,
     val patterns: GamePack<PatternLevel>? = null,
     val clock: GamePack<ClockLevel>? = null,
+    val memory: GamePack<MemoryLevel>? = null,
     /** Letter Tracing has one pack per language. */
     val tracing: Map<LearnLanguage, GamePack<TraceLetter>> = emptyMap(),
     /** Color names in the app language, spoken when a coloring color is picked. */
@@ -131,6 +137,7 @@ class LearningHubController(
                 listen = content.listen(),
                 patterns = content.patterns(),
                 clock = content.clock(),
+                memory = content.memory(),
                 tracing = LearnLanguage.entries.associateWith { content.tracing(it) },
                 colorNames = content.letters(appLanguage).colors.associate { it.argb to it.name },
             )
@@ -228,6 +235,28 @@ class LearningHubController(
         return outcome == ColoringRound.Outcome.RIGHT
     }
 
+    // --- Memory Match ---
+
+    /** The child turned card [i]; a mismatched pair turns back by itself after a moment. */
+    fun memoryTurn(i: Int): MemoryRound.Outcome {
+        val m = _screen.value as? HubScreen.Memory ?: return MemoryRound.Outcome.IGNORED
+        if (m.celebrating) return MemoryRound.Outcome.IGNORED
+        val (next, outcome) = m.round.turn(i)
+        if (outcome == MemoryRound.Outcome.IGNORED) return outcome
+        if (m.round.tutorial && outcome == MemoryRound.Outcome.MATCH) markTutorial(m.game)
+        _screen.value = m.copy(round = next, celebrating = next.done)
+        when (outcome) {
+            MemoryRound.Outcome.MISMATCH -> advancing = scope.launch {
+                delay(MISMATCH_MS)
+                val now = _screen.value as? HubScreen.Memory ?: return@launch
+                _screen.value = now.copy(round = now.round.hide())
+            }
+            MemoryRound.Outcome.DONE -> celebrateThenFinish(m.game, m.level, next.stars)
+            else -> Unit
+        }
+        return outcome
+    }
+
     // --- Letter Tracing ---
 
     /** True when a finger going down at ([x], [y]) (0..1 of the canvas) may trace on. */
@@ -311,6 +340,7 @@ class LearningHubController(
             is HubScreen.Connecting -> HubScreen.Levels(s.game)
             is HubScreen.Coloring -> HubScreen.Levels(s.game)
             is HubScreen.Tracing -> HubScreen.Levels(s.game)
+            is HubScreen.Memory -> HubScreen.Levels(s.game)
             is HubScreen.Done -> HubScreen.Levels(s.game)
         }
         return true
@@ -332,6 +362,9 @@ class LearningHubController(
 
     private companion object {
         const val CELEBRATE_MS = 900L
+
+        /** Two cards that don't match stay up this long, so the child can remember them. */
+        const val MISMATCH_MS = 1_200L
 
         /** A finished drawing stays on screen this long before the stars. */
         const val DRAWING_DONE_MS = 1_600L

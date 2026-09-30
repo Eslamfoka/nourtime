@@ -14,6 +14,8 @@ import com.nourtime.app.core.learning.LettersGame
 import com.nourtime.app.core.learning.Level
 import com.nourtime.app.core.learning.ListenGame
 import com.nourtime.app.core.learning.MathGame
+import com.nourtime.app.core.learning.MemoryGame
+import com.nourtime.app.core.learning.MemoryRound
 import com.nourtime.app.core.learning.PatternGame
 import com.nourtime.app.core.learning.Round
 import com.nourtime.app.core.learning.TraceRound
@@ -128,6 +130,18 @@ internal object GameRegistry {
             levels = { c, _ -> c.clock },
             start = { level, tutorial ->
                 HubScreen.Playing(GameId.CLOCK, level, Round(ClockGame.questions(packs.clock!!.levels[level], random), tutorial = tutorial))
+            },
+        ),
+        GameSpec(
+            GameId.MEMORY,
+            GameLook("🃏", Color(0xFF9575CD), R.string.learn_game_memory, R.string.learn_game_memory_hint),
+            GameOption.LANGUAGE,
+            wordsLanguage = true,
+            levels = { c, _ -> c.memory },
+            start = { level, tutorial ->
+                MemoryGame.deal(packs.memory!!.levels[level], repo.letters(wordsLanguage), random)
+                    .takeIf { it.isNotEmpty() }
+                    ?.let { HubScreen.Memory(GameId.MEMORY, level, MemoryRound(it, tutorial = tutorial)) }
             },
         ),
         GameSpec(

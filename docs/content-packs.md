@@ -14,6 +14,7 @@ assets/learning/
   patterns/levels.json     What Comes Next? levels
   clock/levels.json        Tell the Time levels
   tracing/<language>.json  Letter Tracing: the strokes of each letter
+  memory/levels.json       Memory Match levels
   math/levels.json         Smart Math levels
   connect/shapes.json      Number Connect drawings
   coloring/pictures.json   Coloring Match pictures
@@ -99,6 +100,17 @@ Each language names the concepts and lists its alphabet:
 - `precision`: `hour` (3:00), `half` (:00/:30), `quarter`, `five` (every 5 minutes) or `minute`.
   Times are generated, so each level gives endless questions; wrong answers include the classic
   mistakes (hands swapped, the next hour, a step off).
+
+## Memory Match levels (`memory/levels.json`)
+```json
+{"id": "words-food-4", "pairs": 4, "kinds": ["word_picture"], "categories": ["food"]}
+```
+- `pairs` 2–8 (4, 6, 8, … cards in rows of 2–4). `kinds` (mixed when several): `same_picture`,
+  `word_picture`, `letter_picture` (a letter and a picture starting with it), `number_dots`
+  (1..`maxNumber`, default 10, at least `pairs`), `color_name`.
+- Words, letters and colors come from `letters/<language>.json` in the chosen words language. No two
+  cards on the table show the same thing (so "Orange" the fruit and the color never meet).
+- Stars: 3 within 1.5 moves per pair, 2 within 2.5.
 
 ## Letter Tracing (`tracing/<language>.json`)
 ```json

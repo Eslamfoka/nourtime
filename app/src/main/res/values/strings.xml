@@ -464,6 +464,8 @@
     <string name="learn_game_clock_hint">Read the clock</string>
     <string name="learn_game_tracing">Letter Tracing</string>
     <string name="learn_game_tracing_hint">Write letters with a finger</string>
+    <string name="learn_game_memory">Memory Match</string>
+    <string name="learn_game_memory_hint">Find the pairs</string>
     <string name="learn_coming_soon">Coming soon</string>
     <string name="learn_level">Level %1$s</string>
     <string name="learn_level_locked">Level %1$s, locked</string>
@@ -492,6 +494,12 @@
     <string name="learn_trace_stray_f">Stay on the line</string>
     <string name="learn_tutorial_tracing_m">Start at the green dot and follow the line</string>
     <string name="learn_tutorial_tracing_f">Start at the green dot and follow the line</string>
+    <string name="learn_task_memory_m">Turn two cards to find a pair</string>
+    <string name="learn_task_memory_f">Turn two cards to find a pair</string>
+    <string name="learn_tutorial_memory_m">Tap a card to turn it, then find its partner</string>
+    <string name="learn_tutorial_memory_f">Tap a card to turn it, then find its partner</string>
+    <string name="learn_memory_moves">Moves: %1$s</string>
+    <string name="learn_memory_card_down">Card, face down</string>
     <string name="learn_tutorial_m">Tap the right answer. Follow the hand!</string>
     <string name="learn_tutorial_f">Tap the right answer. Follow the hand!</string>
     <string name="learn_try_again_m">Try again!</string>

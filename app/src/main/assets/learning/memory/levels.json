@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "startAt": {"AGES_7_9": "words-animals-3", "AGES_10_12": "letters-4"},
+  "levels": [
+    {"id": "same-animals-2", "pairs": 2, "kinds": ["same_picture"], "categories": ["animals"]},
+    {"id": "same-food-3", "pairs": 3, "kinds": ["same_picture"], "categories": ["food"]},
+    {"id": "same-4", "pairs": 4, "kinds": ["same_picture"]},
+    {"id": "dots-3", "pairs": 3, "kinds": ["number_dots"], "maxNumber": 5},
+    {"id": "colors-3", "pairs": 3, "kinds": ["color_name"]},
+    {"id": "same-6", "pairs": 6, "kinds": ["same_picture"]},
+    {"id": "words-animals-3", "pairs": 3, "kinds": ["word_picture"], "categories": ["animals"]},
+    {"id": "dots-4", "pairs": 4, "kinds": ["number_dots"], "maxNumber": 10},
+    {"id": "letters-3", "pairs": 3, "kinds": ["letter_picture"]},
+    {"id": "words-food-4", "pairs": 4, "kinds": ["word_picture"], "categories": ["food"]},
+    {"id": "colors-4", "pairs": 4, "kinds": ["color_name"]},
+    {"id": "same-8", "pairs": 8, "kinds": ["same_picture"]},
+    {"id": "dots-6", "pairs": 6, "kinds": ["number_dots"], "maxNumber": 10},
+    {"id": "letters-4", "pairs": 4, "kinds": ["letter_picture"]},
+    {"id": "words-6", "pairs": 6, "kinds": ["word_picture"]},
+    {"id": "mixed-4", "pairs": 4, "kinds": ["word_picture", "number_dots", "color_name", "letter_picture"]},
+    {"id": "letters-6", "pairs": 6, "kinds": ["letter_picture"]},
+    {"id": "words-8", "pairs": 8, "kinds": ["word_picture"]},
+    {"id": "mixed-6", "pairs": 6, "kinds": ["word_picture", "number_dots", "color_name", "letter_picture"], "maxNumber": 12},
+    {"id": "champion", "pairs": 8, "kinds": ["word_picture", "letter_picture", "number_dots", "color_name"], "maxNumber": 20}
+  ]
+}

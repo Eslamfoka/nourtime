@@ -106,6 +106,22 @@ data class ClockLevelJson(
     val questions: Int = ClockGame.QUESTIONS,
 )
 
+@Serializable
+data class MemoryFile(
+    override val schema: Int,
+    val startAt: Map<String, String> = emptyMap(),
+    val levels: List<MemoryLevelJson>,
+) : Versioned
+
+@Serializable
+data class MemoryLevelJson(
+    val id: String,
+    val pairs: Int,
+    val kinds: List<String>,
+    val categories: List<String> = emptyList(),
+    val maxNumber: Int = 10,
+)
+
 /** Letter Tracing, one file per language: `tracing/<language>.json`. */
 @Serializable
 data class TracingFile(

@@ -207,6 +207,7 @@ list: [`handoff.md` §12](handoff.md#12-learning-hub-2026-09-30-overnight).
 | G2 | **What Comes Next?** | Multiple choice: a row of colors, shapes, pictures or numbers ends in "?"; pick what continues it. Numbers read right to left with ١٢٣, each on its own chip. | ✅ 23 levels from red-green-red-green to doubling and steps of 25 up to 200 (2026-10-01 night) |
 | G3 | **Tell the Time** | Multiple choice: read an analog clock and pick the written time, or the other way round. Clock numbers in the child's numerals. | ✅ 17 levels from o'clock with 2 choices to any minute (2026-10-01 night) |
 | G4 | **Letter Tracing** | Drawing: follow each stroke of a big letter from its green start dot in the arrow's direction, in order, then tap its dots. Straying off the line is a mistake; lifting the finger keeps the progress. Arabic or English (the words language). | ✅ 28 Arabic letters (ا first, ظ last) and 26 English capitals (L first, S last) (2026-10-01 night) |
+| G5 | **Memory Match** | Card grid: turn two cards, a pair stays up, a mismatch turns back after 1.2 s; cards flip and say what they show. Same picture, word ↔ picture, letter ↔ picture, number ↔ dots, color ↔ name. | ✅ 20 levels from 2 pairs of animals to a mixed table of 8 pairs (2026-10-01 night) |
 
 ### Goal: Google Play at scale
 The four games prove the engine; the shipped **content** (45 math levels, 27 letters levels with 176
@@ -315,7 +316,7 @@ stars → `RewardPolicy`, the tutorial hand, TTS and the Learning Hub menu. What
 | G2 | **What Comes Next?**: continue a pattern of shapes, colors, pictures or numbers | 4–9 | Choice round (reused) + `PatternGame` generator; compact prompt row | `patterns/levels.json`: kind, units (ab, aab, …), number steps / doubling | A · ✅ built 2026-10-01 night, 23 levels |
 | G3 | **Tell the Time**: read an analog clock | 7–12 | Choice round with new clock and time cards | `clock/levels.json`: hours, halves, quarters, 5-minute steps, any minute | A · ✅ built 2026-10-01 night, 17 levels |
 | G4 | **Letter Tracing**: trace a letter's strokes in order | 3–7 | **Trace engine** (new): resampled stroke paths, start point + direction, dots to tap | `tracing/<language>.json`: stroke paths per letter, stroke order | B · ✅ built 2026-10-01 night, 28 Arabic + 26 English letters |
-| G5 | **Memory Match**: flip cards to find pairs (word ↔ picture, number ↔ dots) | 4–12 | **Card grid engine** (new): flip, match, moves → stars | levels: grid size, pair kinds, categories (from concepts) | B |
+| G5 | **Memory Match**: flip cards to find pairs (word ↔ picture, number ↔ dots) | 4–12 | **Card grid engine** (new): flip, match, moves → stars | `memory/levels.json`: pairs, pair kinds, categories | B · ✅ built 2026-10-01 night, 20 levels |
 | G6 | **Word Builder**: drag letters to spell a word; Arabic letters join as they're placed | 6–12 | **Drag-and-drop engine** (new): tiles, slots, snap | concepts + language packs (reused); Arabic shaping by the text engine | C |
 | G7 | **Sorting**: drag items into groups (fruit / animals, even / odd) | 4–9 | Drag-and-drop engine (reused) | `sorting/levels.json`: bins = categories or number rules | C |
 | G8 | **Little Shop**: pay with coins, count change | 7–12 | Drag-and-drop engine (reused) + prices | `shop/levels.json`: items (concepts), coin set per currency, price ranges | C |

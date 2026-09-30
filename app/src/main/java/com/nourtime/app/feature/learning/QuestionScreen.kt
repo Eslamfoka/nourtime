@@ -266,6 +266,7 @@ private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: B
             }
         }
         is Card.Clock -> ClockFace(card.hour, card.minute, numerals, 180.dp)
+        is Card.Dots -> DotsFace(card.count, 120.dp)
         is Card.Time -> Text(
             timeText(card.hour, card.minute, numerals),
             fontSize = 64.sp,
@@ -338,6 +339,7 @@ private fun ChoiceCard(
         is Card.Sound -> card.text
         is Card.Clock -> timeText(card.hour, card.minute, numerals)
         is Card.Time -> timeText(card.hour, card.minute, numerals)
+        is Card.Dots -> numerals.format(card.count)
     }
     Box(modifier) {
         Surface(
@@ -374,6 +376,7 @@ private fun ChoiceCard(
                     )
                     is Card.Sound -> Unit
                     is Card.Clock -> ClockFace(card.hour, card.minute, numerals, 104.dp)
+                    is Card.Dots -> DotsFace(card.count, 72.dp)
                     is Card.Time -> Text(
                         timeText(card.hour, card.minute, numerals),
                         fontSize = 36.sp,

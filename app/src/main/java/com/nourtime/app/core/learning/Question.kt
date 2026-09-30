@@ -4,7 +4,7 @@ package com.nourtime.app.core.learning
  * The Learning Hub's mini-games. The name is part of the saved progress key: never rename one.
  * Adding a game: an entry here plus its entry in the hub's game registry (`GameRegistry`).
  */
-enum class GameId { MATH, LETTERS, CONNECT, COLORING, LISTEN, PATTERNS, CLOCK, TRACING }
+enum class GameId { MATH, LETTERS, CONNECT, COLORING, LISTEN, PATTERNS, CLOCK, TRACING, MEMORY }
 
 /** Language of a game's content and voice, independent of the app language. */
 enum class LearnLanguage(val tag: String) { ARABIC("ar"), ENGLISH("en") }
@@ -78,6 +78,9 @@ sealed interface Card {
 
     /** A written time "h:mm" in the child's numerals. */
     data class Time(val hour: Int, val minute: Int) : Card
+
+    /** [count] dots to count (Memory Match: a number and its dots). */
+    data class Dots(val count: Int) : Card
 }
 
 /** What the child is asked to do; the UI shows it as a short instruction. */

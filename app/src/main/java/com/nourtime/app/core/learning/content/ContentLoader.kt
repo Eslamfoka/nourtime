@@ -23,6 +23,8 @@ import com.nourtime.app.core.learning.ListenLevel
 import com.nourtime.app.core.learning.LevelIds
 import com.nourtime.app.core.learning.MathLevel
 import com.nourtime.app.core.learning.MathOp
+import com.nourtime.app.core.learning.MemoryLevel
+import com.nourtime.app.core.learning.PairKind
 import com.nourtime.app.core.learning.PatternGame
 import com.nourtime.app.core.learning.PatternKind
 import com.nourtime.app.core.learning.PatternLevel
@@ -96,6 +98,11 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         pack(path, file.levels.mapNotNull { traceLetter(path, it, vw, vh) }, file.startAt)
     }
 
+    fun memory(): GamePack<MemoryLevel> = cached("memory") {
+        val file = parse<MemoryFile>(MEMORY) ?: return@cached GamePack(emptyList())
+        pack(MEMORY, file.levels.mapNotNull { memoryLevel(it) }, file.startAt)
+    }
+
     fun letters(language: LearnLanguage): LettersLanguagePack = cached("letters-${language.tag}") {
         lettersLanguage(language)
     }
@@ -144,6 +151,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         checker.listen()
         checker.patterns()
         checker.clock()
+        checker.memory()
         LearnLanguage.entries.forEach { checker.tracing(it) }
         LearnLanguage.entries.forEach { checker.letters(it) }
         checker.connect()
@@ -281,6 +289,19 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         return ClockLevel(l.id, tasks, precision, l.choices, l.questions)
     }
 
+    private fun memoryLevel(l: MemoryLevelJson): MemoryLevel? {
+        if (!checkId(MEMORY, l.id)) return null
+        val kinds = l.kinds.map { key -> PairKind.entries.firstOrNull { it.key == key } ?: return null.also { problem(MEMORY, l.id, "unknown kind $key") } }
+        val bad = when {
+            kinds.isEmpty() -> "no kinds"
+            l.pairs !in 2..8 -> "pairs must be 2..8"
+            PairKind.NUMBER_DOTS in kinds && l.maxNumber !in l.pairs..20 -> "maxNumber must be pairs..20"
+            else -> null
+        }
+        if (bad != null) return null.also { problem(MEMORY, l.id, bad) }
+        return MemoryLevel(l.id, l.pairs, kinds, l.categories.toSet(), l.maxNumber)
+    }
+
     private fun traceLetter(path: String, l: TraceLetterJson, vw: Float, vh: Float): TraceLetter? {
         if (!checkId(path, l.id)) return null
         if (l.letter.isBlank() || l.strokes.isEmpty()) return null.also { problem(path, l.id, "needs a letter and strokes") }
@@ -390,6 +411,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         const val LISTEN = "listen/levels.json"
         const val PATTERNS = "patterns/levels.json"
         const val CLOCK = "clock/levels.json"
+        const val MEMORY = "memory/levels.json"
         fun tracingPath(language: LearnLanguage) = "tracing/${language.tag}.json"
         const val CONCEPTS = "concepts.json"
         const val CONNECT = "connect/shapes.json"
