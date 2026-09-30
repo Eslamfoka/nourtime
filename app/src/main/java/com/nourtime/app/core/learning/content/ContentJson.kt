@@ -107,6 +107,24 @@ data class ClockLevelJson(
 )
 
 @Serializable
+data class WordsFile(
+    override val schema: Int,
+    val startAt: Map<String, String> = emptyMap(),
+    val levels: List<WordLevelJson>,
+) : Versioned
+
+@Serializable
+data class WordLevelJson(
+    val id: String,
+    val words: Int = 3,
+    val minLength: Int = 2,
+    val maxLength: Int = 4,
+    val categories: List<String> = emptyList(),
+    val extraTiles: Int = 0,
+    val hint: Boolean = false,
+)
+
+@Serializable
 data class MemoryFile(
     override val schema: Int,
     val startAt: Map<String, String> = emptyMap(),

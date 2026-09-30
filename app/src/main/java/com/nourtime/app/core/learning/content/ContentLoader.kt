@@ -34,6 +34,7 @@ import com.nourtime.app.core.learning.Task
 import com.nourtime.app.core.learning.TraceLetter
 import com.nourtime.app.core.learning.TraceRules
 import com.nourtime.app.core.learning.TraceStroke
+import com.nourtime.app.core.learning.WordLevel
 import com.nourtime.app.core.learning.WordEntry
 import com.nourtime.app.data.settings.AgeGroup
 import kotlinx.serialization.json.Json
@@ -98,6 +99,11 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         pack(path, file.levels.mapNotNull { traceLetter(path, it, vw, vh) }, file.startAt)
     }
 
+    fun words(): GamePack<WordLevel> = cached("words") {
+        val file = parse<WordsFile>(WORDS) ?: return@cached GamePack(emptyList())
+        pack(WORDS, file.levels.mapNotNull { wordLevel(it) }, file.startAt)
+    }
+
     fun memory(): GamePack<MemoryLevel> = cached("memory") {
         val file = parse<MemoryFile>(MEMORY) ?: return@cached GamePack(emptyList())
         pack(MEMORY, file.levels.mapNotNull { memoryLevel(it) }, file.startAt)
@@ -152,6 +158,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         checker.patterns()
         checker.clock()
         checker.memory()
+        checker.words()
         LearnLanguage.entries.forEach { checker.tracing(it) }
         LearnLanguage.entries.forEach { checker.letters(it) }
         checker.connect()
@@ -289,6 +296,18 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         return ClockLevel(l.id, tasks, precision, l.choices, l.questions)
     }
 
+    private fun wordLevel(l: WordLevelJson): WordLevel? {
+        if (!checkId(WORDS, l.id)) return null
+        val bad = when {
+            l.words !in 1..10 -> "words must be 1..10"
+            l.minLength < 2 || l.maxLength !in l.minLength..10 -> "lengths must be 2 <= minLength <= maxLength <= 10"
+            l.extraTiles !in 0..6 -> "extraTiles must be 0..6"
+            else -> null
+        }
+        if (bad != null) return null.also { problem(WORDS, l.id, bad) }
+        return WordLevel(l.id, l.words, l.minLength, l.maxLength, l.categories.toSet(), l.extraTiles, l.hint)
+    }
+
     private fun memoryLevel(l: MemoryLevelJson): MemoryLevel? {
         if (!checkId(MEMORY, l.id)) return null
         val kinds = l.kinds.map { key -> PairKind.entries.firstOrNull { it.key == key } ?: return null.also { problem(MEMORY, l.id, "unknown kind $key") } }
@@ -412,6 +431,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         const val PATTERNS = "patterns/levels.json"
         const val CLOCK = "clock/levels.json"
         const val MEMORY = "memory/levels.json"
+        const val WORDS = "words/levels.json"
         fun tracingPath(language: LearnLanguage) = "tracing/${language.tag}.json"
         const val CONCEPTS = "concepts.json"
         const val CONNECT = "connect/shapes.json"

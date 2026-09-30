@@ -15,6 +15,7 @@ assets/learning/
   clock/levels.json        Tell the Time levels
   tracing/<language>.json  Letter Tracing: the strokes of each letter
   memory/levels.json       Memory Match levels
+  words/levels.json        Word Builder levels
   math/levels.json         Smart Math levels
   connect/shapes.json      Number Connect drawings
   coloring/pictures.json   Coloring Match pictures
@@ -100,6 +101,17 @@ Each language names the concepts and lists its alphabet:
 - `precision`: `hour` (3:00), `half` (:00/:30), `quarter`, `five` (every 5 minutes) or `minute`.
   Times are generated, so each level gives endless questions; wrong answers include the classic
   mistakes (hands swapped, the next hour, a step off).
+
+## Word Builder levels (`words/levels.json`)
+```json
+{"id": "animals-5", "words": 4, "minLength": 3, "maxLength": 5, "categories": ["animals"], "extraTiles": 2}
+```
+- `words` to spell per level (1–10), taken from `letters/<language>.json` (words with a space are
+  never used), `minLength`..`maxLength` letters, from `categories` (empty = all).
+- `extraTiles` (0–6) wrong letters among the tiles, never letters of the word. `hint: true` shows the
+  whole word faded above the one being built.
+- The tests check that every level has enough fitting words in **every** language; add words or widen
+  the lengths if a new language fails it.
 
 ## Memory Match levels (`memory/levels.json`)
 ```json

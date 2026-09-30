@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "startAt": {"AGES_7_9": "short", "AGES_10_12": "five"},
+  "levels": [
+    {"id": "short-hint", "words": 3, "minLength": 2, "maxLength": 3, "hint": true},
+    {"id": "animals-hint", "words": 3, "minLength": 2, "maxLength": 4, "categories": ["animals"], "hint": true},
+    {"id": "food-hint", "words": 3, "minLength": 3, "maxLength": 4, "categories": ["food"], "hint": true, "extraTiles": 1},
+    {"id": "short", "words": 3, "minLength": 2, "maxLength": 3, "extraTiles": 1},
+    {"id": "four", "words": 4, "minLength": 3, "maxLength": 4, "extraTiles": 1},
+    {"id": "animals-5", "words": 4, "minLength": 3, "maxLength": 5, "categories": ["animals"], "extraTiles": 2},
+    {"id": "things-5", "words": 4, "minLength": 3, "maxLength": 5, "categories": ["objects", "clothes", "toys"], "extraTiles": 2},
+    {"id": "five", "words": 4, "minLength": 4, "maxLength": 5, "extraTiles": 2},
+    {"id": "six", "words": 4, "minLength": 5, "maxLength": 6, "extraTiles": 2},
+    {"id": "long", "words": 4, "minLength": 6, "maxLength": 8, "extraTiles": 3},
+    {"id": "champion", "words": 6, "minLength": 3, "maxLength": 8, "extraTiles": 4}
+  ]
+}

@@ -17,6 +17,7 @@ object TestContent {
     val patterns get() = loader.patterns()
     val clock get() = loader.clock()
     val memory get() = loader.memory()
+    val words get() = loader.words()
     fun tracing(language: LearnLanguage) = loader.tracing(language)
     fun letters(language: LearnLanguage) = loader.letters(language)
     val connect get() = loader.connect()

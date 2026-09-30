@@ -20,6 +20,9 @@ import com.nourtime.app.core.learning.PatternLevel
 import com.nourtime.app.core.learning.Round
 import com.nourtime.app.core.learning.TraceLetter
 import com.nourtime.app.core.learning.TraceRound
+import com.nourtime.app.core.learning.LetterTile
+import com.nourtime.app.core.learning.WordLevel
+import com.nourtime.app.core.learning.WordRound
 import com.nourtime.app.data.learning.LearningContentRepository
 import com.nourtime.app.data.learning.LearningRepository
 import com.nourtime.app.data.learning.LearningState
@@ -63,6 +66,9 @@ sealed interface HubScreen {
     /** Memory Match. [celebrating]: all pairs found, shown for a moment. */
     data class Memory(val game: GameId, val level: Int, val round: MemoryRound, val celebrating: Boolean = false) : HubScreen
 
+    /** Word Builder. [celebrating]: the word just finished, shown for a moment before the next. */
+    data class Words(val game: GameId, val level: Int, val round: WordRound, val celebrating: String? = null, val lastWrong: Boolean = false) : HubScreen
+
     data class Done(
         val game: GameId,
         val level: Int,
@@ -83,6 +89,7 @@ data class HubContent(
     val patterns: GamePack<PatternLevel>? = null,
     val clock: GamePack<ClockLevel>? = null,
     val memory: GamePack<MemoryLevel>? = null,
+    val words: GamePack<WordLevel>? = null,
     /** Letter Tracing has one pack per language. */
     val tracing: Map<LearnLanguage, GamePack<TraceLetter>> = emptyMap(),
     /** Color names in the app language, spoken when a coloring color is picked. */
@@ -138,6 +145,7 @@ class LearningHubController(
                 patterns = content.patterns(),
                 clock = content.clock(),
                 memory = content.memory(),
+                words = content.words(),
                 tracing = LearnLanguage.entries.associateWith { content.tracing(it) },
                 colorNames = content.letters(appLanguage).colors.associate { it.argb to it.name },
             )
@@ -233,6 +241,38 @@ class LearningHubController(
         _screen.value = c.copy(round = next, lastWrong = outcome == ColoringRound.Outcome.WRONG, celebrating = next.done)
         if (next.done) celebrateThenFinish(c.game, c.level, next.stars)
         return outcome == ColoringRound.Outcome.RIGHT
+    }
+
+    // --- Word Builder ---
+
+    /** The child put [tile] on the word (by tapping it or dragging it up). */
+    fun wordPlace(tile: LetterTile): WordRound.Outcome {
+        val w = _screen.value as? HubScreen.Words ?: return WordRound.Outcome.IGNORED
+        if (w.celebrating != null) return WordRound.Outcome.IGNORED
+        val word = w.round.current?.word?.word
+        val (next, outcome) = w.round.place(tile)
+        when (outcome) {
+            WordRound.Outcome.IGNORED -> Unit
+            WordRound.Outcome.WRONG -> _screen.value = w.copy(round = next, lastWrong = true)
+            WordRound.Outcome.PLACED -> {
+                if (w.round.tutorial && w.round.index == 0 && w.round.placed.isEmpty()) markTutorial(w.game)
+                _screen.value = w.copy(round = next, lastWrong = false)
+            }
+            WordRound.Outcome.WORD_DONE, WordRound.Outcome.DONE -> {
+                // The finished word stays on screen a moment (and is read out) before the next one.
+                _screen.value = w.copy(round = next, celebrating = word, lastWrong = false)
+                advancing = scope.launch {
+                    delay(WORD_DONE_MS)
+                    if (outcome == WordRound.Outcome.DONE) {
+                        finish(w.game, w.level, next.stars)
+                    } else {
+                        val now = _screen.value as? HubScreen.Words ?: return@launch
+                        _screen.value = now.copy(celebrating = null)
+                    }
+                }
+            }
+        }
+        return outcome
     }
 
     // --- Memory Match ---
@@ -341,6 +381,7 @@ class LearningHubController(
             is HubScreen.Coloring -> HubScreen.Levels(s.game)
             is HubScreen.Tracing -> HubScreen.Levels(s.game)
             is HubScreen.Memory -> HubScreen.Levels(s.game)
+            is HubScreen.Words -> HubScreen.Levels(s.game)
             is HubScreen.Done -> HubScreen.Levels(s.game)
         }
         return true
@@ -365,6 +406,9 @@ class LearningHubController(
 
         /** Two cards that don't match stay up this long, so the child can remember them. */
         const val MISMATCH_MS = 1_200L
+
+        /** A finished word stays this long, with its picture, before the next word. */
+        const val WORD_DONE_MS = 1_800L
 
         /** A finished drawing stays on screen this long before the stars. */
         const val DRAWING_DONE_MS = 1_600L

@@ -476,6 +476,8 @@
     <string name="learn_game_tracing_hint">نكتب الحروف بالإصبع</string>
     <string name="learn_game_memory">لعبة الذاكرة</string>
     <string name="learn_game_memory_hint">نجد الأزواج المتشابهة</string>
+    <string name="learn_game_words">بناء الكلمات</string>
+    <string name="learn_game_words_hint">نركّب الكلمة من حروفها</string>
     <string name="learn_coming_soon">قريبًا</string>
     <string name="learn_level">المرحلة %1$s</string>
     <string name="learn_level_locked">المرحلة %1$s، مقفلة</string>
@@ -510,6 +512,12 @@
     <string name="learn_tutorial_memory_f">اضغطي على بطاقة لتقلبيها، ثم ابحثي عن شبيهتها</string>
     <string name="learn_memory_moves">المحاولات: %1$s</string>
     <string name="learn_memory_card_down">بطاقة مقلوبة</string>
+    <string name="learn_task_words_m">كوّن الكلمة: اضغط الحروف أو اسحبها بالترتيب</string>
+    <string name="learn_task_words_f">كوّني الكلمة: اضغطي الحروف أو اسحبيها بالترتيب</string>
+    <string name="learn_tutorial_words_m">اضغط على أول حرف في الكلمة</string>
+    <string name="learn_tutorial_words_f">اضغطي على أول حرف في الكلمة</string>
+    <string name="learn_words_wrong_m">ليس هذا. أي حرف يأتي بعده؟</string>
+    <string name="learn_words_wrong_f">ليس هذا. أي حرف يأتي بعده؟</string>
     <string name="learn_tutorial_m">اضغط على الجواب الصحيح. اتبع اليد!</string>
     <string name="learn_tutorial_f">اضغطي على الجواب الصحيح. اتبعي اليد!</string>
     <string name="learn_try_again_m">حاول مرة أخرى!</string>

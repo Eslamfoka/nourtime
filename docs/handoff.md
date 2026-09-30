@@ -863,3 +863,22 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
   level 16 (mixed, 8 cards, 4 × 2): flips, spoken faces, fox ↔ ث, red ↔ أحمر, zebra ↔ حمار وحشي,
   3 stars. Every turn there happened to match, so the mismatch turning back was **only checked by
   the unit tests**, not seen on screen.
+
+### 15.10 New game G6: Word Builder (Phase C)
+- **Engine:** `WordBuilder.kt`: a level deals N words of the right length/categories from the words
+  language pack (never words with a space); each word's tiles are its letters plus wrong ones.
+  `WordRound`: the next letter in reading order goes in, anything else bounces and is a mistake.
+  The word is shown as one text as it grows, so **Arabic letters join as they're placed**.
+- Fairness fix found on the emulator: غزال got a wrong tile "أ" next to its "ا". Wrong tiles now
+  skip look-alikes of the word's letters (أ إ آ ٱ ↔ ا, ة ↔ ه, ى ↔ ي, upper ↔ lower case).
+- **Screen:** the picture (tap = hear the word), the faded word as a hint on the first levels, the
+  word so far, one dot per letter, and the tiles: tap one, or drag it up onto the word (the tile
+  engine G7/G8 can reuse). Wrong tiles shake with "ليس هذا. أي حرف يأتي بعده؟". A finished word is
+  read out and shown for 1.8 s.
+- **Content:** `words/levels.json`, 11 levels: 2–3 letters with the word shown faded → animals and
+  food → 3–4 letters with a wrong tile → 5, 6 and 6–8 letters with 2–3 wrong tiles → a 6-word
+  champion with 4 wrong tiles. 7–9 start at "short", 10–12 at "five".
+- Tested: unit tests (every level × 20 seeds × both languages: enough words, each word spelled to the
+  end without mistakes, wrong tiles never look-alikes; wrong tile/next word/ignored old tiles; loader);
+  emulator preview in Arabic, level 6: فراشة spelled with taps and one drag (ف → فر → … → فراشة in
+  green), then غزال with a wrong tile (shake + message).

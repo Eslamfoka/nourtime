@@ -19,6 +19,8 @@ import com.nourtime.app.core.learning.MemoryRound
 import com.nourtime.app.core.learning.PatternGame
 import com.nourtime.app.core.learning.Round
 import com.nourtime.app.core.learning.TraceRound
+import com.nourtime.app.core.learning.WordBuilder
+import com.nourtime.app.core.learning.WordRound
 import com.nourtime.app.data.learning.LearningContentRepository
 import kotlin.random.Random
 
@@ -142,6 +144,19 @@ internal object GameRegistry {
                 MemoryGame.deal(packs.memory!!.levels[level], repo.letters(wordsLanguage), random)
                     .takeIf { it.isNotEmpty() }
                     ?.let { HubScreen.Memory(GameId.MEMORY, level, MemoryRound(it, tutorial = tutorial)) }
+            },
+        ),
+        GameSpec(
+            GameId.WORDS,
+            GameLook("🧱", Color(0xFFFFB74D), R.string.learn_game_words, R.string.learn_game_words_hint),
+            GameOption.LANGUAGE,
+            wordsLanguage = true,
+            levels = { c, _ -> c.words },
+            start = { level, tutorial ->
+                val spec = packs.words!!.levels[level]
+                WordBuilder.tasks(spec, repo.letters(wordsLanguage), random)
+                    .takeIf { it.isNotEmpty() }
+                    ?.let { HubScreen.Words(GameId.WORDS, level, WordRound(it, tutorial = tutorial, hint = spec.hint)) }
             },
         ),
         GameSpec(
