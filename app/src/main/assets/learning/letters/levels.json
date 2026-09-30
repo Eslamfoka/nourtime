@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "startAt": {
+    "AGES_10_12": "letter-word-picture"
+  },
+  "levels": [
+    {
+      "id": "letter-picture-first",
+      "tasks": [
+        "letter_to_picture"
+      ],
+      "firstLettersOnly": true
+    },
+    {
+      "id": "letter-picture-all",
+      "tasks": [
+        "letter_to_picture"
+      ],
+      "choices": 4
+    },
+    {
+      "id": "letter-word-picture",
+      "tasks": [
+        "letter_to_word",
+        "letter_to_picture"
+      ]
+    },
+    {
+      "id": "word-picture",
+      "tasks": [
+        "word_to_picture"
+      ]
+    },
+    {
+      "id": "name-color",
+      "tasks": [
+        "name_to_color"
+      ]
+    },
+    {
+      "id": "color-name",
+      "tasks": [
+        "color_to_name"
+      ]
+    },
+    {
+      "id": "mixed",
+      "tasks": [
+        "letter_to_word",
+        "word_to_picture",
+        "name_to_color",
+        "color_to_name"
+      ],
+      "choices": 4
+    }
+  ]
+}

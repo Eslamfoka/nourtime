@@ -65,16 +65,17 @@ class DrawingGamesTest {
 
     @Test
     fun `level shapes are drawable`() {
-        ConnectLevels.all.forEach { shape ->
-            assertTrue(shape.name, shape.dots.size >= 3)
-            shape.dots.forEach { assertTrue(shape.name, it.x in 0f..1f && it.y in 0f..1f) }
+        TestContent.connect.levels.forEach { shape ->
+            assertTrue(shape.id, shape.dots.size >= 3)
+            shape.dots.forEach { assertTrue(shape.id, it.x in 0f..1f && it.y in 0f..1f) }
             // Dots far enough apart that a finger can't hit two at once, even with the big radius.
             for (i in shape.dots.indices) for (j in i + 1 until shape.dots.size) {
                 val d = hypot(shape.dots[i].x - shape.dots[j].x, shape.dots[i].y - shape.dots[j].y)
-                assertTrue("${shape.name} $i-$j too close ($d)", d > 2 * ConnectRules.radiusFor(young = false))
+                assertTrue("${shape.id} $i-$j too close ($d)", d > 2 * ConnectRules.radiusFor(young = false))
             }
         }
-        assertEquals(3, ConnectLevels.all.first().dots.size)
+        assertEquals(3, TestContent.connect.levels.first().dots.size)
+        assertEquals(8, TestContent.connect.levels.size)
     }
 
     // --- Coloring Match ---
@@ -92,7 +93,7 @@ class DrawingGamesTest {
 
     @Test
     fun `the topmost region wins`() {
-        val fish = ColoringLevels.all.first { it.name == "fish" }
+        val fish = TestContent.coloring.pack.levels.first { it.id == "fish" }
         val eye = ColoringRules.regionAt(fish, 0.26f, 0.42f)!!
         assertEquals(2, fish.regions[eye].color) // white eye, not the orange body under it
         assertEquals(3, fish.regions[ColoringRules.regionAt(fish, 0.25f, 0.45f)!!].color) // pupil
@@ -101,10 +102,10 @@ class DrawingGamesTest {
 
     @Test
     fun `filling right colors finishes the picture, wrong ones count as mistakes`() {
-        val apple = ColoringLevels.all.first()
+        val apple = TestContent.coloring.pack.levels.first()
         var r = ColoringRound(apple, apple.colors)
         assertEquals(ColoringRound.Outcome.IGNORED, r.fill(0).second) // no color chosen yet
-        r = r.select(ColoringLevels.GREEN)
+        r = r.select(0xFF43A047)
         val (wrong, o1) = r.fill(0)
         assertEquals(ColoringRound.Outcome.WRONG, o1)
         assertEquals(1, wrong.mistakes)
@@ -119,21 +120,23 @@ class DrawingGamesTest {
 
     @Test
     fun `every region of every picture can be tapped somewhere`() {
-        ColoringLevels.all.forEach { picture ->
+        TestContent.coloring.pack.levels.forEach { picture ->
             val hit = mutableSetOf<Int>()
             for (i in 0..200) for (j in 0..200) ColoringRules.regionAt(picture, i / 200f, j / 200f)?.let(hit::add)
-            assertEquals(picture.name, picture.regions.indices.toSet(), hit)
+            assertEquals(picture.id, picture.regions.indices.toSet(), hit)
         }
     }
 
     @Test
     fun `palettes hold the picture colors and grow with the level`() {
-        ColoringLevels.all.indices.forEach { level ->
-            val palette = ColoringLevels.palette(level, Random(level))
-            assertTrue(palette.containsAll(ColoringLevels.all[level].colors))
+        val pack = TestContent.coloring
+        pack.pack.levels.forEachIndexed { level, picture ->
+            val palette = ColoringPalette.of(picture, pack.distractors, Random(level))
+            assertTrue(palette.containsAll(picture.colors))
             assertEquals(palette.size, palette.toSet().size)
+            assertEquals(picture.colors.size + picture.extraColors, palette.size)
         }
-        assertEquals(ColoringLevels.all[0].colors.size, ColoringLevels.palette(0, Random(1)).size)
-        assertEquals(ColoringLevels.all[4].colors.size + 2, ColoringLevels.palette(4, Random(1)).size)
+        assertEquals(0, pack.pack.levels[0].extraColors)
+        assertEquals(2, pack.pack.levels[4].extraColors)
     }
 }

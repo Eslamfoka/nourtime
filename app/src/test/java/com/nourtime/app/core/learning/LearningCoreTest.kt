@@ -45,10 +45,9 @@ class LearningCoreTest {
 
     @Test
     fun `every math answer is right, in range and among distinct choices`() {
-        MathLevels.all.indices.forEach { level ->
+        TestContent.math.levels.forEachIndexed { level, spec ->
             repeat(40) { seed ->
-                MathLevels.questions(level, Random(seed * 31 + level)).forEach { q ->
-                    val spec = MathLevels.all[level]
+                MathGame.questions(spec, Random(seed * 31 + level)).forEach { q ->
                     assertEquals(spec.choices.takeIf { q.task == Task.SOLVE } ?: 3, q.choices.size)
                     if (q.task == Task.COMPARE) {
                         val a = (q.prompt[0] as Card.Number).value
@@ -73,7 +72,7 @@ class LearningCoreTest {
 
     @Test
     fun `the first level is small additions with dots`() {
-        MathLevels.questions(0, Random(7)).forEach {
+        MathGame.questions(TestContent.math.levels[0], Random(7)).forEach {
             assertTrue(it.dots)
             assertEquals(Task.SOLVE, it.task)
             assertTrue(solve(it) <= 5)
@@ -82,13 +81,13 @@ class LearningCoreTest {
 
     @Test
     fun `a level's questions don't repeat when there are enough of them`() {
-        val prompts = MathLevels.questions(6, Random(3)).map { it.prompt }
+        val prompts = MathGame.questions(TestContent.math.levels[6], Random(3)).map { it.prompt }
         assertEquals(prompts.size, prompts.toSet().size)
     }
 
     @Test
     fun `the answer isn't always in the same place`() {
-        val places = (0 until 50).map { MathLevels.questions(4, Random(it)).first().answer }.toSet()
+        val places = (0 until 50).map { MathGame.questions(TestContent.math.levels[4], Random(it)).first().answer }.toSet()
         assertTrue(places.size > 2)
     }
 
@@ -97,41 +96,41 @@ class LearningCoreTest {
     @Test
     fun `every letters question has one right answer among distinct choices`() {
         LearnLanguage.entries.forEach { lang ->
-            LettersLevels.all.indices.forEach { level ->
+            TestContent.letterLevels.levels.forEach { level ->
                 repeat(30) { seed ->
-                    val qs = LettersLevels.questions(level, lang, Random(seed))
-                    assertEquals(LettersLevels.QUESTIONS, qs.size)
-                    qs.forEach { q -> checkLetters(q, lang) }
+                    val qs = LettersGame.questions(level, TestContent.letters(lang), Random(seed))
+                    assertEquals(level.questions, qs.size)
+                    qs.forEach { q -> checkLetters(q, TestContent.letters(lang)) }
                 }
             }
         }
     }
 
-    private fun checkLetters(q: Question, lang: LearnLanguage) {
+    private fun checkLetters(q: Question, lang: LettersLanguagePack) {
         val right = q.choices[q.answer]
         when (q.task) {
             Task.LETTER_TO_PICTURE -> {
                 val letter = (q.prompt[0] as Card.Text).text
-                val entry = LettersContent.letters(lang).first { it.letter == letter }
+                val entry = lang.letters.first { it.letter == letter }
                 assertEquals(entry.emoji, (right as Card.Picture).emoji)
                 assertEquals(1, q.choices.count { (it as Card.Picture).emoji == entry.emoji })
             }
             Task.LETTER_TO_WORD -> {
                 val letter = (q.prompt[0] as Card.Text).text
-                assertEquals(LettersContent.letters(lang).first { it.letter == letter }.word, (right as Card.Text).text)
+                assertEquals(lang.letters.first { it.letter == letter }.word, (right as Card.Text).text)
                 assertTrue(q.say!!.text.contains(right.text))
             }
             Task.WORD_TO_PICTURE -> {
                 val word = (q.prompt[0] as Card.Text).text
-                assertEquals(LettersContent.words(lang).first { it.word == word }.emoji, (right as Card.Picture).emoji)
+                assertEquals(lang.words.first { it.word == word }.emoji, (right as Card.Picture).emoji)
             }
             Task.NAME_TO_COLOR -> {
                 val name = (q.prompt[0] as Card.Text).text
-                assertEquals(LettersContent.colors(lang).first { it.name == name }.argb, (right as Card.Swatch).argb)
+                assertEquals(lang.colors.first { it.name == name }.argb, (right as Card.Swatch).argb)
             }
             Task.COLOR_TO_NAME -> {
                 val argb = (q.prompt[0] as Card.Swatch).argb
-                assertEquals(LettersContent.colors(lang).first { it.argb == argb }.name, (right as Card.Text).text)
+                assertEquals(lang.colors.first { it.argb == argb }.name, (right as Card.Text).text)
             }
             else -> error("unexpected ${q.task}")
         }
@@ -139,7 +138,8 @@ class LearningCoreTest {
 
     @Test
     fun `the word-then-picture level asks both about the same letter`() {
-        val qs = LettersLevels.questions(2, LearnLanguage.ARABIC, Random(1))
+        val level = TestContent.letterLevels.levels.first { it.pairs }
+        val qs = LettersGame.questions(level, TestContent.letters(LearnLanguage.ARABIC), Random(1))
         qs.chunked(2).forEach { (word, picture) ->
             assertEquals(Task.LETTER_TO_WORD, word.task)
             assertEquals(Task.LETTER_TO_PICTURE, picture.task)
@@ -149,18 +149,21 @@ class LearningCoreTest {
 
     @Test
     fun `letters speak the letter's name and its word`() {
-        val a = LettersContent.letters(LearnLanguage.ARABIC).first()
-        assertEquals("ألف، أرنب", LettersContent.speech(a, LearnLanguage.ARABIC))
-        assertEquals("A, Apple", LettersContent.speech(LettersContent.letters(LearnLanguage.ENGLISH).first(), LearnLanguage.ENGLISH))
+        val ar = TestContent.letters(LearnLanguage.ARABIC)
+        assertEquals("ألف، أرنب", ar.speech(ar.letters.first()))
+        val en = TestContent.letters(LearnLanguage.ENGLISH)
+        assertEquals("A, Apple", en.speech(en.letters.first()))
     }
 
     @Test
     fun `content has no duplicate pictures within a list`() {
         LearnLanguage.entries.forEach { lang ->
-            assertEquals(LettersContent.letters(lang).size, LettersContent.letters(lang).map { it.emoji }.toSet().size)
-            assertEquals(LettersContent.words(lang).size, LettersContent.words(lang).map { it.emoji }.toSet().size)
+            val pack = TestContent.letters(lang)
+            assertEquals(pack.letters.size, pack.letters.map { it.emoji }.toSet().size)
+            assertEquals(pack.words.size, pack.words.map { it.emoji }.toSet().size)
         }
-        assertEquals(28, LettersContent.letters(LearnLanguage.ARABIC).size)
+        assertEquals(28, TestContent.letters(LearnLanguage.ARABIC).letters.size)
+        assertEquals(25, TestContent.letters(LearnLanguage.ENGLISH).letters.size)
     }
 
     // --- rounds ---
@@ -213,28 +216,44 @@ class LearningCoreTest {
         assertEquals(0, RewardPolicy.earn(s.copy(dailyMaxMinutes = 0), stars = 3, earnedToday = 0))
     }
 
+    private data class L(override val id: String) : Level
+
+    private val three = GamePack(listOf(L("a"), L("b"), L("c")))
+
     @Test
     fun `finishing a level opens the next and keeps the best stars`() {
-        val p = LevelProgress().finished(0, 2, levelCount = 3).finished(0, 1, levelCount = 3)
-        assertEquals(1, p.unlocked)
-        assertEquals(2, p.stars[0])
-        assertEquals(2, p.finished(2, 3, levelCount = 3).unlocked)
-        assertEquals(2, p.finished(1, 3, 3).finished(2, 3, 3).unlocked)
+        val p = LevelProgress().finished("a", 2).finished("a", 1)
+        assertEquals(2, p.starsOf("a"))
+        assertTrue(p.playable(three, 1, null))
+        assertFalse(p.playable(three, 2, null))
+        assertEquals(1, p.current(three, null))
+        assertEquals(2, p.finished("b", 3).current(three, null))
+    }
+
+    @Test
+    fun `a level added later in the middle keeps everyone's stars`() {
+        val p = LevelProgress().finished("a", 3).finished("b", 2)
+        val grown = GamePack(listOf(L("a"), L("a2"), L("b"), L("c")))
+        assertEquals(2, p.starsOf("b"))
+        assertTrue(p.playable(grown, 1, null)) // the new level after a finished one
+        assertTrue(p.playable(grown, 2, null)) // b was finished: it stays open
+        assertTrue(p.playable(grown, 3, null)) // c is still open after b
+        assertEquals(3, p.current(grown, null))
     }
 
     @Test
     fun `progress survives encoding and ignores junk`() {
-        val p = LevelProgress(4, mapOf(0 to 3, 3 to 1))
+        val p = LevelProgress(mapOf("add-5" to 3, "mul-2-10" to 1))
         assertEquals(p, LevelProgress.decode(p.encode()))
-        assertEquals(LevelProgress(2), LevelProgress.decode("2|"))
-        assertNull(LevelProgress.decode("x|0:3"))
-        assertEquals(LevelProgress(1, mapOf(0 to 3)), LevelProgress.decode("1|0:9,zz,1:"))
+        assertEquals(LevelProgress(), LevelProgress.decode(null))
+        assertEquals(LevelProgress(mapOf("ok" to 3)), LevelProgress.decode("ok:9,Bad Id:2,zz,x:"))
     }
 
     @Test
     fun `older children start further in`() {
-        assertEquals(0, LevelProgress.start(GameId.MATH, AgeGroup.AGES_3_6).unlocked)
-        assertEquals(4, LevelProgress.start(GameId.MATH, AgeGroup.AGES_10_12).unlocked)
-        assertFalse(LevelProgress.start(GameId.LETTERS, AgeGroup.AGES_7_9).unlocked > 0)
+        val math = TestContent.math
+        assertEquals(0, LevelProgress().current(math, AgeGroup.AGES_3_6))
+        assertEquals("add-20", math.levels[LevelProgress().current(math, AgeGroup.AGES_10_12)].id)
+        assertEquals(0, LevelProgress().current(TestContent.letterLevels, AgeGroup.AGES_7_9))
     }
 }

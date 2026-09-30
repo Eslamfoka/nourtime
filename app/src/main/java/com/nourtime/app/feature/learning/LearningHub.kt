@@ -95,7 +95,7 @@ fun LearningHub(controller: LearningHubController, gender: ChildGender, onClose:
     val screen by controller.screen.collectAsStateWithLifecycle()
     val state by controller.state.collectAsStateWithLifecycle()
     val speaker = rememberSpeaker()
-    CompositionLocalProvider(LocalSpeaker provides speaker) {
+    CompositionLocalProvider(LocalSpeaker provides speaker, LocalImageSource provides controller::image) {
         Box(Modifier.fillMaxSize().background(HubBackground)) {
             AnimatedContent(
                 targetState = screen,
@@ -248,18 +248,20 @@ private fun ColumnScope.LevelPicker(controller: LearningHubController, state: Le
             )
             else -> Unit
         }
-        val unlocked = controller.unlocked(state, game)
+        val content by controller.hubContent.collectAsStateWithLifecycle()
+        val levels = content.levels(game)?.levels.orEmpty()
+        val current = controller.current(state, game)
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.fillMaxWidth(),
         ) {
-            repeat(levelCount(game)) { level ->
+            levels.indices.forEach { level ->
                 LevelButton(
                     label = numerals.format(level + 1),
                     stars = controller.stars(state, game, level),
-                    locked = level > unlocked,
-                    current = controller.rewards && level == unlocked,
+                    locked = !controller.playable(state, game, level),
+                    current = level == current,
                     accent = look.accent,
                     onClick = { controller.play(game, level) },
                 )

@@ -1,0 +1,219 @@
+{
+  "schema": 1,
+  "language": "ar",
+  "letters": [
+    {
+      "letter": "أ",
+      "name": "ألف",
+      "concept": "rabbit"
+    },
+    {
+      "letter": "ب",
+      "name": "باء",
+      "concept": "duck"
+    },
+    {
+      "letter": "ت",
+      "name": "تاء",
+      "concept": "apple"
+    },
+    {
+      "letter": "ث",
+      "name": "ثاء",
+      "concept": "fox"
+    },
+    {
+      "letter": "ج",
+      "name": "جيم",
+      "concept": "camel"
+    },
+    {
+      "letter": "ح",
+      "name": "حاء",
+      "concept": "horse"
+    },
+    {
+      "letter": "خ",
+      "name": "خاء",
+      "concept": "sheep"
+    },
+    {
+      "letter": "د",
+      "name": "دال",
+      "concept": "bear"
+    },
+    {
+      "letter": "ذ",
+      "name": "ذال",
+      "concept": "corn"
+    },
+    {
+      "letter": "ر",
+      "name": "راء",
+      "concept": "rice"
+    },
+    {
+      "letter": "ز",
+      "name": "زاي",
+      "concept": "giraffe"
+    },
+    {
+      "letter": "س",
+      "name": "سين",
+      "concept": "fish"
+    },
+    {
+      "letter": "ش",
+      "name": "شين",
+      "concept": "sun"
+    },
+    {
+      "letter": "ص",
+      "name": "صاد",
+      "concept": "falcon"
+    },
+    {
+      "letter": "ض",
+      "name": "ضاد",
+      "concept": "frog"
+    },
+    {
+      "letter": "ط",
+      "name": "طاء",
+      "concept": "airplane"
+    },
+    {
+      "letter": "ظ",
+      "name": "ظاء",
+      "concept": "envelope"
+    },
+    {
+      "letter": "ع",
+      "name": "عين",
+      "concept": "grapes"
+    },
+    {
+      "letter": "غ",
+      "name": "غين",
+      "concept": "cloud"
+    },
+    {
+      "letter": "ف",
+      "name": "فاء",
+      "concept": "elephant"
+    },
+    {
+      "letter": "ق",
+      "name": "قاف",
+      "concept": "moon"
+    },
+    {
+      "letter": "ك",
+      "name": "كاف",
+      "concept": "ball"
+    },
+    {
+      "letter": "ل",
+      "name": "لام",
+      "concept": "lemon"
+    },
+    {
+      "letter": "م",
+      "name": "ميم",
+      "concept": "banana"
+    },
+    {
+      "letter": "ن",
+      "name": "نون",
+      "concept": "bee"
+    },
+    {
+      "letter": "ه",
+      "name": "هاء",
+      "concept": "gift"
+    },
+    {
+      "letter": "و",
+      "name": "واو",
+      "concept": "rose"
+    },
+    {
+      "letter": "ي",
+      "name": "ياء",
+      "concept": "hand"
+    }
+  ],
+  "words": {
+    "apple": "تفاحة",
+    "bus": "حافلة",
+    "cat": "قطة",
+    "dog": "كلب",
+    "egg": "بيضة",
+    "fish": "سمكة",
+    "grapes": "عنب",
+    "house": "بيت",
+    "ice_cream": "آيس كريم",
+    "juice": "عصير",
+    "key": "مفتاح",
+    "lion": "أسد",
+    "moon": "قمر",
+    "nose": "أنف",
+    "orange": "برتقالة",
+    "pizza": "بيتزا",
+    "queen": "ملكة",
+    "rabbit": "أرنب",
+    "sun": "شمس",
+    "tree": "شجرة",
+    "umbrella": "مظلة",
+    "violin": "كمان",
+    "watch": "ساعة يد",
+    "yacht": "قارب شراعي",
+    "zebra": "حمار وحشي",
+    "duck": "بطة",
+    "fox": "ثعلب",
+    "camel": "جمل",
+    "horse": "حصان",
+    "sheep": "خروف",
+    "bear": "دب",
+    "corn": "ذرة",
+    "rice": "رز",
+    "giraffe": "زرافة",
+    "falcon": "صقر",
+    "frog": "ضفدع",
+    "airplane": "طائرة",
+    "envelope": "ظرف",
+    "cloud": "غيمة",
+    "elephant": "فيل",
+    "ball": "كرة",
+    "lemon": "ليمون",
+    "banana": "موز",
+    "bee": "نحلة",
+    "gift": "هدية",
+    "rose": "وردة",
+    "hand": "يد",
+    "mouth": "فم",
+    "eye": "عين",
+    "ear": "أذن",
+    "car": "سيارة",
+    "book": "كتاب",
+    "star": "نجمة",
+    "flower": "زهرة",
+    "bird": "عصفور",
+    "milk": "حليب",
+    "bread": "خبز",
+    "clock": "ساعة"
+  },
+  "colors": {
+    "red": "أحمر",
+    "blue": "أزرق",
+    "green": "أخضر",
+    "yellow": "أصفر",
+    "orange": "برتقالي",
+    "purple": "بنفسجي",
+    "pink": "وردي",
+    "brown": "بني",
+    "black": "أسود",
+    "white": "أبيض",
+    "gray": "رمادي"
+  }
+}

@@ -2,42 +2,31 @@ package com.nourtime.app.core.learning
 
 import kotlin.random.Random
 
-enum class MathOp(val symbol: String) { ADD("+"), SUB("−"), MUL("×"), DIV("÷"), COMPARE("?") }
+/** [key] is the name used in content files. */
+enum class MathOp(val symbol: String, val key: String) { ADD("+", "add"), SUB("−", "sub"), MUL("×", "mul"), DIV("÷", "div"), COMPARE("?", "compare") }
 
 /**
- * One Smart Math level. [max] bounds every number in +, − and comparisons; [factor] bounds the
- * factors of × and the divisor and quotient of ÷ (with [minFactor] as the smallest first factor).
+ * One Smart Math level (from `math/levels.json`). [max] bounds every number in +, − and comparisons;
+ * [factor] bounds the factors of × and the divisor and quotient of ÷ (with [minFactor] as the
+ * smallest first factor).
  */
 data class MathLevel(
+    override val id: String,
     val ops: List<MathOp>,
     val max: Int = 10,
     val minFactor: Int = 1,
     val factor: Int = 10,
     val dots: Boolean = false,
     val choices: Int = 4,
-)
+    val questions: Int = MathGame.QUESTIONS,
+) : Level
 
-object MathLevels {
+/** Makes Smart Math questions. Numbers are generated, so one level spec gives endless questions. */
+object MathGame {
     const val QUESTIONS = 6
 
-    val all: List<MathLevel> = listOf(
-        MathLevel(listOf(MathOp.ADD), max = 5, dots = true, choices = 3),
-        MathLevel(listOf(MathOp.ADD), max = 10, choices = 3),
-        MathLevel(listOf(MathOp.SUB), max = 10, choices = 3),
-        MathLevel(listOf(MathOp.COMPARE), max = 20),
-        MathLevel(listOf(MathOp.ADD), max = 20),
-        MathLevel(listOf(MathOp.SUB), max = 20),
-        MathLevel(listOf(MathOp.ADD, MathOp.SUB), max = 100),
-        MathLevel(listOf(MathOp.MUL), minFactor = 2, factor = 5),
-        MathLevel(listOf(MathOp.MUL), minFactor = 2, factor = 10),
-        MathLevel(listOf(MathOp.DIV), factor = 10),
-        MathLevel(listOf(MathOp.COMPARE), max = 100),
-        MathLevel(listOf(MathOp.ADD, MathOp.SUB, MathOp.MUL, MathOp.DIV, MathOp.COMPARE), max = 100, minFactor = 2, factor = 10),
-    )
-
-    /** The questions of level [level] (0-based); the same seed gives the same questions. */
-    fun questions(level: Int, random: Random, count: Int = QUESTIONS): List<Question> {
-        val spec = all[level.coerceIn(all.indices)]
+    /** The questions of [spec]; the same seed gives the same questions. */
+    fun questions(spec: MathLevel, random: Random, count: Int = spec.questions): List<Question> {
         val seen = mutableSetOf<List<Card>>()
         val out = mutableListOf<Question>()
         var tries = 0

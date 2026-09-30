@@ -24,42 +24,40 @@ object RewardPolicy {
     }
 }
 
-/** A game's levels: [unlocked] is the highest playable level, [stars] the best result per level. */
-data class LevelProgress(val unlocked: Int = 0, val stars: Map<Int, Int> = emptyMap()) {
+/**
+ * A game's progress: the best stars per level **id**. Ids (not positions) keep progress right when new
+ * levels are added to a content pack, anywhere in its list.
+ */
+data class LevelProgress(val stars: Map<String, Int> = emptyMap()) {
 
-    /** After finishing [level] with [earned] stars: best stars kept, the next level opens. */
-    fun finished(level: Int, earned: Int, levelCount: Int): LevelProgress = LevelProgress(
-        unlocked = maxOf(unlocked, minOf(level + 1, levelCount - 1)),
-        stars = stars + (level to maxOf(stars[level] ?: 0, earned)),
-    )
+    fun finished(levelId: String, earned: Int): LevelProgress =
+        LevelProgress(stars + (levelId to maxOf(stars[levelId] ?: 0, earned.coerceIn(0, 3))))
 
-    fun encode(): String = "$unlocked|" + stars.entries.sortedBy { it.key }.joinToString(",") { "${it.key}:${it.value}" }
+    fun starsOf(levelId: String): Int = stars[levelId] ?: 0
+
+    /**
+     * Levels up to the start level are open; after that, each level opens when the one before is done.
+     * A level the child has finished stays open, even if a new level is later added before it.
+     */
+    fun playable(pack: GamePack<*>, index: Int, age: AgeGroup?): Boolean {
+        if (index !in pack.levels.indices) return false
+        return index <= pack.startIndex(age) || pack.levels[index].id in stars || pack.levels[index - 1].id in stars
+    }
+
+    /** The furthest playable level: where the child is now. */
+    fun current(pack: GamePack<*>, age: AgeGroup?): Int =
+        pack.levels.indices.lastOrNull { playable(pack, it, age) } ?: 0
+
+    fun encode(): String = stars.entries.sortedBy { it.key }.joinToString(",") { "${it.key}:${it.value}" }
 
     companion object {
-        fun decode(text: String?): LevelProgress? {
-            if (text.isNullOrBlank()) return null
-            val parts = text.split('|')
-            val unlocked = parts[0].toIntOrNull() ?: return null
-            val stars = parts.getOrNull(1).orEmpty().split(',').filter { it.isNotBlank() }.mapNotNull {
-                val (k, v) = it.split(':').takeIf { p -> p.size == 2 } ?: return@mapNotNull null
-                val level = k.toIntOrNull() ?: return@mapNotNull null
-                val s = v.toIntOrNull()?.coerceIn(0, 3) ?: return@mapNotNull null
-                level to s
-            }.toMap()
-            return LevelProgress(unlocked.coerceAtLeast(0), stars)
-        }
-
-        /** Older children skip the easiest levels. */
-        fun start(game: GameId, age: AgeGroup?): LevelProgress = LevelProgress(
-            unlocked = when (game) {
-                GameId.MATH -> when (age) {
-                    AgeGroup.AGES_7_9 -> 2
-                    AgeGroup.AGES_10_12 -> 4
-                    else -> 0
-                }
-                GameId.LETTERS -> if (age == AgeGroup.AGES_10_12) 2 else 0
-                else -> 0
-            },
+        fun decode(text: String?): LevelProgress = LevelProgress(
+            text.orEmpty().split(',').mapNotNull { entry ->
+                val parts = entry.split(':')
+                if (parts.size != 2 || !LevelIds.valid(parts[0])) return@mapNotNull null
+                val s = parts[1].toIntOrNull()?.coerceIn(0, 3) ?: return@mapNotNull null
+                parts[0] to s
+            }.toMap(),
         )
     }
 }

@@ -1,0 +1,204 @@
+{
+  "schema": 1,
+  "language": "en",
+  "letters": [
+    {
+      "letter": "A",
+      "name": "A",
+      "concept": "apple"
+    },
+    {
+      "letter": "B",
+      "name": "B",
+      "concept": "bus"
+    },
+    {
+      "letter": "C",
+      "name": "C",
+      "concept": "cat"
+    },
+    {
+      "letter": "D",
+      "name": "D",
+      "concept": "dog"
+    },
+    {
+      "letter": "E",
+      "name": "E",
+      "concept": "egg"
+    },
+    {
+      "letter": "F",
+      "name": "F",
+      "concept": "fish"
+    },
+    {
+      "letter": "G",
+      "name": "G",
+      "concept": "grapes"
+    },
+    {
+      "letter": "H",
+      "name": "H",
+      "concept": "house"
+    },
+    {
+      "letter": "I",
+      "name": "I",
+      "concept": "ice_cream"
+    },
+    {
+      "letter": "J",
+      "name": "J",
+      "concept": "juice"
+    },
+    {
+      "letter": "K",
+      "name": "K",
+      "concept": "key"
+    },
+    {
+      "letter": "L",
+      "name": "L",
+      "concept": "lion"
+    },
+    {
+      "letter": "M",
+      "name": "M",
+      "concept": "moon"
+    },
+    {
+      "letter": "N",
+      "name": "N",
+      "concept": "nose"
+    },
+    {
+      "letter": "O",
+      "name": "O",
+      "concept": "orange"
+    },
+    {
+      "letter": "P",
+      "name": "P",
+      "concept": "pizza"
+    },
+    {
+      "letter": "Q",
+      "name": "Q",
+      "concept": "queen"
+    },
+    {
+      "letter": "R",
+      "name": "R",
+      "concept": "rabbit"
+    },
+    {
+      "letter": "S",
+      "name": "S",
+      "concept": "sun"
+    },
+    {
+      "letter": "T",
+      "name": "T",
+      "concept": "tree"
+    },
+    {
+      "letter": "U",
+      "name": "U",
+      "concept": "umbrella"
+    },
+    {
+      "letter": "V",
+      "name": "V",
+      "concept": "violin"
+    },
+    {
+      "letter": "W",
+      "name": "W",
+      "concept": "watch"
+    },
+    {
+      "letter": "Y",
+      "name": "Y",
+      "concept": "yacht"
+    },
+    {
+      "letter": "Z",
+      "name": "Z",
+      "concept": "zebra"
+    }
+  ],
+  "words": {
+    "apple": "Apple",
+    "bus": "Bus",
+    "cat": "Cat",
+    "dog": "Dog",
+    "egg": "Egg",
+    "fish": "Fish",
+    "grapes": "Grapes",
+    "house": "House",
+    "ice_cream": "Ice cream",
+    "juice": "Juice",
+    "key": "Key",
+    "lion": "Lion",
+    "moon": "Moon",
+    "nose": "Nose",
+    "orange": "Orange",
+    "pizza": "Pizza",
+    "queen": "Queen",
+    "rabbit": "Rabbit",
+    "sun": "Sun",
+    "tree": "Tree",
+    "umbrella": "Umbrella",
+    "violin": "Violin",
+    "watch": "Watch",
+    "yacht": "Yacht",
+    "zebra": "Zebra",
+    "duck": "Duck",
+    "fox": "Fox",
+    "camel": "Camel",
+    "horse": "Horse",
+    "sheep": "Sheep",
+    "bear": "Bear",
+    "corn": "Corn",
+    "rice": "Rice",
+    "giraffe": "Giraffe",
+    "falcon": "Falcon",
+    "frog": "Frog",
+    "airplane": "Airplane",
+    "envelope": "Envelope",
+    "cloud": "Cloud",
+    "elephant": "Elephant",
+    "ball": "Ball",
+    "lemon": "Lemon",
+    "banana": "Banana",
+    "bee": "Bee",
+    "gift": "Gift",
+    "rose": "Rose",
+    "hand": "Hand",
+    "mouth": "Mouth",
+    "eye": "Eye",
+    "ear": "Ear",
+    "car": "Car",
+    "book": "Book",
+    "star": "Star",
+    "flower": "Flower",
+    "bird": "Bird",
+    "milk": "Milk",
+    "bread": "Bread",
+    "clock": "Clock"
+  },
+  "colors": {
+    "red": "Red",
+    "blue": "Blue",
+    "green": "Green",
+    "yellow": "Yellow",
+    "orange": "Orange",
+    "purple": "Purple",
+    "pink": "Pink",
+    "brown": "Brown",
+    "black": "Black",
+    "white": "White",
+    "gray": "Gray"
+  }
+}

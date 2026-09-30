@@ -41,11 +41,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Matrix
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -60,6 +62,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.theme.NourPalette
 import com.nourtime.app.core.learning.Area
@@ -67,7 +70,6 @@ import com.nourtime.app.core.learning.ColoringPicture
 import com.nourtime.app.core.learning.ColoringRules
 import com.nourtime.app.core.learning.ConnectRules
 import com.nourtime.app.core.learning.DotShape
-import com.nourtime.app.core.learning.LettersContent
 import com.nourtime.app.core.learning.NumeralStyle
 import com.nourtime.app.data.learning.LearningState
 import com.nourtime.app.data.settings.AgeGroup
@@ -264,7 +266,18 @@ private fun Area.path(size: Size): Path = Path().also { path ->
             pts.drop(1).forEach { (x, y) -> path.lineTo(x * size.width, y * size.height) }
             path.close()
         }
+        is Area.Svg -> {
+            path.addPath(SvgPaths.parsed(d))
+            path.transform(Matrix().apply { scale(size.width / width, size.height / height) })
+        }
     }
+}
+
+/** SVG path data parsed by Compose (exact curves and arcs), kept so a drawing isn't re-parsed every frame. */
+private object SvgPaths {
+    private val cache = android.util.LruCache<String, Path>(256)
+
+    fun parsed(d: String): Path = cache.get(d) ?: PathParser().parsePathString(d).toPath().also { cache.put(d, it) }
 }
 
 private fun DrawScope.drawPicture(picture: ColoringPicture, fill: (Int) -> Color, outline: Float) {
@@ -281,7 +294,7 @@ internal fun ColumnScope.ColoringScreen(controller: LearningHubController, state
     val speaker = LocalSpeaker.current
     val round = s.round
     val picture = round.picture
-    val colorNames = remember(controller.appLanguage) { LettersContent.colors(controller.appLanguage).associate { it.argb to it.name } }
+    val colorNames = controller.hubContent.collectAsStateWithLifecycle().value.colorNames
     val tutorial = round.tutorial && round.fills.all { it == null }
     val hint = if (tutorial) round.hintRegion else null
 

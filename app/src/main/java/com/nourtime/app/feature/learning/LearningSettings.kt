@@ -32,6 +32,7 @@ import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.learning.LearningSettings
 import com.nourtime.app.core.time.TrustedClock
+import com.nourtime.app.data.learning.LearningContentRepository
 import com.nourtime.app.data.learning.LearningRepository
 import com.nourtime.app.data.learning.LearningState
 import com.nourtime.app.data.settings.AgeGroup
@@ -54,6 +55,7 @@ fun currentLearnLanguage(): LearnLanguage =
 @HiltViewModel
 class LearningSettingsViewModel @Inject constructor(
     val repository: LearningRepository,
+    val content: LearningContentRepository,
     private val trustedClock: TrustedClock,
 ) : ViewModel() {
     val state: StateFlow<LearningState?> = repository.state.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
@@ -108,7 +110,7 @@ fun LearningSettingsCard(ageGroup: AgeGroup?, gender: ChildGender?, viewModel: L
         }
         NourSecondaryButton(stringResource(R.string.learn_settings_try), { previewing = true })
     }
-    if (previewing) LearningPreviewDialog(viewModel.repository, ageGroup, gender ?: ChildGender.GIRL) { previewing = false }
+    if (previewing) LearningPreviewDialog(viewModel.repository, viewModel.content, ageGroup, gender ?: ChildGender.GIRL) { previewing = false }
 }
 
 @Composable
@@ -130,13 +132,20 @@ private fun MinuteChips(options: List<Int>, selected: Int, onSelect: (Int) -> Un
 
 /** The hub exactly as the child sees it, without earning minutes. */
 @Composable
-fun LearningPreviewDialog(repository: LearningRepository, ageGroup: AgeGroup?, gender: ChildGender, onDismiss: () -> Unit) {
+fun LearningPreviewDialog(
+    repository: LearningRepository,
+    content: LearningContentRepository,
+    ageGroup: AgeGroup?,
+    gender: ChildGender,
+    onDismiss: () -> Unit,
+) {
     val scope = rememberCoroutineScope()
     val language = currentLearnLanguage()
     val controller = remember {
         LearningHubController(
             scope = scope,
             repo = repository,
+            content = content,
             age = ageGroup,
             appLanguage = language,
             rewards = false,

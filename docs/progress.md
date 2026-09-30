@@ -195,26 +195,40 @@ list: [`handoff.md` §12](handoff.md#12-learning-hub-2026-09-30-overnight).
 | L3 | **Number Connect** | Drawing: drag from dot 1 to 2 to 3 over a faded outline; segments can be lines or curves. | ✅ 8 drawings (triangle → cat), numbers spoken as reached |
 | L4 | **Coloring Match** | Tap a palette color, then tap a region of a black-and-white drawing to fill it, matching a colored reference. | ✅ 6 pictures (apple → car), extra colors from level 3 |
 
+### Goal: Google Play at scale
+The four games prove the engine; the shipped **content** (12 math levels, 58 words, 8 drawings, 6
+pictures) is a prototype. A public release needs far more content in several languages, plus real
+illustrations. So all content is **data** (JSON packs), not code: adding a level, word, language,
+drawing or illustration is a file edit, checked automatically by the tests. Authoring guide:
+[`content-packs.md`](content-packs.md).
+
 ### Architecture
 
 ```
-core/learning/          pure Kotlin, unit tested, no Android
-  GameId, LevelProgress   which games exist; per-game unlocked level + best stars
-  Round                   state machine for one level: questions, first-try score, stars
-  Numerals                123 ⇄ ١٢٣ formatting
-  MathLevels              level table + seeded question generator
-  LettersContent/Levels   Arabic + English catalog (letter, word, picture, color) + generator
-  RewardPolicy            how many minutes a won level earns (parent limits, daily cap)
+assets/learning/                content packs (JSON) + images/ (illustrations, optional)
+core/learning/                  pure Kotlin, unit tested, no Android
+  content/ContentLoader         reads + checks packs; bad items left out and reported, never a crash
+  content/ContentJson           the pack file formats (schema 1; unknown fields ignored)
+  Content                       Level (stable id), GamePack (levels + start per age), concepts, letters
+  MathGame / LettersGame        question generators (a level spec gives endless questions)
+  ConnectDots / Coloring        drawing games; Coloring regions include SVG paths (SvgPath)
+  Round, Stars, RewardPolicy    scoring and minutes
+  LevelProgress                 best stars per level **id** (safe when levels are added or reordered)
 data/learning/
-  LearningRepository      DataStore: progress, tutorial seen, numeral style, minute bank,
-                          minutes earned today, parent's learning settings
+  LearningContentRepository     packs from assets, loaded once per game off the main thread
+  LearningRepository            DataStore: progress, bank, minutes today, parent settings
 feature/learning/
-  Speaker                 Android TextToSpeech wrapper (per language, graceful when missing)
-  LearningHub             game menu + minute bank + "Use my minutes"
-  RoundScreen             shared frame: progress dots, feedback, tutorial hint, level-done screen
-  MathGame / LettersGame  question cards for each game
-  LearningSettingsCard    parent: on/off, minutes per level, daily max, "Try the games"
+  LearningHub, QuestionScreen, DrawingScreens, LearningPicture (illustration or emoji), Speaker
 ```
+
+**Why JSON packs, not a database (owner's question, 2026-09-30).** JSON is the source format content
+people can write, review and diff, and that can later be downloaded as packs. It's small and fast:
+each game's pack is parsed once when the hub opens, off the main thread; a unit test parses and checks
+a **10,000-word** pack (time printed in the test output). A Room database only pays off for hundreds
+of thousands of rows or search; the loader sits behind one file interface, so a prebuilt database (or
+downloaded packs, or Play Asset Delivery for large image sets) can replace it without touching the
+games. SVG: Android doesn't render SVG files, so drawings keep their SVG **path data** in the pack;
+Compose's own `PathParser` draws it exactly, and a pure-Kotlin flattener makes it tappable.
 
 **Mini-games engine.** Every game supplies a list of levels; a level produces a list of
 questions from a seed. Math and Letters share one question model (a prompt plus 3–4 choices), so
@@ -238,8 +252,8 @@ sound and the speaker icon is hidden; the parent's Settings card says how to ins
 **Rewards.** Two decisions made here, for the owner to confirm:
 1. **Earned time is a break inside the lock, not a parent bonus.** `TimerCommand.Bonus` ends a lock
    and, when the bonus runs out, a *full new* lock period starts (6 h by default). That's fine for a
-   parent's gift but would punish a child who earns 5 minutes near the end of a lock. So a sibling
-   command, `TimerCommand.Reward`, opens the apps for the earned minutes while the lock clock keeps
+   parent's gift but would punish a child who earns 5 minutes near the end of a lock. So
+   `TimeRules.reward` opens the apps for the earned minutes while the lock clock keeps
    running in the background: when the minutes run out the lock continues with what's left; if the
    lock ends meanwhile, the normal full refill happens.
 2. **Minutes are banked.** Each won level (at least 2 stars, so random tapping doesn't pay) adds
@@ -251,27 +265,53 @@ Parent limits (Settings → Learning): Learning Hub on/off (default on), minutes
 **time's up** locks, not at bedtime or on protected Settings screens. Syncing these settings to the
 parent's phone, and showing "minutes earned today" there, comes after the games work.
 
-**Pictures.** Emoji for now: they work offline on every Android 8+ phone and need no licensing.
-Real artwork can replace them later through the same content catalog.
+**Pictures.** Emoji are placeholders; real illustrations are planned (owner, 2026-09-30). A concept or
+drawing names its illustration (`"image": "apple"` → `images/apple.webp`) and the app shows it,
+falling back to the emoji until the file exists.
+
+**Arabic is right to left** (owner, 2026-09-30): with ١٢٣ numerals, equations are written right to
+left like Arabic schoolbooks and < / > are mirrored so the sign opens toward the bigger number.
 
 ### Number Connect (L3): design as built
 - A shape is a list of dots in 0..1 coordinates; each segment to the next dot is a line or a curve
   (quadratic, with a control point). The faded outline is drawn from the same data, so one file
-  describes the whole level. Shapes are in `ConnectLevels` (Kotlin) for now; a JSON asset format
-  and an SVG-to-dots script can come when an illustrator provides drawings.
+  describes the whole level. Shapes are in `connect/shapes.json`; an SVG-to-dots script can come
+  when an illustrator provides drawings.
 - A drag that starts near dot *k* and ends near dot *k+1* completes a segment; other drags snap back. Tolerance grows for ages 3–6. A quick swipe that passes over the
   next dot counts too (touch events come in steps).
 - Tutorial level: an animated hand drags 1 → 2. Difficulty: more dots, curves, numbers beyond 10,
   then counting by 2s or letters (أ ب ت) instead of numbers.
 
 ### Coloring Match (L4): design as built
-- A drawing is a list of closed regions (boxes, ovals, polygons in 0..1 coordinates), each with its
-  target color. The colored reference is the **same drawing** rendered with the target colors, so no
-  second image is needed. SVG paths can be added later as another region type.
+- A drawing is a list of closed regions (boxes, ovals, polygons or SVG paths), each with its target
+  color, in `coloring/pictures.json`. The colored reference is the **same drawing** rendered with the
+  target colors, so no second image is needed.
 - Tap-to-fill: pure-Kotlin hit test; the topmost region wins (e.g. the fish's eye over its body).
 - Win when every region matches; the palette shows only the colors used (plus one distractor from
   level 3 on). Tutorial: hand taps a color, then the matching region.
-- Content: 6 original pictures drawn in code. More can come from original or openly licensed SVGs.
+- Content: 6 simple original pictures. Illustrated ones come as SVG path data (see the guide).
+
+### Roadmap: nine more games (added 2026-09-30, not started)
+All nine fit the same foundation: a **content pack** (JSON, checked by the tests), levels with ids,
+stars → `RewardPolicy`, the tutorial hand, TTS and the Learning Hub menu. What each one adds is an
+**interaction engine**. Several reuse one, so the order below builds each engine once.
+
+| # | Game | Ages | Engine (new or reused) | Content pack | Phase |
+|---|---|---|---|---|---|
+| G1 | **Listen & Find**: hear a word, tap its picture | 3–6 | Choice round (reused; a new task `listen_to_picture` in `letters/levels.json`) | concepts + language packs (reused) | A |
+| G2 | **What Comes Next?**: continue a pattern of shapes, colors or numbers | 4–9 | Choice round (reused; a pattern generator like `MathGame`) | `patterns/levels.json`: rule types (ABAB, +2, …), lengths | A |
+| G3 | **Tell the Time**: read an analog clock | 7–12 | Choice round with a clock card (new card type) | `clock/levels.json`: hours, halves, quarters, 5-minute steps | A |
+| G4 | **Letter Tracing**: trace a letter's strokes in order | 3–7 | **Path engine** (from Number Connect: dots become stroke paths with start points and direction) | `tracing/<language>.json`: SVG stroke paths per letter, stroke order | B |
+| G5 | **Memory Match**: flip cards to find pairs (word ↔ picture, number ↔ dots) | 4–12 | **Card grid engine** (new): flip, match, moves → stars | levels: grid size, pair kinds, categories (from concepts) | B |
+| G6 | **Word Builder**: drag letters to spell a word; Arabic letters join as they're placed | 6–12 | **Drag-and-drop engine** (new): tiles, slots, snap | concepts + language packs (reused); Arabic shaping by the text engine | C |
+| G7 | **Sorting**: drag items into groups (fruit / animals, even / odd) | 4–9 | Drag-and-drop engine (reused) | `sorting/levels.json`: bins = categories or number rules | C |
+| G8 | **Little Shop**: pay with coins, count change | 7–12 | Drag-and-drop engine (reused) + prices | `shop/levels.json`: items (concepts), coin set per currency, price ranges | C |
+| G9 | **Short surahs and du'as**: listen and repeat, optional for the family | all | **Audio player** (new): verses, repeat, progress | `audio/…`: licensed recitations + texts; downloaded packs (size) | D, after owner's decision on sources and licensing |
+
+**Order.** Phase A adds games on the existing choice engine (cheapest, fastest to more content).
+Phase B adds the path and card engines. Phase C adds drag and drop. Phase D needs audio licensing.
+**First step when G1 starts:** turn the fixed `GameId` list into a game registry (id, title, icon,
+engine, pack) so a new game is one registry entry plus its screen, with no edits spread over the hub.
 
 ## UX backlog (future polish phase)
 

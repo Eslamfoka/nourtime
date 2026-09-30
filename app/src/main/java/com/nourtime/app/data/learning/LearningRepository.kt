@@ -14,7 +14,6 @@ import com.nourtime.app.core.learning.LearningSettings
 import com.nourtime.app.core.learning.LevelProgress
 import com.nourtime.app.core.learning.NumeralStyle
 import com.nourtime.app.core.learning.RewardPolicy
-import com.nourtime.app.data.settings.AgeGroup
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -62,9 +61,7 @@ class LearningRepository @Inject constructor(
 
     suspend fun markTutorialSeen(game: GameId) = store.edit { it[TUTORIALS] = it[TUTORIALS].orEmpty() + game.name }
 
-    /** Progress for [game], starting at a level that suits [age] the first time. */
-    fun progressOf(state: LearningState, game: GameId, age: AgeGroup?): LevelProgress =
-        state.progress[game] ?: LevelProgress.start(game, age)
+    fun progressOf(state: LearningState, game: GameId): LevelProgress = state.progress[game] ?: LevelProgress()
 
     /**
      * Records a finished level and banks the minutes it earns (none in a parent's preview, [rewards]
@@ -72,17 +69,15 @@ class LearningRepository @Inject constructor(
      */
     suspend fun finishLevel(
         game: GameId,
-        level: Int,
+        levelId: String,
         stars: Int,
-        levelCount: Int,
-        age: AgeGroup?,
         today: LocalDate,
         rewards: Boolean,
     ): LevelOutcome {
         var outcome: LevelOutcome? = null
         store.edit { prefs ->
             val s = prefs.toState()
-            val progress = progressOf(s, game, age).finished(level, stars, levelCount)
+            val progress = progressOf(s, game).finished(levelId, stars)
             prefs[progressKey(game)] = progress.encode()
             val earnedToday = s.earnedOn(today)
             val earned = if (rewards) RewardPolicy.earn(s.settings, stars, earnedToday) else 0
@@ -108,7 +103,7 @@ class LearningRepository @Inject constructor(
     }
 
     private fun Preferences.toState(): LearningState {
-        val progress = GameId.entries.mapNotNull { game -> LevelProgress.decode(this[progressKey(game)])?.let { game to it } }.toMap()
+        val progress = GameId.entries.associateWith { game -> LevelProgress.decode(this[progressKey(game)]) }
         return LearningState(
             settings = LearningSettings(
                 enabled = this[ENABLED] ?: true,
@@ -136,6 +131,8 @@ class LearningRepository @Inject constructor(
         val EARNED_DAY = longPreferencesKey("learn_earned_day")
         val EARNED_MINUTES = intPreferencesKey("learn_earned_minutes")
 
-        fun progressKey(game: GameId) = stringPreferencesKey("learn_progress_${game.name.lowercase()}")
+        // Stars per level id ("add-5:3,add-10:2"). The first version stored positions under
+        // learn_progress_*; that was never released, so it's simply not read any more.
+        fun progressKey(game: GameId) = stringPreferencesKey("learn_levels_${game.name.lowercase()}")
     }
 }

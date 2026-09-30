@@ -3,7 +3,7 @@ package com.nourtime.app.data.learning
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import com.nourtime.app.core.learning.GameId
 import com.nourtime.app.core.learning.LearningSettings
-import com.nourtime.app.data.settings.AgeGroup
+import com.nourtime.app.core.learning.LevelProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -35,7 +35,7 @@ class LearningRepositoryTest {
     fun tearDown() = scope.cancel()
 
     private suspend fun finish(stars: Int = 3, day: LocalDate = today, rewards: Boolean = true) =
-        repo.finishLevel(GameId.MATH, level = 0, stars = stars, levelCount = 12, age = AgeGroup.AGES_3_6, today = day, rewards = rewards)
+        repo.finishLevel(GameId.MATH, levelId = "add-5", stars = stars, today = day, rewards = rewards)
 
     @Test
     fun `defaults are on, 5 minutes a level, 15 a day`() = runTest {
@@ -66,7 +66,7 @@ class LearningRepositoryTest {
         val preview = finish(rewards = false)
         assertEquals(0, preview.earnedMinutes)
         assertFalse(preview.dailyMaxReached)
-        assertEquals(1, repo.state.first().progress[GameId.MATH]?.unlocked)
+        assertEquals(3, repo.state.first().progress[GameId.MATH]?.starsOf("add-5"))
         assertEquals(0, repo.state.first().bankMinutes)
     }
 
@@ -84,9 +84,10 @@ class LearningRepositoryTest {
     }
 
     @Test
-    fun `older children's progress starts at their level`() = runTest {
-        val p = repo.finishLevel(GameId.MATH, level = 4, stars = 3, levelCount = 12, age = AgeGroup.AGES_10_12, today = today, rewards = true).progress
-        assertEquals(5, p.unlocked)
-        assertEquals(4, repo.progressOf(LearningState(), GameId.MATH, AgeGroup.AGES_10_12).unlocked)
+    fun `stars are kept per level id`() = runTest {
+        val p = repo.finishLevel(GameId.MATH, levelId = "add-20", stars = 2, today = today, rewards = true).progress
+        assertEquals(2, p.starsOf("add-20"))
+        assertEquals(2, repo.state.first().progress[GameId.MATH]?.starsOf("add-20"))
+        assertEquals(LevelProgress(), repo.progressOf(LearningState(), GameId.CONNECT))
     }
 }

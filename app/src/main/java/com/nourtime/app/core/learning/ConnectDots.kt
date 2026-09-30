@@ -10,8 +10,17 @@ data class Dot(val x: Float, val y: Float, val cx: Float? = null, val cy: Float?
     val curved: Boolean get() = cx != null && cy != null
 }
 
-/** A drawing to connect. [closed]: the last dot connects back to the first. */
-data class DotShape(val name: String, val emoji: String, val dots: List<Dot>, val closed: Boolean = true) {
+/**
+ * A drawing to connect (from `connect/shapes.json`). [closed]: the last dot connects back to the
+ * first. [image] is an illustration shown when the drawing is complete (optional).
+ */
+data class DotShape(
+    override val id: String,
+    val emoji: String,
+    val dots: List<Dot>,
+    val closed: Boolean = true,
+    val image: String? = null,
+) : Level {
     /** Segments to draw: into dot 1, 2, … and, when closed, back into dot 0. */
     val segmentCount: Int get() = if (closed) dots.size else dots.size - 1
 
@@ -68,68 +77,4 @@ object ConnectRules {
 
     /** Touch radius: bigger for small children. */
     fun radiusFor(young: Boolean): Float = if (young) 0.09f else 0.065f
-}
-
-object ConnectLevels {
-    /**
-     * Each level is one drawing; they grow in dots, then add curves. A dot's control point bends the
-     * segment that arrives at it (for dot 0: the closing segment).
-     */
-    val all: List<DotShape> = listOf(
-        DotShape("triangle", "🔺", listOf(Dot(0.5f, 0.15f), Dot(0.85f, 0.8f), Dot(0.15f, 0.8f))),
-        DotShape(
-            "house", "🏠",
-            listOf(Dot(0.2f, 0.85f), Dot(0.2f, 0.45f), Dot(0.5f, 0.15f), Dot(0.8f, 0.45f), Dot(0.8f, 0.85f)),
-        ),
-        DotShape(
-            "fish", "🐟",
-            listOf(
-                Dot(0.1f, 0.5f, cx = 0.38f, cy = 0.9f),
-                Dot(0.68f, 0.42f, cx = 0.38f, cy = 0.1f),
-                Dot(0.9f, 0.22f),
-                Dot(0.9f, 0.78f),
-                Dot(0.68f, 0.58f),
-            ),
-        ),
-        DotShape(
-            "moon", "🌙",
-            listOf(
-                Dot(0.62f, 0.1f, cx = 0.3f, cy = 0.5f),
-                Dot(0.15f, 0.5f, cx = 0.2f, cy = 0.12f),
-                Dot(0.62f, 0.9f, cx = 0.2f, cy = 0.88f),
-            ),
-        ),
-        DotShape(
-            "heart", "❤️",
-            listOf(
-                Dot(0.5f, 0.3f, cx = 0.22f, cy = 0.02f),
-                Dot(0.9f, 0.35f, cx = 0.78f, cy = 0.02f),
-                Dot(0.5f, 0.88f, cx = 0.9f, cy = 0.62f),
-                Dot(0.1f, 0.35f, cx = 0.1f, cy = 0.62f),
-            ),
-        ),
-        DotShape(
-            "star", "⭐",
-            listOf(
-                Dot(0.5f, 0.08f), Dot(0.61f, 0.38f), Dot(0.93f, 0.38f), Dot(0.67f, 0.57f), Dot(0.77f, 0.9f),
-                Dot(0.5f, 0.7f), Dot(0.23f, 0.9f), Dot(0.33f, 0.57f), Dot(0.07f, 0.38f), Dot(0.39f, 0.38f),
-            ),
-        ),
-        DotShape(
-            "boat", "⛵",
-            listOf(
-                Dot(0.1f, 0.62f), Dot(0.25f, 0.85f), Dot(0.75f, 0.85f), Dot(0.9f, 0.62f), Dot(0.52f, 0.62f),
-                Dot(0.52f, 0.1f), Dot(0.85f, 0.45f), Dot(0.52f, 0.45f),
-            ),
-            closed = false,
-        ),
-        DotShape(
-            "cat", "🐱",
-            listOf(
-                Dot(0.2f, 0.12f), Dot(0.38f, 0.3f), Dot(0.62f, 0.3f), Dot(0.8f, 0.12f), Dot(0.82f, 0.5f),
-                Dot(0.5f, 0.88f, cx = 0.82f, cy = 0.88f),
-                Dot(0.18f, 0.5f, cx = 0.18f, cy = 0.88f),
-            ),
-        ),
-    )
 }

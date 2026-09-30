@@ -49,6 +49,7 @@ import com.nourtime.app.feature.pin.ForgotPinRequest
 import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
+import com.nourtime.app.data.learning.LearningContentRepository
 import com.nourtime.app.data.learning.LearningRepository
 import com.nourtime.app.remote.child.TimeRequests
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -74,6 +75,7 @@ class LockOverlay @Inject constructor(
     private val clock: DeviceClock,
     private val timeRequests: TimeRequests,
     private val learning: LearningRepository,
+    private val learningContent: LearningContentRepository,
     private val engine: TimeEngine,
     private val trustedClock: TrustedClock,
 ) {
@@ -130,6 +132,7 @@ class LockOverlay @Inject constructor(
         hub.value = LearningHubController(
             scope = scope,
             repo = learning,
+            content = learningContent,
             age = screen.ageGroup,
             appLanguage = language,
             rewards = true,

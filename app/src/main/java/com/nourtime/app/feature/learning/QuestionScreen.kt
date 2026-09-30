@@ -232,7 +232,7 @@ private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: B
             textAlign = TextAlign.Center,
             modifier = Modifier.clickable(role = Role.Button, onClick = onSay).padding(horizontal = 8.dp),
         )
-        is Card.Picture -> Text(card.emoji, fontSize = 72.sp)
+        is Card.Picture -> LearningPicture(card.image, card.emoji, 112.dp, 72.sp)
         is Card.Swatch -> Box(
             Modifier
                 .size(120.dp)
@@ -320,7 +320,7 @@ private fun ChoiceCard(
                     is Card.Number -> Text(numerals.format(card.value), fontSize = 36.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
                     is Card.Symbol -> SymbolText(card, numerals, 40.sp, NourPalette.Navy)
                     is Card.Text -> Text(card.text, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy, textAlign = TextAlign.Center, maxLines = 2)
-                    is Card.Picture -> Text(card.emoji, fontSize = 48.sp)
+                    is Card.Picture -> LearningPicture(card.image, card.emoji, 72.dp, 48.sp)
                     is Card.Swatch -> Box(
                         Modifier
                             .fillMaxWidth()

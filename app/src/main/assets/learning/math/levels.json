@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "startAt": {
+    "AGES_7_9": "sub-10",
+    "AGES_10_12": "add-20"
+  },
+  "levels": [
+    {
+      "id": "add-5",
+      "ops": [
+        "add"
+      ],
+      "max": 5,
+      "dots": true,
+      "choices": 3
+    },
+    {
+      "id": "add-10",
+      "ops": [
+        "add"
+      ],
+      "max": 10,
+      "choices": 3
+    },
+    {
+      "id": "sub-10",
+      "ops": [
+        "sub"
+      ],
+      "max": 10,
+      "choices": 3
+    },
+    {
+      "id": "compare-20",
+      "ops": [
+        "compare"
+      ],
+      "max": 20,
+      "choices": 3
+    },
+    {
+      "id": "add-20",
+      "ops": [
+        "add"
+      ],
+      "max": 20
+    },
+    {
+      "id": "sub-20",
+      "ops": [
+        "sub"
+      ],
+      "max": 20
+    },
+    {
+      "id": "add-sub-100",
+      "ops": [
+        "add",
+        "sub"
+      ],
+      "max": 100
+    },
+    {
+      "id": "mul-2-5",
+      "ops": [
+        "mul"
+      ],
+      "minFactor": 2,
+      "factor": 5
+    },
+    {
+      "id": "mul-2-10",
+      "ops": [
+        "mul"
+      ],
+      "minFactor": 2,
+      "factor": 10
+    },
+    {
+      "id": "div-10",
+      "ops": [
+        "div"
+      ],
+      "factor": 10
+    },
+    {
+      "id": "compare-100",
+      "ops": [
+        "compare"
+      ],
+      "max": 100,
+      "choices": 3
+    },
+    {
+      "id": "mixed-100",
+      "ops": [
+        "add",
+        "sub",
+        "mul",
+        "div",
+        "compare"
+      ],
+      "max": 100,
+      "minFactor": 2,
+      "factor": 10
+    }
+  ]
+}

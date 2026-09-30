@@ -44,7 +44,8 @@ sealed interface Card {
     /** A letter or a word, spoken as [speech] (a letter's name) or as itself. */
     data class Text(val text: String, val speech: String = text) : Card
 
-    data class Picture(val emoji: String, val word: String) : Card
+    /** A picture: the illustration [image] (asset id) when there is one, otherwise the [emoji]. */
+    data class Picture(val emoji: String, val word: String, val image: String? = null) : Card
 
     data class Swatch(val argb: Long, val name: String) : Card
 }
