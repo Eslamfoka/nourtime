@@ -2,11 +2,24 @@ package com.nourtime.app.core.learning
 
 import kotlin.random.Random
 
-/** [key] is the name used in content files. */
-enum class MathOp(val symbol: String, val key: String) { ADD("+", "add"), SUB("−", "sub"), MUL("×", "mul"), DIV("÷", "div"), COMPARE("?", "compare") }
+/**
+ * [key] is the name used in content files. The MISSING_ ops hide a number instead of the result
+ * ("3 + ? = 7"), for older children.
+ */
+enum class MathOp(val symbol: String, val key: String) {
+    ADD("+", "add"), SUB("−", "sub"), MUL("×", "mul"), DIV("÷", "div"), COMPARE("?", "compare"),
+    MISSING_ADD("+", "missing_add"), MISSING_SUB("−", "missing_sub"), MISSING_MUL("×", "missing_mul"),
+    ;
+
+    /** Bounded by `max` (and `min`), not by the factors. */
+    val additive: Boolean get() = this == ADD || this == SUB || this == COMPARE || this == MISSING_ADD || this == MISSING_SUB
+
+    val multiplicative: Boolean get() = this == MUL || this == DIV || this == MISSING_MUL
+}
 
 /**
- * One Smart Math level (from `math/levels.json`). [max] bounds every number in +, − and comparisons;
+ * One Smart Math level (from `math/levels.json`). [max] bounds every number in +, − and comparisons,
+ * and [min] is the smallest number added or taken away (so "add to 20" can't be 1 + 1);
  * [factor] bounds the factors of × and the divisor and quotient of ÷ (with [minFactor] as the
  * smallest first factor).
  */
@@ -14,6 +27,7 @@ data class MathLevel(
     override val id: String,
     val ops: List<MathOp>,
     val max: Int = 10,
+    val min: Int = 1,
     val minFactor: Int = 1,
     val factor: Int = 10,
     val dots: Boolean = false,
@@ -40,6 +54,7 @@ object MathGame {
 
     fun question(spec: MathLevel, random: Random): Question = when (val op = spec.ops.random(random)) {
         MathOp.COMPARE -> compare(spec, random)
+        MathOp.MISSING_ADD, MathOp.MISSING_SUB, MathOp.MISSING_MUL -> missing(op, spec, random)
         else -> {
             val (a, b, answer) = operands(op, spec, random)
             Question(
@@ -53,17 +68,17 @@ object MathGame {
     }
 
     private fun operands(op: MathOp, spec: MathLevel, random: Random): Triple<Int, Int, Int> = when (op) {
-        MathOp.ADD -> {
-            val a = random.nextInt(1, spec.max)
-            val b = random.nextInt(1, spec.max - a + 1)
+        MathOp.ADD, MathOp.MISSING_ADD -> {
+            val a = random.nextInt(spec.min, spec.max - spec.min + 1)
+            val b = random.nextInt(spec.min, spec.max - a + 1)
             Triple(a, b, a + b)
         }
-        MathOp.SUB -> {
-            val a = random.nextInt(2, spec.max + 1)
-            val b = random.nextInt(1, a)
+        MathOp.SUB, MathOp.MISSING_SUB -> {
+            val a = random.nextInt(spec.min + 1, spec.max + 1)
+            val b = random.nextInt(spec.min, a)
             Triple(a, b, a - b)
         }
-        MathOp.MUL -> {
+        MathOp.MUL, MathOp.MISSING_MUL -> {
             val a = random.nextInt(spec.minFactor, spec.factor + 1)
             val b = random.nextInt(1, 11)
             Triple(a, b, a * b)
@@ -74,6 +89,18 @@ object MathGame {
             Triple(divisor * quotient, divisor, quotient)
         }
         MathOp.COMPARE -> error("not an operation")
+    }
+
+    /** "a + ? = c": the second number is hidden and is the answer. */
+    private fun missing(op: MathOp, spec: MathLevel, random: Random): Question {
+        val (a, b, c) = operands(op, spec, random)
+        return Question(
+            task = Task.SOLVE,
+            prompt = listOf(Card.Number(a), Card.Symbol(op.symbol), Card.Symbol("?"), Card.Symbol("="), Card.Number(c)),
+            choices = numberChoices(b, spec.choices, random).map(Card::Number),
+            answer = 0,
+            dots = spec.dots,
+        ).shuffled(random)
     }
 
     private fun compare(spec: MathLevel, random: Random): Question {
@@ -94,12 +121,16 @@ object MathGame {
         )
     }
 
-    /** The answer first, then distinct nearby wrong answers (never negative). */
+    /**
+     * The answer first, then distinct nearby wrong answers (never negative). From 20 up, some are ten
+     * away, so the last digit alone doesn't give the answer away.
+     */
     fun numberChoices(answer: Int, count: Int, random: Random): List<Int> {
         val spread = maxOf(3, count + 1)
         val out = linkedSetOf(answer)
         while (out.size < count) {
-            val d = random.nextInt(1, spread + 1) * if (random.nextBoolean()) 1 else -1
+            val step = if (answer >= 20 && random.nextInt(3) == 0) 10 else random.nextInt(1, spread + 1)
+            val d = step * if (random.nextBoolean()) 1 else -1
             val candidate = answer + d
             if (candidate >= 0) out += candidate
         }

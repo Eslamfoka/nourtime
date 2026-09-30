@@ -165,13 +165,14 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
             ops.isEmpty() -> "no ops"
             l.choices !in 2..4 -> "choices must be 2..4"
             MathOp.COMPARE in ops && l.choices != 3 && ops.size == 1 -> "compare levels have 3 choices (< = >)"
-            (MathOp.ADD in ops || MathOp.SUB in ops || MathOp.COMPARE in ops) && l.max < 2 -> "max must be at least 2"
-            (MathOp.MUL in ops || MathOp.DIV in ops) && (l.factor < 2 || l.minFactor !in 1..l.factor) -> "factor must be at least 2 and minFactor 1..factor"
+            ops.any { it.additive } && l.max < 2 -> "max must be at least 2"
+            ops.any { it.additive } && (l.min < 1 || l.max < 2 * l.min + 1) -> "min must be at least 1 and max at least 2 × min + 1"
+            ops.any { it.multiplicative } && (l.factor < 2 || l.minFactor !in 1..l.factor) -> "factor must be at least 2 and minFactor 1..factor"
             l.questions !in 1..30 -> "questions must be 1..30"
             else -> null
         }
         if (bad != null) return null.also { problem(MATH, l.id, bad) }
-        return MathLevel(l.id, ops, l.max, l.minFactor, l.factor, l.dots, l.choices, l.questions)
+        return MathLevel(l.id, ops, l.max, l.min, l.minFactor, l.factor, l.dots, l.choices, l.questions)
     }
 
     private fun lettersLevel(l: LettersLevelJson): LettersLevel? {

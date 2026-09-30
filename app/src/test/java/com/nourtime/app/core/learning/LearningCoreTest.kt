@@ -32,8 +32,20 @@ class LearningCoreTest {
 
     // --- math ---
 
+    /** The answer of "a op b = ?" or of "a op ? = c" (a missing number). */
     private fun solve(q: Question): Int {
-        val (a, op, b) = Triple((q.prompt[0] as Card.Number).value, (q.prompt[1] as Card.Symbol).text, (q.prompt[2] as Card.Number).value)
+        val a = (q.prompt[0] as Card.Number).value
+        val op = (q.prompt[1] as Card.Symbol).text
+        if (q.prompt[2] == Card.Symbol("?")) {
+            val c = (q.prompt[4] as Card.Number).value
+            return when (op) {
+                "+" -> c - a
+                "−" -> a - c
+                "×" -> c / a
+                else -> error(op)
+            }
+        }
+        val b = (q.prompt[2] as Card.Number).value
         return when (op) {
             "+" -> a + b
             "−" -> a - b
@@ -42,6 +54,8 @@ class LearningCoreTest {
             else -> error(op)
         }
     }
+
+    private fun mathLevel(id: String) = TestContent.math.levels.first { it.id == id }
 
     @Test
     fun `every math answer is right, in range and among distinct choices`() {
@@ -62,7 +76,11 @@ class LearningCoreTest {
                         if (op == "+" || op == "−") {
                             q.prompt.filterIsInstance<Card.Number>().forEach { assertTrue(it.value <= spec.max) }
                             assertTrue(solve(q) in 0..spec.max)
+                            // The number added or taken away is never below the level's minimum.
+                            val added = if (q.prompt[2] == Card.Symbol("?")) solve(q) else (q.prompt[2] as Card.Number).value
+                            assertTrue("${spec.id}: $added < ${spec.min}", added >= spec.min)
                         }
+                        if (op == "×" && q.prompt[2] == Card.Symbol("?")) assertEquals(0, (q.prompt[4] as Card.Number).value % (q.prompt[0] as Card.Number).value)
                         if (op == "÷") assertEquals(0, (q.prompt[0] as Card.Number).value % (q.prompt[2] as Card.Number).value)
                     }
                 }
@@ -81,13 +99,46 @@ class LearningCoreTest {
 
     @Test
     fun `a level's questions don't repeat when there are enough of them`() {
-        val prompts = MathGame.questions(TestContent.math.levels[6], Random(3)).map { it.prompt }
+        val prompts = MathGame.questions(mathLevel("add-sub-100"), Random(3)).map { it.prompt }
         assertEquals(prompts.size, prompts.toSet().size)
     }
 
     @Test
+    fun `missing-number levels hide the second number and ask for it`() {
+        MathGame.questions(mathLevel("missing-sub-20"), Random(5)).forEach { q ->
+            assertEquals(Card.Symbol("?"), q.prompt[2])
+            assertEquals(Card.Symbol("−"), q.prompt[1])
+            val a = (q.prompt[0] as Card.Number).value
+            val c = (q.prompt[4] as Card.Number).value
+            assertEquals(a - c, (q.choices[q.answer] as Card.Number).value)
+        }
+    }
+
+    @Test
+    fun `levels get harder, the math pack starts tiny and ends with every operation`() {
+        val levels = TestContent.math.levels
+        assertTrue(levels.size >= 40)
+        assertEquals(3, levels.first().max)
+        assertTrue(levels.first().dots)
+        assertEquals(MathOp.entries.toSet(), levels.last().ops.toSet())
+        // The biggest number in play never shrinks by much from one level to the next.
+        val reach = levels.map { l -> maxOf(if (l.ops.any { it.additive }) l.max else 0, if (l.ops.any { it.multiplicative }) l.factor * 10 else 0) }
+        assertTrue(reach.last() >= 1000)
+    }
+
+    @Test
+    fun `long equations get a smaller font so they fit on one line`() {
+        val short = listOf(Card.Number(2), Card.Symbol("+"), Card.Number(3), Card.Symbol("="), Card.Symbol("?"))
+        val long = listOf(Card.Number(999), Card.Symbol("+"), Card.Number(999), Card.Symbol("="), Card.Symbol("?"))
+        val longest = listOf(Card.Number(1000), Card.Symbol("−"), Card.Symbol("?"), Card.Symbol("="), Card.Number(1000))
+        assertEquals(52, MathWriting.promptSize(short))
+        assertTrue(MathWriting.promptSize(long) < 52)
+        assertTrue(MathWriting.promptSize(longest) <= MathWriting.promptSize(long))
+    }
+
+    @Test
     fun `the answer isn't always in the same place`() {
-        val places = (0 until 50).map { MathGame.questions(TestContent.math.levels[4], Random(it)).first().answer }.toSet()
+        val places = (0 until 50).map { MathGame.questions(mathLevel("add-20"), Random(it)).first().answer }.toSet()
         assertTrue(places.size > 2)
     }
 

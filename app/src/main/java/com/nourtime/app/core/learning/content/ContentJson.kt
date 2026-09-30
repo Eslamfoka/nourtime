@@ -24,6 +24,7 @@ data class MathLevelJson(
     val id: String,
     val ops: List<String>,
     val max: Int = 10,
+    val min: Int = 1,
     val minFactor: Int = 1,
     val factor: Int = 10,
     val dots: Boolean = false,

@@ -186,8 +186,9 @@ private fun PromptCard(q: Question, numerals: NumeralStyle, language: LearnLangu
                     verticalAlignment = if (q.dots) Alignment.Top else Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
+                    val size = MathWriting.promptSize(q.prompt).sp
                     q.prompt.forEach { card ->
-                        PromptItem(card, numerals, q.dots, big = q.prompt.size == 1, onSay = {
+                        PromptItem(card, numerals, q.dots, big = q.prompt.size == 1, size = size, onSay = {
                             // A number says itself; a letter says "A, Apple" (the owner's design).
                             (if (card is Card.Number) card.speech() else sayAll ?: card.speech())?.let(onSay)
                         })
@@ -208,10 +209,10 @@ private fun PromptCard(q: Question, numerals: NumeralStyle, language: LearnLangu
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: Boolean, onSay: () -> Unit) {
+private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: Boolean, size: TextUnit, onSay: () -> Unit) {
     when (card) {
         is Card.Number -> Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable(role = Role.Button, onClick = onSay)) {
-            Text(numerals.format(card.value), fontSize = 52.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
+            Text(numerals.format(card.value), fontSize = size, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
             if (dots) {
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
@@ -223,7 +224,7 @@ private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: B
                 }
             }
         }
-        is Card.Symbol -> SymbolText(card, numerals, 52.sp, if (card.text == "?") NourPalette.GoldDeep else NourPalette.Navy)
+        is Card.Symbol -> SymbolText(card, numerals, size, if (card.text == "?") NourPalette.GoldDeep else NourPalette.Navy)
         is Card.Text -> Text(
             card.text,
             fontSize = if (big) 96.sp else 44.sp,

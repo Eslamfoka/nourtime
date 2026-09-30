@@ -25,6 +25,20 @@ enum class NumeralStyle {
 object MathWriting {
     fun rightToLeft(numerals: NumeralStyle): Boolean = numerals == NumeralStyle.EASTERN
 
+    /**
+     * Font size (sp) for an equation's cards, so a long one ("999 + 999 = ?") still fits on one line
+     * of a narrow phone.
+     */
+    fun promptSize(prompt: List<Card>): Int {
+        val chars = prompt.sumOf { if (it is Card.Number) it.value.toString().length else 1 }
+        return when {
+            chars <= 7 -> 52
+            chars <= 9 -> 44
+            chars <= 11 -> 36
+            else -> 30
+        }
+    }
+
     /** The glyph to draw for a symbol card; the question itself keeps the logical symbol. */
     fun glyph(symbol: String, rightToLeft: Boolean): String = if (!rightToLeft) symbol else when (symbol) {
         "<" -> ">"

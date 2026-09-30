@@ -23,7 +23,7 @@ class ContentPacksTest {
 
     @Test
     fun `the migrated content is all there`() {
-        assertEquals(12, TestContent.math.levels.size)
+        assertEquals(45, TestContent.math.levels.size)
         assertEquals(7, TestContent.letterLevels.levels.size)
         assertEquals(28, TestContent.letters(LearnLanguage.ARABIC).letters.size)
         assertEquals(25, TestContent.letters(LearnLanguage.ENGLISH).letters.size)
@@ -69,11 +69,12 @@ class ContentPacksTest {
                 {"id": "Bad Id", "ops": ["add"]},
                 {"id": "ok", "ops": ["sub"]},
                 {"id": "op", "ops": ["pow"]},
-                {"id": "few", "ops": ["add"], "choices": 9}
+                {"id": "few", "ops": ["add"], "choices": 9},
+                {"id": "min", "ops": ["missing_add"], "max": 10, "min": 5}
             ]}""",
         )
         assertEquals(listOf("ok"), l.math().levels.map { it.id })
-        assertEquals(5, problems.size)
+        assertEquals(6, problems.size)
     }
 
     @Test

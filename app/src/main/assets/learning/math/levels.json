@@ -1,108 +1,51 @@
 {
   "schema": 1,
-  "startAt": {
-    "AGES_7_9": "sub-10",
-    "AGES_10_12": "add-20"
-  },
+  "startAt": {"AGES_7_9": "sub-10", "AGES_10_12": "add-20"},
   "levels": [
-    {
-      "id": "add-5",
-      "ops": [
-        "add"
-      ],
-      "max": 5,
-      "dots": true,
-      "choices": 3
-    },
-    {
-      "id": "add-10",
-      "ops": [
-        "add"
-      ],
-      "max": 10,
-      "choices": 3
-    },
-    {
-      "id": "sub-10",
-      "ops": [
-        "sub"
-      ],
-      "max": 10,
-      "choices": 3
-    },
-    {
-      "id": "compare-20",
-      "ops": [
-        "compare"
-      ],
-      "max": 20,
-      "choices": 3
-    },
-    {
-      "id": "add-20",
-      "ops": [
-        "add"
-      ],
-      "max": 20
-    },
-    {
-      "id": "sub-20",
-      "ops": [
-        "sub"
-      ],
-      "max": 20
-    },
-    {
-      "id": "add-sub-100",
-      "ops": [
-        "add",
-        "sub"
-      ],
-      "max": 100
-    },
-    {
-      "id": "mul-2-5",
-      "ops": [
-        "mul"
-      ],
-      "minFactor": 2,
-      "factor": 5
-    },
-    {
-      "id": "mul-2-10",
-      "ops": [
-        "mul"
-      ],
-      "minFactor": 2,
-      "factor": 10
-    },
-    {
-      "id": "div-10",
-      "ops": [
-        "div"
-      ],
-      "factor": 10
-    },
-    {
-      "id": "compare-100",
-      "ops": [
-        "compare"
-      ],
-      "max": 100,
-      "choices": 3
-    },
-    {
-      "id": "mixed-100",
-      "ops": [
-        "add",
-        "sub",
-        "mul",
-        "div",
-        "compare"
-      ],
-      "max": 100,
-      "minFactor": 2,
-      "factor": 10
-    }
+    {"id": "add-3", "ops": ["add"], "max": 3, "dots": true, "choices": 2},
+    {"id": "add-5", "ops": ["add"], "max": 5, "dots": true, "choices": 3},
+    {"id": "sub-5", "ops": ["sub"], "max": 5, "dots": true, "choices": 3},
+    {"id": "compare-5", "ops": ["compare"], "max": 5, "choices": 3},
+    {"id": "add-sub-5", "ops": ["add", "sub"], "max": 5, "dots": true, "choices": 3},
+    {"id": "add-7", "ops": ["add"], "max": 7, "dots": true, "choices": 3},
+    {"id": "add-10", "ops": ["add"], "max": 10, "choices": 3},
+    {"id": "sub-10", "ops": ["sub"], "max": 10, "choices": 3},
+    {"id": "compare-10", "ops": ["compare"], "max": 10, "choices": 3},
+    {"id": "add-sub-10", "ops": ["add", "sub"], "max": 10, "choices": 3},
+    {"id": "missing-add-10", "ops": ["missing_add"], "max": 10, "choices": 3},
+    {"id": "compare-20", "ops": ["compare"], "max": 20, "choices": 3},
+    {"id": "add-20", "ops": ["add"], "max": 20},
+    {"id": "add-20-over-10", "ops": ["add"], "max": 20, "min": 4},
+    {"id": "sub-20", "ops": ["sub"], "max": 20},
+    {"id": "sub-20-over-10", "ops": ["sub"], "max": 20, "min": 4},
+    {"id": "add-sub-20", "ops": ["add", "sub"], "max": 20, "min": 2},
+    {"id": "missing-add-20", "ops": ["missing_add"], "max": 20},
+    {"id": "missing-sub-20", "ops": ["missing_sub"], "max": 20},
+    {"id": "add-50", "ops": ["add"], "max": 50, "min": 5},
+    {"id": "sub-50", "ops": ["sub"], "max": 50, "min": 5},
+    {"id": "compare-100", "ops": ["compare"], "max": 100, "choices": 3},
+    {"id": "add-100", "ops": ["add"], "max": 100, "min": 10},
+    {"id": "sub-100", "ops": ["sub"], "max": 100, "min": 10},
+    {"id": "add-sub-100", "ops": ["add", "sub"], "max": 100},
+    {"id": "missing-100", "ops": ["missing_add", "missing_sub"], "max": 100, "min": 5},
+    {"id": "mul-2", "ops": ["mul"], "minFactor": 2, "factor": 2},
+    {"id": "mul-2-5", "ops": ["mul"], "minFactor": 2, "factor": 5},
+    {"id": "mul-3-4", "ops": ["mul"], "minFactor": 3, "factor": 4},
+    {"id": "mul-2-10", "ops": ["mul"], "minFactor": 2, "factor": 10},
+    {"id": "mul-6-7", "ops": ["mul"], "minFactor": 6, "factor": 7},
+    {"id": "mul-8-9", "ops": ["mul"], "minFactor": 8, "factor": 9},
+    {"id": "div-5", "ops": ["div"], "factor": 5},
+    {"id": "div-10", "ops": ["div"], "factor": 10},
+    {"id": "missing-mul-10", "ops": ["missing_mul"], "minFactor": 2, "factor": 10},
+    {"id": "mul-div-10", "ops": ["mul", "div"], "minFactor": 2, "factor": 10},
+    {"id": "mixed-100", "ops": ["add", "sub", "mul", "div", "compare"], "max": 100, "minFactor": 2, "factor": 10},
+    {"id": "compare-1000", "ops": ["compare"], "max": 1000, "choices": 3},
+    {"id": "add-1000", "ops": ["add"], "max": 1000, "min": 50},
+    {"id": "sub-1000", "ops": ["sub"], "max": 1000, "min": 50},
+    {"id": "mul-12", "ops": ["mul"], "minFactor": 2, "factor": 12},
+    {"id": "div-12", "ops": ["div"], "factor": 12},
+    {"id": "missing-1000", "ops": ["missing_add", "missing_sub"], "max": 1000, "min": 20},
+    {"id": "mixed-1000", "ops": ["add", "sub", "mul", "div", "missing_mul"], "max": 1000, "min": 20, "minFactor": 2, "factor": 12},
+    {"id": "champion", "ops": ["add", "sub", "mul", "div", "compare", "missing_add", "missing_sub", "missing_mul"], "max": 1000, "min": 20, "minFactor": 3, "factor": 12, "questions": 10}
   ]
 }

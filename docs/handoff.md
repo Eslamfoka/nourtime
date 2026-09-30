@@ -702,3 +702,22 @@ Ask before starting; the owner said "next session".
   back from its old snapshot, so reinstall the APK (`./gradlew :app:assembleDebug
   -Pnourtime.firebaseEmulator=false` with `app/src/debug/google-services.json` moved aside, see §9).
 
+
+## 15. Night of 2026-09-30 → 10-01 (owner asleep): more content, then new games
+
+Owner's plan for the night: (1) many more levels for each of the four games, easy → hard, one game at a
+time; (2) then build the roadmap games in order (Phase A first), each with its own engine, levels,
+test, commit and docs. Everything is on **`learning-hub`** (not merged, not pushed). G9 (surahs and
+du'as) is skipped: it needs the owner's decision on sources and licensing.
+
+### 15.1 Smart Math: 12 → 45 levels
+- Levels go from "1 + 2 with dots" (2 choices) through within 5, 7, 10, 20 (with and without crossing
+  ten), 50, 100 and 1000, times tables in steps (×2, ×2–5, ×3–4, ×6–7, ×8–9, up to ×12), division,
+  **missing numbers** (`7 + ? = 12`, `15 − ? = 9`, `4 × ? = 28`) and a 10-question **champion** level
+  with every operation. Old level ids are kept, so no stars are lost.
+- Engine: `min` (smallest number added or taken away, so "within 20" is no longer 1 + 1), ops
+  `missing_add`, `missing_sub`, `missing_mul`; from 20 up, some wrong answers are 10 away so the last
+  digit doesn't give the answer away; long equations get a smaller font so `999 + 999 = ?` fits.
+- Tested: unit tests (every level × 40 seeds: one right answer, in range, `min` respected); API 31
+  emulator in the parent preview: 45 levels listed, level 43 `496 + ؟ = 886` right to left with ١٢٣,
+  fits the width, right answer accepted.

@@ -12,6 +12,9 @@ lock, parent limits, and all content as data (JSON packs checked by the tests). 
 the roadmap. See [Learning Hub](#learning-hub-gamification--education-planned-and-built-2026-09-30).
 Next: the parent's phone shows the Learning Hub settings and the child's minutes.
 
+**2026-09-30 night (owner asleep):** content expansion of the four games and the first roadmap games,
+one commit each; see [`handoff.md` §15](handoff.md#15-night-of-2026-09-30--10-01-owner-asleep-more-content-then-new-games).
+
 **2026-09-29:** Phase 2 and Phase 4 are merged and tested against the real Firebase project; the UX
 backlog items U1–U4 (time pickers, single dashboard, Forgot PIN, language switcher) are built and
 emulator-tested, waiting for the owner's test on the Honor.
@@ -196,7 +199,7 @@ list: [`handoff.md` §12](handoff.md#12-learning-hub-2026-09-30-overnight).
 
 | # | Game | Interaction | Status |
 |---|---|---|---|
-| L1 | **Smart Math** | Multiple choice. +, −, ×, ÷ and comparisons (<, >, =), 12 levels from "add within 5" (with dots to count) to mixed operations up to 100. Tap any number to hear it (TTS). Western (123) / Eastern (١٢٣) numerals toggle. | ✅ 12 levels |
+| L1 | **Smart Math** | Multiple choice. +, −, ×, ÷, comparisons (<, >, =) and missing numbers (7 + ? = 12), 45 levels from "1 + 2" with dots to mixed operations up to 1000 and ×12. Tap any number to hear it (TTS). Western (123) / Eastern (١٢٣) numerals toggle. | ✅ 45 levels (2026-09-30 night) |
 | L2 | **Letters & Words** (Arabic + English) | Multiple choice with audio. Letter → word, letter → picture, word → picture (body, animals, food), color name → color. Tap the letter or word to hear "A, Apple" / "أ، أرنب". | ✅ 7 levels, 28 Arabic + 25 English letters, 25 words, 11 colors |
 | L3 | **Number Connect** | Drawing: drag from dot 1 to 2 to 3 over a faded outline; segments can be lines or curves. | ✅ 8 drawings (triangle → cat), numbers spoken as reached |
 | L4 | **Coloring Match** | Tap a palette color, then tap a region of a black-and-white drawing to fill it, matching a colored reference. | ✅ 6 pictures (apple → car), extra colors from level 3 |

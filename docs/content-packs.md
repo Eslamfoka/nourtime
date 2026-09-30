@@ -64,8 +64,10 @@ Each language names the concepts and lists its alphabet:
 ```json
 {"id": "mul-2-5", "ops": ["mul"], "minFactor": 2, "factor": 5, "choices": 4}
 ```
-- `ops`: `add`, `sub`, `mul`, `div`, `compare` (several are mixed).
-- `max` bounds numbers in + − and comparisons; `factor`/`minFactor` bound × and ÷.
+- `ops`: `add`, `sub`, `mul`, `div`, `compare`, and the missing-number ops `missing_add`
+  (`7 + ? = 12`), `missing_sub` (`15 − ? = 9`), `missing_mul` (`4 × ? = 28`). Several are mixed.
+- `max` bounds numbers in + − and comparisons; `min` (default 1) is the smallest number added or
+  taken away (`max` must be at least 2 × `min` + 1); `factor`/`minFactor` bound × and ÷.
 - `dots: true` draws dots under numbers (counting help). Numbers are generated, so each level gives
   endless different questions.
 
