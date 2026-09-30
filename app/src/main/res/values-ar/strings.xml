@@ -475,9 +475,10 @@
     <string name="learn_task_compare">أي علامة تناسب؟</string>
     <string name="learn_task_letter_to_picture">أي صورة تبدأ بهذا الحرف؟</string>
     <string name="learn_task_letter_to_word">أي كلمة تبدأ بهذا الحرف؟</string>
-    <string name="learn_task_word_to_picture">اختر الصورة المناسبة</string>
-    <string name="learn_task_name_to_color">اختر هذا اللون</string>
+    <string name="learn_task_word_to_picture">أين الصورة المناسبة؟</string>
+    <string name="learn_task_name_to_color">أين هذا اللون؟</string>
     <string name="learn_task_color_to_name">ما اسم هذا اللون؟</string>
+    <string name="learn_task_picture_to_word">ما الكلمة المكتوبة لهذه الصورة؟</string>
     <string name="learn_tutorial_m">اضغط على الجواب الصحيح. اتبع اليد!</string>
     <string name="learn_tutorial_f">اضغطي على الجواب الصحيح. اتبعي اليد!</string>
     <string name="learn_try_again_m">حاول مرة أخرى!</string>

@@ -183,7 +183,25 @@ class LearningCoreTest {
                 val argb = (q.prompt[0] as Card.Swatch).argb
                 assertEquals(lang.colors.first { it.argb == argb }.name, (right as Card.Text).text)
             }
+            Task.PICTURE_TO_WORD -> {
+                val picture = q.prompt[0] as Card.Picture
+                assertEquals(picture.word, (right as Card.Text).text)
+                // No other choice names the same picture, and the word isn't read aloud.
+                q.choices.filter { it != right }.forEach { c -> assertTrue(lang.words.first { it.word == (c as Card.Text).text }.emoji != picture.emoji) }
+                assertNull(q.say)
+            }
             else -> error("unexpected ${q.task}")
+        }
+    }
+
+    @Test
+    fun `every word category has enough words for its levels, in both languages`() {
+        LearnLanguage.entries.forEach { lang ->
+            val pack = TestContent.letters(lang)
+            TestContent.letterLevels.levels.filter { it.categories.isNotEmpty() }.forEach { level ->
+                val words = pack.words.count { it.category in level.categories }
+                assertTrue("${lang.tag} ${level.id}: $words words", words >= level.choices * 2)
+            }
         }
     }
 
@@ -305,6 +323,8 @@ class LearningCoreTest {
         val math = TestContent.math
         assertEquals(0, LevelProgress().current(math, AgeGroup.AGES_3_6))
         assertEquals("add-20", math.levels[LevelProgress().current(math, AgeGroup.AGES_10_12)].id)
-        assertEquals(0, LevelProgress().current(TestContent.letterLevels, AgeGroup.AGES_7_9))
+        val letters = TestContent.letterLevels
+        assertEquals(0, LevelProgress().current(letters, AgeGroup.AGES_3_6))
+        assertEquals("letter-picture-all", letters.levels[LevelProgress().current(letters, AgeGroup.AGES_7_9)].id)
     }
 }

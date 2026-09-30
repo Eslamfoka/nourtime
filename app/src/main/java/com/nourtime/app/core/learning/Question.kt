@@ -67,6 +67,9 @@ sealed interface Card {
 /** What the child is asked to do; the UI shows it as a short instruction. */
 enum class Task {
     SOLVE, COMPARE, LETTER_TO_PICTURE, LETTER_TO_WORD, WORD_TO_PICTURE, NAME_TO_COLOR, COLOR_TO_NAME,
+
+    /** See a picture, pick its written word (reading; nothing is read aloud). */
+    PICTURE_TO_WORD,
 }
 
 data class Speech(val text: String, val language: LearnLanguage)

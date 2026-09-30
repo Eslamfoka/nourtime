@@ -31,7 +31,7 @@ object LettersGame {
         val needs = spec.tasks.map { task ->
             when (task) {
                 Task.LETTER_TO_PICTURE, Task.LETTER_TO_WORD -> letters.size
-                Task.WORD_TO_PICTURE -> words.size
+                Task.WORD_TO_PICTURE, Task.PICTURE_TO_WORD -> words.size
                 Task.NAME_TO_COLOR, Task.COLOR_TO_NAME -> content.colors.size
                 Task.SOLVE, Task.COMPARE -> 0
             }
@@ -56,6 +56,7 @@ object LettersGame {
                 Task.WORD_TO_PICTURE -> wordToPicture(usedWords.next(), words, spec.choices, language, random)
                 Task.NAME_TO_COLOR -> nameToColor(usedColors.next(), content.colors, spec.choices, language, random)
                 Task.COLOR_TO_NAME -> colorToName(usedColors.next(), content.colors, spec.choices, random)
+                Task.PICTURE_TO_WORD -> pictureToWord(usedWords.next(), words, spec.choices, random)
                 Task.SOLVE, Task.COMPARE -> error("not a letters task")
             }
         }
@@ -87,6 +88,17 @@ object LettersGame {
             choices = (listOf(entry) + others(entry, pool, n - 1, random) { it.emoji }).map { Card.Picture(it.emoji, it.word, it.image) },
             answer = 0,
             say = Speech(entry.word, lang),
+        ).shuffled(random)
+    }
+
+    private fun pictureToWord(entry: WordEntry, pool: List<WordEntry>, n: Int, random: Random): Question {
+        // Distinct words and pictures: two choices must never both be right.
+        val others = pool.filter { it.word != entry.word && it.emoji != entry.emoji }.distinctBy { it.word }.shuffled(random).take(n - 1)
+        return Question(
+            task = Task.PICTURE_TO_WORD,
+            prompt = listOf(Card.Picture(entry.emoji, entry.word, entry.image)),
+            choices = (listOf(entry) + others).map { Card.Text(it.word) },
+            answer = 0,
         ).shuffled(random)
     }
 

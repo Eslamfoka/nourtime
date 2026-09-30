@@ -200,7 +200,7 @@ list: [`handoff.md` §12](handoff.md#12-learning-hub-2026-09-30-overnight).
 | # | Game | Interaction | Status |
 |---|---|---|---|
 | L1 | **Smart Math** | Multiple choice. +, −, ×, ÷, comparisons (<, >, =) and missing numbers (7 + ? = 12), 45 levels from "1 + 2" with dots to mixed operations up to 1000 and ×12. Tap any number to hear it (TTS). Western (123) / Eastern (١٢٣) numerals toggle. | ✅ 45 levels (2026-09-30 night) |
-| L2 | **Letters & Words** (Arabic + English) | Multiple choice with audio. Letter → word, letter → picture, word → picture (body, animals, food), color name → color. Tap the letter or word to hear "A, Apple" / "أ، أرنب". | ✅ 7 levels, 28 Arabic + 25 English letters, 25 words, 11 colors |
+| L2 | **Letters & Words** (Arabic + English) | Multiple choice with audio. Letter → word, letter → picture, word → picture, picture → word (reading), color name ↔ color, by category (animals, food, vehicles, body, nature, objects, clothes, toys, people, places). Tap the letter or word to hear "A, Apple" / "أ، أرنب". | ✅ 27 levels, 28 Arabic + 25 English letters, 176 words, 11 colors (2026-09-30 night) |
 | L3 | **Number Connect** | Drawing: drag from dot 1 to 2 to 3 over a faded outline; segments can be lines or curves. | ✅ 8 drawings (triangle → cat), numbers spoken as reached |
 | L4 | **Coloring Match** | Tap a palette color, then tap a region of a black-and-white drawing to fill it, matching a colored reference. | ✅ 6 pictures (apple → car), extra colors from level 3 |
 

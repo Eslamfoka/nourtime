@@ -1,341 +1,194 @@
 {
   "schema": 1,
   "concepts": [
-    {
-      "id": "apple",
-      "emoji": "🍎",
-      "category": "food"
-    },
-    {
-      "id": "bus",
-      "emoji": "🚌",
-      "category": "vehicles"
-    },
-    {
-      "id": "cat",
-      "emoji": "🐱",
-      "category": "animals"
-    },
-    {
-      "id": "dog",
-      "emoji": "🐶",
-      "category": "animals"
-    },
-    {
-      "id": "egg",
-      "emoji": "🥚",
-      "category": "food"
-    },
-    {
-      "id": "fish",
-      "emoji": "🐟",
-      "category": "animals"
-    },
-    {
-      "id": "grapes",
-      "emoji": "🍇",
-      "category": "food"
-    },
-    {
-      "id": "house",
-      "emoji": "🏠",
-      "category": "places"
-    },
-    {
-      "id": "ice_cream",
-      "emoji": "🍦",
-      "category": "food"
-    },
-    {
-      "id": "juice",
-      "emoji": "🥤",
-      "category": "food"
-    },
-    {
-      "id": "key",
-      "emoji": "🔑",
-      "category": "objects"
-    },
-    {
-      "id": "lion",
-      "emoji": "🦁",
-      "category": "animals"
-    },
-    {
-      "id": "moon",
-      "emoji": "🌙",
-      "category": "nature"
-    },
-    {
-      "id": "nose",
-      "emoji": "👃",
-      "category": "body"
-    },
-    {
-      "id": "orange",
-      "emoji": "🍊",
-      "category": "food"
-    },
-    {
-      "id": "pizza",
-      "emoji": "🍕",
-      "category": "food"
-    },
-    {
-      "id": "queen",
-      "emoji": "👸",
-      "category": "people"
-    },
-    {
-      "id": "rabbit",
-      "emoji": "🐰",
-      "category": "animals"
-    },
-    {
-      "id": "sun",
-      "emoji": "☀️",
-      "category": "nature"
-    },
-    {
-      "id": "tree",
-      "emoji": "🌳",
-      "category": "nature"
-    },
-    {
-      "id": "umbrella",
-      "emoji": "☂️",
-      "category": "objects"
-    },
-    {
-      "id": "violin",
-      "emoji": "🎻",
-      "category": "objects"
-    },
-    {
-      "id": "watch",
-      "emoji": "⌚",
-      "category": "objects"
-    },
-    {
-      "id": "yacht",
-      "emoji": "⛵",
-      "category": "vehicles"
-    },
-    {
-      "id": "zebra",
-      "emoji": "🦓",
-      "category": "animals"
-    },
-    {
-      "id": "duck",
-      "emoji": "🦆",
-      "category": "animals"
-    },
-    {
-      "id": "fox",
-      "emoji": "🦊",
-      "category": "animals"
-    },
-    {
-      "id": "camel",
-      "emoji": "🐫",
-      "category": "animals"
-    },
-    {
-      "id": "horse",
-      "emoji": "🐴",
-      "category": "animals"
-    },
-    {
-      "id": "sheep",
-      "emoji": "🐑",
-      "category": "animals"
-    },
-    {
-      "id": "bear",
-      "emoji": "🐻",
-      "category": "animals"
-    },
-    {
-      "id": "corn",
-      "emoji": "🌽",
-      "category": "food"
-    },
-    {
-      "id": "rice",
-      "emoji": "🍚",
-      "category": "food"
-    },
-    {
-      "id": "giraffe",
-      "emoji": "🦒",
-      "category": "animals"
-    },
-    {
-      "id": "falcon",
-      "emoji": "🦅",
-      "category": "animals"
-    },
-    {
-      "id": "frog",
-      "emoji": "🐸",
-      "category": "animals"
-    },
-    {
-      "id": "airplane",
-      "emoji": "✈️",
-      "category": "vehicles"
-    },
-    {
-      "id": "envelope",
-      "emoji": "✉️",
-      "category": "objects"
-    },
-    {
-      "id": "cloud",
-      "emoji": "☁️",
-      "category": "nature"
-    },
-    {
-      "id": "elephant",
-      "emoji": "🐘",
-      "category": "animals"
-    },
-    {
-      "id": "ball",
-      "emoji": "⚽",
-      "category": "toys"
-    },
-    {
-      "id": "lemon",
-      "emoji": "🍋",
-      "category": "food"
-    },
-    {
-      "id": "banana",
-      "emoji": "🍌",
-      "category": "food"
-    },
-    {
-      "id": "bee",
-      "emoji": "🐝",
-      "category": "animals"
-    },
-    {
-      "id": "gift",
-      "emoji": "🎁",
-      "category": "objects"
-    },
-    {
-      "id": "rose",
-      "emoji": "🌹",
-      "category": "nature"
-    },
-    {
-      "id": "hand",
-      "emoji": "✋",
-      "category": "body"
-    },
-    {
-      "id": "mouth",
-      "emoji": "👄",
-      "category": "body"
-    },
-    {
-      "id": "eye",
-      "emoji": "👁️",
-      "category": "body"
-    },
-    {
-      "id": "ear",
-      "emoji": "👂",
-      "category": "body"
-    },
-    {
-      "id": "car",
-      "emoji": "🚗",
-      "category": "vehicles"
-    },
-    {
-      "id": "book",
-      "emoji": "📖",
-      "category": "objects"
-    },
-    {
-      "id": "star",
-      "emoji": "⭐",
-      "category": "nature"
-    },
-    {
-      "id": "flower",
-      "emoji": "🌸",
-      "category": "nature"
-    },
-    {
-      "id": "bird",
-      "emoji": "🐦",
-      "category": "animals"
-    },
-    {
-      "id": "milk",
-      "emoji": "🥛",
-      "category": "food"
-    },
-    {
-      "id": "bread",
-      "emoji": "🍞",
-      "category": "food"
-    },
-    {
-      "id": "clock",
-      "emoji": "⏰",
-      "category": "objects"
-    }
+    {"id": "apple", "emoji": "🍎", "category": "food"},
+    {"id": "bus", "emoji": "🚌", "category": "vehicles"},
+    {"id": "cat", "emoji": "🐱", "category": "animals"},
+    {"id": "dog", "emoji": "🐶", "category": "animals"},
+    {"id": "egg", "emoji": "🥚", "category": "food"},
+    {"id": "fish", "emoji": "🐟", "category": "animals"},
+    {"id": "grapes", "emoji": "🍇", "category": "food"},
+    {"id": "house", "emoji": "🏠", "category": "places"},
+    {"id": "ice_cream", "emoji": "🍦", "category": "food"},
+    {"id": "juice", "emoji": "🥤", "category": "food"},
+    {"id": "key", "emoji": "🔑", "category": "objects"},
+    {"id": "lion", "emoji": "🦁", "category": "animals"},
+    {"id": "moon", "emoji": "🌙", "category": "nature"},
+    {"id": "nose", "emoji": "👃", "category": "body"},
+    {"id": "orange", "emoji": "🍊", "category": "food"},
+    {"id": "pizza", "emoji": "🍕", "category": "food"},
+    {"id": "queen", "emoji": "👸", "category": "people"},
+    {"id": "rabbit", "emoji": "🐰", "category": "animals"},
+    {"id": "sun", "emoji": "☀️", "category": "nature"},
+    {"id": "tree", "emoji": "🌳", "category": "nature"},
+    {"id": "umbrella", "emoji": "☂️", "category": "objects"},
+    {"id": "violin", "emoji": "🎻", "category": "objects"},
+    {"id": "watch", "emoji": "⌚", "category": "objects"},
+    {"id": "yacht", "emoji": "⛵", "category": "vehicles"},
+    {"id": "zebra", "emoji": "🦓", "category": "animals"},
+    {"id": "duck", "emoji": "🦆", "category": "animals"},
+    {"id": "fox", "emoji": "🦊", "category": "animals"},
+    {"id": "camel", "emoji": "🐫", "category": "animals"},
+    {"id": "horse", "emoji": "🐴", "category": "animals"},
+    {"id": "sheep", "emoji": "🐑", "category": "animals"},
+    {"id": "bear", "emoji": "🐻", "category": "animals"},
+    {"id": "corn", "emoji": "🌽", "category": "food"},
+    {"id": "rice", "emoji": "🍚", "category": "food"},
+    {"id": "giraffe", "emoji": "🦒", "category": "animals"},
+    {"id": "falcon", "emoji": "🦅", "category": "animals"},
+    {"id": "frog", "emoji": "🐸", "category": "animals"},
+    {"id": "airplane", "emoji": "✈️", "category": "vehicles"},
+    {"id": "envelope", "emoji": "✉️", "category": "objects"},
+    {"id": "cloud", "emoji": "☁️", "category": "nature"},
+    {"id": "elephant", "emoji": "🐘", "category": "animals"},
+    {"id": "ball", "emoji": "⚽", "category": "toys"},
+    {"id": "lemon", "emoji": "🍋", "category": "food"},
+    {"id": "banana", "emoji": "🍌", "category": "food"},
+    {"id": "bee", "emoji": "🐝", "category": "animals"},
+    {"id": "gift", "emoji": "🎁", "category": "objects"},
+    {"id": "rose", "emoji": "🌹", "category": "nature"},
+    {"id": "hand", "emoji": "✋", "category": "body"},
+    {"id": "mouth", "emoji": "👄", "category": "body"},
+    {"id": "eye", "emoji": "👁️", "category": "body"},
+    {"id": "ear", "emoji": "👂", "category": "body"},
+    {"id": "car", "emoji": "🚗", "category": "vehicles"},
+    {"id": "book", "emoji": "📖", "category": "objects"},
+    {"id": "star", "emoji": "⭐", "category": "nature"},
+    {"id": "flower", "emoji": "🌸", "category": "nature"},
+    {"id": "bird", "emoji": "🐦", "category": "animals"},
+    {"id": "milk", "emoji": "🥛", "category": "food"},
+    {"id": "bread", "emoji": "🍞", "category": "food"},
+    {"id": "clock", "emoji": "⏰", "category": "objects"},
+    {"id": "monkey", "emoji": "🐒", "category": "animals"},
+    {"id": "tiger", "emoji": "🐯", "category": "animals"},
+    {"id": "cow", "emoji": "🐄", "category": "animals"},
+    {"id": "chicken", "emoji": "🐔", "category": "animals"},
+    {"id": "owl", "emoji": "🦉", "category": "animals"},
+    {"id": "turtle", "emoji": "🐢", "category": "animals"},
+    {"id": "snake", "emoji": "🐍", "category": "animals"},
+    {"id": "butterfly", "emoji": "🦋", "category": "animals"},
+    {"id": "penguin", "emoji": "🐧", "category": "animals"},
+    {"id": "dolphin", "emoji": "🐬", "category": "animals"},
+    {"id": "whale", "emoji": "🐳", "category": "animals"},
+    {"id": "crocodile", "emoji": "🐊", "category": "animals"},
+    {"id": "mouse", "emoji": "🐭", "category": "animals"},
+    {"id": "spider", "emoji": "🕷️", "category": "animals"},
+    {"id": "ant", "emoji": "🐜", "category": "animals"},
+    {"id": "snail", "emoji": "🐌", "category": "animals"},
+    {"id": "octopus", "emoji": "🐙", "category": "animals"},
+    {"id": "crab", "emoji": "🦀", "category": "animals"},
+    {"id": "parrot", "emoji": "🦜", "category": "animals"},
+    {"id": "peacock", "emoji": "🦚", "category": "animals"},
+    {"id": "deer", "emoji": "🦌", "category": "animals"},
+    {"id": "goat", "emoji": "🐐", "category": "animals"},
+    {"id": "wolf", "emoji": "🐺", "category": "animals"},
+    {"id": "koala", "emoji": "🐨", "category": "animals"},
+    {"id": "panda", "emoji": "🐼", "category": "animals"},
+    {"id": "kangaroo", "emoji": "🦘", "category": "animals"},
+    {"id": "strawberry", "emoji": "🍓", "category": "food"},
+    {"id": "watermelon", "emoji": "🍉", "category": "food"},
+    {"id": "cherry", "emoji": "🍒", "category": "food"},
+    {"id": "pear", "emoji": "🍐", "category": "food"},
+    {"id": "peach", "emoji": "🍑", "category": "food"},
+    {"id": "pineapple", "emoji": "🍍", "category": "food"},
+    {"id": "mango", "emoji": "🥭", "category": "food"},
+    {"id": "carrot", "emoji": "🥕", "category": "food"},
+    {"id": "tomato", "emoji": "🍅", "category": "food"},
+    {"id": "potato", "emoji": "🥔", "category": "food"},
+    {"id": "cucumber", "emoji": "🥒", "category": "food"},
+    {"id": "cheese", "emoji": "🧀", "category": "food"},
+    {"id": "honey", "emoji": "🍯", "category": "food"},
+    {"id": "cake", "emoji": "🍰", "category": "food"},
+    {"id": "cookie", "emoji": "🍪", "category": "food"},
+    {"id": "tea", "emoji": "🍵", "category": "food"},
+    {"id": "mushroom", "emoji": "🍄", "category": "food"},
+    {"id": "coconut", "emoji": "🥥", "category": "food"},
+    {"id": "kiwi", "emoji": "🥝", "category": "food"},
+    {"id": "avocado", "emoji": "🥑", "category": "food"},
+    {"id": "bicycle", "emoji": "🚲", "category": "vehicles"},
+    {"id": "train", "emoji": "🚆", "category": "vehicles"},
+    {"id": "ship", "emoji": "🚢", "category": "vehicles"},
+    {"id": "rocket", "emoji": "🚀", "category": "vehicles"},
+    {"id": "helicopter", "emoji": "🚁", "category": "vehicles"},
+    {"id": "truck", "emoji": "🚚", "category": "vehicles"},
+    {"id": "ambulance", "emoji": "🚑", "category": "vehicles"},
+    {"id": "fire_engine", "emoji": "🚒", "category": "vehicles"},
+    {"id": "tractor", "emoji": "🚜", "category": "vehicles"},
+    {"id": "taxi", "emoji": "🚕", "category": "vehicles"},
+    {"id": "foot", "emoji": "🦶", "category": "body"},
+    {"id": "tooth", "emoji": "🦷", "category": "body"},
+    {"id": "leg", "emoji": "🦵", "category": "body"},
+    {"id": "brain", "emoji": "🧠", "category": "body"},
+    {"id": "tongue", "emoji": "👅", "category": "body"},
+    {"id": "mountain", "emoji": "⛰️", "category": "nature"},
+    {"id": "snowflake", "emoji": "❄️", "category": "nature"},
+    {"id": "rainbow", "emoji": "🌈", "category": "nature"},
+    {"id": "fire", "emoji": "🔥", "category": "nature"},
+    {"id": "leaf", "emoji": "🍃", "category": "nature"},
+    {"id": "wave", "emoji": "🌊", "category": "nature"},
+    {"id": "volcano", "emoji": "🌋", "category": "nature"},
+    {"id": "palm", "emoji": "🌴", "category": "nature"},
+    {"id": "cactus", "emoji": "🌵", "category": "nature"},
+    {"id": "earth", "emoji": "🌍", "category": "nature"},
+    {"id": "rain", "emoji": "🌧️", "category": "nature"},
+    {"id": "lightning", "emoji": "⚡", "category": "nature"},
+    {"id": "sunflower", "emoji": "🌻", "category": "nature"},
+    {"id": "pencil", "emoji": "✏️", "category": "objects"},
+    {"id": "scissors", "emoji": "✂️", "category": "objects"},
+    {"id": "bed", "emoji": "🛏️", "category": "objects"},
+    {"id": "door", "emoji": "🚪", "category": "objects"},
+    {"id": "lamp", "emoji": "💡", "category": "objects"},
+    {"id": "phone", "emoji": "📱", "category": "objects"},
+    {"id": "computer", "emoji": "💻", "category": "objects"},
+    {"id": "bag", "emoji": "🎒", "category": "objects"},
+    {"id": "bell", "emoji": "🔔", "category": "objects"},
+    {"id": "candle", "emoji": "🕯️", "category": "objects"},
+    {"id": "lock", "emoji": "🔒", "category": "objects"},
+    {"id": "crown", "emoji": "👑", "category": "objects"},
+    {"id": "hammer", "emoji": "🔨", "category": "objects"},
+    {"id": "magnet", "emoji": "🧲", "category": "objects"},
+    {"id": "broom", "emoji": "🧹", "category": "objects"},
+    {"id": "soap", "emoji": "🧼", "category": "objects"},
+    {"id": "glasses", "emoji": "👓", "category": "clothes"},
+    {"id": "shoe", "emoji": "👟", "category": "clothes"},
+    {"id": "shirt", "emoji": "👕", "category": "clothes"},
+    {"id": "dress", "emoji": "👗", "category": "clothes"},
+    {"id": "socks", "emoji": "🧦", "category": "clothes"},
+    {"id": "hat", "emoji": "🧢", "category": "clothes"},
+    {"id": "gloves", "emoji": "🧤", "category": "clothes"},
+    {"id": "scarf", "emoji": "🧣", "category": "clothes"},
+    {"id": "jeans", "emoji": "👖", "category": "clothes"},
+    {"id": "balloon", "emoji": "🎈", "category": "toys"},
+    {"id": "teddy", "emoji": "🧸", "category": "toys"},
+    {"id": "drum", "emoji": "🥁", "category": "toys"},
+    {"id": "guitar", "emoji": "🎸", "category": "toys"},
+    {"id": "trophy", "emoji": "🏆", "category": "toys"},
+    {"id": "dice", "emoji": "🎲", "category": "toys"},
+    {"id": "puzzle", "emoji": "🧩", "category": "toys"},
+    {"id": "mosque", "emoji": "🕌", "category": "places"},
+    {"id": "school", "emoji": "🏫", "category": "places"},
+    {"id": "hospital", "emoji": "🏥", "category": "places"},
+    {"id": "tent", "emoji": "⛺", "category": "places"},
+    {"id": "castle", "emoji": "🏰", "category": "places"},
+    {"id": "island", "emoji": "🏝️", "category": "places"},
+    {"id": "baby", "emoji": "👶", "category": "people"},
+    {"id": "boy", "emoji": "👦", "category": "people"},
+    {"id": "girl", "emoji": "👧", "category": "people"},
+    {"id": "grandpa", "emoji": "👴", "category": "people"},
+    {"id": "grandma", "emoji": "👵", "category": "people"},
+    {"id": "police", "emoji": "👮", "category": "people"}
   ],
   "colors": [
-    {
-      "id": "red",
-      "hex": "#E53935"
-    },
-    {
-      "id": "blue",
-      "hex": "#1E88E5"
-    },
-    {
-      "id": "green",
-      "hex": "#43A047"
-    },
-    {
-      "id": "yellow",
-      "hex": "#FDD835"
-    },
-    {
-      "id": "orange",
-      "hex": "#FB8C00"
-    },
-    {
-      "id": "purple",
-      "hex": "#8E24AA"
-    },
-    {
-      "id": "pink",
-      "hex": "#F06292"
-    },
-    {
-      "id": "brown",
-      "hex": "#795548"
-    },
-    {
-      "id": "black",
-      "hex": "#212121"
-    },
-    {
-      "id": "white",
-      "hex": "#FFFFFF"
-    },
-    {
-      "id": "gray",
-      "hex": "#9E9E9E"
-    }
+    {"id": "red", "hex": "#E53935"},
+    {"id": "blue", "hex": "#1E88E5"},
+    {"id": "green", "hex": "#43A047"},
+    {"id": "yellow", "hex": "#FDD835"},
+    {"id": "orange", "hex": "#FB8C00"},
+    {"id": "purple", "hex": "#8E24AA"},
+    {"id": "pink", "hex": "#F06292"},
+    {"id": "brown", "hex": "#795548"},
+    {"id": "black", "hex": "#212121"},
+    {"id": "white", "hex": "#FFFFFF"},
+    {"id": "gray", "hex": "#9E9E9E"}
   ]
 }

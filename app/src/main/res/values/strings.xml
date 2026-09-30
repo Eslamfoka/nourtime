@@ -468,6 +468,7 @@
     <string name="learn_task_word_to_picture">Find the picture</string>
     <string name="learn_task_name_to_color">Find this color</string>
     <string name="learn_task_color_to_name">What is this color called?</string>
+    <string name="learn_task_picture_to_word">Which word is this picture?</string>
     <string name="learn_tutorial_m">Tap the right answer. Follow the hand!</string>
     <string name="learn_tutorial_f">Tap the right answer. Follow the hand!</string>
     <string name="learn_try_again_m">Try again!</string>

@@ -721,3 +721,17 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
 - Tested: unit tests (every level × 40 seeds: one right answer, in range, `min` respected); API 31
   emulator in the parent preview: 45 levels listed, level 43 `496 + ؟ = 886` right to left with ١٢٣,
   fits the width, right answer accepted.
+
+### 15.2 Letters & Words: 7 → 27 levels, 58 → 176 words
+- 118 new words in Arabic and English (animals, food, vehicles, body, nature, objects, and new
+  **clothes** and **toys** categories, plus people and places), picked from emoji that Android 9+ draws
+  (the three that need Android 10–11 were left out).
+- New task **picture → word** (reading: see the picture, pick its written word; nothing is read aloud),
+  used by the `read-…` levels.
+- Levels: listen-and-find with 2 pictures by category for the youngest, then 3 and 4 choices,
+  letters, colors, reading, and a 10-question **champion** level. 7–9 year olds now start at
+  "all letters", 10–12 at "letter → word → picture" (unchanged). Old level ids kept.
+- Two Arabic instructions were masculine imperatives ("اختر …"); now neutral questions
+  ("أين الصورة المناسبة؟", "أين هذا اللون؟") so they fit boys and girls.
+- Tested: unit tests (every level × 30 seeds × both languages: one right answer, enough words per
+  category); emulator preview: 27 levels, level 26 picture → word (👵 → Grandma) accepted.

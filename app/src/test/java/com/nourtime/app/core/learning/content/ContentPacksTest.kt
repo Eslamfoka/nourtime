@@ -24,14 +24,15 @@ class ContentPacksTest {
     @Test
     fun `the migrated content is all there`() {
         assertEquals(45, TestContent.math.levels.size)
-        assertEquals(7, TestContent.letterLevels.levels.size)
+        assertEquals(27, TestContent.letterLevels.levels.size)
         assertEquals(28, TestContent.letters(LearnLanguage.ARABIC).letters.size)
         assertEquals(25, TestContent.letters(LearnLanguage.ENGLISH).letters.size)
-        assertEquals(58, TestContent.letters(LearnLanguage.ARABIC).words.size)
+        assertEquals(176, TestContent.letters(LearnLanguage.ARABIC).words.size)
+        assertEquals(176, TestContent.letters(LearnLanguage.ENGLISH).words.size)
         assertEquals(11, TestContent.letters(LearnLanguage.ENGLISH).colors.size)
         assertEquals(8, TestContent.connect.levels.size)
         assertEquals(6, TestContent.coloring.pack.levels.size)
-        assertEquals(2, TestContent.letterLevels.startIndex(AgeGroup.AGES_10_12))
+        assertEquals("letter-word-picture", TestContent.letterLevels.levels[TestContent.letterLevels.startIndex(AgeGroup.AGES_10_12)].id)
     }
 
     // --- a loader over files given in the test ---

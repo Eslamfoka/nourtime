@@ -1,57 +1,33 @@
 {
   "schema": 1,
-  "startAt": {
-    "AGES_10_12": "letter-word-picture"
-  },
+  "startAt": {"AGES_7_9": "letter-picture-all", "AGES_10_12": "letter-word-picture"},
   "levels": [
-    {
-      "id": "letter-picture-first",
-      "tasks": [
-        "letter_to_picture"
-      ],
-      "firstLettersOnly": true
-    },
-    {
-      "id": "letter-picture-all",
-      "tasks": [
-        "letter_to_picture"
-      ],
-      "choices": 4
-    },
-    {
-      "id": "letter-word-picture",
-      "tasks": [
-        "letter_to_word",
-        "letter_to_picture"
-      ]
-    },
-    {
-      "id": "word-picture",
-      "tasks": [
-        "word_to_picture"
-      ]
-    },
-    {
-      "id": "name-color",
-      "tasks": [
-        "name_to_color"
-      ]
-    },
-    {
-      "id": "color-name",
-      "tasks": [
-        "color_to_name"
-      ]
-    },
-    {
-      "id": "mixed",
-      "tasks": [
-        "letter_to_word",
-        "word_to_picture",
-        "name_to_color",
-        "color_to_name"
-      ],
-      "choices": 4
-    }
+    {"id": "animals-2", "tasks": ["word_to_picture"], "choices": 2, "categories": ["animals"]},
+    {"id": "food-2", "tasks": ["word_to_picture"], "choices": 2, "categories": ["food"]},
+    {"id": "letter-picture-first", "tasks": ["letter_to_picture"], "firstLettersOnly": true},
+    {"id": "colors-2", "tasks": ["name_to_color"], "choices": 2},
+    {"id": "body", "tasks": ["word_to_picture"], "categories": ["body"]},
+    {"id": "animals-3", "tasks": ["word_to_picture"], "categories": ["animals"]},
+    {"id": "name-color", "tasks": ["name_to_color"]},
+    {"id": "food-3", "tasks": ["word_to_picture"], "categories": ["food"]},
+    {"id": "letter-picture-all", "tasks": ["letter_to_picture"], "choices": 4},
+    {"id": "vehicles", "tasks": ["word_to_picture"], "categories": ["vehicles"]},
+    {"id": "clothes", "tasks": ["word_to_picture"], "categories": ["clothes"]},
+    {"id": "nature", "tasks": ["word_to_picture"], "categories": ["nature"]},
+    {"id": "letter-word-picture", "tasks": ["letter_to_word", "letter_to_picture"]},
+    {"id": "toys-home", "tasks": ["word_to_picture"], "categories": ["toys", "objects"]},
+    {"id": "people-places", "tasks": ["word_to_picture"], "categories": ["people", "places"]},
+    {"id": "color-name", "tasks": ["color_to_name"]},
+    {"id": "word-picture", "tasks": ["word_to_picture"]},
+    {"id": "read-animals", "tasks": ["picture_to_word"], "categories": ["animals"]},
+    {"id": "read-food", "tasks": ["picture_to_word"], "categories": ["food"]},
+    {"id": "letter-word", "tasks": ["letter_to_word"], "choices": 4},
+    {"id": "read-things", "tasks": ["picture_to_word"], "categories": ["objects", "clothes", "toys"]},
+    {"id": "word-picture-4", "tasks": ["word_to_picture"], "choices": 4, "questions": 8},
+    {"id": "read-nature-vehicles", "tasks": ["picture_to_word"], "choices": 4, "categories": ["nature", "vehicles"]},
+    {"id": "colors-4", "tasks": ["name_to_color", "color_to_name"], "choices": 4},
+    {"id": "mixed", "tasks": ["letter_to_word", "word_to_picture", "name_to_color", "color_to_name"], "choices": 4},
+    {"id": "read-all", "tasks": ["picture_to_word"], "choices": 4, "questions": 8},
+    {"id": "champion", "tasks": ["letter_to_word", "picture_to_word", "word_to_picture", "letter_to_picture", "color_to_name"], "choices": 4, "questions": 10}
   ]
 }

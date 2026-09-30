@@ -81,6 +81,7 @@ private fun Task.instruction(): Int = when (this) {
     Task.WORD_TO_PICTURE -> R.string.learn_task_word_to_picture
     Task.NAME_TO_COLOR -> R.string.learn_task_name_to_color
     Task.COLOR_TO_NAME -> R.string.learn_task_color_to_name
+    Task.PICTURE_TO_WORD -> R.string.learn_task_picture_to_word
 }
 
 /** What a card says when tapped: numbers and words; pictures and colors stay quiet (they are answers). */
