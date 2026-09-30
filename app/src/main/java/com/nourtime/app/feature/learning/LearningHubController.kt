@@ -25,6 +25,8 @@ import com.nourtime.app.core.learning.WordLevel
 import com.nourtime.app.core.learning.WordRound
 import com.nourtime.app.core.learning.SortLevel
 import com.nourtime.app.core.learning.SortRound
+import com.nourtime.app.core.learning.ShopLevel
+import com.nourtime.app.core.learning.ShopRound
 import com.nourtime.app.data.learning.LearningContentRepository
 import com.nourtime.app.data.learning.LearningRepository
 import com.nourtime.app.data.learning.LearningState
@@ -74,6 +76,9 @@ sealed interface HubScreen {
     /** Sorting. [lastWrong]: the last drop was the wrong group. */
     data class Sorting(val game: GameId, val level: Int, val round: SortRound, val lastWrong: Boolean = false, val celebrating: Boolean = false) : HubScreen
 
+    /** Little Shop. [lastOver]: the last coin went over the amount; [paidFor]: the thing just bought. */
+    data class Shop(val game: GameId, val level: Int, val round: ShopRound, val lastOver: Boolean = false, val paidFor: Int? = null) : HubScreen
+
     data class Done(
         val game: GameId,
         val level: Int,
@@ -96,6 +101,7 @@ data class HubContent(
     val memory: GamePack<MemoryLevel>? = null,
     val words: GamePack<WordLevel>? = null,
     val sorting: GamePack<SortLevel>? = null,
+    val shop: GamePack<ShopLevel>? = null,
     /** Letter Tracing has one pack per language. */
     val tracing: Map<LearnLanguage, GamePack<TraceLetter>> = emptyMap(),
     /** Color names in the app language, spoken when a coloring color is picked. */
@@ -153,6 +159,7 @@ class LearningHubController(
                 memory = content.memory(),
                 words = content.words(),
                 sorting = content.sorting(),
+                shop = content.shop(),
                 tracing = LearnLanguage.entries.associateWith { content.tracing(it) },
                 colorNames = content.letters(appLanguage).colors.associate { it.argb to it.name },
             )
@@ -248,6 +255,42 @@ class LearningHubController(
         _screen.value = c.copy(round = next, lastWrong = outcome == ColoringRound.Outcome.WRONG, celebrating = next.done)
         if (next.done) celebrateThenFinish(c.game, c.level, next.stars)
         return outcome == ColoringRound.Outcome.RIGHT
+    }
+
+    // --- Little Shop ---
+
+    /** A coin of [value] goes on the counter. */
+    fun shopAdd(value: Int): ShopRound.Outcome {
+        val sh = _screen.value as? HubScreen.Shop ?: return ShopRound.Outcome.IGNORED
+        if (sh.paidFor != null) return ShopRound.Outcome.IGNORED
+        val (next, outcome) = sh.round.add(value)
+        when (outcome) {
+            ShopRound.Outcome.IGNORED -> Unit
+            ShopRound.Outcome.ADDED, ShopRound.Outcome.OVER -> {
+                if (sh.round.tutorial && sh.round.index == 0 && outcome == ShopRound.Outcome.ADDED) markTutorial(sh.game)
+                _screen.value = sh.copy(round = next, lastOver = outcome == ShopRound.Outcome.OVER)
+            }
+            ShopRound.Outcome.PAID, ShopRound.Outcome.DONE -> {
+                // The bought thing stays a moment before the next one (or the stars).
+                _screen.value = sh.copy(round = next, lastOver = false, paidFor = sh.round.index)
+                advancing = scope.launch {
+                    delay(WORD_DONE_MS)
+                    if (outcome == ShopRound.Outcome.DONE) {
+                        finish(sh.game, sh.level, next.stars)
+                    } else {
+                        val now = _screen.value as? HubScreen.Shop ?: return@launch
+                        _screen.value = now.copy(paidFor = null)
+                    }
+                }
+            }
+        }
+        return outcome
+    }
+
+    /** Coin [i] on the counter goes back to the purse. */
+    fun shopRemove(i: Int) {
+        val sh = _screen.value as? HubScreen.Shop ?: return
+        if (sh.paidFor == null) _screen.value = sh.copy(round = sh.round.remove(i), lastOver = false)
     }
 
     // --- Sorting ---
@@ -404,6 +447,7 @@ class LearningHubController(
             is HubScreen.Memory -> HubScreen.Levels(s.game)
             is HubScreen.Words -> HubScreen.Levels(s.game)
             is HubScreen.Sorting -> HubScreen.Levels(s.game)
+            is HubScreen.Shop -> HubScreen.Levels(s.game)
             is HubScreen.Done -> HubScreen.Levels(s.game)
         }
         return true

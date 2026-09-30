@@ -480,6 +480,8 @@
     <string name="learn_game_words_hint">نركّب الكلمة من حروفها</string>
     <string name="learn_game_sorting">الترتيب في مجموعات</string>
     <string name="learn_game_sorting_hint">نضع كل شيء في مجموعته</string>
+    <string name="learn_game_shop">الدكان الصغير</string>
+    <string name="learn_game_shop_hint">ندفع بالقطع النقدية ونحسب الباقي</string>
     <string name="learn_coming_soon">قريبًا</string>
     <string name="learn_level">المرحلة %1$s</string>
     <string name="learn_level_locked">المرحلة %1$s، مقفلة</string>
@@ -524,6 +526,14 @@
     <string name="learn_task_sorting_f">اسحبيه إلى مجموعته، أو اضغطي على المجموعة</string>
     <string name="learn_sorting_wrong_m">ليست هذه المجموعة. جرّب غيرها</string>
     <string name="learn_sorting_wrong_f">ليست هذه المجموعة. جرّبي غيرها</string>
+    <string name="learn_shop_pay_m">ثمنه %1$s. اضغط على القطع لتدفع المبلغ بالضبط</string>
+    <string name="learn_shop_pay_f">ثمنه %1$s. اضغطي على القطع لتدفعي المبلغ بالضبط</string>
+    <string name="learn_shop_change_m">ثمنه %1$s ودُفع %2$s. أرجِع الباقي</string>
+    <string name="learn_shop_change_f">ثمنه %1$s ودُفع %2$s. أرجِعي الباقي</string>
+    <string name="learn_shop_over_m">أكثر من اللازم! عادت القطع. حاول مرة أخرى</string>
+    <string name="learn_shop_over_f">أكثر من اللازم! عادت القطع. حاولي مرة أخرى</string>
+    <string name="learn_shop_total">على الطاولة: %1$s</string>
+    <string name="learn_shop_coin">قطعة %1$s</string>
     <string name="learn_tutorial_m">اضغط على الجواب الصحيح. اتبع اليد!</string>
     <string name="learn_tutorial_f">اضغطي على الجواب الصحيح. اتبعي اليد!</string>
     <string name="learn_try_again_m">حاول مرة أخرى!</string>

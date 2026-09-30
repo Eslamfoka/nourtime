@@ -470,6 +470,8 @@
     <string name="learn_game_words_hint">Spell words with letters</string>
     <string name="learn_game_sorting">Sorting</string>
     <string name="learn_game_sorting_hint">Put each thing in its group</string>
+    <string name="learn_game_shop">Little Shop</string>
+    <string name="learn_game_shop_hint">Pay with coins, count the change</string>
     <string name="learn_coming_soon">Coming soon</string>
     <string name="learn_level">Level %1$s</string>
     <string name="learn_level_locked">Level %1$s, locked</string>
@@ -514,6 +516,14 @@
     <string name="learn_task_sorting_f">Drag it into its group, or tap the group</string>
     <string name="learn_sorting_wrong_m">Not that group. Try another one</string>
     <string name="learn_sorting_wrong_f">Not that group. Try another one</string>
+    <string name="learn_shop_pay_m">It costs %1$s. Tap coins to pay exactly</string>
+    <string name="learn_shop_pay_f">It costs %1$s. Tap coins to pay exactly</string>
+    <string name="learn_shop_change_m">It costs %1$s and was paid with %2$s. Give back the change</string>
+    <string name="learn_shop_change_f">It costs %1$s and was paid with %2$s. Give back the change</string>
+    <string name="learn_shop_over_m">Too much! The coins came back. Try again</string>
+    <string name="learn_shop_over_f">Too much! The coins came back. Try again</string>
+    <string name="learn_shop_total">On the counter: %1$s</string>
+    <string name="learn_shop_coin">Coin %1$s</string>
     <string name="learn_tutorial_m">Tap the right answer. Follow the hand!</string>
     <string name="learn_tutorial_f">Tap the right answer. Follow the hand!</string>
     <string name="learn_try_again_m">Try again!</string>

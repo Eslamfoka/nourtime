@@ -900,3 +900,23 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
   to 10, 10–12 at even/odd to 20.
 - Tested: unit tests (every level × 20 seeds × both languages: every thing in its right group, each
   group used, nothing twice, labels present; wrong drop; loader); emulator preview (above).
+
+### 15.12 New game G8: Little Shop (Phase C)
+- **Engine:** `Shop.kt`: a level has a coin set (must include 1), a price range and modes `pay` /
+  `change` (the price was paid with a note; give the change). `ShopRound`: coins go on the counter;
+  exactly the amount finishes the thing, going over is a mistake and the coins come back; a coin on
+  the counter can be taken back freely. Things to buy come from food/toys/objects/clothes words.
+- **Screen:** the thing with a price tag, the counter with its total, and the purse (silver coins below
+  10, gold from 10, bigger for bigger values), coin values spoken in the app language.
+- **Coins have no currency sign** (values only), so the game fits any country. Worth a decision by
+  the owner: show a currency (e.g. from the phone's locale) or real coin pictures later.
+- **Content:** `shop/levels.json`, 10 levels: pay up to 5 with ones → up to 10 with 1/2/5 → 20 →
+  change from 10 → pay up to 50 → change from 20 → pay up to 100 → change from 50 → mixed to 100 →
+  a champion with change from 200. 7–9 start at "pay up to 10", 10–12 at "change from 10".
+- Tested: unit tests (every level × 20 seeds × both languages: every amount payable with the fewest
+  coins and no mistakes; going over, taking back, coins not in the purse; loader); emulator preview in
+  Arabic, level 4: balloon 4 paid with 10 → 5+5 went over ("أكثر من اللازم! عادت القطع…"), 5+1 = 6
+  accepted.
+
+### 15.13 G9 (short surahs and du'as): not started
+Needs the owner's decision on sources and licensing of the recitations and texts (roadmap Phase D).

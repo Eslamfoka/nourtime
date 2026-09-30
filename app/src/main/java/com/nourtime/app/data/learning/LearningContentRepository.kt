@@ -16,6 +16,7 @@ import com.nourtime.app.core.learning.PatternLevel
 import com.nourtime.app.core.learning.TraceLetter
 import com.nourtime.app.core.learning.WordLevel
 import com.nourtime.app.core.learning.SortLevel
+import com.nourtime.app.core.learning.ShopLevel
 import com.nourtime.app.core.learning.content.ContentLoader
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -48,6 +49,7 @@ class LearningContentRepository @Inject constructor(
     suspend fun memory(): GamePack<MemoryLevel> = io { loader.memory() }
     suspend fun words(): GamePack<WordLevel> = io { loader.words() }
     suspend fun sorting(): GamePack<SortLevel> = io { loader.sorting() }
+    suspend fun shop(): GamePack<ShopLevel> = io { loader.shop() }
     suspend fun tracing(language: LearnLanguage): GamePack<TraceLetter> = io { loader.tracing(language) }
     suspend fun connect(): GamePack<DotShape> = io { loader.connect() }
     suspend fun coloring(): ColoringPack = io { loader.coloring() }

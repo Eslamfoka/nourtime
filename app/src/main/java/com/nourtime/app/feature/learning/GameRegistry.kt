@@ -22,6 +22,7 @@ import com.nourtime.app.core.learning.TraceRound
 import com.nourtime.app.core.learning.WordBuilder
 import com.nourtime.app.core.learning.WordRound
 import com.nourtime.app.core.learning.SortGame
+import com.nourtime.app.core.learning.ShopGame
 import com.nourtime.app.data.learning.LearningContentRepository
 import kotlin.random.Random
 
@@ -169,6 +170,17 @@ internal object GameRegistry {
             start = { level, tutorial ->
                 SortGame.deal(packs.sorting!!.levels[level], repo.letters(wordsLanguage), random)
                     ?.let { HubScreen.Sorting(GameId.SORTING, level, it.copy(tutorial = tutorial)) }
+            },
+        ),
+        GameSpec(
+            GameId.SHOP,
+            GameLook("🛒", Color(0xFF4DD0E1), R.string.learn_game_shop, R.string.learn_game_shop_hint),
+            GameOption.NUMERALS,
+            wordsLanguage = true,
+            levels = { c, _ -> c.shop },
+            start = { level, tutorial ->
+                ShopGame.deal(packs.shop!!.levels[level], repo.letters(wordsLanguage), random)
+                    ?.let { HubScreen.Shop(GameId.SHOP, level, it.copy(tutorial = tutorial)) }
             },
         ),
         GameSpec(

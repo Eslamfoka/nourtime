@@ -17,6 +17,7 @@ assets/learning/
   memory/levels.json       Memory Match levels
   words/levels.json        Word Builder levels
   sorting/levels.json      Sorting levels
+  shop/levels.json         Little Shop levels
   math/levels.json         Smart Math levels
   connect/shapes.json      Number Connect drawings
   coloring/pictures.json   Coloring Match pictures
@@ -102,6 +103,16 @@ Each language names the concepts and lists its alphabet:
 - `precision`: `hour` (3:00), `half` (:00/:30), `quarter`, `five` (every 5 minutes) or `minute`.
   Times are generated, so each level gives endless questions; wrong answers include the classic
   mistakes (hands swapped, the next hour, a step off).
+
+## Little Shop levels (`shop/levels.json`)
+```json
+{"id": "change-20", "coins": [1, 2, 5, 10], "modes": ["change"], "minPrice": 3, "maxPrice": 19, "paid": 20}
+```
+- `coins`: the coin values in the purse (different, 1..500, and **1 must be there** so any amount can
+  be made). Coins have no currency sign; values only.
+- `modes` (taking turns): `pay` (make the price exactly) and `change` (the price was paid with `paid`,
+  give the change back; `paid` must be more than `maxPrice`).
+- Prices are drawn from `minPrice`..`maxPrice`; `items` (1–8) things to buy from `categories`.
 
 ## Sorting levels (`sorting/levels.json`)
 ```json

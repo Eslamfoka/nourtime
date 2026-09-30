@@ -19,6 +19,7 @@ object TestContent {
     val memory get() = loader.memory()
     val words get() = loader.words()
     val sorting get() = loader.sorting()
+    val shop get() = loader.shop()
     fun tracing(language: LearnLanguage) = loader.tracing(language)
     fun letters(language: LearnLanguage) = loader.letters(language)
     val connect get() = loader.connect()

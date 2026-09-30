@@ -37,6 +37,8 @@ import com.nourtime.app.core.learning.TraceStroke
 import com.nourtime.app.core.learning.WordLevel
 import com.nourtime.app.core.learning.SortBinSpec
 import com.nourtime.app.core.learning.SortLevel
+import com.nourtime.app.core.learning.ShopGame
+import com.nourtime.app.core.learning.ShopLevel
 import com.nourtime.app.core.learning.WordEntry
 import com.nourtime.app.data.settings.AgeGroup
 import kotlinx.serialization.json.Json
@@ -99,6 +101,11 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         val (vw, vh) = file.viewBox.takeIf { it.size == 2 && it.all { v -> v > 0 } }?.let { it[0] to it[1] }
             ?: return@cached GamePack<TraceLetter>(emptyList()).also { problem(path, "-", "viewBox is [width, height]") }
         pack(path, file.levels.mapNotNull { traceLetter(path, it, vw, vh) }, file.startAt)
+    }
+
+    fun shop(): GamePack<ShopLevel> = cached("shop") {
+        val file = parse<ShopFile>(SHOP) ?: return@cached GamePack(emptyList())
+        pack(SHOP, file.levels.mapNotNull { shopLevel(it) }, file.startAt)
     }
 
     fun sorting(): GamePack<SortLevel> = cached("sorting") {
@@ -167,6 +174,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         checker.memory()
         checker.words()
         checker.sorting()
+        checker.shop()
         LearnLanguage.entries.forEach { checker.tracing(it) }
         LearnLanguage.entries.forEach { checker.letters(it) }
         checker.connect()
@@ -302,6 +310,20 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         }
         if (bad != null) return null.also { problem(CLOCK, l.id, bad) }
         return ClockLevel(l.id, tasks, precision, l.choices, l.questions)
+    }
+
+    private fun shopLevel(l: ShopLevelJson): ShopLevel? {
+        if (!checkId(SHOP, l.id)) return null
+        val bad = when {
+            1 !in l.coins || l.coins.any { it !in 1..500 } || l.coins.toSet().size != l.coins.size -> "coins must be different, 1..500, with a 1 so every amount can be made"
+            l.modes.isEmpty() || l.modes.any { it != ShopGame.PAY && it != ShopGame.CHANGE } -> "modes are pay and change"
+            l.minPrice !in 1..l.maxPrice || l.maxPrice > 1000 -> "prices must be 1 <= minPrice <= maxPrice <= 1000"
+            ShopGame.CHANGE in l.modes && l.paid <= l.maxPrice -> "paid must be more than maxPrice"
+            l.items !in 1..8 -> "items must be 1..8"
+            else -> null
+        }
+        if (bad != null) return null.also { problem(SHOP, l.id, bad) }
+        return ShopLevel(l.id, l.coins, l.modes, l.minPrice, l.maxPrice, l.paid, l.items, l.categories.toSet())
     }
 
     private fun sortLevel(l: SortLevelJson): SortLevel? {
@@ -456,6 +478,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         const val MEMORY = "memory/levels.json"
         const val WORDS = "words/levels.json"
         const val SORTING = "sorting/levels.json"
+        const val SHOP = "shop/levels.json"
         fun tracingPath(language: LearnLanguage) = "tracing/${language.tag}.json"
         const val CONCEPTS = "concepts.json"
         const val CONNECT = "connect/shapes.json"

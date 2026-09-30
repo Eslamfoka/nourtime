@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "startAt": {"AGES_7_9": "pay-10", "AGES_10_12": "change-10"},
+  "levels": [
+    {"id": "pay-5-ones", "coins": [1], "minPrice": 1, "maxPrice": 5, "items": 3, "categories": ["food", "toys", "objects", "clothes"]},
+    {"id": "pay-10", "coins": [1, 2, 5], "minPrice": 3, "maxPrice": 10, "categories": ["food", "toys", "objects", "clothes"]},
+    {"id": "pay-20", "coins": [1, 2, 5, 10], "minPrice": 6, "maxPrice": 20, "categories": ["food", "toys", "objects", "clothes"]},
+    {"id": "change-10", "coins": [1, 2, 5], "modes": ["change"], "minPrice": 1, "maxPrice": 9, "paid": 10, "categories": ["food", "toys", "objects", "clothes"]},
+    {"id": "pay-50", "coins": [1, 2, 5, 10, 20], "minPrice": 15, "maxPrice": 50, "categories": ["food", "toys", "objects", "clothes"]},
+    {"id": "change-20", "coins": [1, 2, 5, 10], "modes": ["change"], "minPrice": 3, "maxPrice": 19, "paid": 20, "categories": ["food", "toys", "objects", "clothes"]},
+    {"id": "pay-100", "coins": [1, 2, 5, 10, 20, 50], "minPrice": 30, "maxPrice": 100, "categories": ["food", "toys", "objects", "clothes"]},
+    {"id": "change-50", "coins": [1, 2, 5, 10, 20], "modes": ["change"], "minPrice": 11, "maxPrice": 49, "paid": 50, "categories": ["food", "toys", "objects", "clothes"]},
+    {"id": "pay-change-100", "coins": [1, 2, 5, 10, 20, 50], "modes": ["pay", "change"], "minPrice": 20, "maxPrice": 99, "paid": 100, "items": 6, "categories": ["food", "toys", "objects", "clothes"]},
+    {"id": "champion", "coins": [1, 2, 5, 10, 20, 50, 100], "modes": ["pay", "change"], "minPrice": 60, "maxPrice": 190, "paid": 200, "items": 6, "categories": ["food", "toys", "objects", "clothes"]}
+  ]
+}

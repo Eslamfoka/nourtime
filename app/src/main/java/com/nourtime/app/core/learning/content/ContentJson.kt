@@ -107,6 +107,25 @@ data class ClockLevelJson(
 )
 
 @Serializable
+data class ShopFile(
+    override val schema: Int,
+    val startAt: Map<String, String> = emptyMap(),
+    val levels: List<ShopLevelJson>,
+) : Versioned
+
+@Serializable
+data class ShopLevelJson(
+    val id: String,
+    val coins: List<Int>,
+    val modes: List<String> = listOf("pay"),
+    val minPrice: Int = 1,
+    val maxPrice: Int = 10,
+    val paid: Int = 10,
+    val items: Int = 4,
+    val categories: List<String> = emptyList(),
+)
+
+@Serializable
 data class SortingFile(
     override val schema: Int,
     val startAt: Map<String, String> = emptyMap(),
