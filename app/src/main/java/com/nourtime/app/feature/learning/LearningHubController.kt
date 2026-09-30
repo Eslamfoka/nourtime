@@ -90,6 +90,15 @@ class LearningHubController(
 
     private var advancing: Job? = null
 
+    private val _today = MutableStateFlow<LocalDate?>(null)
+
+    /** Today by the trusted clock, for "minutes earned today"; null until read. */
+    val todayDate: StateFlow<LocalDate?> = _today.asStateFlow()
+
+    init {
+        scope.launch { _today.value = today() }
+    }
+
     fun numerals(s: LearningState?): NumeralStyle =
         s?.numerals ?: if (appLanguage == LearnLanguage.ARABIC) NumeralStyle.EASTERN else NumeralStyle.WESTERN
 

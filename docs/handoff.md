@@ -582,3 +582,71 @@ test); api35 is back to Arabic.
 - Emulator state: api31 (5556, child, PIN 4827 / blue) has a lock running from the Lock now test;
   api35 (5554, parent, eslamy319 signed in) is back to Arabic. After an emulator reboot, re-apply the
   DNS iptables fix (see memory / §9). Never `emu kill`.
+
+## 12. Learning Hub (2026-09-30, overnight)
+
+The owner asked for "Phase 3: Gamification & Education": a Learning Hub on the Time's up screen whose
+games earn screen time. Plan and architecture: [`progress.md` → Learning Hub](progress.md#learning-hub-gamification--education-planned-and-built-2026-09-30).
+Everything is on branch **`learning-hub`** (not merged into master).
+
+### What's built
+- **Time's up screen:** a coral **Play & earn time** button (time-up locks only, and only if the parent
+  allows it; never at bedtime or on protected Settings screens).
+- **Hub menu:** four games, the minute bank, **Use my minutes**.
+- **Smart Math** (12 levels): +, −, ×, ÷ and < = >; dots to count on level 1; tap a number to hear it;
+  123 / ١٢٣ toggle (Arabic defaults to ١٢٣). Equations are always drawn left to right, so "3 < 5"
+  never flips in Arabic.
+- **Letters & Words** (7 levels, Arabic or English, chosen in the game): letter → picture, letter →
+  word then picture (the owner's "A, Apple" flow), word → picture, color name ↔ color. Read aloud with
+  the phone's text-to-speech (letter name + word: "ألف، أرنب").
+- **Number Connect** (8 drawings): drag dot to dot over a faded outline, lines then curves; each dot
+  says its number.
+- **Coloring Match** (6 pictures): pick a color, tap a region; the reference is the same drawing in
+  color; extra (wrong) colors from level 3.
+- **Tutorials:** the first time each game opens, a hand shows what to do (not scored).
+- **Stars:** multiple choice by first-try answers (3 ≥ 90 %, 2 ≥ 70 %); drawing games by mistakes
+  (≤ 1 → 3, ≤ 3 → 2). **Only 2+ stars earn minutes.**
+- **Rewards (decisions for the owner to confirm):**
+  1. Earned minutes are a **break inside the lock** (`TimeRules.reward`, not `TimerCommand.Bonus`):
+     the lock keeps counting down meanwhile and **resumes with what's left**; a parent's bonus instead
+     ends the lock and a full new one follows, which would punish a child who earns 5 minutes.
+  2. Minutes are **banked**; the child taps **Use my minutes** when ready.
+  3. Defaults: on, **5 min per won level, at most 15 min a day** (parent: Settings → Learning Hub,
+     with a **Try the games** preview that changes nothing).
+- **Survives Accessibility reconnects:** the hub lives in `LockOverlay`, not the window (Honor
+  reconnects the service by itself; before this fix the hub would have closed mid-game).
+- Whole-phone lock: the automatic screen-off waits while the child is in the hub.
+
+### Tested (API 31 emulator, child mode, Arabic, girl 3–6, real time-up lock over Chrome)
+- Math level 1 with the tutorial (wrong tap shakes, right tap advances), 3 stars, **+5 min**;
+  **Use my minutes** opened Chrome; after exactly 5 min of use the lock **came back with ~4.5 h left
+  (not a fresh 6 h)**; timer state checked in DataStore (`timer_lock_pending`).
+- Letters in Arabic (ذ → 🌽, Arabic voice synthesised) and English (C → 🐱, English voice).
+- Number Connect: triangle (tutorial), house (with a wrong drag), fish (curves); **daily max
+  reached** message after 15 min.
+- Coloring: all 6 pictures completed (a wrong fill in the tutorial, palettes of 3–6 colors).
+- Parent preview from Settings: all levels open, "no minutes are earned here".
+- System Back steps back through the hub, then to the Time's up screen.
+- Unit tests: timer reward rules (12), game engine (16), drawing games (12), repository (7).
+
+### Please test on the Honor
+1. Install the APK over the current one. Settings → **Learning Hub**: switch on, 5 min, 15 min.
+   Tap **Try the games** and play one level of each game.
+2. Check that the **Arabic voice** speaks (Letters level 1). If it's silent, Honor's TTS engine may lack
+   Arabic: install "Speech Services by Google" and pick it in Settings → Accessibility →
+   Text-to-speech. Tell me what the phone has; the games stay usable silently.
+3. **Lock now** from the dashboard, open a limited app → **Play & earn time** → win a Math level →
+   **Use my minutes** → the app opens; after the minutes, the lock returns with the rest of the lock
+   time (Home shows it).
+
+### Open questions for the owner
+- Confirm the three reward decisions above (break vs. bonus, bank, defaults 5 / 15).
+- Arabic equations: always left to right now. Should Eastern-numeral mode write them right to left
+  (as some Arabic schoolbooks do)?
+- Pictures are emoji and code-drawn shapes: fine for now, or should we plan illustrations?
+- Syncing the Learning Hub settings and "minutes earned today" to the parent's phone isn't built yet.
+
+### Known limitations
+- Number Connect and Coloring are touch-only (no TalkBack alternative yet); Math and Letters are
+  fully accessible (every choice has a description).
+- Levels are fixed content in Kotlin; no videos yet (the owner's "later").

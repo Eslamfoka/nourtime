@@ -178,20 +178,22 @@ privacy wording says nothing leaves the phone (wrong once paired: **Play policy*
 Accessibility and overlay hints, the app-search list is cramped on 720p screens with the keyboard open,
 and parent sign-in failed with a misleading message when the phone had no Google account (fixed).
 
-## Learning Hub: Gamification & Education (planned 2026-09-30)
+## Learning Hub: Gamification & Education (planned and built 2026-09-30)
 
 The owner's "Phase 3". When the time is up, the child sees a **Learning Hub** next to the usual
 Time's up screen: a menu of mini-games (later also videos). Winning levels earns screen time.
-Branch `learning-hub`.
+Branch `learning-hub` (not merged yet). All four games are built and were played end to end on the
+API 31 emulator from a real time-up lock, in Arabic (plus English letters). Morning summary and test
+list: [`handoff.md` §12](handoff.md#12-learning-hub-2026-09-30-overnight).
 
 ### Games
 
 | # | Game | Interaction | Status |
 |---|---|---|---|
-| L1 | **Smart Math** | Multiple choice. +, −, ×, ÷ and comparisons (<, >, =), 12 levels from "add within 5" (with dots to count) to mixed operations up to 100. Tap any number to hear it (TTS). Western (123) / Eastern (١٢٣) numerals toggle. | 🟡 Building first |
-| L2 | **Letters & Words** (Arabic + English) | Multiple choice with audio. Letter → word, letter → picture, word → picture (body, animals, food), color name → color. Tap the letter or word to hear "A, Apple" / "أ، أرنب". | 🟡 Building first |
-| L3 | **Number Connect** | Drawing: drag from dot 1 to 2 to 3 over a faded outline; segments can be lines or curves. | ⏳ Designed below |
-| L4 | **Coloring Match** | Tap a palette color, then tap a region of a black-and-white drawing to fill it, matching a colored reference. | ⏳ Designed below |
+| L1 | **Smart Math** | Multiple choice. +, −, ×, ÷ and comparisons (<, >, =), 12 levels from "add within 5" (with dots to count) to mixed operations up to 100. Tap any number to hear it (TTS). Western (123) / Eastern (١٢٣) numerals toggle. | ✅ 12 levels |
+| L2 | **Letters & Words** (Arabic + English) | Multiple choice with audio. Letter → word, letter → picture, word → picture (body, animals, food), color name → color. Tap the letter or word to hear "A, Apple" / "أ، أرنب". | ✅ 7 levels, 28 Arabic + 25 English letters, 25 words, 11 colors |
+| L3 | **Number Connect** | Drawing: drag from dot 1 to 2 to 3 over a faded outline; segments can be lines or curves. | ✅ 8 drawings (triangle → cat), numbers spoken as reached |
+| L4 | **Coloring Match** | Tap a palette color, then tap a region of a black-and-white drawing to fill it, matching a colored reference. | ✅ 6 pictures (apple → car), extra colors from level 3 |
 
 ### Architecture
 
@@ -252,24 +254,24 @@ parent's phone, and showing "minutes earned today" there, comes after the games 
 **Pictures.** Emoji for now: they work offline on every Android 8+ phone and need no licensing.
 Real artwork can replace them later through the same content catalog.
 
-### Later: Number Connect (L3)
+### Number Connect (L3): design as built
 - A shape is a list of dots in 0..1 coordinates; each segment to the next dot is a line or a curve
   (quadratic, with a control point). The faded outline is drawn from the same data, so one file
-  describes the whole level. Shapes live in `assets/learning/shapes/*.json`.
-- A drag that starts near dot *k* and ends near dot *k+1* completes a segment (animated along the
-  path); other drags snap back. Tolerance grows for ages 3–6.
+  describes the whole level. Shapes are in `ConnectLevels` (Kotlin) for now; a JSON asset format
+  and an SVG-to-dots script can come when an illustrator provides drawings.
+- A drag that starts near dot *k* and ends near dot *k+1* completes a segment; other drags snap back. Tolerance grows for ages 3–6. A quick swipe that passes over the
+  next dot counts too (touch events come in steps).
 - Tutorial level: an animated hand drags 1 → 2. Difficulty: more dots, curves, numbers beyond 10,
   then counting by 2s or letters (أ ب ت) instead of numbers.
-- Content tool: a small script that turns an SVG path into sampled dots with curve hints.
 
-### Later: Coloring Match (L4)
-- A drawing is a list of closed regions (SVG path data parsed with Compose `PathParser`), each with
-  its target color. The colored reference is the **same drawing** rendered with the target colors,
-  so no second image is needed.
-- Tap-to-fill: hit-test with `android.graphics.Region` built from each path (smallest region wins).
+### Coloring Match (L4): design as built
+- A drawing is a list of closed regions (boxes, ovals, polygons in 0..1 coordinates), each with its
+  target color. The colored reference is the **same drawing** rendered with the target colors, so no
+  second image is needed. SVG paths can be added later as another region type.
+- Tap-to-fill: pure-Kotlin hit test; the topmost region wins (e.g. the fish's eye over its body).
 - Win when every region matches; the palette shows only the colors used (plus one distractor from
   level 3 on). Tutorial: hand taps a color, then the matching region.
-- Content: original SVGs or openly licensed ones (license checked), converted at build time.
+- Content: 6 original pictures drawn in code. More can come from original or openly licensed SVGs.
 
 ## UX backlog (future polish phase)
 

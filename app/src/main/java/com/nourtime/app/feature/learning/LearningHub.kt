@@ -152,6 +152,8 @@ private fun BankChip(minutes: Int) {
 private fun ColumnScope.HubMenu(controller: LearningHubController, state: LearningState?, gender: ChildGender, onClose: () -> Unit) {
     val settings = state?.settings
     val earning = controller.rewards && settings != null && settings.dailyMaxMinutes > 0
+    val today by controller.todayDate.collectAsStateWithLifecycle()
+    val maxReached = earning && state != null && today != null && state.earnedOn(today!!) >= settings!!.dailyMaxMinutes
     HubTopBar(stringResource(R.string.learn_hub_title), onClose)
     Column(
         Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
@@ -160,10 +162,11 @@ private fun ColumnScope.HubMenu(controller: LearningHubController, state: Learni
     ) {
         NourStar(Modifier.size(96.dp))
         Text(
-            stringResource(
-                if (earning) Gendered(R.string.learn_hub_subtitle_m, R.string.learn_hub_subtitle_f).pick(gender)
-                else Gendered(R.string.learn_hub_subtitle_fun_m, R.string.learn_hub_subtitle_fun_f).pick(gender),
-            ),
+            when {
+                maxReached -> stringResource(R.string.learn_daily_max_reached)
+                earning -> stringResource(Gendered(R.string.learn_hub_subtitle_m, R.string.learn_hub_subtitle_f).pick(gender))
+                else -> stringResource(Gendered(R.string.learn_hub_subtitle_fun_m, R.string.learn_hub_subtitle_fun_f).pick(gender))
+            },
             style = MaterialTheme.typography.titleMedium,
             color = NourPalette.Navy,
             textAlign = TextAlign.Center,
