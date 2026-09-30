@@ -1,19 +1,17 @@
 package com.nourtime.app.feature.learning
 
 import com.nourtime.app.core.learning.ColoringPack
-import com.nourtime.app.core.learning.ColoringPalette
 import com.nourtime.app.core.learning.ColoringRound
 import com.nourtime.app.core.learning.DotShape
 import com.nourtime.app.core.learning.GamePack
 import com.nourtime.app.core.learning.Level
-import com.nourtime.app.core.learning.LettersGame
 import com.nourtime.app.core.learning.LettersLevel
-import com.nourtime.app.core.learning.MathGame
 import com.nourtime.app.core.learning.MathLevel
 import com.nourtime.app.core.learning.ConnectRound
 import com.nourtime.app.core.learning.GameId
 import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.learning.LevelProgress
+import com.nourtime.app.core.learning.ListenLevel
 import com.nourtime.app.core.learning.NumeralStyle
 import com.nourtime.app.core.learning.Round
 import com.nourtime.app.data.learning.LearningContentRepository
@@ -63,24 +61,17 @@ sealed interface HubScreen {
     ) : HubScreen
 }
 
-/** Games that are playable today; the others show as "coming soon". */
-val PLAYABLE_GAMES = listOf(GameId.MATH, GameId.LETTERS, GameId.CONNECT, GameId.COLORING)
-
-/** The level packs of the four games, as loaded (null until loaded). */
+/** The level packs of the games, as loaded (null until loaded). */
 data class HubContent(
     val math: GamePack<MathLevel>? = null,
     val letters: GamePack<LettersLevel>? = null,
     val connect: GamePack<DotShape>? = null,
     val coloring: ColoringPack? = null,
+    val listen: GamePack<ListenLevel>? = null,
     /** Color names in the app language, spoken when a coloring color is picked. */
     val colorNames: Map<Long, String> = emptyMap(),
 ) {
-    fun levels(game: GameId): GamePack<out Level>? = when (game) {
-        GameId.MATH -> math
-        GameId.LETTERS -> letters
-        GameId.CONNECT -> connect
-        GameId.COLORING -> coloring?.pack
-    }
+    fun levels(game: GameId): GamePack<out Level>? = GameRegistry.of(game).levels(this)
 }
 
 /**
@@ -125,6 +116,7 @@ class LearningHubController(
                 letters = content.letterLevels(),
                 connect = content.connect(),
                 coloring = content.coloring(),
+                listen = content.listen(),
                 colorNames = content.letters(appLanguage).colors.associate { it.argb to it.name },
             )
         }
@@ -158,7 +150,7 @@ class LearningHubController(
     }
 
     fun openGame(game: GameId) {
-        if (game in PLAYABLE_GAMES) _screen.value = HubScreen.Levels(game)
+        _screen.value = HubScreen.Levels(game)
     }
 
     fun setNumerals(style: NumeralStyle) = scope.launch { repo.setNumerals(style) }
@@ -174,20 +166,9 @@ class LearningHubController(
         val tutorial = if (rewards) s != null && game !in s.tutorialsSeen else level == 0
         advancing?.cancel()
         advancing = scope.launch {
-            _screen.value = when (game) {
-                GameId.MATH -> HubScreen.Playing(game, level, Round(MathGame.questions(c.math!!.levels[level], random), tutorial = tutorial))
-                GameId.LETTERS -> {
-                    val questions = LettersGame.questions(c.letters!!.levels[level], content.letters(lettersLanguage(s)), random)
-                    // A language without content yet: stay on the level screen.
-                    if (questions.isEmpty()) return@launch
-                    HubScreen.Playing(game, level, Round(questions, tutorial = tutorial))
-                }
-                GameId.CONNECT -> HubScreen.Connecting(game, level, ConnectRound(c.connect!!.levels[level], tutorial = tutorial))
-                GameId.COLORING -> c.coloring!!.let { pack ->
-                    val picture = pack.pack.levels[level]
-                    HubScreen.Coloring(game, level, ColoringRound(picture, ColoringPalette.of(picture, pack.distractors, random), tutorial = tutorial))
-                }
-            }
+            // Null: nothing to play in this level (e.g. no words in that language yet), stay here.
+            val start = GameStart(c, content, lettersLanguage(s), random)
+            _screen.value = GameRegistry.of(game).start(start, level, tutorial) ?: return@launch
         }
     }
 

@@ -8,6 +8,7 @@ import com.nourtime.app.core.learning.GamePack
 import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.learning.LettersLanguagePack
 import com.nourtime.app.core.learning.LettersLevel
+import com.nourtime.app.core.learning.ListenLevel
 import com.nourtime.app.core.learning.MathLevel
 import com.nourtime.app.core.learning.content.ContentLoader
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -35,6 +36,7 @@ class LearningContentRepository @Inject constructor(
     suspend fun math(): GamePack<MathLevel> = io { loader.math() }
     suspend fun letterLevels(): GamePack<LettersLevel> = io { loader.letterLevels() }
     suspend fun letters(language: LearnLanguage): LettersLanguagePack = io { loader.letters(language) }
+    suspend fun listen(): GamePack<ListenLevel> = io { loader.listen() }
     suspend fun connect(): GamePack<DotShape> = io { loader.connect() }
     suspend fun coloring(): ColoringPack = io { loader.coloring() }
 

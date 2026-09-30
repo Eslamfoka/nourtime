@@ -1,7 +1,10 @@
 package com.nourtime.app.core.learning
 
-/** The Learning Hub's mini-games. */
-enum class GameId { MATH, LETTERS, CONNECT, COLORING }
+/**
+ * The Learning Hub's mini-games. The name is part of the saved progress key: never rename one.
+ * Adding a game: an entry here plus its entry in the hub's game registry (`GameRegistry`).
+ */
+enum class GameId { MATH, LETTERS, CONNECT, COLORING, LISTEN }
 
 /** Language of a game's content and voice, independent of the app language. */
 enum class LearnLanguage(val tag: String) { ARABIC("ar"), ENGLISH("en") }
@@ -62,6 +65,13 @@ sealed interface Card {
     data class Picture(val emoji: String, val word: String, val image: String? = null) : Card
 
     data class Swatch(val argb: Long, val name: String) : Card
+
+    /**
+     * Something to listen to: a big speaker button that says [speech]. [text] is shown only when the
+     * phone has no voice for the language (then the child reads instead); [number] is shown in the
+     * child's numerals instead of [text] when it's set.
+     */
+    data class Sound(val speech: String, val text: String, val number: Int? = null) : Card
 }
 
 /** What the child is asked to do; the UI shows it as a short instruction. */
@@ -70,6 +80,12 @@ enum class Task {
 
     /** See a picture, pick its written word (reading; nothing is read aloud). */
     PICTURE_TO_WORD,
+
+    /** Listen & Find: hear a word, a color, a letter's name or a number and tap it. */
+    LISTEN_TO_PICTURE, LISTEN_TO_COLOR, LISTEN_TO_LETTER, LISTEN_TO_NUMBER,
+    ;
+
+    val listening: Boolean get() = this == LISTEN_TO_PICTURE || this == LISTEN_TO_COLOR || this == LISTEN_TO_LETTER || this == LISTEN_TO_NUMBER
 }
 
 data class Speech(val text: String, val language: LearnLanguage)

@@ -77,12 +77,7 @@ import com.nourtime.app.feature.setup.durationText
 /** Look of each game: its tile icon and accent color. */
 internal data class GameLook(val emoji: String, val accent: Color, val title: Int, val hint: Int)
 
-internal fun lookOf(game: GameId) = when (game) {
-    GameId.MATH -> GameLook("🔢", NourPalette.Mint, R.string.learn_game_math, R.string.learn_game_math_hint)
-    GameId.LETTERS -> GameLook("🔤", NourPalette.Coral, R.string.learn_game_letters, R.string.learn_game_letters_hint)
-    GameId.CONNECT -> GameLook("✏️", Color(0xFF7E8CE0), R.string.learn_game_connect, R.string.learn_game_connect_hint)
-    GameId.COLORING -> GameLook("🎨", NourPalette.GoldDeep, R.string.learn_game_coloring, R.string.learn_game_coloring_hint)
-}
+internal fun lookOf(game: GameId) = GameRegistry.of(game).look
 
 internal val HubBackground = Brush.verticalGradient(listOf(NourPalette.Cream, NourPalette.GoldLight))
 
@@ -186,9 +181,11 @@ private fun ColumnScope.HubMenu(controller: LearningHubController, state: Learni
                 }
             }
         }
-        GameId.entries.chunked(2).forEach { row ->
+        GameRegistry.all.chunked(2).forEach { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxWidth()) {
-                row.forEach { game -> GameTile(game, game in PLAYABLE_GAMES, { controller.openGame(game) }, Modifier.weight(1f)) }
+                row.forEach { spec -> GameTile(spec.id, true, { controller.openGame(spec.id) }, Modifier.weight(1f)) }
+                // An odd last tile keeps the size of the others.
+                if (row.size == 1) Spacer(Modifier.weight(1f))
             }
         }
         Spacer(Modifier.height(8.dp))
@@ -237,16 +234,16 @@ private fun ColumnScope.LevelPicker(controller: LearningHubController, state: Le
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        when (game) {
-            GameId.MATH, GameId.CONNECT -> OptionRow(stringResource(R.string.learn_numerals), NumeralStyle.entries, numerals, { it.format(123) }, controller::setNumerals)
-            GameId.LETTERS -> OptionRow(
+        when (GameRegistry.of(game).option) {
+            GameOption.NUMERALS -> OptionRow(stringResource(R.string.learn_numerals), NumeralStyle.entries, numerals, { it.format(123) }, controller::setNumerals)
+            GameOption.LANGUAGE -> OptionRow(
                 stringResource(R.string.learn_language),
                 LearnLanguage.entries,
                 controller.lettersLanguage(state),
                 { if (it == LearnLanguage.ARABIC) "عربي" else "English" },
                 controller::setLettersLanguage,
             )
-            else -> Unit
+            GameOption.NONE -> Unit
         }
         val content by controller.hubContent.collectAsStateWithLifecycle()
         val levels = content.levels(game)?.levels.orEmpty()

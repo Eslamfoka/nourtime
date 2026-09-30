@@ -466,6 +466,8 @@
     <string name="learn_game_connect_hint">صِل النقاط لترسم</string>
     <string name="learn_game_coloring">لوّن مثل الصورة</string>
     <string name="learn_game_coloring_hint">لوّن الرسمة مثل الصورة</string>
+    <string name="learn_game_listen">الاستماع والاختيار</string>
+    <string name="learn_game_listen_hint">نسمع الكلمة ونجد صورتها</string>
     <string name="learn_coming_soon">قريبًا</string>
     <string name="learn_level">المرحلة %1$s</string>
     <string name="learn_level_locked">المرحلة %1$s، مقفلة</string>
@@ -479,6 +481,10 @@
     <string name="learn_task_name_to_color">أين هذا اللون؟</string>
     <string name="learn_task_color_to_name">ما اسم هذا اللون؟</string>
     <string name="learn_task_picture_to_word">ما الكلمة المكتوبة لهذه الصورة؟</string>
+    <string name="learn_task_listen_to_picture">أين الصورة التي سمعتها؟</string>
+    <string name="learn_task_listen_to_color">أين اللون الذي سمعته؟</string>
+    <string name="learn_task_listen_to_letter">أين الحرف الذي سمعته؟</string>
+    <string name="learn_task_listen_to_number">أين الرقم الذي سمعته؟</string>
     <string name="learn_tutorial_m">اضغط على الجواب الصحيح. اتبع اليد!</string>
     <string name="learn_tutorial_f">اضغطي على الجواب الصحيح. اتبعي اليد!</string>
     <string name="learn_try_again_m">حاول مرة أخرى!</string>

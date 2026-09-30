@@ -10,6 +10,7 @@ assets/learning/
   letters/levels.json      Letters & Words levels
   letters/ar.json          Arabic: alphabet + words + color names
   letters/en.json          English: the same for English
+  listen/levels.json       Listen & Find levels (uses the words, colors and letters above)
   math/levels.json         Smart Math levels
   connect/shapes.json      Number Connect drawings
   coloring/pictures.json   Coloring Match pictures
@@ -59,6 +60,17 @@ Each language names the concepts and lists its alphabet:
   `color_to_name`. Several tasks take turns. `["letter_to_word", "letter_to_picture"]` is the
   "A, Apple → word → picture" flow for the same letter.
 - `choices` 2–4; `firstLettersOnly` uses the first half of the alphabet; `categories` (empty = all).
+
+## Listen & Find levels (`listen/levels.json`)
+```json
+{"id": "hear-animals-2", "tasks": ["listen_to_picture"], "choices": 2, "categories": ["animals"]}
+```
+- The child hears something (read aloud when the question appears, again on the big speaker button)
+  and taps it. `tasks`: `listen_to_picture` (a word), `listen_to_color`, `listen_to_letter` (a letter's
+  name), `listen_to_number` (0..`maxNumber`, default 10). Several tasks take turns.
+- `choices` 2–4; `categories` and `firstLettersOnly` as in Letters & Words; words come from
+  `letters/<language>.json`, in the language chosen on the level screen.
+- Without a voice for that language on the phone, the word (or number) is shown written instead.
 
 ## Smart Math levels (`math/levels.json`)
 ```json

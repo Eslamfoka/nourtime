@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "startAt": {"AGES_7_9": "hear-letters-first", "AGES_10_12": "hear-numbers-20"},
+  "levels": [
+    {"id": "hear-animals-2", "tasks": ["listen_to_picture"], "choices": 2, "categories": ["animals"]},
+    {"id": "hear-food-2", "tasks": ["listen_to_picture"], "choices": 2, "categories": ["food"]},
+    {"id": "hear-colors-2", "tasks": ["listen_to_color"], "choices": 2},
+    {"id": "hear-numbers-5", "tasks": ["listen_to_number"], "choices": 2, "maxNumber": 5},
+    {"id": "hear-body", "tasks": ["listen_to_picture"], "categories": ["body"]},
+    {"id": "hear-animals-3", "tasks": ["listen_to_picture"], "categories": ["animals"]},
+    {"id": "hear-colors-3", "tasks": ["listen_to_color"]},
+    {"id": "hear-numbers-10", "tasks": ["listen_to_number"], "maxNumber": 10},
+    {"id": "hear-vehicles", "tasks": ["listen_to_picture"], "categories": ["vehicles"]},
+    {"id": "hear-letters-first", "tasks": ["listen_to_letter"], "firstLettersOnly": true},
+    {"id": "hear-clothes-toys", "tasks": ["listen_to_picture"], "categories": ["clothes", "toys"]},
+    {"id": "hear-nature", "tasks": ["listen_to_picture"], "categories": ["nature"]},
+    {"id": "hear-home-people", "tasks": ["listen_to_picture"], "categories": ["objects", "people", "places"]},
+    {"id": "hear-numbers-20", "tasks": ["listen_to_number"], "choices": 4, "maxNumber": 20},
+    {"id": "hear-letters-all", "tasks": ["listen_to_letter"], "choices": 4},
+    {"id": "hear-colors-4", "tasks": ["listen_to_color"], "choices": 4},
+    {"id": "hear-food-4", "tasks": ["listen_to_picture"], "choices": 4, "categories": ["food"]},
+    {"id": "hear-numbers-100", "tasks": ["listen_to_number"], "choices": 4, "maxNumber": 100},
+    {"id": "hear-everything", "tasks": ["listen_to_picture"], "choices": 4, "questions": 8},
+    {"id": "hear-champion", "tasks": ["listen_to_picture", "listen_to_letter", "listen_to_color", "listen_to_number"], "choices": 4, "maxNumber": 100, "questions": 10}
+  ]
+}

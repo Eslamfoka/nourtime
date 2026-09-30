@@ -2,6 +2,7 @@ package com.nourtime.app.core.learning.content
 
 import com.nourtime.app.core.learning.Concept
 import com.nourtime.app.core.learning.LettersGame
+import com.nourtime.app.core.learning.ListenGame
 import com.nourtime.app.core.learning.MathGame
 import kotlinx.serialization.Serializable
 
@@ -47,6 +48,24 @@ data class LettersLevelJson(
     val firstLettersOnly: Boolean = false,
     val categories: List<String> = emptyList(),
     val questions: Int = LettersGame.QUESTIONS,
+)
+
+@Serializable
+data class ListenFile(
+    override val schema: Int,
+    val startAt: Map<String, String> = emptyMap(),
+    val levels: List<ListenLevelJson>,
+) : Versioned
+
+@Serializable
+data class ListenLevelJson(
+    val id: String,
+    val tasks: List<String>,
+    val choices: Int = 3,
+    val categories: List<String> = emptyList(),
+    val firstLettersOnly: Boolean = false,
+    val maxNumber: Int = 10,
+    val questions: Int = ListenGame.QUESTIONS,
 )
 
 /** Things with a picture, shared by all languages; and colors. */

@@ -33,7 +33,7 @@ object LettersGame {
                 Task.LETTER_TO_PICTURE, Task.LETTER_TO_WORD -> letters.size
                 Task.WORD_TO_PICTURE, Task.PICTURE_TO_WORD -> words.size
                 Task.NAME_TO_COLOR, Task.COLOR_TO_NAME -> content.colors.size
-                Task.SOLVE, Task.COMPARE -> 0
+                else -> 0
             }
         }
         if (needs.any { it < spec.choices }) return emptyList()
@@ -57,7 +57,7 @@ object LettersGame {
                 Task.NAME_TO_COLOR -> nameToColor(usedColors.next(), content.colors, spec.choices, language, random)
                 Task.COLOR_TO_NAME -> colorToName(usedColors.next(), content.colors, spec.choices, random)
                 Task.PICTURE_TO_WORD -> pictureToWord(usedWords.next(), words, spec.choices, random)
-                Task.SOLVE, Task.COMPARE -> error("not a letters task")
+                else -> error("not a letters task: ${spec.tasks[i % spec.tasks.size]}")
             }
         }
         return out

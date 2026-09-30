@@ -456,6 +456,8 @@
     <string name="learn_game_connect_hint">Connect the dots to draw</string>
     <string name="learn_game_coloring">Coloring Match</string>
     <string name="learn_game_coloring_hint">Color it like the picture</string>
+    <string name="learn_game_listen">Listen &amp; Find</string>
+    <string name="learn_game_listen_hint">Hear it, then find it</string>
     <string name="learn_coming_soon">Coming soon</string>
     <string name="learn_level">Level %1$s</string>
     <string name="learn_level_locked">Level %1$s, locked</string>
@@ -469,6 +471,10 @@
     <string name="learn_task_name_to_color">Find this color</string>
     <string name="learn_task_color_to_name">What is this color called?</string>
     <string name="learn_task_picture_to_word">Which word is this picture?</string>
+    <string name="learn_task_listen_to_picture">Which picture did you hear?</string>
+    <string name="learn_task_listen_to_color">Which color did you hear?</string>
+    <string name="learn_task_listen_to_letter">Which letter did you hear?</string>
+    <string name="learn_task_listen_to_number">Which number did you hear?</string>
     <string name="learn_tutorial_m">Tap the right answer. Follow the hand!</string>
     <string name="learn_tutorial_f">Tap the right answer. Follow the hand!</string>
     <string name="learn_try_again_m">Try again!</string>

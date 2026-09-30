@@ -13,6 +13,7 @@ object TestContent {
 
     val math get() = loader.math()
     val letterLevels get() = loader.letterLevels()
+    val listen get() = loader.listen()
     fun letters(language: LearnLanguage) = loader.letters(language)
     val connect get() = loader.connect()
     val coloring get() = loader.coloring()

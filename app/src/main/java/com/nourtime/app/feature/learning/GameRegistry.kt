@@ -1,0 +1,111 @@
+package com.nourtime.app.feature.learning
+
+import androidx.compose.ui.graphics.Color
+import com.nourtime.app.R
+import com.nourtime.app.core.designsystem.theme.NourPalette
+import com.nourtime.app.core.learning.ColoringPalette
+import com.nourtime.app.core.learning.ColoringRound
+import com.nourtime.app.core.learning.ConnectRound
+import com.nourtime.app.core.learning.GameId
+import com.nourtime.app.core.learning.GamePack
+import com.nourtime.app.core.learning.LearnLanguage
+import com.nourtime.app.core.learning.LettersGame
+import com.nourtime.app.core.learning.Level
+import com.nourtime.app.core.learning.ListenGame
+import com.nourtime.app.core.learning.MathGame
+import com.nourtime.app.core.learning.Round
+import com.nourtime.app.data.learning.LearningContentRepository
+import kotlin.random.Random
+
+/** The setting a game's level screen offers above the levels. */
+internal enum class GameOption { NONE, NUMERALS, LANGUAGE }
+
+/** What a game gets when a level starts. */
+internal class GameStart(
+    val packs: HubContent,
+    val repo: LearningContentRepository,
+    /** The language chosen for words (Letters & Words, Listen & Find). */
+    val wordsLanguage: LearnLanguage,
+    val random: Random,
+)
+
+/**
+ * One Learning Hub game: its tile, the option on its level screen, its levels and how a level starts.
+ * [wordsLanguage]: the questions speak the chosen words language (else the app language).
+ * [start] returns null when the level can't be played (e.g. no content in that language yet).
+ */
+internal class GameSpec(
+    val id: GameId,
+    val look: GameLook,
+    val option: GameOption,
+    val wordsLanguage: Boolean,
+    val levels: (HubContent) -> GamePack<out Level>?,
+    val start: suspend GameStart.(level: Int, tutorial: Boolean) -> HubScreen?,
+)
+
+/**
+ * Every game, in menu order. A new game is one [GameId], one entry here (plus its pack in
+ * [HubContent]) and its engine and screen; the menu, level screens, progress and rewards follow.
+ */
+internal object GameRegistry {
+    val all: List<GameSpec> = listOf(
+        GameSpec(
+            GameId.MATH,
+            GameLook("🔢", NourPalette.Mint, R.string.learn_game_math, R.string.learn_game_math_hint),
+            GameOption.NUMERALS,
+            wordsLanguage = false,
+            levels = { it.math },
+            start = { level, tutorial ->
+                HubScreen.Playing(GameId.MATH, level, Round(MathGame.questions(packs.math!!.levels[level], random), tutorial = tutorial))
+            },
+        ),
+        GameSpec(
+            GameId.LETTERS,
+            GameLook("🔤", NourPalette.Coral, R.string.learn_game_letters, R.string.learn_game_letters_hint),
+            GameOption.LANGUAGE,
+            wordsLanguage = true,
+            levels = { it.letters },
+            start = { level, tutorial ->
+                LettersGame.questions(packs.letters!!.levels[level], repo.letters(wordsLanguage), random)
+                    .takeIf { it.isNotEmpty() }
+                    ?.let { HubScreen.Playing(GameId.LETTERS, level, Round(it, tutorial = tutorial)) }
+            },
+        ),
+        GameSpec(
+            GameId.CONNECT,
+            GameLook("✏️", Color(0xFF7E8CE0), R.string.learn_game_connect, R.string.learn_game_connect_hint),
+            GameOption.NUMERALS,
+            wordsLanguage = false,
+            levels = { it.connect },
+            start = { level, tutorial ->
+                HubScreen.Connecting(GameId.CONNECT, level, ConnectRound(packs.connect!!.levels[level], tutorial = tutorial))
+            },
+        ),
+        GameSpec(
+            GameId.COLORING,
+            GameLook("🎨", NourPalette.GoldDeep, R.string.learn_game_coloring, R.string.learn_game_coloring_hint),
+            GameOption.NONE,
+            wordsLanguage = false,
+            levels = { it.coloring?.pack },
+            start = { level, tutorial ->
+                val pack = packs.coloring!!
+                val picture = pack.pack.levels[level]
+                HubScreen.Coloring(GameId.COLORING, level, ColoringRound(picture, ColoringPalette.of(picture, pack.distractors, random), tutorial = tutorial))
+            },
+        ),
+        GameSpec(
+            GameId.LISTEN,
+            GameLook("👂", Color(0xFF4DB6AC), R.string.learn_game_listen, R.string.learn_game_listen_hint),
+            GameOption.LANGUAGE,
+            wordsLanguage = true,
+            levels = { it.listen },
+            start = { level, tutorial ->
+                ListenGame.questions(packs.listen!!.levels[level], repo.letters(wordsLanguage), random)
+                    .takeIf { it.isNotEmpty() }
+                    ?.let { HubScreen.Playing(GameId.LISTEN, level, Round(it, tutorial = tutorial)) }
+            },
+        ),
+    )
+
+    fun of(id: GameId): GameSpec = all.first { it.id == id }
+}

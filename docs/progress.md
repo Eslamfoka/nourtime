@@ -203,6 +203,7 @@ list: [`handoff.md` §12](handoff.md#12-learning-hub-2026-09-30-overnight).
 | L2 | **Letters & Words** (Arabic + English) | Multiple choice with audio. Letter → word, letter → picture, word → picture, picture → word (reading), color name ↔ color, by category (animals, food, vehicles, body, nature, objects, clothes, toys, people, places). Tap the letter or word to hear "A, Apple" / "أ، أرنب". | ✅ 27 levels, 28 Arabic + 25 English letters, 176 words, 11 colors (2026-09-30 night) |
 | L3 | **Number Connect** | Drawing: drag from dot 1 to 2 to 3 over a faded outline; segments can be lines or curves. | ✅ 33 drawings from a 3-dot triangle to a 16-point sun, numbers spoken as reached (2026-09-30 night) |
 | L4 | **Coloring Match** | Tap a palette color, then tap a region of a black-and-white drawing to fill it, matching a colored reference. | ✅ 26 pictures from a 2-color balloon to a 7-color rainbow, up to 2 wrong colors in the palette (2026-09-30 night) |
+| G1 | **Listen & Find** | Multiple choice by ear: a big speaker button says a word, color, letter name or number (TTS, in the chosen words language); the child taps the picture, swatch, letter or number. Written fallback without a voice. | ✅ 20 levels from 2 animal pictures to a mixed 10-question champion (2026-09-30 night) |
 
 ### Goal: Google Play at scale
 The four games prove the engine; the shipped **content** (45 math levels, 27 letters levels with 176
@@ -300,14 +301,14 @@ left like Arabic schoolbooks and < / > are mirrored so the sign opens toward the
   level 3 on). Tutorial: hand taps a color, then the matching region.
 - Content: 6 simple original pictures. Illustrated ones come as SVG path data (see the guide).
 
-### Roadmap: nine more games (added 2026-09-30, not started)
+### Roadmap: nine more games (added 2026-09-30; being built one by one since the night of 2026-09-30)
 All nine fit the same foundation: a **content pack** (JSON, checked by the tests), levels with ids,
 stars → `RewardPolicy`, the tutorial hand, TTS and the Learning Hub menu. What each one adds is an
 **interaction engine**. Several reuse one, so the order below builds each engine once.
 
 | # | Game | Ages | Engine (new or reused) | Content pack | Phase |
 |---|---|---|---|---|---|
-| G1 | **Listen & Find**: hear a word, tap its picture | 3–6 | Choice round (reused; a new task `listen_to_picture` in `letters/levels.json`) | concepts + language packs (reused) | A |
+| G1 | **Listen & Find**: hear a word, color, letter or number, tap it | 3–6 | Choice round (reused) with a new speaker prompt card; own pack `listen/levels.json` | concepts + language packs (reused) | A · ✅ built 2026-09-30 night, 20 levels |
 | G2 | **What Comes Next?**: continue a pattern of shapes, colors or numbers | 4–9 | Choice round (reused; a pattern generator like `MathGame`) | `patterns/levels.json`: rule types (ABAB, +2, …), lengths | A |
 | G3 | **Tell the Time**: read an analog clock | 7–12 | Choice round with a clock card (new card type) | `clock/levels.json`: hours, halves, quarters, 5-minute steps | A |
 | G4 | **Letter Tracing**: trace a letter's strokes in order | 3–7 | **Path engine** (from Number Connect: dots become stroke paths with start points and direction) | `tracing/<language>.json`: SVG stroke paths per letter, stroke order | B |
@@ -319,8 +320,9 @@ stars → `RewardPolicy`, the tutorial hand, TTS and the Learning Hub menu. What
 
 **Order.** Phase A adds games on the existing choice engine (cheapest, fastest to more content).
 Phase B adds the path and card engines. Phase C adds drag and drop. Phase D needs audio licensing.
-**First step when G1 starts:** turn the fixed `GameId` list into a game registry (id, title, icon,
-engine, pack) so a new game is one registry entry plus its screen, with no edits spread over the hub.
+**Game registry (done with G1):** `feature/learning/GameRegistry.kt` lists every game (tile, level
+screen option, pack, how a level starts). A new game is a `GameId`, one registry entry, its pack in
+`HubContent`, and its engine and screen; menu, level screen, progress, stars and rewards follow.
 
 ## UX backlog (future polish phase)
 

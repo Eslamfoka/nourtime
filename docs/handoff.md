@@ -767,3 +767,22 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
     in both directions (Coloring and Number Connect).
 - Tested: unit tests (every region tappable, palettes hold the picture colors, later pictures use
   more colors); emulator preview: level 23 rainbow colored band by band, finished and celebrated.
+
+### 15.5 New game G1: Listen & Find (Phase A)
+- **Game registry first** (the roadmap's first step): `GameRegistry.kt` now holds each game's tile,
+  level-screen option (numerals / words language / none), pack and how a level starts. The menu,
+  level picker, question screen and controller read it instead of `when (game)` blocks. A test checks
+  every `GameId` is registered exactly once. The menu keeps tile size with an odd number of games.
+- **Engine:** `ListenGame` makes choice questions whose prompt is a new `Card.Sound` (a big speaker
+  button). It's read aloud when the question appears and on tap; tasks `listen_to_picture`,
+  `listen_to_color`, `listen_to_letter`, `listen_to_number`. Without a TTS voice for the language the
+  word/number is shown written, so the level stays playable. Single-letter choices are drawn large.
+- **Content:** `listen/levels.json`, 20 levels: 2 pictures of animals/food, colors, numbers to 5 for
+  the youngest; then 3 and 4 choices, letters, numbers to 20 and 100, and a mixed champion level.
+  7–9 start at the letters, 10–12 at numbers to 20. Uses the same words as Letters & Words, in the
+  language picked on its level screen.
+- Arabic title/hint are gender-neutral: "الاستماع والاختيار" / "نسمع الكلمة ونجد صورتها".
+- Tested: 351 unit tests pass (every listen level × 30 seeds × both languages: the spoken thing is the
+  one right choice); emulator preview in Arabic: 5 tiles, level 1 played to the stars screen, level 15
+  (letters, 4 choices) shown. **Not verified:** that the emulator actually played sound (no audio
+  check here); please listen on the Honor.

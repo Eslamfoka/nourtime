@@ -63,7 +63,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.theme.NourPalette
 import com.nourtime.app.core.learning.Card
-import com.nourtime.app.core.learning.GameId
 import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.learning.MathWriting
 import com.nourtime.app.core.learning.NumeralStyle
@@ -82,12 +81,17 @@ private fun Task.instruction(): Int = when (this) {
     Task.NAME_TO_COLOR -> R.string.learn_task_name_to_color
     Task.COLOR_TO_NAME -> R.string.learn_task_color_to_name
     Task.PICTURE_TO_WORD -> R.string.learn_task_picture_to_word
+    Task.LISTEN_TO_PICTURE -> R.string.learn_task_listen_to_picture
+    Task.LISTEN_TO_COLOR -> R.string.learn_task_listen_to_color
+    Task.LISTEN_TO_LETTER -> R.string.learn_task_listen_to_letter
+    Task.LISTEN_TO_NUMBER -> R.string.learn_task_listen_to_number
 }
 
 /** What a card says when tapped: numbers and words; pictures and colors stay quiet (they are answers). */
 private fun Card.speech(): String? = when (this) {
     is Card.Number -> value.toString()
     is Card.Text -> speech
+    is Card.Sound -> speech
     else -> null
 }
 
@@ -97,7 +101,7 @@ internal fun ColumnScope.QuestionScreen(controller: LearningHubController, state
     // The question just answered stays on screen while it's celebrated.
     val q = round.current ?: return
     val numerals = controller.numerals(state)
-    val language = if (s.game == GameId.MATH) controller.appLanguage else controller.lettersLanguage(state)
+    val language = if (GameRegistry.of(s.game).wordsLanguage) controller.lettersLanguage(state) else controller.appLanguage
     val speaker = LocalSpeaker.current
     val voices by speaker.voices.collectAsStateWithLifecycle()
     val look = lookOf(s.game)
@@ -189,14 +193,15 @@ private fun PromptCard(q: Question, numerals: NumeralStyle, language: LearnLangu
                 ) {
                     val size = MathWriting.promptSize(q.prompt).sp
                     q.prompt.forEach { card ->
-                        PromptItem(card, numerals, q.dots, big = q.prompt.size == 1, size = size, onSay = {
+                        PromptItem(card, numerals, q.dots, big = q.prompt.size == 1, size = size, hasVoice = hasVoice, onSay = {
                             // A number says itself; a letter says "A, Apple" (the owner's design).
                             (if (card is Card.Number) card.speech() else sayAll ?: card.speech())?.let(onSay)
                         })
                     }
                 }
             }
-            if (sayAll != null && hasVoice) {
+            // A speaker prompt is its own listen button.
+            if (sayAll != null && hasVoice && q.prompt.none { it is Card.Sound }) {
                 Spacer(Modifier.height(8.dp))
                 Surface(onClick = { onSay(sayAll) }, shape = CircleShape, color = NourPalette.GoldLight, modifier = Modifier.size(48.dp)) {
                     Box(contentAlignment = Alignment.Center) {
@@ -210,7 +215,7 @@ private fun PromptCard(q: Question, numerals: NumeralStyle, language: LearnLangu
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: Boolean, size: TextUnit, onSay: () -> Unit) {
+private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: Boolean, size: TextUnit, hasVoice: Boolean, onSay: () -> Unit) {
     when (card) {
         is Card.Number -> Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable(role = Role.Button, onClick = onSay)) {
             Text(numerals.format(card.value), fontSize = size, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
@@ -235,6 +240,22 @@ private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: B
             modifier = Modifier.clickable(role = Role.Button, onClick = onSay).padding(horizontal = 8.dp),
         )
         is Card.Picture -> LearningPicture(card.image, card.emoji, 112.dp, 72.sp)
+        is Card.Sound -> Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Surface(onClick = onSay, shape = CircleShape, color = NourPalette.GoldLight, shadowElevation = 2.dp, modifier = Modifier.size(112.dp)) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        Icons.AutoMirrored.Rounded.VolumeUp,
+                        contentDescription = stringResource(R.string.learn_listen),
+                        tint = NourPalette.Navy,
+                        modifier = Modifier.size(64.dp),
+                    )
+                }
+            }
+            // No voice for this language on the phone: the child reads it instead.
+            if (!hasVoice) {
+                Text(card.number?.let(numerals::format) ?: card.text, fontSize = 36.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
+            }
+        }
         is Card.Swatch -> Box(
             Modifier
                 .size(120.dp)
@@ -297,6 +318,7 @@ private fun ChoiceCard(
         is Card.Text -> card.text
         is Card.Picture -> card.word
         is Card.Swatch -> card.name
+        is Card.Sound -> card.text
     }
     Box(modifier) {
         Surface(
@@ -321,7 +343,8 @@ private fun ChoiceCard(
                 when (card) {
                     is Card.Number -> Text(numerals.format(card.value), fontSize = 36.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
                     is Card.Symbol -> SymbolText(card, numerals, 40.sp, NourPalette.Navy)
-                    is Card.Text -> Text(card.text, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy, textAlign = TextAlign.Center, maxLines = 2)
+                    // A single letter is shown big; words stay readable on two lines.
+                    is Card.Text -> Text(card.text, fontSize = if (card.text.length <= 2) 44.sp else 24.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy, textAlign = TextAlign.Center, maxLines = 2)
                     is Card.Picture -> LearningPicture(card.image, card.emoji, 72.dp, 48.sp)
                     is Card.Swatch -> Box(
                         Modifier
@@ -330,6 +353,7 @@ private fun ChoiceCard(
                             .background(Color(card.argb), RoundedCornerShape(16.dp))
                             .border(2.dp, NourPalette.Navy.copy(alpha = 0.15f), RoundedCornerShape(16.dp)),
                     )
+                    is Card.Sound -> Unit
                 }
                 if (correct) {
                     Icon(

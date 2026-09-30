@@ -15,6 +15,7 @@ import com.nourtime.app.core.learning.LetterEntry
 import com.nourtime.app.core.learning.LettersLanguagePack
 import com.nourtime.app.core.learning.LettersLevel
 import com.nourtime.app.core.learning.Level
+import com.nourtime.app.core.learning.ListenLevel
 import com.nourtime.app.core.learning.LevelIds
 import com.nourtime.app.core.learning.MathLevel
 import com.nourtime.app.core.learning.MathOp
@@ -58,6 +59,11 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
     fun letterLevels(): GamePack<LettersLevel> = cached("letters-levels") {
         val file = parse<LettersLevelsFile>(LETTER_LEVELS) ?: return@cached GamePack(emptyList())
         pack(LETTER_LEVELS, file.levels.mapNotNull { lettersLevel(it) }, file.startAt)
+    }
+
+    fun listen(): GamePack<ListenLevel> = cached("listen") {
+        val file = parse<ListenFile>(LISTEN) ?: return@cached GamePack(emptyList())
+        pack(LISTEN, file.levels.mapNotNull { listenLevel(it) }, file.startAt)
     }
 
     fun letters(language: LearnLanguage): LettersLanguagePack = cached("letters-${language.tag}") {
@@ -105,6 +111,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         val checker = ContentLoader(files) { found += it }
         checker.math()
         checker.letterLevels()
+        checker.listen()
         LearnLanguage.entries.forEach { checker.letters(it) }
         checker.connect()
         val coloring = checker.coloring()
@@ -178,13 +185,30 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
     private fun lettersLevel(l: LettersLevelJson): LettersLevel? {
         if (!checkId(LETTER_LEVELS, l.id)) return null
         val tasks = l.tasks.map { key ->
-            Task.entries.firstOrNull { it.name.equals(key, ignoreCase = true) && it != Task.SOLVE && it != Task.COMPARE }
+            Task.entries.firstOrNull { it.name.equals(key, ignoreCase = true) && it != Task.SOLVE && it != Task.COMPARE && !it.listening }
                 ?: return null.also { problem(LETTER_LEVELS, l.id, "unknown task $key") }
         }
         if (tasks.isEmpty()) return null.also { problem(LETTER_LEVELS, l.id, "no tasks") }
         if (l.choices !in 2..4) return null.also { problem(LETTER_LEVELS, l.id, "choices must be 2..4") }
         if (l.questions !in 1..30) return null.also { problem(LETTER_LEVELS, l.id, "questions must be 1..30") }
         return LettersLevel(l.id, tasks, l.choices, l.firstLettersOnly, l.categories.toSet(), l.questions)
+    }
+
+    private fun listenLevel(l: ListenLevelJson): ListenLevel? {
+        if (!checkId(LISTEN, l.id)) return null
+        val tasks = l.tasks.map { key ->
+            Task.entries.firstOrNull { it.listening && it.name.equals(key, ignoreCase = true) }
+                ?: return null.also { problem(LISTEN, l.id, "unknown task $key") }
+        }
+        val bad = when {
+            tasks.isEmpty() -> "no tasks"
+            l.choices !in 2..4 -> "choices must be 2..4"
+            l.questions !in 1..30 -> "questions must be 1..30"
+            Task.LISTEN_TO_NUMBER in tasks && l.maxNumber !in l.choices - 1..1000 -> "maxNumber must be choices - 1..1000"
+            else -> null
+        }
+        if (bad != null) return null.also { problem(LISTEN, l.id, bad) }
+        return ListenLevel(l.id, tasks, l.choices, l.categories.toSet(), l.firstLettersOnly, l.maxNumber, l.questions)
     }
 
     private fun lettersLanguage(language: LearnLanguage): LettersLanguagePack {
@@ -275,6 +299,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         const val SCHEMA = 1
         const val MATH = "math/levels.json"
         const val LETTER_LEVELS = "letters/levels.json"
+        const val LISTEN = "listen/levels.json"
         const val CONCEPTS = "concepts.json"
         const val CONNECT = "connect/shapes.json"
         const val COLORING = "coloring/pictures.json"
