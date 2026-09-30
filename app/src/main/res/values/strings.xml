@@ -468,6 +468,8 @@
     <string name="learn_game_memory_hint">Find the pairs</string>
     <string name="learn_game_words">Word Builder</string>
     <string name="learn_game_words_hint">Spell words with letters</string>
+    <string name="learn_game_sorting">Sorting</string>
+    <string name="learn_game_sorting_hint">Put each thing in its group</string>
     <string name="learn_coming_soon">Coming soon</string>
     <string name="learn_level">Level %1$s</string>
     <string name="learn_level_locked">Level %1$s, locked</string>
@@ -508,6 +510,10 @@
     <string name="learn_tutorial_words_f">Tap the first letter of the word</string>
     <string name="learn_words_wrong_m">Not that one. Which letter comes next?</string>
     <string name="learn_words_wrong_f">Not that one. Which letter comes next?</string>
+    <string name="learn_task_sorting_m">Drag it into its group, or tap the group</string>
+    <string name="learn_task_sorting_f">Drag it into its group, or tap the group</string>
+    <string name="learn_sorting_wrong_m">Not that group. Try another one</string>
+    <string name="learn_sorting_wrong_f">Not that group. Try another one</string>
     <string name="learn_tutorial_m">Tap the right answer. Follow the hand!</string>
     <string name="learn_tutorial_f">Tap the right answer. Follow the hand!</string>
     <string name="learn_try_again_m">Try again!</string>

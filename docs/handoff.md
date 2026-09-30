@@ -882,3 +882,21 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
   end without mistakes, wrong tiles never look-alikes; wrong tile/next word/ignored old tiles; loader);
   emulator preview in Arabic, level 6: فراشة spelled with taps and one drag (ف → فر → … → فراشة in
   green), then غزال with a wrong tile (shake + message).
+
+### 15.11 New game G7: Sorting (Phase C)
+- **Engine:** `Sorting.kt`: a level has 2–3 groups, each a word category (pictures) or even/odd
+  (numbers 1..max), with a sign and a name per language from the pack. `SortGame.deal` spreads the
+  things evenly and shuffles; `SortRound`: the right group counts the thing, a wrong one sends it back
+  as a mistake.
+- **Screen:** one thing in the middle, the groups as big boxes below with their count; drag the thing
+  onto a box (hit-tested against the boxes' positions on screen) or tap a box. The group's name is
+  read when a thing goes in.
+- **Bug found on the emulator and fixed (also affected G6's tiles):** in Arabic the dragged card moved
+  mirrored to the finger and landed in the other box. `Modifier.offset {}` is mirrored in RTL
+  layouts; dragged things now use `absoluteOffset`. Re-tested: bee dropped on "طعام" → "ليست هذه
+  المجموعة"; dropped on "حيوانات" → counted.
+- **Content:** `sorting/levels.json`, 13 levels: animals/food (4 things) → vehicles, clothes, nature,
+  things → even/odd to 10, 20, 100, 1000 → three groups → a 12-thing champion. 7–9 start at even/odd
+  to 10, 10–12 at even/odd to 20.
+- Tested: unit tests (every level × 20 seeds × both languages: every thing in its right group, each
+  group used, nothing twice, labels present; wrong drop; loader); emulator preview (above).

@@ -35,6 +35,8 @@ import com.nourtime.app.core.learning.TraceLetter
 import com.nourtime.app.core.learning.TraceRules
 import com.nourtime.app.core.learning.TraceStroke
 import com.nourtime.app.core.learning.WordLevel
+import com.nourtime.app.core.learning.SortBinSpec
+import com.nourtime.app.core.learning.SortLevel
 import com.nourtime.app.core.learning.WordEntry
 import com.nourtime.app.data.settings.AgeGroup
 import kotlinx.serialization.json.Json
@@ -99,6 +101,11 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         pack(path, file.levels.mapNotNull { traceLetter(path, it, vw, vh) }, file.startAt)
     }
 
+    fun sorting(): GamePack<SortLevel> = cached("sorting") {
+        val file = parse<SortingFile>(SORTING) ?: return@cached GamePack(emptyList())
+        pack(SORTING, file.levels.mapNotNull { sortLevel(it) }, file.startAt)
+    }
+
     fun words(): GamePack<WordLevel> = cached("words") {
         val file = parse<WordsFile>(WORDS) ?: return@cached GamePack(emptyList())
         pack(WORDS, file.levels.mapNotNull { wordLevel(it) }, file.startAt)
@@ -159,6 +166,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         checker.clock()
         checker.memory()
         checker.words()
+        checker.sorting()
         LearnLanguage.entries.forEach { checker.tracing(it) }
         LearnLanguage.entries.forEach { checker.letters(it) }
         checker.connect()
@@ -294,6 +302,21 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         }
         if (bad != null) return null.also { problem(CLOCK, l.id, bad) }
         return ClockLevel(l.id, tasks, precision, l.choices, l.questions)
+    }
+
+    private fun sortLevel(l: SortLevelJson): SortLevel? {
+        if (!checkId(SORTING, l.id)) return null
+        val bad = when {
+            l.bins.size !in 2..3 -> "2 or 3 bins"
+            l.items !in 2..12 -> "items must be 2..12"
+            l.bins.any { (it.category == null) == (it.parity == null) } -> "each bin has a category or a parity"
+            l.bins.any { it.parity != null && it.parity !in setOf("even", "odd") } -> "parity is even or odd"
+            l.bins.any { it.labels.isEmpty() } -> "each bin needs labels"
+            l.bins.any { it.parity != null } && l.max !in 2..1000 -> "max must be 2..1000"
+            else -> null
+        }
+        if (bad != null) return null.also { problem(SORTING, l.id, bad) }
+        return SortLevel(l.id, l.bins.map { SortBinSpec(it.category, it.parity, it.emoji, it.labels) }, l.items, l.max)
     }
 
     private fun wordLevel(l: WordLevelJson): WordLevel? {
@@ -432,6 +455,7 @@ class ContentLoader(private val files: ContentFiles, private val report: (String
         const val CLOCK = "clock/levels.json"
         const val MEMORY = "memory/levels.json"
         const val WORDS = "words/levels.json"
+        const val SORTING = "sorting/levels.json"
         fun tracingPath(language: LearnLanguage) = "tracing/${language.tag}.json"
         const val CONCEPTS = "concepts.json"
         const val CONNECT = "connect/shapes.json"

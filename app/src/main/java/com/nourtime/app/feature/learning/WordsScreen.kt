@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -164,7 +164,8 @@ private fun LetterTileView(tile: LetterTile, hinted: Boolean, accent: androidx.c
         shadowElevation = 3.dp,
         modifier = Modifier
             .size(64.dp)
-            .offset { IntOffset((drag.x + shake.value * density).roundToInt(), drag.y.roundToInt()) }
+            // Absolute: the tile follows the finger; a plain offset is mirrored in right-to-left layouts.
+            .absoluteOffset { IntOffset((drag.x + shake.value * density).roundToInt(), drag.y.roundToInt()) }
             .semantics {
                 contentDescription = tile.letter
                 role = Role.Button

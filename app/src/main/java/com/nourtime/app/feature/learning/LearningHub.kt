@@ -108,6 +108,7 @@ fun LearningHub(controller: LearningHubController, gender: ChildGender, onClose:
                         is HubScreen.Tracing -> TracingScreen(controller, state, s, gender)
                         is HubScreen.Memory -> MemoryScreen(controller, state, s, gender)
                         is HubScreen.Words -> WordsScreen(controller, state, s, gender)
+                        is HubScreen.Sorting -> SortingScreen(controller, state, s, gender)
                         is HubScreen.Done -> DoneScreen(controller, state, s, gender)
                     }
                 }

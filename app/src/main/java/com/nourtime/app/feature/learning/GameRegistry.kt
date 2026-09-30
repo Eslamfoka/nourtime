@@ -21,6 +21,7 @@ import com.nourtime.app.core.learning.Round
 import com.nourtime.app.core.learning.TraceRound
 import com.nourtime.app.core.learning.WordBuilder
 import com.nourtime.app.core.learning.WordRound
+import com.nourtime.app.core.learning.SortGame
 import com.nourtime.app.data.learning.LearningContentRepository
 import kotlin.random.Random
 
@@ -157,6 +158,17 @@ internal object GameRegistry {
                 WordBuilder.tasks(spec, repo.letters(wordsLanguage), random)
                     .takeIf { it.isNotEmpty() }
                     ?.let { HubScreen.Words(GameId.WORDS, level, WordRound(it, tutorial = tutorial, hint = spec.hint)) }
+            },
+        ),
+        GameSpec(
+            GameId.SORTING,
+            GameLook("🗂️", Color(0xFF81C784), R.string.learn_game_sorting, R.string.learn_game_sorting_hint),
+            GameOption.LANGUAGE,
+            wordsLanguage = true,
+            levels = { c, _ -> c.sorting },
+            start = { level, tutorial ->
+                SortGame.deal(packs.sorting!!.levels[level], repo.letters(wordsLanguage), random)
+                    ?.let { HubScreen.Sorting(GameId.SORTING, level, it.copy(tutorial = tutorial)) }
             },
         ),
         GameSpec(

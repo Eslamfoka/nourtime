@@ -107,6 +107,25 @@ data class ClockLevelJson(
 )
 
 @Serializable
+data class SortingFile(
+    override val schema: Int,
+    val startAt: Map<String, String> = emptyMap(),
+    val levels: List<SortLevelJson>,
+) : Versioned
+
+@Serializable
+data class SortLevelJson(val id: String, val bins: List<SortBinJson>, val items: Int = 6, val max: Int = 10)
+
+/** A group: pictures of a word [category], or numbers of a [parity] ("even" / "odd"); names per language. */
+@Serializable
+data class SortBinJson(
+    val category: String? = null,
+    val parity: String? = null,
+    val emoji: String = "",
+    val labels: Map<String, String> = emptyMap(),
+)
+
+@Serializable
 data class WordsFile(
     override val schema: Int,
     val startAt: Map<String, String> = emptyMap(),

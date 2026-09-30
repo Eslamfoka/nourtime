@@ -23,6 +23,8 @@ import com.nourtime.app.core.learning.TraceRound
 import com.nourtime.app.core.learning.LetterTile
 import com.nourtime.app.core.learning.WordLevel
 import com.nourtime.app.core.learning.WordRound
+import com.nourtime.app.core.learning.SortLevel
+import com.nourtime.app.core.learning.SortRound
 import com.nourtime.app.data.learning.LearningContentRepository
 import com.nourtime.app.data.learning.LearningRepository
 import com.nourtime.app.data.learning.LearningState
@@ -69,6 +71,9 @@ sealed interface HubScreen {
     /** Word Builder. [celebrating]: the word just finished, shown for a moment before the next. */
     data class Words(val game: GameId, val level: Int, val round: WordRound, val celebrating: String? = null, val lastWrong: Boolean = false) : HubScreen
 
+    /** Sorting. [lastWrong]: the last drop was the wrong group. */
+    data class Sorting(val game: GameId, val level: Int, val round: SortRound, val lastWrong: Boolean = false, val celebrating: Boolean = false) : HubScreen
+
     data class Done(
         val game: GameId,
         val level: Int,
@@ -90,6 +95,7 @@ data class HubContent(
     val clock: GamePack<ClockLevel>? = null,
     val memory: GamePack<MemoryLevel>? = null,
     val words: GamePack<WordLevel>? = null,
+    val sorting: GamePack<SortLevel>? = null,
     /** Letter Tracing has one pack per language. */
     val tracing: Map<LearnLanguage, GamePack<TraceLetter>> = emptyMap(),
     /** Color names in the app language, spoken when a coloring color is picked. */
@@ -146,6 +152,7 @@ class LearningHubController(
                 clock = content.clock(),
                 memory = content.memory(),
                 words = content.words(),
+                sorting = content.sorting(),
                 tracing = LearnLanguage.entries.associateWith { content.tracing(it) },
                 colorNames = content.letters(appLanguage).colors.associate { it.argb to it.name },
             )
@@ -241,6 +248,20 @@ class LearningHubController(
         _screen.value = c.copy(round = next, lastWrong = outcome == ColoringRound.Outcome.WRONG, celebrating = next.done)
         if (next.done) celebrateThenFinish(c.game, c.level, next.stars)
         return outcome == ColoringRound.Outcome.RIGHT
+    }
+
+    // --- Sorting ---
+
+    /** The child dropped the current thing into group [bin]. */
+    fun sortDrop(bin: Int): SortRound.Outcome {
+        val st = _screen.value as? HubScreen.Sorting ?: return SortRound.Outcome.IGNORED
+        if (st.celebrating) return SortRound.Outcome.IGNORED
+        val (next, outcome) = st.round.drop(bin)
+        if (outcome == SortRound.Outcome.IGNORED) return outcome
+        if (st.round.tutorial && st.round.index == 0 && outcome != SortRound.Outcome.WRONG) markTutorial(st.game)
+        _screen.value = st.copy(round = next, lastWrong = outcome == SortRound.Outcome.WRONG, celebrating = next.done)
+        if (next.done) celebrateThenFinish(st.game, st.level, next.stars)
+        return outcome
     }
 
     // --- Word Builder ---
@@ -382,6 +403,7 @@ class LearningHubController(
             is HubScreen.Tracing -> HubScreen.Levels(s.game)
             is HubScreen.Memory -> HubScreen.Levels(s.game)
             is HubScreen.Words -> HubScreen.Levels(s.game)
+            is HubScreen.Sorting -> HubScreen.Levels(s.game)
             is HubScreen.Done -> HubScreen.Levels(s.game)
         }
         return true

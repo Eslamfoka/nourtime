@@ -209,6 +209,7 @@ list: [`handoff.md` §12](handoff.md#12-learning-hub-2026-09-30-overnight).
 | G4 | **Letter Tracing** | Drawing: follow each stroke of a big letter from its green start dot in the arrow's direction, in order, then tap its dots. Straying off the line is a mistake; lifting the finger keeps the progress. Arabic or English (the words language). | ✅ 28 Arabic letters (ا first, ظ last) and 26 English capitals (L first, S last) (2026-10-01 night) |
 | G5 | **Memory Match** | Card grid: turn two cards, a pair stays up, a mismatch turns back after 1.2 s; cards flip and say what they show. Same picture, word ↔ picture, letter ↔ picture, number ↔ dots, color ↔ name. | ✅ 20 levels from 2 pairs of animals to a mixed table of 8 pairs (2026-10-01 night) |
 | G6 | **Word Builder** | Tiles: see (and hear) a picture's word, put its letters in order by tapping them or dragging them up; the word is written as it grows, so Arabic letters join. Wrong tiles shake. | ✅ 11 levels from 2–3 letters with the word shown faded to 6–8 letters with 4 wrong tiles (2026-10-01 night) |
+| G7 | **Sorting** | Drag and drop: one picture or number at a time, dropped into one of 2–3 group boxes (or tap a box); the right box counts it, the wrong one sends it back. | ✅ 13 levels from animals/food with 4 things to three groups of 12 and even/odd up to 1000 (2026-10-01 night) |
 
 ### Goal: Google Play at scale
 The four games prove the engine; the shipped **content** (45 math levels, 27 letters levels with 176
@@ -319,7 +320,7 @@ stars → `RewardPolicy`, the tutorial hand, TTS and the Learning Hub menu. What
 | G4 | **Letter Tracing**: trace a letter's strokes in order | 3–7 | **Trace engine** (new): resampled stroke paths, start point + direction, dots to tap | `tracing/<language>.json`: stroke paths per letter, stroke order | B · ✅ built 2026-10-01 night, 28 Arabic + 26 English letters |
 | G5 | **Memory Match**: flip cards to find pairs (word ↔ picture, number ↔ dots) | 4–12 | **Card grid engine** (new): flip, match, moves → stars | `memory/levels.json`: pairs, pair kinds, categories | B · ✅ built 2026-10-01 night, 20 levels |
 | G6 | **Word Builder**: drag letters to spell a word; Arabic letters join as they're placed | 6–12 | **Tile engine** (new): tap or drag a tile up onto the word, next letter in order | concepts + language packs (reused); `words/levels.json` | C · ✅ built 2026-10-01 night, 11 levels |
-| G7 | **Sorting**: drag items into groups (fruit / animals, even / odd) | 4–9 | Drag-and-drop engine (reused) | `sorting/levels.json`: bins = categories or number rules | C |
+| G7 | **Sorting**: drag items into groups (fruit / animals, even / odd) | 4–9 | Drag and drop onto group boxes (hit-tested) + tap | `sorting/levels.json`: bins = categories or even/odd, names per language | C · ✅ built 2026-10-01 night, 13 levels |
 | G8 | **Little Shop**: pay with coins, count change | 7–12 | Drag-and-drop engine (reused) + prices | `shop/levels.json`: items (concepts), coin set per currency, price ranges | C |
 | G9 | **Short surahs and du'as**: listen and repeat, optional for the family | all | **Audio player** (new): verses, repeat, progress | `audio/…`: licensed recitations + texts; downloaded packs (size) | D, after owner's decision on sources and licensing |
 

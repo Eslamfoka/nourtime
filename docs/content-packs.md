@@ -16,6 +16,7 @@ assets/learning/
   tracing/<language>.json  Letter Tracing: the strokes of each letter
   memory/levels.json       Memory Match levels
   words/levels.json        Word Builder levels
+  sorting/levels.json      Sorting levels
   math/levels.json         Smart Math levels
   connect/shapes.json      Number Connect drawings
   coloring/pictures.json   Coloring Match pictures
@@ -101,6 +102,18 @@ Each language names the concepts and lists its alphabet:
 - `precision`: `hour` (3:00), `half` (:00/:30), `quarter`, `five` (every 5 minutes) or `minute`.
   Times are generated, so each level gives endless questions; wrong answers include the classic
   mistakes (hands swapped, the next hour, a step off).
+
+## Sorting levels (`sorting/levels.json`)
+```json
+{"id": "animals-food", "items": 4, "bins": [
+  {"category": "animals", "emoji": "🐾", "labels": {"ar": "حيوانات", "en": "Animals"}},
+  {"category": "food", "emoji": "🍽️", "labels": {"ar": "طعام", "en": "Food"}}]}
+```
+- 2 or 3 `bins`. A bin takes pictures of a word `category`, or numbers of a `parity` (`even` / `odd`,
+  numbers 1..`max`). Each bin has a sign (`emoji`) and a name per language in `labels` (the words
+  language picks it; English is the fallback).
+- `items` (2–12) are spread as evenly as possible over the bins. The tests deal every level in every
+  language, so a category with too few words fails the build.
 
 ## Word Builder levels (`words/levels.json`)
 ```json

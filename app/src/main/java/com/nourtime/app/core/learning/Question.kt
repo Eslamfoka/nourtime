@@ -4,7 +4,7 @@ package com.nourtime.app.core.learning
  * The Learning Hub's mini-games. The name is part of the saved progress key: never rename one.
  * Adding a game: an entry here plus its entry in the hub's game registry (`GameRegistry`).
  */
-enum class GameId { MATH, LETTERS, CONNECT, COLORING, LISTEN, PATTERNS, CLOCK, TRACING, MEMORY, WORDS }
+enum class GameId { MATH, LETTERS, CONNECT, COLORING, LISTEN, PATTERNS, CLOCK, TRACING, MEMORY, WORDS, SORTING }
 
 /** Language of a game's content and voice, independent of the app language. */
 enum class LearnLanguage(val tag: String) { ARABIC("ar"), ENGLISH("en") }
