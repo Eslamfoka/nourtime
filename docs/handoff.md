@@ -734,8 +734,12 @@ a real finger; (3) a quick flick in Number Connect; (4) Memory Match: a mismatch
 1.2 s (only unit-tested; every turn on the emulator happened to match); (5) the menu with 12 tiles.
 
 **Decisions for you:** the coins in Little Shop have no currency (values only); Letter Tracing shapes
-may need a calligrapher's look; the minified **release** build was not re-run tonight (the new JSON
-classes follow the same pattern as the ones checked with R8 on 2026-09-30).
+may need a calligrapher's look.
+
+**Release check:** a minified release build (R8, signed with the local debug key through the
+`NOURTIME_KEYSTORE*` variables) was installed on the API 31 emulator at the end of the night: the hub
+opened, every pack loaded (no `LearningContent` warnings, no crash in logcat) and Little Shop's 10
+levels were listed. The emulator now has that release build installed.
 
 Owner's plan for the night: (1) many more levels for each of the four games, easy → hard, one game at a
 time; (2) then build the roadmap games in order (Phase A first), each with its own engine, levels,
