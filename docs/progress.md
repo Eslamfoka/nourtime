@@ -1,10 +1,16 @@
 # Nour Time: progress against the brief
 
-Status as of 2026-09-29 (latest work: [`handoff.md` §11](handoff.md#11-evening-of-2026-09-29-overnight-2-request-all-on-master)). A copy of the brief with the status of every requirement, plus Phase 4, is in
+Status as of 2026-09-30 (latest work: [`handoff.md` §14](handoff.md#14-resume-here-2026-09-30-end-of-day)). A copy of the brief with the status of every requirement, plus Phase 4, is in
 [`brief-with-status.md`](brief-with-status.md). Legend: ✅ done · 🟡 done with a noted difference · ⏳ pending.
 
 Phase 1 is feature-complete on the emulator (Android 12 and 15). What's left is testing on real
 phones, recorded audio, release plumbing, Phase 1.5 (below) and Phase 2.
+
+**2026-09-30:** the **Learning Hub** is built on branch `learning-hub` (not merged): four games
+(Smart Math, Letters & Words, Number Connect, Coloring Match), earned minutes as a break inside the
+lock, parent limits, and all content as data (JSON packs checked by the tests). Nine more games are on
+the roadmap. See [Learning Hub](#learning-hub-gamification--education-planned-and-built-2026-09-30).
+Next: the parent's phone shows the Learning Hub settings and the child's minutes.
 
 **2026-09-29:** Phase 2 and Phase 4 are merged and tested against the real Firebase project; the UX
 backlog items U1–U4 (time pickers, single dashboard, Forgot PIN, language switcher) are built and

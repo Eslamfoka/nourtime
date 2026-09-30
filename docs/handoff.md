@@ -672,3 +672,33 @@ are on the roadmap in `progress.md`. Also: math with ١٢٣ is written right to 
   Letters (7 levels), Number Connect (cat with curves), Coloring (car with 2 extra colors).
 - Bug found and fixed: a level whose pack had too little content (e.g. a missing language) looped
   forever while making questions; it now returns no questions and the game stays on its level screen.
+
+## 14. Resume here (2026-09-30, end of day)
+
+**Branch `learning-hub`** (not merged into master; master is unchanged since §11). Commits of the day:
+reward rule (earned minutes pause the lock), the four games, UI and TTS, Number Connect and Coloring,
+right-to-left math with ١٢٣, content moved to JSON packs, docs. 341 unit tests pass; the minified
+release build runs on the API 31 emulator.
+
+**Owner's decisions today**
+- Earned minutes are a break inside the lock (`TimeRules.reward`); banked; defaults 5 min per level,
+  15 min a day (owner hasn't objected; still listed in §12 to confirm).
+- Anything Arabic is strictly right to left (math with ١٢٣ done).
+- Emoji and code-drawn shapes are placeholders: real illustrations are planned.
+- The app is heading for **Google Play**: content must scale to thousands of items in several
+  languages. Content is now data (`app/src/main/assets/learning/`, guide `content-packs.md`).
+- Nine new game ideas are on the roadmap (`progress.md`), **not started**.
+
+**Next step (owner):** parent app integration: the parent's phone shows and changes the Learning Hub
+settings (on/off, minutes per level, daily max) and sees the child's minutes (earned today, bank).
+Ask before starting; the owner said "next session".
+
+**Open items**
+- Owner's Honor test of the Learning Hub (§12 list), including whether the Arabic TTS voice speaks.
+- Merge `learning-hub` into master when the owner agrees.
+- No git remote is configured: the repository is only on this PC until one is added (see below).
+- Emulators: run only **one** at a time (16 GB PC; two emulators were killed for memory). The API 31
+  emulator (child, PIN 4827 / answer blue) has the release build installed; after a restart it comes
+  back from its old snapshot, so reinstall the APK (`./gradlew :app:assembleDebug
+  -Pnourtime.firebaseEmulator=false` with `app/src/debug/google-services.json` moved aside, see §9).
+
