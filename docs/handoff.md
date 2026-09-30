@@ -629,6 +629,12 @@ Everything is on branch **`learning-hub`** (not merged into master).
 - System Back steps back through the hub, then to the Time's up screen.
 - Unit tests: timer reward rules (12), game engine (16), drawing games (12), repository (7).
 
+Not tested: the hub with the **app itself in English** (left-to-right layout); only the English
+letters content was played. Whole-phone lock mode with the hub (the screen-off delay) was checked in
+code only.
+
+APK (real Firebase project, debug): `dist/NourTime-2026-09-30-learning-hub-debug.apk`.
+
 ### Please test on the Honor
 1. Install the APK over the current one. Settings → **Learning Hub**: switch on, 5 min, 15 min.
    Tap **Try the games** and play one level of each game.
