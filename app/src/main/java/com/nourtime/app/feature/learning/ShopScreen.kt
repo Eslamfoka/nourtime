@@ -66,13 +66,16 @@ internal fun ColumnScope.ShopScreen(controller: LearningHubController, state: Le
     val round = s.round
     val speaker = LocalSpeaker.current
     val task = s.paidFor?.let { round.tasks[it] } ?: round.current ?: return
+    // Amounts are in Kuwaiti dinars: "٤ د.ك" / "4 KD".
+    @Composable
+    fun money(v: Int) = stringResource(R.string.learn_shop_money, numerals.format(v))
 
     HubTopBar(stringResource(R.string.learn_level, numerals.format(s.level + 1)), { controller.back() })
     val message = when {
         s.paidFor != null -> stringResource(Gendered(R.string.learn_great_m, R.string.learn_great_f).pick(gender))
         s.lastOver -> stringResource(Gendered(R.string.learn_shop_over_m, R.string.learn_shop_over_f).pick(gender))
-        task.change -> stringResource(Gendered(R.string.learn_shop_change_m, R.string.learn_shop_change_f).pick(gender), numerals.format(task.price), numerals.format(task.paid!!))
-        else -> stringResource(Gendered(R.string.learn_shop_pay_m, R.string.learn_shop_pay_f).pick(gender), numerals.format(task.price))
+        task.change -> stringResource(Gendered(R.string.learn_shop_change_m, R.string.learn_shop_change_f).pick(gender), money(task.price), money(task.paid!!))
+        else -> stringResource(Gendered(R.string.learn_shop_pay_m, R.string.learn_shop_pay_f).pick(gender), money(task.price))
     }
     Text(
         message,
@@ -96,7 +99,7 @@ internal fun ColumnScope.ShopScreen(controller: LearningHubController, state: Le
                 color = look.accent,
                 modifier = Modifier.align(Alignment.TopEnd).padding(4.dp),
             ) {
-                Text(numerals.format(task.price), fontSize = 26.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy, modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp))
+                Text(money(task.price), fontSize = 24.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy, modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp))
             }
         }
         // The counter: coins put down so far (tap one to take it back) and their total.
@@ -107,7 +110,7 @@ internal fun ColumnScope.ShopScreen(controller: LearningHubController, state: Le
         ) {
             Column(Modifier.padding(12.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                 val total = if (s.paidFor != null) task.target else round.total
-                Text(stringResource(R.string.learn_shop_total, numerals.format(total)), fontSize = 22.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
+                Text(stringResource(R.string.learn_shop_total, money(total)), fontSize = 22.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
                     verticalArrangement = Arrangement.spacedBy(6.dp),

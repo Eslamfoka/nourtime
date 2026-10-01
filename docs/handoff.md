@@ -957,3 +957,18 @@ du'as) is skipped: it needs the owner's decision on sources and licensing.
 
 ### 15.13 G9 (short surahs and du'as): not started
 Needs the owner's decision on sources and licensing of the recitations and texts (roadmap Phase D).
+
+### 15.14 Optimized release APK for the Honor (2026-10-01 morning)
+- Owner's decisions: G9 on hold (audio sources/licensing later); Little Shop money is the **Kuwaiti
+  dinar** (prices and totals show "٤ د.ك" / "4 KD", coins stay plain numbered coins); the GitHub repo is
+  private; **no merge** until the owner has tested the release APK on the Honor (Listen & Find audio,
+  tracing shapes, Memory Match cards), then merge and start the Parent App integration.
+- Size: R8 (optimize) and resource shrinking were already on. Added: only English and Arabic
+  resources (`resourceConfigurations`, the libraries' ~80 other translations dropped) and excluded
+  debug/build metadata (`DebugProbesKt.bin`, `kotlin-tooling-metadata.json`, `META-INF/*.version`).
+  Release APK 4.1 MB → **3.58 MB**. Native libraries were already stripped (59 KB, all ABIs).
+- **APK:** `dist/NourTime-2026-10-01-release.apk`, real Firebase project, signed with the same debug
+  key as the Honor builds (SHA-1 CA:D6:D5:…), so `adb install -r` goes over the debug build, keeps the
+  data, and Google sign-in still matches. Release builds have no "End budget / End lock" debug buttons.
+- Not re-run after these last changes: the unit tests and an emulator run (the emulator was stopped
+  for low memory). The build itself succeeded and the APK lists both locales.

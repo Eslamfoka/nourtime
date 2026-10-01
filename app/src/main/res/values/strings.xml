@@ -524,6 +524,7 @@
     <string name="learn_shop_over_f">Too much! The coins came back. Try again</string>
     <string name="learn_shop_total">On the counter: %1$s</string>
     <string name="learn_shop_coin">Coin %1$s</string>
+    <string name="learn_shop_money">%1$s KD</string>
     <string name="learn_tutorial_m">Tap the right answer. Follow the hand!</string>
     <string name="learn_tutorial_f">Tap the right answer. Follow the hand!</string>
     <string name="learn_try_again_m">Try again!</string>

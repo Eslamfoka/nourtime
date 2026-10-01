@@ -20,6 +20,8 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "0.1.0"
+        // The app speaks Arabic and English only: leave the libraries' other ~80 translations out.
+        resourceConfigurations += listOf("en", "ar")
     }
 
     // Release signing: keystore.properties in the project root (git-ignored; see README "Release"), or
@@ -70,6 +72,10 @@ android {
     }
     androidResources {
         generateLocaleConfig = true
+    }
+    packaging {
+        // Debug and build metadata that a phone never reads.
+        resources.excludes += listOf("DebugProbesKt.bin", "kotlin-tooling-metadata.json", "META-INF/*.version", "META-INF/{AL2.0,LGPL2.1}")
     }
 }
 

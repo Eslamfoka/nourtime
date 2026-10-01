@@ -534,6 +534,7 @@
     <string name="learn_shop_over_f">أكثر من اللازم! عادت القطع. حاولي مرة أخرى</string>
     <string name="learn_shop_total">على الطاولة: %1$s</string>
     <string name="learn_shop_coin">قطعة %1$s</string>
+    <string name="learn_shop_money">%1$s د.ك</string>
     <string name="learn_tutorial_m">اضغط على الجواب الصحيح. اتبع اليد!</string>
     <string name="learn_tutorial_f">اضغطي على الجواب الصحيح. اتبعي اليد!</string>
     <string name="learn_try_again_m">حاول مرة أخرى!</string>
