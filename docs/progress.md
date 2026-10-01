@@ -15,7 +15,9 @@ Next: the parent's phone shows the Learning Hub settings and the child's minutes
 **2026-09-30 night (owner asleep):** the four games got many more levels (45 math, 27 letters with 176
 words, 33 drawings, 26 pictures) and **eight new games** were built (G1–G8: Listen & Find, What Comes
 Next?, Tell the Time, Letter Tracing, Memory Match, Word Builder, Sorting, Little Shop), one commit
-each; G9 waits for a licensing decision. 12 games, 382 unit tests. See
+each; G9 waits for a licensing decision. 12 games, 382 unit tests.
+**2026-10-01 morning:** optimized release APK (3.58 MB, Little Shop in Kuwaiti dinars) installed on the
+owner's Honor for testing; merge and the Parent App integration follow his test; G9 on hold. See
 [`handoff.md` §15](handoff.md#15-night-of-2026-09-30--10-01-owner-asleep-more-content-then-new-games).
 
 **2026-09-29:** Phase 2 and Phase 4 are merged and tested against the real Firebase project; the UX
@@ -326,7 +328,7 @@ stars → `RewardPolicy`, the tutorial hand, TTS and the Learning Hub menu. What
 | G6 | **Word Builder**: drag letters to spell a word; Arabic letters join as they're placed | 6–12 | **Tile engine** (new): tap or drag a tile up onto the word, next letter in order | concepts + language packs (reused); `words/levels.json` | C · ✅ built 2026-10-01 night, 11 levels |
 | G7 | **Sorting**: drag items into groups (fruit / animals, even / odd) | 4–9 | Drag and drop onto group boxes (hit-tested) + tap | `sorting/levels.json`: bins = categories or even/odd, names per language | C · ✅ built 2026-10-01 night, 13 levels |
 | G8 | **Little Shop**: pay with coins, count change | 7–12 | Coin purse + counter (tap coins on, tap to take back) | `shop/levels.json`: coin set, price ranges, pay / change | C · ✅ built 2026-10-01 night, 10 levels |
-| G9 | **Short surahs and du'as**: listen and repeat, optional for the family | all | **Audio player** (new): verses, repeat, progress | `audio/…`: licensed recitations + texts; downloaded packs (size) | D, after owner's decision on sources and licensing |
+| G9 | **Short surahs and du'as** (on hold, owner 2026-10-01): listen and repeat, optional for the family | all | **Audio player** (new): verses, repeat, progress | `audio/…`: licensed recitations + texts; downloaded packs (size) | D, after owner's decision on sources and licensing |
 
 **Order.** Phase A adds games on the existing choice engine (cheapest, fastest to more content).
 Phase B adds the path and card engines. Phase C adds drag and drop. Phase D needs audio licensing.

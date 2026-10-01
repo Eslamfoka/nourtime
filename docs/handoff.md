@@ -972,3 +972,15 @@ Needs the owner's decision on sources and licensing of the recitations and texts
   data, and Google sign-in still matches. Release builds have no "End budget / End lock" debug buttons.
 - Not re-run after these last changes: the unit tests and an emulator run (the emulator was stopped
   for low memory). The build itself succeeded and the APK lists both locales.
+
+### 15.15 Resume here (2026-10-01 morning)
+- **Installed on the owner's Honor** (AAYSNU2712209663, 05:51): `dist/NourTime-2026-10-01-release.apk`,
+  the optimized release build (not debuggable), over the previous build with data kept. The app was
+  not opened by me.
+- **Waiting on the owner:** his Honor test of the release build: Listen & Find audio, Letter Tracing
+  shapes and feel, Memory Match mismatch turning back, Little Shop د.ك labels, overall size/speed.
+- **Next, once he's happy:** merge `learning-hub` into master, then the **Parent App integration**
+  (parent's phone shows/changes the Learning Hub settings and sees the child's minutes).
+- On hold: G9 (surahs & du'as) until the owner sorts audio sources and licensing.
+- Branch `learning-hub` is committed locally, not pushed (repo is private now). The API 31 emulator is
+  off (stopped for low memory); it restarts from an old snapshot, so reinstall an APK before using it.
