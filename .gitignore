@@ -19,3 +19,5 @@ tools/audio/verify-report.json
 tools/audio/.human-cache/
 tools/audio/keys.env
 tools/audio/incoming/
+tools/audio/incoming-batches/
+tools/audio/incoming-review/
