@@ -151,7 +151,7 @@ if _keys.is_file():
             os.environ.setdefault(_k.strip(), _v.strip())
 
 # Gemini TTS: the same natural voices as Google AI Studio's speech generation.
-GEMINI = {"model": os.environ.get("GEMINI_TTS_MODEL", "gemini-2.5-pro-preview-tts"),
+GEMINI = {"model": os.environ.get("GEMINI_TTS_MODEL", "gemini-2.5-flash-preview-tts"),
           "ar": os.environ.get("GEMINI_VOICE_AR", "Kore"), "en": os.environ.get("GEMINI_VOICE_EN", "Leda")}
 GEMINI_STYLE = {
     "ar": "اقرأ الكلمة التالية بالعربية الفصحى بنطق واضح وهادئ لطفل صغير، كما هي بالتشكيل، دون أي كلمة إضافية:",
@@ -159,8 +159,18 @@ GEMINI_STYLE = {
 }
 
 
-def synthesize_gemini(text: str, lang: str) -> bytes:
+def synthesize_gemini(text: str, lang: str, styled: bool = True) -> bytes:
     """Returns WAV bytes (Gemini sends raw 24 kHz 16-bit PCM)."""
+    try:
+        return _gemini(f"{GEMINI_STYLE[lang]} {text}" if styled else text, lang)
+    except RuntimeError:
+        if not styled:
+            raise
+        # Some short phrases ("وَخَمْسَةٌ وَأَرْبَعُون") get no audio with the instruction: send the text alone.
+        return _gemini(text, lang)
+
+
+def _gemini(prompt: str, lang: str) -> bytes:
     import base64
     import io
     import wave
@@ -168,13 +178,17 @@ def synthesize_gemini(text: str, lang: str) -> bytes:
     r = requests.post(
         f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI['model']}:generateContent",
         headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]},
-        json={"contents": [{"parts": [{"text": f"{GEMINI_STYLE[lang]} {text}"}]}],
+        json={"contents": [{"parts": [{"text": prompt}]}],
               "generationConfig": {"responseModalities": ["AUDIO"],
                                    "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": GEMINI[lang]}}}}},
         timeout=120,
     )
     r.raise_for_status()
-    pcm = base64.b64decode(r.json()["candidates"][0]["content"]["parts"][0]["inlineData"]["data"])
+    cand = (r.json().get("candidates") or [{}])[0]
+    parts = cand.get("content", {}).get("parts") or [{}]
+    if "inlineData" not in parts[0]:
+        raise RuntimeError(f"Gemini returned no audio (finishReason={cand.get('finishReason')})")
+    pcm = base64.b64decode(parts[0]["inlineData"]["data"])
     buf = io.BytesIO()
     with wave.open(buf, "wb") as w:
         w.setnchannels(1)
