@@ -15,6 +15,13 @@ class SpeechCatalogTest {
         assertEquals(listOf("300"), SpeechCatalog.clipsFor("300", LearnLanguage.ARABIC))
         assertEquals(listOf("1000"), SpeechCatalog.clipsFor("1000", LearnLanguage.ENGLISH))
         assertEquals(listOf("قطة"), SpeechCatalog.clipsFor("قطة", LearnLanguage.ARABIC))
+        assertEquals(listOf("حمار وحشي"), SpeechCatalog.clipsFor("حمار وحشي", LearnLanguage.ARABIC))
+    }
+
+    @Test
+    fun `a letter's phrase is its name's clip then its word's`() {
+        assertEquals(listOf("ألف", "أرنب"), SpeechCatalog.clipsFor("ألف، أرنب", LearnLanguage.ARABIC))
+        assertEquals(listOf("A", "Apple"), SpeechCatalog.clipsFor("A, Apple", LearnLanguage.ENGLISH))
     }
 
     @Test
@@ -41,8 +48,8 @@ class SpeechCatalogTest {
     fun `the catalog has what the games say`() {
         val ar = SpeechCatalog.clips(TestContent.loader, LearnLanguage.ARABIC)
         val en = SpeechCatalog.clips(TestContent.loader, LearnLanguage.ENGLISH)
-        assertTrue("ألف، أرنب" in ar && "عنكبوت" in ar && "أحمر" in ar && "حيوانات" in ar && "ة" in ar && "+99" in ar)
-        assertTrue("A, Apple" in en && "Peacock" in en && "Red" in en && "Animals" in en && "p" in en && "900" in en)
+        assertTrue("ألف" in ar && "أرنب" in ar && "عنكبوت" in ar && "أحمر" in ar && "حيوانات" in ar && "ة" in ar && "+99" in ar)
+        assertTrue("A" in en && "Apple" in en && "Peacock" in en && "Red" in en && "Animals" in en && "p" in en && "900" in en)
         // Every number the games use can be said.
         (0..SpeechCatalog.MAX_NUMBER).forEach { n ->
             LearnLanguage.entries.forEach { lang ->

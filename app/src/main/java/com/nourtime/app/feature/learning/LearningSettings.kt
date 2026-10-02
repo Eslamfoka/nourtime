@@ -7,6 +7,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.material3.AlertDialog
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +34,7 @@ import androidx.lifecycle.viewModelScope
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.FullScreenDialog
 import com.nourtime.app.core.designsystem.component.NourCard
+import com.nourtime.app.core.designsystem.component.NourDialogButton
 import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.learning.LearningSettings
@@ -79,6 +86,7 @@ fun LearningSettingsCard(ageGroup: AgeGroup?, gender: ChildGender?, viewModel: L
     val today by viewModel.today.collectAsStateWithLifecycle()
     val s = state?.settings ?: return
     var previewing by remember { mutableStateOf(false) }
+    var showCredits by remember { mutableStateOf(false) }
     NourCard {
         Row {
             Column(Modifier.weight(1f)) {
@@ -107,9 +115,11 @@ fun LearningSettingsCard(ageGroup: AgeGroup?, gender: ChildGender?, viewModel: L
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            NourDialogButton(stringResource(R.string.learn_settings_voice_credits), { showCredits = true })
         }
         NourSecondaryButton(stringResource(R.string.learn_settings_try), { previewing = true })
     }
+    if (showCredits) VoiceCreditsDialog { showCredits = false }
     if (previewing) LearningPreviewDialog(viewModel.repository, viewModel.content, ageGroup, gender ?: ChildGender.GIRL) { previewing = false }
 }
 
@@ -157,4 +167,28 @@ fun LearningPreviewDialog(
             LearningHub(controller, gender, onClose = onDismiss)
         }
     }
+}
+
+/** Who recorded the games' voices (CC BY / BY-SA need it): `assets/audio/CREDITS.txt`. */
+@Composable
+private fun VoiceCreditsDialog(onDismiss: () -> Unit) {
+    val context = LocalContext.current
+    var text by remember { mutableStateOf("") }
+    LaunchedEffect(Unit) {
+        text = withContext(Dispatchers.IO) {
+            runCatching { context.assets.open("audio/CREDITS.txt").bufferedReader().use { it.readText() } }.getOrDefault("")
+        }
+    }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.learn_settings_voice_credits)) },
+        text = {
+            Text(
+                text,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.heightIn(max = 420.dp).verticalScroll(rememberScrollState()),
+            )
+        },
+        confirmButton = { NourDialogButton(stringResource(android.R.string.ok), onDismiss) },
+    )
 }

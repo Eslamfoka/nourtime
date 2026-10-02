@@ -16,3 +16,4 @@ app/google-services.json
 # Python
 __pycache__/
 tools/audio/verify-report.json
+tools/audio/.human-cache/

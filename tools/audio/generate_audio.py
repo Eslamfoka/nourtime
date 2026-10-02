@@ -140,7 +140,28 @@ def key(clip: str) -> str:
     return hashlib.sha1(clip.encode("utf-8")).hexdigest()[:16]
 
 
+# Premium voice for the placeholders (clips with no human recording), used when ELEVENLABS_API_KEY is set.
+ELEVENLABS = {"model": "eleven_multilingual_v2",
+              # Voice ids from the ElevenLabs voice library; set ELEVENLABS_VOICE_AR / _EN to choose.
+              "ar": os.environ.get("ELEVENLABS_VOICE_AR", ""), "en": os.environ.get("ELEVENLABS_VOICE_EN", "")}
+
+
+def synthesize_elevenlabs(text: str, lang: str) -> bytes:
+    import requests
+    voice = ELEVENLABS[lang]
+    if not voice:
+        raise SystemExit(f"set ELEVENLABS_VOICE_{lang.upper()} to an ElevenLabs voice id")
+    r = requests.post(f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=mp3_44100_128",
+                      headers={"xi-api-key": os.environ["ELEVENLABS_API_KEY"]},
+                      json={"text": text, "model_id": ELEVENLABS["model"],
+                            "voice_settings": {"stability": 0.6, "similarity_boost": 0.8}}, timeout=60)
+    r.raise_for_status()
+    return r.content
+
+
 async def synthesize(text: str, lang: str) -> bytes:
+    if os.environ.get("ELEVENLABS_API_KEY"):
+        return await asyncio.to_thread(synthesize_elevenlabs, text, lang)
     v = VOICES[lang]
     for attempt in range(5):
         try:
@@ -192,7 +213,7 @@ def load_lists(refresh: bool) -> dict[str, list[str]]:
 
 async def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--force", action="store_true", help="record every clip again")
+    ap.add_argument("--force", action="store_true", help="record every placeholder clip again")
     ap.add_argument("--lists", action="store_true", help="re-run the unit test that writes the clip lists")
     ap.add_argument("--jobs", type=int, default=6)
     args = ap.parse_args()
@@ -210,7 +231,12 @@ async def main() -> None:
                 problems.append(f"{lang}: no tashkeel for {clip!r} (add it to tools/audio/ar_tashkeel.json)")
                 continue
             out = ASSETS / lang / f"{key(clip)}.mp3"
-            entry = {"voiced": voiced, "voice": voice, "file": out.name}
+            # A real human recording (fetch_human_audio.py) is never replaced by a synthetic voice.
+            if manifest.get(lang, {}).get(clip, {}).get("voice") == "human" and out.is_file():
+                continue
+            if os.environ.get("ELEVENLABS_API_KEY"):
+                voice = f"elevenlabs:{ELEVENLABS[lang]}"
+            entry = {"voiced": voiced, "voice": voice, "file": out.name, "placeholder": True}
             if not args.force and out.is_file() and manifest.get(lang, {}).get(clip) == entry:
                 continue
             jobs.append((lang, clip, voiced, out, entry))

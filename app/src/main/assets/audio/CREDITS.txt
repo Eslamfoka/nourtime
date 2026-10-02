@@ -1,0 +1,712 @@
+Voice recordings from Wikimedia Commons / Lingua Libre, used under their free licences.
+Each line: word - recorded by - licence - source. Clips were trimmed and loudness-matched.
+
+A - No machine-readable author provided. Xnux assumed (based on copyright claims). - Public domain - https://commons.wikimedia.org/wiki/File:en-us-a.ogg
+Airplane - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-airplane.ogg
+Ambulance - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-ambulance.wav
+Animals - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-animals.wav
+Ant - Speaker: Naomi Persephone Amethyst
+Recorder: NaomiAmethyst - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Naomi_Persephone_Amethyst_(NaomiAmethyst)-ant.wav
+Apple - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-apple.ogg
+Avocado - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-avocado.ogg
+B - Speaker: Flame, not lame
+Recorder: Flame, not lame - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-B.wav
+Baby - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-baby.ogg
+Bag - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-bag.wav
+Ball - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-ball.ogg
+Balloon - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-balloon.ogg
+Banana - D3VIL - Public domain - https://commons.wikimedia.org/wiki/File:En-uk-banana.ogg
+Bear - Speaker: Muldoonsamuel55
+Recorder: Muldoonsamuel55 - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Muldoonsamuel55-bear.wav
+Bed - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-bed.ogg
+Bell - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-bell.wav
+Bicycle - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-Bicycle.wav
+Bird - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-bird.wav
+Black - Atcovi - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-Black.ogg
+Blue - Atcovi - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-Blue.ogg
+Body - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-body.wav
+Book - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-book.ogg
+Boy - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-boy.wav
+Brain - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-brain.wav
+Bread - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-bread.ogg
+Broom - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-broom.ogg
+Brown - Atcovi - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-Brown.ogg
+Bus - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-bus.wav
+Butterfly - Speaker: Simplificationalizer
+Recorder: Simplificationalizer - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Simplificationalizer-butterfly.wav
+C - Logictheo - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-uk-c.ogg
+Cactus - Speaker: Wodencafe
+Recorder: Wodencafe - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-cactus.wav
+Cake - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-cake.ogg
+Camel - Tooironic - Public domain - https://commons.wikimedia.org/wiki/File:En-au-camel.ogg
+Candle - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-candle.ogg
+Cap - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-cap.ogg
+Car - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-car.ogg
+Carrot - No machine-readable author provided. Dvortygirl assumed (based on copyright claims). - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-carrot.ogg
+Castle - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-castle.ogg
+Cat - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-Cat.ogg
+Cheese - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-cheese.wav
+Cherry - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-cherry.ogg
+Chicken - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-chicken.wav
+Clock - ATMarsden - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:En-uk-clock.ogg
+Clothes - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-clothes.ogg
+Cloud - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-cloud.ogg
+Coconut - Speaker: Wodencafe
+Recorder: Wodencafe - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-coconut.wav
+Computer - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-computer.ogg
+Cookie - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-cookie.ogg
+Corn - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-corn.wav
+Cow - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-cow.wav
+Crab - Speaker: Berrely
+Recorder: Berrely - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Berrely-crab.wav
+Crocodile - Speaker: Vealhurl
+Recorder: Vealhurl - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-crocodile.wav
+Crown - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-crown.wav
+Cucumber - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-cucumber.ogg
+D - Twocs - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-d.ogg
+Dog - Speaker: Adélaïde Calais WMFr
+Recorder: Adélaïde Calais WMFr - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Adélaïde_Calais_WMFr-dog.wav
+Door - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-door.ogg
+Dress - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-dress.ogg
+Drum - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-drum.ogg
+Duck - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-duck.wav
+E - Missionary - Public domain - https://commons.wikimedia.org/wiki/File:En-uk-e.ogg
+Ear - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-ear.wav
+Earth - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-earth.ogg
+Egg - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-egg.ogg
+Elephant - unknown - Public domain - https://commons.wikimedia.org/wiki/File:En-us-elephant.ogg
+Envelope - unknown - Public domain - https://commons.wikimedia.org/wiki/File:En-uk-envelope.ogg
+Even - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-even.ogg
+F - Logictheo - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-uk-f.ogg
+Fire - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-fire.ogg
+Fire engine - Speaker: Persent101
+Recorder: Persent101 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-fire_engine.wav
+Fish - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-fish.ogg
+Flower - Speaker: Adélaïde Calais WMFr
+Recorder: Adélaïde Calais WMFr - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Adélaïde_Calais_WMFr-flower.wav
+Food - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-food.ogg
+Foot - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-foot.wav
+Fox - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-fox.wav
+Frog - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-frog.ogg
+G - Twocs - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-g.ogg
+Gift - Speaker: Arlo Barnes
+Recorder: Arlo Barnes - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-gift.wav
+Giraffe - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-giraffe.ogg
+Girl - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-girl.wav
+Glasses - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-glasses.ogg
+Gloves - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-gloves.wav
+Goat - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-goat.wav
+Grandma - Speaker: Ajshul
+Recorder: Ajshul - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Ajshul-grandma.wav
+Grandpa - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-grandpa.wav
+Grapes - Speaker: Persent101
+Recorder: Persent101 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-grapes.wav
+Gray - Atcovi - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-Gray.ogg
+Green - Atcovi - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-Green.ogg
+Guitar - No machine-readable author provided. Celestianpower assumed (based on copyright claims). - Public domain - https://commons.wikimedia.org/wiki/File:en-uk-guitar.ogg
+H - Twocs - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-h.ogg
+Hammer - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-hammer.wav
+Hand - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-hand.ogg
+Helicopter - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-helicopter.ogg
+Honey - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-honey.wav
+Horse - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-horse.wav
+Hospital - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-hospital.wav
+House - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-house.ogg
+I - Speaker: Flame, not lame
+Recorder: Flame, not lame - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-I.wav
+Ice cream - Speaker: Arlo Barnes
+Recorder: Arlo Barnes - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-ice-cream.wav
+Island - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-island.ogg
+J - Logictheo - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-uk-j.ogg
+Juice - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-juice.wav
+K - Logictheo - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-uk-k.ogg
+Kangaroo - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-Kangaroo.wav
+Key - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:en-uk-key.ogg
+Kiwi - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-kiwi.ogg
+Koala - Paul2520 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-us-koala.oga
+L - Twocs - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-L.ogg
+Leaf - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-leaf.wav
+Leg - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-leg.ogg
+Lemon - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-lemon.ogg
+Light bulb - Speaker: Status 401
+Recorder: Status 401 - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Status_401-Light_bulb.wav
+Lightning - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-lightning.ogg
+Lion - Speaker: ForTheGrammar
+Recorder: ForTheGrammar - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-ForTheGrammar-Lion.wav
+Lock - Speaker: Naomi Persephone Amethyst
+Recorder: NaomiAmethyst - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Naomi_Persephone_Amethyst_(NaomiAmethyst)-lock.wav
+M - Logictheo - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-uk-m.ogg
+Magnet - Speaker: Vealhurl
+Recorder: Vealhurl - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-magnet.wav
+Mango - Speaker: Louisalphonse28
+Recorder: Louisalphonse28 - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Louisalphonse28-Mango.wav
+Milk - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-milk.ogg
+Monkey - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-monkey.ogg
+Moon - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-moon.ogg
+Mosque - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-mosque.ogg
+Mountain - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-mountain.ogg
+Mouse - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-mouse.wav
+Mouth - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-mouth.wav
+Mushroom - Speaker: Arlo Barnes
+Recorder: Arlo Barnes - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-mushroom.wav
+N - Logictheo - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-uk-n.ogg
+Nature - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-nature.ogg
+Nose - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-nose.ogg
+Octopus - Speaker: Simplificationalizer
+Recorder: Simplificationalizer - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Simplificationalizer-octopus.wav
+Odd - Speaker: Ajshul
+Recorder: Ajshul - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Ajshul-odd.wav
+Orange - Atcovi - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-Orange.ogg
+Owl - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-owl.ogg
+P - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-p.ogg
+Palm tree - Speaker: Vealhurl
+Recorder: Vealhurl - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-palm_tree.wav
+Panda - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-panda.ogg
+Parrot - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-parrot.ogg
+Peach - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-peach.ogg
+Peacock - Speaker: Arlo Barnes
+Recorder: Arlo Barnes - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-peacock.wav
+Pear - Speaker: Mélody Xu YANG WMFr
+Recorder: Mélody Xu YANG WMFr - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Mélody_Xu_YANG_WMFr-pear.wav
+Pencil - Speaker: Naomi Persephone Amethyst
+Recorder: NaomiAmethyst - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Naomi_Persephone_Amethyst_(NaomiAmethyst)-pencil.wav
+Penguin - Speaker: Simplificationalizer
+Recorder: Simplificationalizer - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Simplificationalizer-penguin.wav
+People - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-people.ogg
+Phone - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-Phone.wav
+Pineapple - Speaker: Arlo Barnes
+Recorder: Arlo Barnes - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-pineapple.wav
+Pink - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-Pink.ogg
+Pizza - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-Pizza.wav
+Places - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-places.wav
+Police officer - Speaker: StuckInLagToad
+Recorder: StuckInLagToad - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-StuckInLagToad-police_officer.wav
+Potato - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-potato.ogg
+Purple - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-purple.ogg
+Q - Speaker: Flame, not lame
+Recorder: Flame, not lame - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-Q.wav
+Queen - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-queen.wav
+R - Logictheo - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-r.ogg
+Rabbit - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-rabbit.wav
+Rain - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-rain.ogg
+Rainbow - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-rainbow.ogg
+Red - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-red.ogg
+Rice - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-rice.wav
+Rocket - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-rocket.wav
+Rose - Speaker: Gsinti
+Recorder: Gsinti - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Gsinti-Rose.wav
+S - Twocs - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-s.ogg
+Scarf - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-scarf.ogg
+School - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-school.ogg
+Scissors - Speaker: Naomi Persephone Amethyst
+Recorder: NaomiAmethyst - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Naomi_Persephone_Amethyst_(NaomiAmethyst)-scissors.wav
+Sheep - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-sheep.ogg
+Ship - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ship.wav
+Shirt - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-shirt.ogg
+Shoe - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-shoe.ogg
+Snail - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-snail.ogg
+Snake - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-snake.ogg
+Snow - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-snow.ogg
+Soap - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-soap.ogg
+Socks - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-socks.ogg
+Spider - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-spider.ogg
+Star - Speaker: Catjj
+Recorder: Catjj - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Catjj-star.wav
+Strawberry - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-strawberry.ogg
+Sun - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-sun.ogg
+Sunflower - Speaker: Arlo Barnes
+Recorder: Arlo Barnes - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-sunflower.wav
+Taxi - Speaker: GonFreeaks
+Recorder: GonFreeaks - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-GonFreeaks-taxi.wav
+Tea - Speaker: Wodencafe
+Recorder: Wodencafe - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-tea.wav
+Teddy bear - Speaker: Vealhurl
+Recorder: Vealhurl - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-teddy_bear.wav
+Things - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-things.wav
+Tiger - Speaker: ForTheGrammar
+Recorder: ForTheGrammar - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-ForTheGrammar-Tiger.wav
+Tomato - Simeon Higgs User:TehKewl1 - Public domain - https://commons.wikimedia.org/wiki/File:En-au-tomato.ogg
+Tongue - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-tongue.ogg
+Tooth - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-tooth.ogg
+Toys - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-toys.wav
+Tractor - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-tractor.ogg
+Train - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-train.wav
+Tree - Association Shtooka, Judith Franck - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:En-uk-tree.ogg
+Trophy - Speaker: Berrely
+Recorder: Berrely - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Berrely-trophy.wav
+Trousers - Tooironic - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-au-trousers.ogg
+Truck - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-truck.wav
+Turtle - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-turtle.ogg
+Umbrella - Speaker: Naomi Persephone Amethyst
+Recorder: NaomiAmethyst - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Naomi_Persephone_Amethyst_(NaomiAmethyst)-umbrella.wav
+V - Twocs - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-v.ogg
+Vehicles - Speaker: Persent101
+Recorder: Persent101 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-vehicles.wav
+Violin - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-violin.ogg
+Volcano - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-volcano.ogg
+W - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:en-au-W.ogg
+Watch - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-watch.wav
+Watermelon - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:en-us-watermelon.ogg
+Wave - Speaker: Grendelkhan
+Recorder: Grendelkhan - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-wave.wav
+Whale - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-whale.wav
+White - Atcovi - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-White.ogg
+Wolf - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-wolf.ogg
+X - Speaker: Flame, not lame
+Recorder: Flame, not lame - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-X.wav
+Xylophone - Dvortygirl - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-xylophone.ogg
+Yacht - Speaker: Vealhurl
+Recorder: Vealhurl - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-yacht.wav
+Yellow - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-yellow.wav
+Z - Speaker: Flame, not lame
+Recorder: Flame, not lame - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-Z.wav
+Zebra - No machine-readable author provided. Celestianpower assumed (based on copyright claims). - Public domain - https://commons.wikimedia.org/wiki/File:en-uk-zebra.ogg
+eight - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eight.wav
+eight hundred - Speaker: Persent101
+Recorder: Persent101 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-eight_hundred.wav
+eighteen - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighteen.wav
+eighty - Speaker: Arlo Barnes
+Recorder: Arlo Barnes - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-eighty.wav
+eighty-eight - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-eighty-eight.ogg
+eighty-five - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-five.wav
+eighty-four - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-four.wav
+eighty-nine - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-nine.wav
+eighty-one - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-one.wav
+eighty-seven - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-seven.wav
+eighty-six - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-six.wav
+eighty-three - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-three.wav
+eighty-two - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-two.wav
+eleven - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-eleven.ogg
+fifteen - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifteen.wav
+fifty - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-fifty.ogg
+fifty-eight - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-eight.wav
+fifty-five - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-five.wav
+fifty-four - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-four.wav
+fifty-nine - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-nine.wav
+fifty-one - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-one.wav
+fifty-seven - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-seven.wav
+fifty-six - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-six.wav
+fifty-three - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-three.wav
+fifty-two - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-two.wav
+five - No machine-readable author provided. NumberOne~commonswiki assumed (based on copyright claims). - Public domain - https://commons.wikimedia.org/wiki/File:En-us-Five.ogg
+five hundred - Speaker: PerfectSoundWhatever
+Recorder: PerfectSoundWhatever - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-PerfectSoundWhatever-five_hundred.wav
+forty - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty.wav
+forty-eight - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-eight.wav
+forty-five - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-five.wav
+forty-four - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-forty-four.ogg
+forty-nine - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-nine.wav
+forty-one - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-one.wav
+forty-seven - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-seven.wav
+forty-six - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-six.wav
+forty-three - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-three.wav
+forty-two - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-two.wav
+four - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:en-au-four.ogg
+four hundred - Speaker: Persent101
+Recorder: Persent101 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-four_hundred.wav
+fourteen - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fourteen.wav
+nine - No machine-readable author provided. NumberOne~commonswiki assumed (based on copyright claims). - Public domain - https://commons.wikimedia.org/wiki/File:En-us-Nine.ogg
+nine hundred - Speaker: Persent101
+Recorder: Persent101 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-nine_hundred.wav
+nineteen - No machine-readable author provided. TheDaveRoss assumed (based on copyright claims). - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:En-us-nineteen.ogg
+ninety - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety.wav
+ninety-eight - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-eight.wav
+ninety-five - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-five.wav
+ninety-four - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-four.wav
+ninety-nine - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-nine.wav
+ninety-one - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-one.wav
+ninety-seven - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-seven.wav
+ninety-six - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-six.wav
+ninety-three - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-three.wav
+ninety-two - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-two.wav
+one - Akafinland - Public domain - https://commons.wikimedia.org/wiki/File:En-US-One.oga
+one hundred - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-one_hundred.wav
+seven - No machine-readable author provided. NumberOne~commonswiki assumed (based on copyright claims). - Public domain - https://commons.wikimedia.org/wiki/File:En-us-Seven.ogg
+seven hundred - Speaker: Persent101
+Recorder: Persent101 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-seven_hundred.wav
+seventeen - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventeen.wav
+seventy - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy.wav
+seventy-eight - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-eight.wav
+seventy-five - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-five.wav
+seventy-four - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-four.wav
+seventy-nine - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-nine.wav
+seventy-one - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-one.wav
+seventy-seven - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-seven.wav
+seventy-six - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-six.wav
+seventy-three - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-three.wav
+seventy-two - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-two.wav
+six - No machine-readable author provided. NumberOne~commonswiki assumed (based on copyright claims). - Public domain - https://commons.wikimedia.org/wiki/File:En-us-Six.ogg
+six hundred - Speaker: Persent101
+Recorder: Persent101 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-six_hundred.wav
+sixteen - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixteen.wav
+sixty - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty.wav
+sixty-eight - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-eight.wav
+sixty-five - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-five.wav
+sixty-four - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-four.wav
+sixty-nine - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-sixty-nine.ogg
+sixty-one - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-one.wav
+sixty-seven - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-seven.wav
+sixty-six - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-six.wav
+sixty-three - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-three.wav
+sixty-two - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-two.wav
+ten - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ten.wav
+thirteen - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirteen.wav
+thirty - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty.wav
+thirty-eight - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-eight.wav
+thirty-five - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-five.wav
+thirty-four - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-four.wav
+thirty-nine - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-nine.wav
+thirty-one - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-one.wav
+thirty-seven - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-seven.wav
+thirty-six - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-six.wav
+thirty-three - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-three.wav
+thirty-two - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-two.wav
+three - Speaker: Andre Vitor Kerr Lima
+Recorder: Andrevitorkerr - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Andre_Vitor_Kerr_Lima_(Andrevitorkerr)-three.wav
+three hundred - Speaker: Persent101
+Recorder: Persent101 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-three_hundred.wav
+twelve - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-Twelve.wav
+twenty - unknown - Public domain - https://commons.wikimedia.org/wiki/File:En-uk-twenty.ogg
+twenty-eight - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-eight.wav
+twenty-five - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-five.wav
+twenty-four - Steve Shives - CC0 - https://commons.wikimedia.org/wiki/File:En-us-twenty-four.ogg
+twenty-nine - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-nine.wav
+twenty-one - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-one.wav
+twenty-seven - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-seven.wav
+twenty-six - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-six.wav
+twenty-three - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-three.wav
+twenty-two - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-two.wav
+two - Speaker: Back ache
+Recorder: Back ache - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-two.wav
+two hundred - Speaker: Persent101
+Recorder: Persent101 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-two_hundred.wav
+zero - Commander Keane - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:En-au-zero.ogg
+أبيض - Speaker: Zakaria Mimouni
+Recorder: Zakaria Mimouni - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zakaria_Mimouni-أَبْيَض.wav
+أحمر - Zannane Mohamed, Heulin Frederic - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-أحمر.ogg
+أخضر - Speaker: Fenakhay
+Recorder: Fenakhay - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أخضر.wav
+أذن - Speaker: Zakaria Mimouni
+Recorder: Zakaria Mimouni - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zakaria_Mimouni-آذن.wav
+أرز - Speaker: Fenakhay
+Recorder: Fenakhay - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أرز.wav
+أرنب - Speaker: Fenakhay
+Recorder: Fenakhay - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أرنب.wav
+أزرق - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-ازرق.wav
+أسد - Speaker: Fenakhay
+Recorder: Fenakhay - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أسد.wav
+أسود - Zannane Mohamed, Heulin Frederic - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-أسود.ogg
+ألف - Speaker: Spotless Mind1988
+Recorder: Spotless Mind1988 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-ألف.wav
+أناناس - Speaker: Zinou2go
+Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-أناناس.wav
+أنف - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-أنف.ogg
+أيل - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-أيل.wav
+أَحَدَ عَشَر - Speaker: Fenakhay
+Recorder: Fenakhay - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أحد_عشر.wav
+أَرْبَعَة - Speaker: Fenakhay
+Recorder: Fenakhay - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أربعة.wav
+أَرْبَعَةَ عَشَر - Speaker: Fenakhay
+Recorder: Fenakhay - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أربعة_عشر.wav
+أَرْبَعُون - Speaker: Fenakhay
+Recorder: Fenakhay - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أربعون.wav
+اثْنَا عَشَر - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-اثنا_عشر.wav
+اثْنَان - Speaker: Ov3for
+Recorder: Ov3for - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Ov3for-اثنان.wav
+باب - Speaker: Annisa Tiara Ramadhani
+Recorder: Annisa Tiara Ramadhani - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Annisa_Tiara_Ramadhani-باب.wav
+بالون - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-بالون.wav
+برتقالة - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-برتقالة.wav
+برق - Speaker: Zinou2go
+Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-بَرْق.wav
+بركان - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-بركان.wav
+بطة - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-بطة.wav
+بطيخ - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-بطيخ.wav
+بنت - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-بنت.wav
+بني - Zannane Mohamed, Heulin Frederic - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-بني.ogg
+بومة - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-بومة.wav
+بيت - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-بيت.ogg
+تمساح - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-تمساح.wav
+تِسْعَةَ عَشَر - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-تسعة_عشر.wav
+تِسْعُون - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-تسعون.wav
+ثعبان - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-ثعبان.wav
+ثَلَاثَة - Speaker: Nehaoua
+Recorder: Nehaoua - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Nehaoua-ثلاثة.wav
+ثَلَاثَةَ عَشَر - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-ثلاثة_عشر.wav
+ثَلَاثُون - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-ثلاثون.wav
+ثَمَانِيَة - Speaker: Ov3for
+Recorder: Ov3for - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Ov3for-ثمانية.wav
+ثَمَانِيَةَ عَشَر - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-ثمانية_عشر.wav
+جبل - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-جبل.ogg
+جد - Speaker: Spotless Mind1988
+Recorder: Spotless Mind1988 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-جَدَّ.wav
+جرس - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-جرس.wav
+جزر - Speaker: Zinou2go
+Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-جزر.wav
+جزيرة - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-جزيرة.ogg
+جمل - Speaker: Annisa Tiara Ramadhani
+Recorder: Annisa Tiara Ramadhani - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Annisa_Tiara_Ramadhani-جمل.wav
+حافلة - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-حافلة.wav
+حلزون - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-حلزون.wav
+حليب - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-حليب.ogg
+حوت - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-حوت.wav
+خروف - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-خروف.ogg
+خوخ - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-خوخ.wav
+خيار - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-خيار.ogg
+خيمة - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-خيمة.wav
+خَمْسَة - Speaker: Spotless Mind1988
+Recorder: Spotless Mind1988 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-خمسة.wav
+خَمْسَةَ عَشَر - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-خمسة_عشر.wav
+خَمْسُون - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-خمسون.wav
+دراجة - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-دراجة.ogg
+دلفين - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-دلفين.wav
+رمادي - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-رمادي.ogg
+زرافة - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-زرافة.wav
+زهرة - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-زهرة.ogg
+ساعة - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-ساعة.ogg
+ساق - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-ساق.ogg
+سفينة - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-سفينة.ogg
+سلحفاة - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-سلحفاة.wav
+سمكة - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-سمكة.wav
+سن - Zannane Mohamed, Heulin Frederic - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-سن.ogg
+سيارة - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-سيارة.ogg
+سين - Speaker: Raghda
+Recorder: Akbarali - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Raghda_(Akbarali)-سين.wav
+سَبْعَةَ عَشَر - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-سبعة_عشر.wav
+سَبْعُون - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-سبعون.wav
+سِتَّةَ عَشَر - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-ستة_عشر.wav
+سِتُّون - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-ستون.wav
+شاحنة - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-شاحنة.wav
+شاي - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-شاي.wav
+شجرة - Zannane Mohamed, Heulin Frederic - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-شجرة.ogg
+شمس - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-شمس.ogg
+شمعة - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-شمعة.wav
+صابون - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-صابون.ogg
+طبل - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-طبل.ogg
+طبيعة - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-طبيعة.ogg
+طعام - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-طعام.ogg
+طماطم - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-طماطم.wav
+عسل - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-عسل.wav
+عنكبوت - Speaker: Zinou2go
+Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-عنكبوت.wav
+عَشَرَة - Speaker: Zinou2go
+Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-عشرة.wav
+فأر - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-فأر.wav
+فراشة - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-فراشة.wav
+فراولة - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-فراولة.wav
+فستان - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-فستان.ogg
+قدم - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-قدم.ogg
+قطار - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-قطار.ogg
+كتاب - Speaker: Zinou2go
+Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-كتاب.wav
+كرز - Speaker: Fjmustak
+Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-كرز.wav
+كلب - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-كلب.ogg
+كمان - Speaker: Zinou2go
+Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-كمان.wav
+كمثرى - Speaker: Zinou2go
+Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-كمثرى.wav
+لام - Speaker: Spotless Mind1988
+Recorder: Spotless Mind1988 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-لام.wav
+لسان - Speaker: Shahjina
+Recorder: Shahjina - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Shahjina-لسان.wav
+ليمون - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-ليمون.wav
+ماعز - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-ماعز.wav
+مدرسة - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-مدرسة.ogg
+مستشفى - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-مستشفى.ogg
+مسجد - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-مسجد.wav
+مطر - Speaker: Raghda
+Recorder: Akbarali - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Raghda_(Akbarali)-مطر.wav
+مفتاح - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-مفتاح.ogg
+مكنسة - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-مكنسة.wav
+ملابس - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-ملابس.ogg
+ملكة - Speaker: Zinou2go
+Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-ملكة.wav
+نمر - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-نمر.wav
+نون - Speaker: Kareem
+Recorder: Akbarali - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Kareem_(Akbarali)-نون.wav
+هاتف - Speaker: AlNatiq
+Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-هاتف.wav
+هدية - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-هدية.ogg
+وردة - Speaker: Rashed Aljahdali
+Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-وردة.wav
+ولد - Speaker: Zinou2go
+Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-وَلَدَ.wav
+وَاحِد - Speaker: Spotless Mind1988
+Recorder: Spotless Mind1988 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-وَاحِد.wav

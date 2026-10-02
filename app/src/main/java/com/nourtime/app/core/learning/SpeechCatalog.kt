@@ -7,19 +7,24 @@ import java.security.MessageDigest
  * The recorded voice clips behind everything the games say.
  *
  * A clip is the recording of one piece of text, stored as `audio/<language>/<key>.mp3` (see
- * [assetPath]). Words, letters, colors and labels each have their own clip. Numbers up to [WHOLE_NUMBERS]
+ * [assetPath]). Words, letters, colors and labels each have their own clip; a letter's "name, word"
+ * phrase ("ألف، أرنب") plays the name's clip, then the word's. Numbers up to [WHOLE_NUMBERS]
  * do too; bigger ones are said as two clips back to back: "three hundred" + "forty-five", and in
  * Arabic "ثلاثمئة" + "وخمسة وأربعون" (the "+45" clip, with its و).
  *
- * `tools/audio/generate_audio.py` records the clips listed by [clips]; a unit test checks that every
- * one is in the assets, so the phone's own text-to-speech is only ever a fallback.
+ * `tools/audio/fetch_human_audio.py` fills the clips listed by [clips] with real human recordings
+ * (`generate_audio.py` makes placeholders for the rest); a unit test checks that every one is in the
+ * assets, so the phone's own text-to-speech is only ever a fallback.
  */
 object SpeechCatalog {
     const val MAX_NUMBER = 1000
+    /** Between a letter's name and its word: "ألف، أرنب", "A, Apple". */
+    private val PHRASE = Regex("[،,] ")
     private const val WHOLE_NUMBERS = 100
 
     /** The clips that say [text], in order; null when nothing recorded can say it. */
     fun clipsFor(text: String, language: LearnLanguage): List<String>? {
+        PHRASE.find(text)?.let { m -> return listOf(text.substring(0, m.range.first), text.substring(m.range.last + 1)) }
         val n = text.toIntOrNull() ?: return listOf(text)
         if (n < 0 || n > MAX_NUMBER) return null
         if (n <= WHOLE_NUMBERS || n % 100 == 0) return listOf(n.toString())
@@ -33,7 +38,6 @@ object SpeechCatalog {
         val pack = loader.letters(language)
         pack.letters.forEach {
             out += it.name
-            out += pack.speech(it)
             out += it.letter
         }
         pack.words.forEach { w ->
