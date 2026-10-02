@@ -140,6 +140,50 @@ def key(clip: str) -> str:
     return hashlib.sha1(clip.encode("utf-8")).hexdigest()[:16]
 
 
+# Keys live in tools/audio/keys.env (git-ignored, never committed or pasted anywhere):
+#   GEMINI_API_KEY=...        (free, from https://aistudio.google.com/apikey)
+#   ELEVENLABS_API_KEY=...    (optional)
+_keys = HERE / "keys.env"
+if _keys.is_file():
+    for _line in _keys.read_text(encoding="utf-8").splitlines():
+        if "=" in _line and not _line.lstrip().startswith("#"):
+            _k, _v = _line.split("=", 1)
+            os.environ.setdefault(_k.strip(), _v.strip())
+
+# Gemini TTS: the same natural voices as Google AI Studio's speech generation.
+GEMINI = {"model": os.environ.get("GEMINI_TTS_MODEL", "gemini-2.5-pro-preview-tts"),
+          "ar": os.environ.get("GEMINI_VOICE_AR", "Kore"), "en": os.environ.get("GEMINI_VOICE_EN", "Leda")}
+GEMINI_STYLE = {
+    "ar": "اقرأ الكلمة التالية بالعربية الفصحى بنطق واضح وهادئ لطفل صغير، كما هي بالتشكيل، دون أي كلمة إضافية:",
+    "en": "Say the following word clearly and warmly for a young child, nothing else:",
+}
+
+
+def synthesize_gemini(text: str, lang: str) -> bytes:
+    """Returns WAV bytes (Gemini sends raw 24 kHz 16-bit PCM)."""
+    import base64
+    import io
+    import wave
+    import requests
+    r = requests.post(
+        f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI['model']}:generateContent",
+        headers={"x-goog-api-key": os.environ["GEMINI_API_KEY"]},
+        json={"contents": [{"parts": [{"text": f"{GEMINI_STYLE[lang]} {text}"}]}],
+              "generationConfig": {"responseModalities": ["AUDIO"],
+                                   "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": GEMINI[lang]}}}}},
+        timeout=120,
+    )
+    r.raise_for_status()
+    pcm = base64.b64decode(r.json()["candidates"][0]["content"]["parts"][0]["inlineData"]["data"])
+    buf = io.BytesIO()
+    with wave.open(buf, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(24000)
+        w.writeframes(pcm)
+    return buf.getvalue()
+
+
 # Premium voice for the placeholders (clips with no human recording), used when ELEVENLABS_API_KEY is set.
 ELEVENLABS = {"model": "eleven_multilingual_v2",
               # Voice ids from the ElevenLabs voice library; set ELEVENLABS_VOICE_AR / _EN to choose.
@@ -160,6 +204,14 @@ def synthesize_elevenlabs(text: str, lang: str) -> bytes:
 
 
 async def synthesize(text: str, lang: str) -> bytes:
+    if os.environ.get("GEMINI_API_KEY"):
+        for attempt in range(6):  # the free tier allows a few requests a minute
+            try:
+                return await asyncio.to_thread(synthesize_gemini, text, lang)
+            except Exception as e:
+                print(f"  gemini retry {attempt + 1} for {text!r}: {e}", file=sys.stderr)
+                await asyncio.sleep(15 * (attempt + 1))
+        raise RuntimeError(f"no Gemini audio for {text!r}")
     if os.environ.get("ELEVENLABS_API_KEY"):
         return await asyncio.to_thread(synthesize_elevenlabs, text, lang)
     v = VOICES[lang]
@@ -216,6 +268,7 @@ async def main() -> None:
     ap.add_argument("--force", action="store_true", help="record every placeholder clip again")
     ap.add_argument("--lists", action="store_true", help="re-run the unit test that writes the clip lists")
     ap.add_argument("--jobs", type=int, default=6)
+    ap.add_argument("--lang", choices=list(VOICES), action="append", help="only these languages")
     args = ap.parse_args()
 
     lists = load_lists(args.lists)
@@ -223,6 +276,8 @@ async def main() -> None:
 
     jobs, problems = [], []
     for lang, clips in lists.items():
+        if args.lang and lang not in args.lang:
+            continue
         voice = VOICES[lang]["voice"]
         for clip in clips:
             try:
@@ -234,7 +289,9 @@ async def main() -> None:
             # A real human recording (fetch_human_audio.py) is never replaced by a synthetic voice.
             if manifest.get(lang, {}).get(clip, {}).get("voice") == "human" and out.is_file():
                 continue
-            if os.environ.get("ELEVENLABS_API_KEY"):
+            if os.environ.get("GEMINI_API_KEY"):
+                voice = f"gemini:{GEMINI['model']}:{GEMINI[lang]}"
+            elif os.environ.get("ELEVENLABS_API_KEY"):
                 voice = f"elevenlabs:{ELEVENLABS[lang]}"
             entry = {"voiced": voiced, "voice": voice, "file": out.name, "placeholder": True}
             if not args.force and out.is_file() and manifest.get(lang, {}).get(clip) == entry:

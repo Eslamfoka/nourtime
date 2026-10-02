@@ -17,3 +17,4 @@ app/google-services.json
 __pycache__/
 tools/audio/verify-report.json
 tools/audio/.human-cache/
+tools/audio/keys.env
