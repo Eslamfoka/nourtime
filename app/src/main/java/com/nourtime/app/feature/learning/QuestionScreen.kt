@@ -240,12 +240,10 @@ private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: B
             }
         }
         is Card.Symbol -> SymbolText(card, numerals, size, if (card.text == "?") NourPalette.GoldDeep else NourPalette.Navy)
-        is Card.Text -> Text(
+        is Card.Text -> FitText(
             card.text,
-            fontSize = if (big) 96.sp else if (compact) 36.sp else 44.sp,
-            fontWeight = FontWeight.Bold,
+            maxSize = if (big) 96.sp else if (compact) 36.sp else 44.sp,
             color = NourPalette.Navy,
-            textAlign = TextAlign.Center,
             modifier = Modifier.clickable(role = Role.Button, onClick = onSay).padding(horizontal = 8.dp),
         )
         is Card.Picture -> if (compact) LearningPicture(card.image, card.emoji, 40.dp, 30.sp) else LearningPicture(card.image, card.emoji, 112.dp, 72.sp)
@@ -262,7 +260,7 @@ private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: B
             }
             // No voice for this language on the phone: the child reads it instead.
             if (!hasVoice) {
-                Text(card.number?.let(numerals::format) ?: card.text, fontSize = 36.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
+                FitText(card.number?.let(numerals::format) ?: card.text, maxSize = 36.sp, color = NourPalette.Navy)
             }
         }
         is Card.Clock -> ClockFace(card.hour, card.minute, numerals, 180.dp)
@@ -365,7 +363,7 @@ private fun ChoiceCard(
                     is Card.Number -> Text(numerals.format(card.value), fontSize = 36.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
                     is Card.Symbol -> SymbolText(card, numerals, 40.sp, NourPalette.Navy)
                     // A single letter is shown big; words stay readable on two lines.
-                    is Card.Text -> Text(card.text, fontSize = if (card.text.length <= 2) 44.sp else 24.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy, textAlign = TextAlign.Center, maxLines = 2)
+                    is Card.Text -> FitText(card.text, maxSize = if (card.text.length <= 2) 44.sp else 28.sp, color = NourPalette.Navy)
                     is Card.Picture -> LearningPicture(card.image, card.emoji, 72.dp, 48.sp)
                     is Card.Swatch -> Box(
                         Modifier

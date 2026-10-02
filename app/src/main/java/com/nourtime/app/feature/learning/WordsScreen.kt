@@ -102,14 +102,13 @@ internal fun ColumnScope.WordsScreen(controller: LearningHubController, state: L
             Box(Modifier.padding(16.dp)) { LearningPicture(shown.word.image, shown.word.emoji, 120.dp, 84.sp, description = shown.word.word) }
         }
         if (round.hint && s.celebrating == null) {
-            Text(shown.word.word, fontSize = 30.sp, color = NourPalette.Navy.copy(alpha = 0.3f), fontWeight = FontWeight.Bold)
+            FitText(shown.word.word, maxSize = 30.sp, color = NourPalette.Navy.copy(alpha = 0.3f))
         }
         // The word so far, joined as it's written, then one circle per letter still to come.
         val built = s.celebrating ?: round.built
-        Text(
+        FitText(
             built.ifEmpty { " " },
-            fontSize = 48.sp,
-            fontWeight = FontWeight.Bold,
+            maxSize = 48.sp,
             color = if (s.celebrating != null) NourPalette.MintDeep else NourPalette.Navy,
             modifier = Modifier.semantics { contentDescription = built },
         )

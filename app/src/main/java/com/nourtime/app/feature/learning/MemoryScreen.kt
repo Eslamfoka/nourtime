@@ -167,14 +167,7 @@ private fun MemoryCardView(face: Card, up: Boolean, matched: Boolean, accent: Co
                 val big = (width.value * 0.42f).sp
                 when (face) {
                     is Card.Picture -> LearningPicture(face.image, face.emoji, width * 0.7f, (width.value * 0.45f).sp)
-                    is Card.Text -> Text(
-                        face.text,
-                        fontSize = if (face.text.length <= 2) big else (width.value * 0.18f).sp,
-                        fontWeight = FontWeight.Bold,
-                        color = NourPalette.Navy,
-                        textAlign = TextAlign.Center,
-                        maxLines = 2,
-                    )
+                    is Card.Text -> FitText(face.text, maxSize = if (face.text.length <= 2) big else (width.value * 0.24f).sp, color = NourPalette.Navy, minSize = 10.sp)
                     is Card.Number -> Text(numerals.format(face.value), fontSize = big, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
                     is Card.Dots -> DotsFace(face.count, width * 0.8f)
                     is Card.Swatch -> Box(Modifier.fillMaxSize().background(Color(face.argb), RoundedCornerShape(10.dp)))
