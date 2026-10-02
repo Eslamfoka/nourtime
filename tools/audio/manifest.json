@@ -1514,14 +1514,14 @@
   },
   "ب": {
    "file": "8b5123a22cbcf54a.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "1c1e43d61d9bb3a0.mp3",
+   "voice": "gemini-aistudio",
    "voiced": "بَاء"
   },
   "باء": {
    "file": "1c1e43d61d9bb3a0.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "1c1e43d61d9bb3a0.mp3",
+   "voice": "gemini-aistudio",
    "voiced": "بَاء"
   },
   "باب": {

@@ -18,3 +18,4 @@ __pycache__/
 tools/audio/verify-report.json
 tools/audio/.human-cache/
 tools/audio/keys.env
+tools/audio/incoming/
