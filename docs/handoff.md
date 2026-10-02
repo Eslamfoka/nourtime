@@ -1025,8 +1025,8 @@ Kept on purpose (tell me if you want them changed): آيس كريم (common in M
   (`MediaPlayer.setNextMediaPlayer`): "three hundred" + "forty-five", ثلاثمئة + وخمسة وأربعون.
 - Voices: **ar-SA-ZariyahNeural** (Fusha; no Arabic child voices exist) with full tashkeel in pause
   form from `tools/audio/ar_tashkeel.json` (e.g. ذُرَة "corn", never ذَرَّة "atom"; numbers with correct
-  case endings: وَاحِدٌ وَعِشْرُون, اثْنَا عَشَر, ثَمَانِمِئَة), and **en-GB-MaisieNeural**, a child's voice,
-  British English as taught in Kuwaiti schools. Clips are trimmed, loudness-matched, mono 40 kbps MP3
+  case endings: وَاحِدٌ وَعِشْرُون, اثْنَا عَشَر, ثَمَانِمِئَة), and **en-US-AnaNeural**, a child's voice
+  (owner's pick from the voice samples, 2026-10-02; was en-GB-MaisieNeural). Clips are trimmed, loudness-matched, mono 40 kbps MP3
   (MP3 because it decodes on every Android phone, per the all-brands rule).
 - `SpeechCatalog` (core) lists every clip from the packs; **`SpeechCatalogTest` fails if any clip has no
   file** (passing now) and writes the lists that `tools/audio/generate_audio.py` reads. The script
@@ -1066,3 +1066,8 @@ Kept on purpose (tell me if you want them changed): آيس كريم (common in M
    voice (16.4), وشاح, big numbers in Math (e.g. 335 = "ثلاثمئة وخمسة وثلاثون").
 2. If he wants another voice: 16.4. If he's happy: merge `learning-hub` → master, then the Parent App
    integration (as planned in 15.15).
+
+### 16.6 English voice switched to Ana (2026-10-02, owner's pick)
+After listening to `dist/voice-samples/`, the owner chose **en-US-AnaNeural** for English and kept
+**ar-SA-ZariyahNeural** for Arabic. All 386 English clips re-recorded (Arabic unchanged), 391 tests pass,
+`dist/NourTime-2026-10-02-release.apk` rebuilt with them.

@@ -211,7 +211,7 @@ Everything the games say is a recorded clip, not the phone's robotic voice: `aud
 where `<key>` is the first 16 hex digits of the SHA-1 of the text (`SpeechCatalog.kt`). Words, letter
 names, "letter, word" phrases, letter tiles, colors and sorting labels have one clip each; numbers 0–100
 too, and bigger numbers play two clips with no gap ("three hundred" + "forty-five", "ثلاثمئة" +
-"وخمسة وأربعون"). Voices: Microsoft neural, `ar-SA-ZariyahNeural` (Fusha) and `en-GB-MaisieNeural`
+"وخمسة وأربعون"). Voices: Microsoft neural, `ar-SA-ZariyahNeural` (Fusha) and `en-US-AnaNeural`
 (a child's voice).
 
 **After adding or changing any word, color, letter or label:**

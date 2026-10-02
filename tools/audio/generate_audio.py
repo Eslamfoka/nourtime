@@ -41,8 +41,8 @@ MANIFEST = HERE / "manifest.json"
 VOICES = {
     # Arabic has no child voices; Zariyah is a warm, clear Fusha voice.
     "ar": {"voice": "ar-SA-ZariyahNeural", "rate": "-10%", "pitch": "+0Hz"},
-    # A child's voice, British English as taught in Kuwaiti schools.
-    "en": {"voice": "en-GB-MaisieNeural", "rate": "-5%", "pitch": "+0Hz"},
+    # A child's voice (the owner's pick from dist/voice-samples, 2026-10-02).
+    "en": {"voice": "en-US-AnaNeural", "rate": "-5%", "pitch": "+0Hz"},
 }
 
 # Use the 96 kbps source (edge-tts asks for 48 kbps); we re-encode after trimming anyway.
