@@ -1056,7 +1056,7 @@ Kept on purpose (tell me if you want them changed): آيس كريم (common in M
   (speech.platform.bing.com) and GitHub kept timing out from this PC after ~16:30. Run it when online.
 - **APK for the Honor:** `dist/NourTime-2026-10-02-release.apk` (8.55 MB, minified, signed with the
   same debug key CA:D6:D5:…, so `adb install -r` keeps the data). Not installed on the Honor (owner's
-  phone, he's asleep). Tested on the API 31 emulator (left running, release build installed).
+  phone, he's asleep). Tested on the API 31 emulator (it stopped at the 2-hour background limit; it restarts from its old snapshot, so reinstall the APK before using it).
 - Unit tests: **391 passing** (FitTextTest, SpeechCatalogTest including "every clip has its recording").
 - Pushed: `learning-hub` on GitHub. **Not merged** into master (owner's rule for this night).
 
