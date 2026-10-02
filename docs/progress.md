@@ -343,7 +343,10 @@ screen option, pack, how a level starts). A new game is a `GameId`, one registry
 | Content audit, Arabic + English (words, letters, colors, labels, UI strings) | ✅ 9 fixes (eagle/نسر, أرز, قلم رصاص, أيل, light bulb, دمية دب, English X, 2 sorting labels, hub subtitle); see handoff §16.2 |
 | Recorded human-sounding voices instead of the phone's TTS | ✅ 884 clips (Fusha with tashkeel + child English voice), 4.6 MB; TTS only as fallback; test fails on any missing clip |
 | Owner's test on the Honor (release APK `dist/NourTime-2026-10-02-release.apk`) | ⏳ Waiting |
-| Paid voice (Azure) if Play objects to edge-tts | Later: only `synthesize` in `tools/audio/generate_audio.py` changes |
+| Paid voice (Azure) if Play objects to edge-tts | Superseded by 2026-10-03 below |
+| Owner's Honor test (2026-10-02) | UI fixes ✅; English Ana barely OK; **Arabic synthetic voice rejected** |
+| Real human recordings (Commons / Lingua Libre, speech-checked, credits screen) | ✅ Arabic 123/470, English 343/360 (`dist/NourTime-2026-10-03-human-voices-release.apk`) |
+| Remaining Arabic (347 clips: most numbers, 24 letter names, ~95 words) | ⏳ Manus records batches in AI Studio (voice Kore); test batch numbers 1–25 waiting on the owner; slicer + importer ready (handoff §17) |
 
 ## UX backlog (future polish phase)
 

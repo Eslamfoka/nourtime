@@ -1071,3 +1071,55 @@ Kept on purpose (tell me if you want them changed): آيس كريم (common in M
 After listening to `dist/voice-samples/`, the owner chose **en-US-AnaNeural** for English and kept
 **ar-SA-ZariyahNeural** for Arabic. All 386 English clips re-recorded (Arabic unchanged), 391 tests pass,
 `dist/NourTime-2026-10-02-release.apk` rebuilt with them.
+
+## 17. Voices: from synthetic to real human recordings (2026-10-02 evening → 2026-10-03)
+
+Branch `learning-hub` (pushed, **not merged**). Owner's verdict after testing on the Honor: UI fixes great;
+English Ana "barely acceptable"; **Arabic edge-tts (Zariyah) unacceptable, robotic**. Directive: real
+human recordings first; no Google Translate TTS; a premium voice only for what no human recording covers.
+
+### 17.1 What's in the app now
+- **Human recordings** from Wikimedia Commons / Lingua Libre (Fusha `(ara)` only, no dialect, no NC/ND
+  licences), each checked with speech recognition (`tools/audio/fetch_human_audio.py`):
+  **Arabic 123 / 470 clips** (80/175 words, 7/11 colors, 23/209 numbers, 4/28 letter names, 6/35 tiles,
+  3/12 labels; ~10 different volunteers), **English 343 / 360** (95 %).
+- The rest are still the old synthetic voices as **placeholders** (flagged in `tools/audio/manifest.json`).
+  باء (+ the ب tile) is a Gemini "Kore" clip (test of the import path).
+- Letter phrases ("ألف، أرنب") now play the name's clip then the word's (`SpeechCatalog.clipsFor`); 830 clips.
+- **Settings → Voice credits** (`assets/audio/CREDITS.txt`): attribution required by CC BY / BY-SA.
+- APK: `dist/NourTime-2026-10-03-human-voices-release.apk` (392 tests pass). **Not yet installed on the
+  Honor; the Honor has `dist/NourTime-2026-10-02-release.apk` (Ana/Zariyah).**
+
+### 17.2 Decisions and limits (said to the owner)
+- **Forvo not used** (terms forbid scraping/re-use). **No Google-login automation and no use of AI Studio's
+  internal web endpoints with copied cookies** (bypasses Google's limits/ToS; account risk) — declined.
+- Gemini API key (owner's) works with `gemini-2.5-flash-preview-tts`, but the project is on the **free
+  tier: 10 requests/day, 3/min** (the second key, said to be paid, still reports `FreeTier`). Gemini also
+  returns no audio for very short text and for the "وَ + number" parts. Keys live in the git-ignored
+  `tools/audio/keys.env`; **both keys were pasted in chat → owner should rotate them**.
+- Commons has a one-speaker Arabic alphabet set (42 files, CC BY-SA 4.0): copied to
+  `dist/voice-samples/letters-review-commons/` for the owner to identify by ear (labels unreliable,
+  recognition can't tell letter names apart). Waiting on the owner.
+
+### 17.3 Current plan: Manus records in AI Studio, I slice and import
+- The owner runs **Manus** (his own browser agent) on his logged-in AI Studio app
+  (`https://aistudio.google.com/apps/drive/1AI3eea2N05aZkz8vLd9ScNbtiY2eSDwC`), voice **Kore**.
+- **Batches**: long recordings of ~25 lines, grouped by category (letters, each word category, colors +
+  labels, numbers in order, "و + number" parts). Each line ends with "." and an empty line follows it
+  (longest pause). `tools/audio/make_batches.py` (`--test-numbers` for the test batch).
+- **Test first (in progress):** `manus_batches/test_numbers_01_25.txt` + `MANUS_PROMPT_TEST.md` (numbers
+  1–25). Owner puts the result in `tools/audio/incoming-batches/test_numbers_01_25.wav`.
+- Then: `python tools/audio/slice_batches.py` (cuts at pauses, searching the pause length that gives
+  exactly one piece per line; checks each piece with Whisper; unsure pieces → `incoming-review/`), then
+  `python tools/audio/import_audio.py --replace-human` (for the numbers, so 1–25 share one voice; ask the
+  owner) → tests → release APK → install on the Honor.
+- If the test is good: `python tools/audio/make_batches.py` for the full grouped set (it overwrites the
+  test batch files), update `MANUS_PROMPT.md` file list, owner runs Manus, repeat slice/import.
+- Fallbacks: `missing_arabic_audio.csv` (323 unique texts, one file each) + `MANUS_PROMPT.md` (per-clip
+  version); `generate_audio.py` uses Gemini or ElevenLabs automatically if a paid key is in keys.env.
+
+### 17.4 Resume here (2026-10-03)
+1. Ask the owner for the Manus test file (numbers 1–25) → slice, check, import, APK, Honor.
+2. Ask: keep volunteer recordings for 1–5, 8, 10–19, or replace them all for one voice?
+3. Ask: results of `letters-review-commons` (which files say which letter name).
+4. Then the full batch run. Still open from before: وشاح check, merge only after the owner approves.
