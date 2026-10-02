@@ -206,6 +206,26 @@ WebP (or PNG), square, about 512 × 512 px, transparent background, named after 
 id. Decoded off the main thread at display size and cached. Large sets can move to a Play Asset
 Delivery pack later without code changes.
 
+## Voice recordings (`assets/audio/`)
+Everything the games say is a recorded clip, not the phone's robotic voice: `audio/<language>/<key>.mp3`,
+where `<key>` is the first 16 hex digits of the SHA-1 of the text (`SpeechCatalog.kt`). Words, letter
+names, "letter, word" phrases, letter tiles, colors and sorting labels have one clip each; numbers 0–100
+too, and bigger numbers play two clips with no gap ("three hundred" + "forty-five", "ثلاثمئة" +
+"وخمسة وأربعون"). Voices: Microsoft neural, `ar-SA-ZariyahNeural` (Fusha) and `en-GB-MaisieNeural`
+(a child's voice).
+
+**After adding or changing any word, color, letter or label:**
+1. Arabic: add the word with full tashkeel, in pause form, to `tools/audio/ar_tashkeel.json` (the script
+   refuses to record Arabic without it, e.g. so ذُرَة "corn" is never read as ذَرَّة "atom").
+2. `python tools/audio/generate_audio.py --lists` (needs `pip install edge-tts` and ffmpeg). It records
+   only new or changed clips and deletes clips nothing says any more.
+3. Optional: `python tools/audio/verify_audio.py` (needs `pip install faster-whisper`) lists clips that
+   speech recognition hears differently, for a person to listen to.
+
+`SpeechCatalogTest` fails while any clip is missing. In the app, text with no clip falls back to the
+phone's text-to-speech so a game is never silent. Moving to a paid voice (for example Azure with the
+same voices) only changes `synthesize` in the script.
+
 ## Checks (run by `./gradlew :app:testDebugUnitTest`)
 `ContentPacksTest` loads every pack and fails on: invalid JSON or schema, bad or duplicate ids,
 unknown ops/tasks/age groups, `startAt` pointing nowhere, words not starting with their letter,
