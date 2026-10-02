@@ -165,6 +165,7 @@
     {"id": "trophy", "emoji": "🏆", "category": "toys"},
     {"id": "dice", "emoji": "🎲", "category": "toys"},
     {"id": "puzzle", "emoji": "🧩", "category": "toys"},
+    {"id": "xylophone", "category": "toys", "image": "xylophone"},
     {"id": "mosque", "emoji": "🕌", "category": "places"},
     {"id": "school", "emoji": "🏫", "category": "places"},
     {"id": "hospital", "emoji": "🏥", "category": "places"},

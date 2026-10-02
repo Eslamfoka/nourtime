@@ -450,8 +450,8 @@
     <string name="learn_hub_button_m">العب واكسب وقتًا</string>
     <string name="learn_hub_button_f">العبي واكسبي وقتًا</string>
     <string name="learn_hub_title">ركن التعلّم</string>
-    <string name="learn_hub_subtitle_m">اربح مرحلة لتكسب دقائق</string>
-    <string name="learn_hub_subtitle_f">اربحي مرحلة لتكسبي دقائق</string>
+    <string name="learn_hub_subtitle_m">أنهِ مرحلة لتكسب دقائق</string>
+    <string name="learn_hub_subtitle_f">أنهي مرحلة لتكسبي دقائق</string>
     <string name="learn_hub_subtitle_fun_m">تعلّم واستمتع</string>
     <string name="learn_hub_subtitle_fun_f">تعلّمي واستمتعي</string>
     <string name="learn_bank">دقائقك: %1$s</string>
@@ -564,7 +564,7 @@
     <string name="learn_settings_daily_none">لا شيء، تعلّم فقط</string>
     <string name="learn_settings_earned_today">المكتسب اليوم: %1$s</string>
     <string name="learn_settings_try">جرّب الألعاب</string>
-    <string name="learn_settings_voice_hint">تقرأ الألعاب الكلمات بصوت الهاتف (تحويل النص إلى كلام). إن لم تُسمع العربية، ثبّت الصوت العربي من إعدادات تحويل النص إلى كلام في الهاتف.</string>
+    <string name="learn_settings_voice_hint">تقرأ الألعاب الكلمات بأصوات مسجّلة (بالعربية الفصحى والإنجليزية). لا يُستخدم صوت الهاتف إلا لكلمة ليس لها تسجيل.</string>
     <string name="learn_task_connect">صِل النقاط بالترتيب</string>
     <string name="learn_tutorial_connect_m">اسحب إصبعك من %1$s إلى %2$s</string>
     <string name="learn_tutorial_connect_f">اسحبي إصبعك من %1$s إلى %2$s</string>

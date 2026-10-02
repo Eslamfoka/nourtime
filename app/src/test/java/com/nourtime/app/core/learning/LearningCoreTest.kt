@@ -232,7 +232,7 @@ class LearningCoreTest {
             assertEquals(pack.words.size, pack.words.map { it.emoji }.toSet().size)
         }
         assertEquals(28, TestContent.letters(LearnLanguage.ARABIC).letters.size)
-        assertEquals(25, TestContent.letters(LearnLanguage.ENGLISH).letters.size)
+        assertEquals(26, TestContent.letters(LearnLanguage.ENGLISH).letters.size)
     }
 
     // --- rounds ---
