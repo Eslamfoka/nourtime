@@ -336,6 +336,15 @@ Phase B adds the path and card engines. Phase C adds drag and drop. Phase D need
 screen option, pack, how a level starts). A new game is a `GameId`, one registry entry, its pack in
 `HubContent`, and its engine and screen; menu, level screen, progress, stars and rewards follow.
 
+### Text, content and voice (2026-10-02 night, on `learning-hub`, not merged)
+| Item | Status |
+|---|---|
+| Long words wrapping over themselves on cards (Peacock, عنكبوت, أفوكادو) | ✅ Fixed: `FitText`, one line, shrinks to fit (emulator-checked) |
+| Content audit, Arabic + English (words, letters, colors, labels, UI strings) | ✅ 9 fixes (eagle/نسر, أرز, قلم رصاص, أيل, light bulb, دمية دب, English X, 2 sorting labels, hub subtitle); see handoff §16.2 |
+| Recorded human-sounding voices instead of the phone's TTS | ✅ 884 clips (Fusha with tashkeel + child English voice), 4.6 MB; TTS only as fallback; test fails on any missing clip |
+| Owner's test on the Honor (release APK `dist/NourTime-2026-10-02-release.apk`) | ⏳ Waiting |
+| Paid voice (Azure) if Play objects to edge-tts | Later: only `synthesize` in `tools/audio/generate_audio.py` changes |
+
 ## UX backlog (future polish phase)
 
 | # | Item | Priority | Status |

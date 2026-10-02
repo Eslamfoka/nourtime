@@ -984,3 +984,59 @@ Needs the owner's decision on sources and licensing of the recitations and texts
 - On hold: G9 (surahs & du'as) until the owner sorts audio sources and licensing.
 - Branch `learning-hub` is committed locally, not pushed (repo is private now). The API 31 emulator is
   off (stopped for low memory); it restarts from an old snapshot, so reinstall an APK before using it.
+
+## 16. Night of 2026-10-02: text fix, content audit, recorded voices (owner asleep)
+
+Branch `learning-hub` (**not merged**; owner's rule: never auto-merge this rewrite). Owner's decisions
+(2026-10-02): edge-tts Microsoft neural voices now, a paid Azure key later if Play objects; Arabic is
+**Fusha with tashkeel** (no dialect); the phone's TTS is **only a fallback** for a missing file; stay
+on `learning-hub`, push, optimized release APK for the morning.
+
+### 16.1 Task 1: words breaking and overlapping on the cards (owner's screenshots)
+- Cause: the prompt word was 96 sp with no width limit, so long words wrapped, and the theme's
+  `bodyLarge` line height is a fixed **25 sp**, so the wrapped line was drawn on top of the first
+  ("Peaco/ck"; عنكبوت and أفوكادو with letters split and overlapping).
+- Fix: `FitText` (feature/learning/FitText.kt) keeps a content word on **one line**, shrinks it
+  (2 sp steps, measured with the real font) until it fits, and ties the line height to the font size.
+  Used on the prompt card, choice cards, Memory cards, Word Builder (word and hint) and the
+  spoken-word fallback text. Tested on the API 31 emulator: سلطعون and Spider fill the card on one line.
+
+### 16.2 Task 2: content audit (every word, letter, color, label; Arabic and English)
+Fixed (ids unchanged, so saved stars stay):
+| Was | Now | Why |
+|---|---|---|
+| 🦅 Falcon / صقر | Eagle / نسر | the emoji is an eagle; ص now uses صابون |
+| رز | أرز | رز is colloquial; ر now uses رضيع (أرز starts with أ) |
+| ✏️ قلم | قلم رصاص | قلم alone is a pen |
+| 🦌 غزال | أيل | غزال is a gazelle |
+| 💡 Lamp / مصباح | Light bulb / مصباح كهربائي | the emoji is a bulb |
+| دبدوب | دمية دب | colloquial |
+| English alphabet: 25 letters (no X) | X = Xylophone (new concept, own illustration `images/xylophone.webp`) | missing letter |
+| Sorting ناس, جسم | أشخاص, الجسم | Fusha / label form |
+| اربح مرحلة لتكسب دقائق | أنهِ مرحلة لتكسب دقائق (and feminine) | "finish", not "win" a level |
+Checked and kept: all 28 Arabic letter names, the other 170 words, 11 colors in both languages, all UI
+strings of the 12 games (masculine/feminine), math/shop/pattern numbers (all generated, test-checked).
+Kept on purpose (tell me if you want them changed): آيس كريم (common in MSA), بسكويت, Yacht for Y.
+
+### 16.3 Task 3: recorded human-sounding voices instead of the phone's TTS
+- **884 clips** (498 Arabic, 386 English), **4.6 MB**, in `app/src/main/assets/audio/<ar|en>/<sha1-16>.mp3`:
+  every word, letter name, "letter، word" phrase (ألف، أرنب / A, Apple), Word Builder letter tile,
+  color, sorting label, and numbers. 0–100 are whole clips; 101–1000 play **two clips with no gap**
+  (`MediaPlayer.setNextMediaPlayer`): "three hundred" + "forty-five", ثلاثمئة + وخمسة وأربعون.
+- Voices: **ar-SA-ZariyahNeural** (Fusha; no Arabic child voices exist) with full tashkeel in pause
+  form from `tools/audio/ar_tashkeel.json` (e.g. ذُرَة "corn", never ذَرَّة "atom"; numbers with correct
+  case endings: وَاحِدٌ وَعِشْرُون, اثْنَا عَشَر, ثَمَانِمِئَة), and **en-GB-MaisieNeural**, a child's voice,
+  British English as taught in Kuwaiti schools. Clips are trimmed, loudness-matched, mono 40 kbps MP3
+  (MP3 because it decodes on every Android phone, per the all-brands rule).
+- `SpeechCatalog` (core) lists every clip from the packs; **`SpeechCatalogTest` fails if any clip has no
+  file** (passing now) and writes the lists that `tools/audio/generate_audio.py` reads. The script
+  refuses to record Arabic without tashkeel. How to add content: `docs/content-packs.md` →
+  "Voice recordings".
+- `Speaker.kt`: `RecordedSpeaker` plays the clips; the phone's TTS (`TtsSpeaker`) is started only if a
+  text has no clip (logs `no recording for …`). Verified on the emulator (debug and minified release):
+  Letters (Arabic + English), Math 335 (two chained clips, one continuous audio track), Word Builder
+  tiles; no fallback, no errors.
+- `tools/audio/verify_audio.py` runs speech recognition (faster-whisper) over every clip and lists the
+  ones it hears differently (see 16.4).
+- Settings hint text updated: "recorded voices; the phone's voice only for a word with no recording".
+- APK size: 3.58 MB → **8.55 MB** (the recordings).
