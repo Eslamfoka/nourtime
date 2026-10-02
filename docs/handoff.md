@@ -1040,3 +1040,29 @@ Kept on purpose (tell me if you want them changed): آيس كريم (common in M
   ones it hears differently (see 16.4).
 - Settings hint text updated: "recorded voices; the phone's voice only for a word with no recording".
 - APK size: 3.58 MB → **8.55 MB** (the recordings).
+
+### 16.4 Voice check with speech recognition, and one open question for the owner
+- `verify_audio.py` (Whisper "small") over the clips: **Arabic: 495 of 498 heard as written.** The 3
+  flagged: ي / ياء heard as "yeah" (that is how ياء sounds, fine) and **وشاح** heard as "وشفل":
+  please listen to it (Letters & Words, clothes level).
+- **English (en-GB-MaisieNeural, the child voice): Whisper misheard many short words** (Dog → "Talk",
+  Bed → "That", Book → "Duck"). I checked that it isn't my processing: the **raw** Maisie audio is
+  misheard the same way. Whisper is known to be weak on children's voices, but I can't listen myself,
+  so **please listen to a few English words** in the app. If Maisie isn't clear enough, switch to
+  en-US-AnaNeural (the other child voice) or an adult voice: change `VOICES["en"]` in
+  `tools/audio/generate_audio.py`, run it with `--force`, rebuild.
+- `tools/audio/voice_samples.py` records the same words in 4 English and 4 Arabic voices into
+  `dist/voice-samples/` for picking by ear. **It didn't run tonight**: the Microsoft voice service
+  (speech.platform.bing.com) and GitHub kept timing out from this PC after ~16:30. Run it when online.
+- **APK for the Honor:** `dist/NourTime-2026-10-02-release.apk` (8.55 MB, minified, signed with the
+  same debug key CA:D6:D5:…, so `adb install -r` keeps the data). Not installed on the Honor (owner's
+  phone, he's asleep). Tested on the API 31 emulator (left running, release build installed).
+- Unit tests: **391 passing** (FitTextTest, SpeechCatalogTest including "every clip has its recording").
+- Pushed: `learning-hub` on GitHub. **Not merged** into master (owner's rule for this night).
+
+### 16.5 Resume here (2026-10-02)
+1. Owner installs `dist/NourTime-2026-10-02-release.apk` on the Honor and checks: long words on cards
+   (Letters & Words, Memory, Word Builder), the Arabic voice (Fusha, tashkeel), the English child
+   voice (16.4), وشاح, big numbers in Math (e.g. 335 = "ثلاثمئة وخمسة وثلاثون").
+2. If he wants another voice: 16.4. If he's happy: merge `learning-hub` → master, then the Parent App
+   integration (as planned in 15.15).

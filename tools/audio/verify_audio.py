@@ -47,7 +47,7 @@ def main() -> None:
     for lang in args.lang or ["ar", "en"]:
         for clip, entry in sorted(manifest.get(lang, {}).items()):
             path = ASSETS / lang / entry["file"]
-            segments, _ = model.transcribe(str(path), language=lang, beam_size=5, vad_filter=False,
+            segments, _ = model.transcribe(str(path), language=lang, beam_size=1, vad_filter=False,
                                            initial_prompt=None, condition_on_previous_text=False)
             heard = " ".join(s.text for s in segments).strip()
             want = norm(entry["voiced"].replace("...", " "), lang)
@@ -55,6 +55,9 @@ def main() -> None:
             score = SequenceMatcher(None, want.replace(" ", ""), got.replace(" ", "")).ratio()
             digits_ok = clip.lstrip("+").isdigit() and clip.lstrip("+") in got.split()
             ok = score >= args.threshold or digits_ok
+            checked = locals().get("checked", 0) + 1
+            if checked % 50 == 0:
+                print(f"  checked {checked}", flush=True)
             if not ok:
                 report.append({"lang": lang, "clip": clip, "voiced": entry["voiced"], "heard": heard, "score": round(score, 2)})
                 print(f"{lang} {clip!r}: wanted {entry['voiced']!r}, heard {heard!r} ({score:.2f})", flush=True)
