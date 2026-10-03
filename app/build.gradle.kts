@@ -116,3 +116,8 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
 }
+
+// SpeechCatalogTest reads the recorded clips from disk: rerun it when they change.
+tasks.withType<Test>().configureEach {
+    inputs.dir("src/main/assets/audio").withPropertyName("recordedAudio")
+}
