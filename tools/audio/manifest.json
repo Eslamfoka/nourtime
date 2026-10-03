@@ -1100,8 +1100,8 @@
   },
   "76": {
    "file": "d54ad009d179ae34.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d54ad009d179ae34.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سِتَّةٌ وَسَبْعُون"
   },
   "77": {
@@ -1112,8 +1112,8 @@
   },
   "78": {
    "file": "eb4ac3033e8ab359.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "eb4ac3033e8ab359.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَمَانِيَةٌ وَسَبْعُون"
   },
   "79": {
@@ -1654,20 +1654,20 @@
   },
   "ت": {
    "file": "ee60710e113fb41e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "e89244cd6326144b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تَاء"
   },
   "تاء": {
    "file": "e89244cd6326144b.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "e89244cd6326144b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تَاء"
   },
   "تاج": {
    "file": "e06b1d55e716b840.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "e06b1d55e716b840.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تَاج"
   },
   "تفاحة": {
@@ -1686,14 +1686,14 @@
   },
   "ث": {
    "file": "4fb6b52e45528a65.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "49bd71c96403d5ab.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَاء"
   },
   "ثاء": {
    "file": "49bd71c96403d5ab.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "49bd71c96403d5ab.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَاء"
   },
   "ثعبان": {
@@ -1808,14 +1808,14 @@
   },
   "ح": {
    "file": "84be511ca7485b74.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "98b09ba933225b45.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "حَاء"
   },
   "حاء": {
    "file": "98b09ba933225b45.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "98b09ba933225b45.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "حَاء"
   },
   "حاسوب": {
@@ -1834,8 +1834,8 @@
   },
   "حذاء": {
    "file": "bd60804234a266b1.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "bd60804234a266b1.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "حِذَاء"
   },
   "حصان": {
@@ -1888,14 +1888,14 @@
   },
   "خ": {
    "file": "3d20d6d44bb64c62.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "51b0dd3abeb1c172.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "خَاء"
   },
   "خاء": {
    "file": "51b0dd3abeb1c172.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "51b0dd3abeb1c172.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "خَاء"
   },
   "خبز": {
@@ -2278,20 +2278,20 @@
   },
   "ض": {
    "file": "e3303f1a82e8e5ca.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "644356b6a742bd96.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ضَاد"
   },
   "ضاد": {
    "file": "644356b6a742bd96.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "644356b6a742bd96.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ضَاد"
   },
   "ضفدع": {
    "file": "4e08c17f7325f83b.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4e08c17f7325f83b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ضِفْدَع"
   },
   "ط": {
@@ -2352,14 +2352,14 @@
   },
   "ظ": {
    "file": "8ba3ac486a1d7d86.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d4127a019f7ea4b8.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ظَاء"
   },
   "ظاء": {
    "file": "d4127a019f7ea4b8.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d4127a019f7ea4b8.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ظَاء"
   },
   "ظرف": {
@@ -2554,8 +2554,8 @@
   },
   "قطة": {
    "file": "c3c3a26e1f58ae8f.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "c3c3a26e1f58ae8f.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قِطَّة"
   },
   "قفازات": {
@@ -2590,8 +2590,8 @@
   },
   "قميص": {
    "file": "580ed9b1c0fdbcdb.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "580ed9b1c0fdbcdb.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قَمِيص"
   },
   "قوس قزح": {
@@ -2642,8 +2642,8 @@
   },
   "كعكة": {
    "file": "54c734044fc47850.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "54c734044fc47850.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "كَعْكَة"
   },
   "كلب": {
@@ -2966,14 +2966,14 @@
   },
   "و": {
    "file": "304117b6c7c96221.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "15c265f301037df3.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاو"
   },
   "واو": {
    "file": "15c265f301037df3.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "15c265f301037df3.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاو"
   },
   "وردة": {
@@ -3018,20 +3018,2842 @@
   },
   "ي": {
    "file": "f9025892e5db8194.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d6271f5f075055fd.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "يَاء"
   },
   "ياء": {
    "file": "d6271f5f075055fd.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d6271f5f075055fd.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "يَاء"
   },
   "يد": {
    "file": "abf2fb682d518fac.mp3",
    "imported": "abf2fb682d518fac.mp3",
    "voice": "elevenlabs-jessica",
+   "voiced": "يَد"
+  }
+ },
+ "ar-eg": {
+  "+1": {
+   "file": "acb72b94764e4802.mp3",
+   "imported": "acb72b94764e4802.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وواحد"
+  },
+  "+10": {
+   "file": "00741a03074f0be0.mp3",
+   "imported": "00741a03074f0be0.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وعشرة"
+  },
+  "+11": {
+   "file": "bcc9d740ac210d33.mp3",
+   "imported": "bcc9d740ac210d33.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وحداشر"
+  },
+  "+12": {
+   "file": "a3f0610b232acecf.mp3",
+   "imported": "a3f0610b232acecf.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واتناشر"
+  },
+  "+13": {
+   "file": "0da39007c191cee7.mp3",
+   "imported": "0da39007c191cee7.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتلاتاشر"
+  },
+  "+14": {
+   "file": "e3f6dc90a22e97b4.mp3",
+   "imported": "e3f6dc90a22e97b4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وأربعتاشر"
+  },
+  "+15": {
+   "file": "59ed917f95852556.mp3",
+   "imported": "59ed917f95852556.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وخمستاشر"
+  },
+  "+16": {
+   "file": "b2c192e1a1d9626b.mp3",
+   "imported": "b2c192e1a1d9626b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وستاشر"
+  },
+  "+17": {
+   "file": "4a9d00561e1794b1.mp3",
+   "imported": "4a9d00561e1794b1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وسبعتاشر"
+  },
+  "+18": {
+   "file": "52a70c0e5e35e029.mp3",
+   "imported": "52a70c0e5e35e029.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتمنتاشر"
+  },
+  "+19": {
+   "file": "5c26d9fb710edfe1.mp3",
+   "imported": "5c26d9fb710edfe1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتسعتاشر"
+  },
+  "+2": {
+   "file": "bf8bf1a08e9e7528.mp3",
+   "imported": "bf8bf1a08e9e7528.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واتنين"
+  },
+  "+20": {
+   "file": "030c4c3e4011b2bb.mp3",
+   "imported": "030c4c3e4011b2bb.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وعشرين"
+  },
+  "+21": {
+   "file": "0872294bb06f44b5.mp3",
+   "imported": "0872294bb06f44b5.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وواحد وعشرين"
+  },
+  "+22": {
+   "file": "aef7e5073ba932e3.mp3",
+   "imported": "aef7e5073ba932e3.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واتنين وعشرين"
+  },
+  "+23": {
+   "file": "00631fdc73e32ed7.mp3",
+   "imported": "00631fdc73e32ed7.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتلاتة وعشرين"
+  },
+  "+24": {
+   "file": "90c1903a25bb4434.mp3",
+   "imported": "90c1903a25bb4434.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وأربعة وعشرين"
+  },
+  "+25": {
+   "file": "c1d84174d54b7aa4.mp3",
+   "imported": "c1d84174d54b7aa4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وخمسة وعشرين"
+  },
+  "+26": {
+   "file": "31ab74a33a428aab.mp3",
+   "imported": "31ab74a33a428aab.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وستة وعشرين"
+  },
+  "+27": {
+   "file": "ab8a9fcd460458ea.mp3",
+   "imported": "ab8a9fcd460458ea.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وسبعة وعشرين"
+  },
+  "+28": {
+   "file": "561f9730bed0971d.mp3",
+   "imported": "561f9730bed0971d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتمانية وعشرين"
+  },
+  "+29": {
+   "file": "fc703a7f7b03ce5d.mp3",
+   "imported": "fc703a7f7b03ce5d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتسعة وعشرين"
+  },
+  "+3": {
+   "file": "803263c700250460.mp3",
+   "imported": "803263c700250460.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتلاتة"
+  },
+  "+30": {
+   "file": "ed33bab00c961d49.mp3",
+   "imported": "ed33bab00c961d49.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتلاتين"
+  },
+  "+31": {
+   "file": "373b133cc78120cb.mp3",
+   "imported": "373b133cc78120cb.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وواحد وتلاتين"
+  },
+  "+32": {
+   "file": "aa133d146132d7ec.mp3",
+   "imported": "aa133d146132d7ec.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واتنين وتلاتين"
+  },
+  "+33": {
+   "file": "d39b20d00d63f7d1.mp3",
+   "imported": "d39b20d00d63f7d1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتلاتة وتلاتين"
+  },
+  "+34": {
+   "file": "d1a48206bbbb7abd.mp3",
+   "imported": "d1a48206bbbb7abd.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وأربعة وتلاتين"
+  },
+  "+35": {
+   "file": "4a804d6982faaff5.mp3",
+   "imported": "4a804d6982faaff5.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وخمسة وتلاتين"
+  },
+  "+36": {
+   "file": "9a527add8072f845.mp3",
+   "imported": "9a527add8072f845.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وستة وتلاتين"
+  },
+  "+37": {
+   "file": "243739b216729a7f.mp3",
+   "imported": "243739b216729a7f.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وسبعة وتلاتين"
+  },
+  "+38": {
+   "file": "074b51040f152ef8.mp3",
+   "imported": "074b51040f152ef8.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتمانية وتلاتين"
+  },
+  "+39": {
+   "file": "4850d5bfd1c931dd.mp3",
+   "imported": "4850d5bfd1c931dd.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتسعة وتلاتين"
+  },
+  "+4": {
+   "file": "f098bc5e259ef48b.mp3",
+   "imported": "f098bc5e259ef48b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وأربعة"
+  },
+  "+40": {
+   "file": "5459b2fb7c0484ec.mp3",
+   "imported": "5459b2fb7c0484ec.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وأربعين"
+  },
+  "+41": {
+   "file": "251bd49e85a44286.mp3",
+   "imported": "251bd49e85a44286.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وواحد وأربعين"
+  },
+  "+42": {
+   "file": "689118cfb603244a.mp3",
+   "imported": "689118cfb603244a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واتنين وأربعين"
+  },
+  "+43": {
+   "file": "762fed4224072631.mp3",
+   "imported": "762fed4224072631.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتلاتة وأربعين"
+  },
+  "+44": {
+   "file": "b098894773c31fe6.mp3",
+   "imported": "b098894773c31fe6.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وأربعة وأربعين"
+  },
+  "+45": {
+   "file": "4c911dd7de5f44d3.mp3",
+   "imported": "4c911dd7de5f44d3.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وخمسة وأربعين"
+  },
+  "+46": {
+   "file": "2c81ede9c020f955.mp3",
+   "imported": "2c81ede9c020f955.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وستة وأربعين"
+  },
+  "+47": {
+   "file": "032428fe69620f51.mp3",
+   "imported": "032428fe69620f51.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وسبعة وأربعين"
+  },
+  "+48": {
+   "file": "f69cc5bf17c022cf.mp3",
+   "imported": "f69cc5bf17c022cf.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتمانية وأربعين"
+  },
+  "+49": {
+   "file": "28116a103f0311ea.mp3",
+   "imported": "28116a103f0311ea.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتسعة وأربعين"
+  },
+  "+5": {
+   "file": "af64fe7e1fcf0d5c.mp3",
+   "imported": "af64fe7e1fcf0d5c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وخمسة"
+  },
+  "+50": {
+   "file": "35baa06cfbad8016.mp3",
+   "imported": "35baa06cfbad8016.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وخمسين"
+  },
+  "+51": {
+   "file": "4731d059c6e32f00.mp3",
+   "imported": "4731d059c6e32f00.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وواحد وخمسين"
+  },
+  "+52": {
+   "file": "49e9e1ec9eacb225.mp3",
+   "imported": "49e9e1ec9eacb225.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واتنين وخمسين"
+  },
+  "+53": {
+   "file": "d1fd9e7cdae8c63a.mp3",
+   "imported": "d1fd9e7cdae8c63a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتلاتة وخمسين"
+  },
+  "+54": {
+   "file": "618c2aabe5ef95b4.mp3",
+   "imported": "618c2aabe5ef95b4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وأربعة وخمسين"
+  },
+  "+55": {
+   "file": "033de21c8f778fc7.mp3",
+   "imported": "033de21c8f778fc7.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وخمسة وخمسين"
+  },
+  "+56": {
+   "file": "941d1c352c839735.mp3",
+   "imported": "941d1c352c839735.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وستة وخمسين"
+  },
+  "+57": {
+   "file": "35f2b4aeb0bad1cf.mp3",
+   "imported": "35f2b4aeb0bad1cf.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وسبعة وخمسين"
+  },
+  "+58": {
+   "file": "bdbe83f7afc068b5.mp3",
+   "imported": "bdbe83f7afc068b5.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتمانية وخمسين"
+  },
+  "+59": {
+   "file": "7d562192bbcdcd94.mp3",
+   "imported": "7d562192bbcdcd94.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتسعة وخمسين"
+  },
+  "+6": {
+   "file": "7b6eb155cf8622f1.mp3",
+   "imported": "7b6eb155cf8622f1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وستة"
+  },
+  "+60": {
+   "file": "8dc649ce6680fea3.mp3",
+   "imported": "8dc649ce6680fea3.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وستين"
+  },
+  "+61": {
+   "file": "cbc016fa8baf1e62.mp3",
+   "imported": "cbc016fa8baf1e62.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وواحد وستين"
+  },
+  "+62": {
+   "file": "a7649b7511a2d150.mp3",
+   "imported": "a7649b7511a2d150.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واتنين وستين"
+  },
+  "+63": {
+   "file": "a13ec413d584c209.mp3",
+   "imported": "a13ec413d584c209.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتلاتة وستين"
+  },
+  "+64": {
+   "file": "ee836d5dd24126ac.mp3",
+   "imported": "ee836d5dd24126ac.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وأربعة وستين"
+  },
+  "+65": {
+   "file": "ecb988785b20eedb.mp3",
+   "imported": "ecb988785b20eedb.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وخمسة وستين"
+  },
+  "+66": {
+   "file": "60228e881f8829c6.mp3",
+   "imported": "60228e881f8829c6.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وستة وستين"
+  },
+  "+67": {
+   "file": "039b157c892c1744.mp3",
+   "imported": "039b157c892c1744.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وسبعة وستين"
+  },
+  "+68": {
+   "file": "193af4d778c46a24.mp3",
+   "imported": "193af4d778c46a24.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتمانية وستين"
+  },
+  "+69": {
+   "file": "75002c832ef33913.mp3",
+   "imported": "75002c832ef33913.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتسعة وستين"
+  },
+  "+7": {
+   "file": "f148dee743a0f8dd.mp3",
+   "imported": "f148dee743a0f8dd.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وسبعة"
+  },
+  "+70": {
+   "file": "c0d4724f3d42210b.mp3",
+   "imported": "c0d4724f3d42210b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وسبعين"
+  },
+  "+71": {
+   "file": "a828da29f565e231.mp3",
+   "imported": "a828da29f565e231.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وواحد وسبعين"
+  },
+  "+72": {
+   "file": "fc22d75007bfebef.mp3",
+   "imported": "fc22d75007bfebef.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واتنين وسبعين"
+  },
+  "+73": {
+   "file": "486d5bc1af239a09.mp3",
+   "imported": "486d5bc1af239a09.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتلاتة وسبعين"
+  },
+  "+74": {
+   "file": "57ee151eb4539434.mp3",
+   "imported": "57ee151eb4539434.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وأربعة وسبعين"
+  },
+  "+75": {
+   "file": "7d613e4de5bde873.mp3",
+   "imported": "7d613e4de5bde873.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وخمسة وسبعين"
+  },
+  "+76": {
+   "file": "597390b3d5a70d0f.mp3",
+   "imported": "597390b3d5a70d0f.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وستة وسبعين"
+  },
+  "+77": {
+   "file": "181138bbb6c4bc7c.mp3",
+   "imported": "181138bbb6c4bc7c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وسبعة وسبعين"
+  },
+  "+78": {
+   "file": "64a071e5e477d49e.mp3",
+   "imported": "64a071e5e477d49e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتمانية وسبعين"
+  },
+  "+79": {
+   "file": "efda496a45da8830.mp3",
+   "imported": "efda496a45da8830.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتسعة وسبعين"
+  },
+  "+8": {
+   "file": "1d0e634d769ed03d.mp3",
+   "imported": "1d0e634d769ed03d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتمانية"
+  },
+  "+80": {
+   "file": "828c28775a944cd4.mp3",
+   "imported": "828c28775a944cd4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتمانين"
+  },
+  "+81": {
+   "file": "613d8e9527746742.mp3",
+   "imported": "613d8e9527746742.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وواحد وتمانين"
+  },
+  "+82": {
+   "file": "5ffb09c7c9029837.mp3",
+   "imported": "5ffb09c7c9029837.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واتنين وتمانين"
+  },
+  "+83": {
+   "file": "d6ff9086c7b218e4.mp3",
+   "imported": "d6ff9086c7b218e4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتلاتة وتمانين"
+  },
+  "+84": {
+   "file": "1136cd18462794f9.mp3",
+   "imported": "1136cd18462794f9.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وأربعة وتمانين"
+  },
+  "+85": {
+   "file": "7d50fe98096a57e8.mp3",
+   "imported": "7d50fe98096a57e8.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وخمسة وتمانين"
+  },
+  "+86": {
+   "file": "edbaaa7caed44f7c.mp3",
+   "imported": "edbaaa7caed44f7c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وستة وتمانين"
+  },
+  "+87": {
+   "file": "87ef2c346e88eca7.mp3",
+   "imported": "87ef2c346e88eca7.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وسبعة وتمانين"
+  },
+  "+88": {
+   "file": "27b7a54cea1d3202.mp3",
+   "imported": "27b7a54cea1d3202.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتمانية وتمانين"
+  },
+  "+89": {
+   "file": "8821ec6b2a23ff6b.mp3",
+   "imported": "8821ec6b2a23ff6b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتسعة وتمانين"
+  },
+  "+9": {
+   "file": "6d7aeffa7dc16a9d.mp3",
+   "imported": "6d7aeffa7dc16a9d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتسعة"
+  },
+  "+90": {
+   "file": "187d7e52afd20702.mp3",
+   "imported": "187d7e52afd20702.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتسعين"
+  },
+  "+91": {
+   "file": "b733cb456df4cf61.mp3",
+   "imported": "b733cb456df4cf61.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وواحد وتسعين"
+  },
+  "+92": {
+   "file": "607ff57805989d72.mp3",
+   "imported": "607ff57805989d72.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واتنين وتسعين"
+  },
+  "+93": {
+   "file": "52fa5d3e22c3326d.mp3",
+   "imported": "52fa5d3e22c3326d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتلاتة وتسعين"
+  },
+  "+94": {
+   "file": "622dae76a54c1ffe.mp3",
+   "imported": "622dae76a54c1ffe.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وأربعة وتسعين"
+  },
+  "+95": {
+   "file": "194e4f7b6f28f7eb.mp3",
+   "imported": "194e4f7b6f28f7eb.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وخمسة وتسعين"
+  },
+  "+96": {
+   "file": "bcd7edc059554006.mp3",
+   "imported": "bcd7edc059554006.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وستة وتسعين"
+  },
+  "+97": {
+   "file": "4fdb8829f818a702.mp3",
+   "imported": "4fdb8829f818a702.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وسبعة وتسعين"
+  },
+  "+98": {
+   "file": "7828f0b6938cd151.mp3",
+   "imported": "7828f0b6938cd151.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتمانية وتسعين"
+  },
+  "+99": {
+   "file": "8dd05b6f8ad842be.mp3",
+   "imported": "8dd05b6f8ad842be.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وتسعة وتسعين"
+  },
+  "0": {
+   "file": "b6589fc6ab0dc82c.mp3",
+   "imported": "b6589fc6ab0dc82c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "صفر"
+  },
+  "1": {
+   "file": "356a192b7913b04c.mp3",
+   "imported": "356a192b7913b04c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واحد"
+  },
+  "10": {
+   "file": "b1d5781111d84f7b.mp3",
+   "imported": "b1d5781111d84f7b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "عشرة"
+  },
+  "100": {
+   "file": "310b86e0b62b8285.mp3",
+   "imported": "310b86e0b62b8285.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مية"
+  },
+  "1000": {
+   "file": "e3cbba8883fe746c.mp3",
+   "imported": "e3cbba8883fe746c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ألف"
+  },
+  "11": {
+   "file": "17ba0791499db908.mp3",
+   "imported": "17ba0791499db908.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حداشر"
+  },
+  "12": {
+   "file": "7b52009b64fd0a2a.mp3",
+   "imported": "7b52009b64fd0a2a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "اتناشر"
+  },
+  "13": {
+   "file": "bd307a3ec329e10a.mp3",
+   "imported": "bd307a3ec329e10a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تلاتاشر"
+  },
+  "14": {
+   "file": "fa35e192121eabf3.mp3",
+   "imported": "fa35e192121eabf3.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أربعتاشر"
+  },
+  "15": {
+   "file": "f1abd670358e036c.mp3",
+   "imported": "f1abd670358e036c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خمستاشر"
+  },
+  "16": {
+   "file": "1574bddb75c78a6f.mp3",
+   "imported": "1574bddb75c78a6f.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ستاشر"
+  },
+  "17": {
+   "file": "0716d9708d321ffb.mp3",
+   "imported": "0716d9708d321ffb.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سبعتاشر"
+  },
+  "18": {
+   "file": "9e6a55b6b4563e65.mp3",
+   "imported": "9e6a55b6b4563e65.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تمنتاشر"
+  },
+  "19": {
+   "file": "b3f0c7f6bb763af1.mp3",
+   "imported": "b3f0c7f6bb763af1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تسعتاشر"
+  },
+  "2": {
+   "file": "da4b9237bacccdf1.mp3",
+   "imported": "da4b9237bacccdf1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "اتنين"
+  },
+  "20": {
+   "file": "91032ad7bbcb6cf7.mp3",
+   "imported": "91032ad7bbcb6cf7.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "عشرين"
+  },
+  "200": {
+   "file": "9f9af029585ba014.mp3",
+   "imported": "9f9af029585ba014.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ميتين"
+  },
+  "21": {
+   "file": "472b07b9fcf2c245.mp3",
+   "imported": "472b07b9fcf2c245.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واحد وعشرين"
+  },
+  "22": {
+   "file": "12c6fc06c99a4623.mp3",
+   "imported": "12c6fc06c99a4623.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "اتنين وعشرين"
+  },
+  "23": {
+   "file": "d435a6cdd786300d.mp3",
+   "imported": "d435a6cdd786300d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تلاتة وعشرين"
+  },
+  "24": {
+   "file": "4d134bc072212ace.mp3",
+   "imported": "4d134bc072212ace.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أربعة وعشرين"
+  },
+  "25": {
+   "file": "f6e1126cedebf23e.mp3",
+   "imported": "f6e1126cedebf23e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خمسة وعشرين"
+  },
+  "26": {
+   "file": "887309d048beef83.mp3",
+   "imported": "887309d048beef83.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ستة وعشرين"
+  },
+  "27": {
+   "file": "bc33ea4e26e5e1af.mp3",
+   "imported": "bc33ea4e26e5e1af.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سبعة وعشرين"
+  },
+  "28": {
+   "file": "0a57cb53ba59c46f.mp3",
+   "imported": "0a57cb53ba59c46f.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تمانية وعشرين"
+  },
+  "29": {
+   "file": "7719a1c782a1ba91.mp3",
+   "imported": "7719a1c782a1ba91.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تسعة وعشرين"
+  },
+  "3": {
+   "file": "77de68daecd823ba.mp3",
+   "imported": "77de68daecd823ba.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تلاتة"
+  },
+  "30": {
+   "file": "22d200f8670dbdb3.mp3",
+   "imported": "22d200f8670dbdb3.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تلاتين"
+  },
+  "300": {
+   "file": "e26973e6ee8ab9cd.mp3",
+   "imported": "e26973e6ee8ab9cd.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تلتمية"
+  },
+  "31": {
+   "file": "632667547e7cd3e0.mp3",
+   "imported": "632667547e7cd3e0.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واحد وتلاتين"
+  },
+  "32": {
+   "file": "cb4e5208b4cd8726.mp3",
+   "imported": "cb4e5208b4cd8726.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "اتنين وتلاتين"
+  },
+  "33": {
+   "file": "b6692ea5df920cad.mp3",
+   "imported": "b6692ea5df920cad.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تلاتة وتلاتين"
+  },
+  "34": {
+   "file": "f1f836cb4ea6efb2.mp3",
+   "imported": "f1f836cb4ea6efb2.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أربعة وتلاتين"
+  },
+  "35": {
+   "file": "972a67c48192728a.mp3",
+   "imported": "972a67c48192728a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خمسة وتلاتين"
+  },
+  "36": {
+   "file": "fc074d501302eb2b.mp3",
+   "imported": "fc074d501302eb2b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ستة وتلاتين"
+  },
+  "37": {
+   "file": "cb7a1d775e800fd1.mp3",
+   "imported": "cb7a1d775e800fd1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سبعة وتلاتين"
+  },
+  "38": {
+   "file": "5b384ce32d8cdef0.mp3",
+   "imported": "5b384ce32d8cdef0.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تمانية وتلاتين"
+  },
+  "39": {
+   "file": "ca3512f4dfa95a03.mp3",
+   "imported": "ca3512f4dfa95a03.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تسعة وتلاتين"
+  },
+  "4": {
+   "file": "1b6453892473a467.mp3",
+   "imported": "1b6453892473a467.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أربعة"
+  },
+  "40": {
+   "file": "af3e133428b9e25c.mp3",
+   "imported": "af3e133428b9e25c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أربعين"
+  },
+  "400": {
+   "file": "ab7f7b955330dc8d.mp3",
+   "imported": "ab7f7b955330dc8d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ربعمية"
+  },
+  "41": {
+   "file": "761f22b2c1593d0b.mp3",
+   "imported": "761f22b2c1593d0b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واحد وأربعين"
+  },
+  "42": {
+   "file": "92cfceb39d57d914.mp3",
+   "imported": "92cfceb39d57d914.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "اتنين وأربعين"
+  },
+  "43": {
+   "file": "0286dd552c9bea9a.mp3",
+   "imported": "0286dd552c9bea9a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تلاتة وأربعين"
+  },
+  "44": {
+   "file": "98fbc42faedc0249.mp3",
+   "imported": "98fbc42faedc0249.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أربعة وأربعين"
+  },
+  "45": {
+   "file": "fb644351560d8296.mp3",
+   "imported": "fb644351560d8296.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خمسة وأربعين"
+  },
+  "46": {
+   "file": "fe2ef495a1152561.mp3",
+   "imported": "fe2ef495a1152561.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ستة وأربعين"
+  },
+  "47": {
+   "file": "827bfc458708f0b4.mp3",
+   "imported": "827bfc458708f0b4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سبعة وأربعين"
+  },
+  "48": {
+   "file": "64e095fe763fc624.mp3",
+   "imported": "64e095fe763fc624.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تمانية وأربعين"
+  },
+  "49": {
+   "file": "2e01e17467891f7c.mp3",
+   "imported": "2e01e17467891f7c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تسعة وأربعين"
+  },
+  "5": {
+   "file": "ac3478d69a3c81fa.mp3",
+   "imported": "ac3478d69a3c81fa.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خمسة"
+  },
+  "50": {
+   "file": "e1822db470e60d09.mp3",
+   "imported": "e1822db470e60d09.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خمسين"
+  },
+  "500": {
+   "file": "f83a383c0fa81f29.mp3",
+   "imported": "f83a383c0fa81f29.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خمسمية"
+  },
+  "51": {
+   "file": "b7eb6c689c037217.mp3",
+   "imported": "b7eb6c689c037217.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واحد وخمسين"
+  },
+  "52": {
+   "file": "a9334987ece78b6f.mp3",
+   "imported": "a9334987ece78b6f.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "اتنين وخمسين"
+  },
+  "53": {
+   "file": "c5b76da3e608d34e.mp3",
+   "imported": "c5b76da3e608d34e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تلاتة وخمسين"
+  },
+  "54": {
+   "file": "80e28a51cbc26fa4.mp3",
+   "imported": "80e28a51cbc26fa4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أربعة وخمسين"
+  },
+  "55": {
+   "file": "8effee409c625e1a.mp3",
+   "imported": "8effee409c625e1a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خمسة وخمسين"
+  },
+  "56": {
+   "file": "54ceb91256e8190e.mp3",
+   "imported": "54ceb91256e8190e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ستة وخمسين"
+  },
+  "57": {
+   "file": "9109c85a45b703f8.mp3",
+   "imported": "9109c85a45b703f8.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سبعة وخمسين"
+  },
+  "58": {
+   "file": "667be543b02294b7.mp3",
+   "imported": "667be543b02294b7.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تمانية وخمسين"
+  },
+  "59": {
+   "file": "5a5b0f9b7d3f8fc8.mp3",
+   "imported": "5a5b0f9b7d3f8fc8.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تسعة وخمسين"
+  },
+  "6": {
+   "file": "c1dfd96eea8cc2b6.mp3",
+   "imported": "c1dfd96eea8cc2b6.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ستة"
+  },
+  "60": {
+   "file": "e6c3dd630428fd54.mp3",
+   "imported": "e6c3dd630428fd54.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ستين"
+  },
+  "600": {
+   "file": "15aa0c7e8fbd2923.mp3",
+   "imported": "15aa0c7e8fbd2923.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ستمية"
+  },
+  "61": {
+   "file": "6c1e671f9af5b46d.mp3",
+   "imported": "6c1e671f9af5b46d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واحد وستين"
+  },
+  "62": {
+   "file": "511a418e72591eb7.mp3",
+   "imported": "511a418e72591eb7.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "اتنين وستين"
+  },
+  "63": {
+   "file": "a17554a0d2b15a66.mp3",
+   "imported": "a17554a0d2b15a66.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تلاتة وستين"
+  },
+  "64": {
+   "file": "c66c65175fecc310.mp3",
+   "imported": "c66c65175fecc310.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أربعة وستين"
+  },
+  "65": {
+   "file": "2a459380709e2fe4.mp3",
+   "imported": "2a459380709e2fe4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خمسة وستين"
+  },
+  "66": {
+   "file": "59129aacfb6cebbe.mp3",
+   "imported": "59129aacfb6cebbe.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ستة وستين"
+  },
+  "67": {
+   "file": "4d89d294cd4ca9f2.mp3",
+   "imported": "4d89d294cd4ca9f2.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سبعة وستين"
+  },
+  "68": {
+   "file": "b4c96d80854dd27e.mp3",
+   "imported": "b4c96d80854dd27e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تمانية وستين"
+  },
+  "69": {
+   "file": "a72b20062ec2c47a.mp3",
+   "imported": "a72b20062ec2c47a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تسعة وستين"
+  },
+  "7": {
+   "file": "902ba3cda1883801.mp3",
+   "imported": "902ba3cda1883801.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سبعة"
+  },
+  "70": {
+   "file": "b7103ca278a75cad.mp3",
+   "imported": "b7103ca278a75cad.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سبعين"
+  },
+  "700": {
+   "file": "d8e4bbea3af2e486.mp3",
+   "imported": "d8e4bbea3af2e486.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سبعمية"
+  },
+  "71": {
+   "file": "d02560dd9d7db446.mp3",
+   "imported": "d02560dd9d7db446.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واحد وسبعين"
+  },
+  "72": {
+   "file": "c097638f92de80ba.mp3",
+   "imported": "c097638f92de80ba.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "اتنين وسبعين"
+  },
+  "73": {
+   "file": "35e995c107a71cae.mp3",
+   "imported": "35e995c107a71cae.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تلاتة وسبعين"
+  },
+  "74": {
+   "file": "1f1362ea41d1bc65.mp3",
+   "imported": "1f1362ea41d1bc65.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أربعة وسبعين"
+  },
+  "75": {
+   "file": "450ddec8dd206c2e.mp3",
+   "imported": "450ddec8dd206c2e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خمسة وسبعين"
+  },
+  "76": {
+   "file": "d54ad009d179ae34.mp3",
+   "imported": "d54ad009d179ae34.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ستة وسبعين"
+  },
+  "77": {
+   "file": "d321d6f7ccf98b51.mp3",
+   "imported": "d321d6f7ccf98b51.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سبعة وسبعين"
+  },
+  "78": {
+   "file": "eb4ac3033e8ab359.mp3",
+   "imported": "eb4ac3033e8ab359.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تمانية وسبعين"
+  },
+  "79": {
+   "file": "b74f5ee9461495ba.mp3",
+   "imported": "b74f5ee9461495ba.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تسعة وسبعين"
+  },
+  "8": {
+   "file": "fe5dbbcea5ce7e29.mp3",
+   "imported": "fe5dbbcea5ce7e29.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تمانية"
+  },
+  "80": {
+   "file": "b888b29826bb53dc.mp3",
+   "imported": "b888b29826bb53dc.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تمانين"
+  },
+  "800": {
+   "file": "290a52e4dd6282ca.mp3",
+   "imported": "290a52e4dd6282ca.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تمنمية"
+  },
+  "81": {
+   "file": "1d513c0bcbe33b2e.mp3",
+   "imported": "1d513c0bcbe33b2e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واحد وتمانين"
+  },
+  "82": {
+   "file": "76546f9a641ede2b.mp3",
+   "imported": "76546f9a641ede2b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "اتنين وتمانين"
+  },
+  "83": {
+   "file": "7d7116e23efef729.mp3",
+   "imported": "7d7116e23efef729.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تلاتة وتمانين"
+  },
+  "84": {
+   "file": "be461a0cd1fda052.mp3",
+   "imported": "be461a0cd1fda052.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أربعة وتمانين"
+  },
+  "85": {
+   "file": "1352246e33277e9d.mp3",
+   "imported": "1352246e33277e9d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خمسة وتمانين"
+  },
+  "86": {
+   "file": "3c26dffc8a2e8804.mp3",
+   "imported": "3c26dffc8a2e8804.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ستة وتمانين"
+  },
+  "87": {
+   "file": "e62d7f1eb43d87c2.mp3",
+   "imported": "e62d7f1eb43d87c2.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سبعة وتمانين"
+  },
+  "88": {
+   "file": "b37f6ddcefad7e86.mp3",
+   "imported": "b37f6ddcefad7e86.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تمانية وتمانين"
+  },
+  "89": {
+   "file": "16b06bd9b738835e.mp3",
+   "imported": "16b06bd9b738835e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تسعة وتمانين"
+  },
+  "9": {
+   "file": "0ade7c2cf97f75d0.mp3",
+   "imported": "0ade7c2cf97f75d0.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تسعة"
+  },
+  "90": {
+   "file": "2d0c8af807ef45ac.mp3",
+   "imported": "2d0c8af807ef45ac.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تسعين"
+  },
+  "900": {
+   "file": "28cc2209b234d918.mp3",
+   "imported": "28cc2209b234d918.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تسعمية"
+  },
+  "91": {
+   "file": "4cd66dfabbd964f8.mp3",
+   "imported": "4cd66dfabbd964f8.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "واحد وتسعين"
+  },
+  "92": {
+   "file": "8ee51caaa2c2f4ee.mp3",
+   "imported": "8ee51caaa2c2f4ee.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "اتنين وتسعين"
+  },
+  "93": {
+   "file": "08a35293e09f5084.mp3",
+   "imported": "08a35293e09f5084.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تلاتة وتسعين"
+  },
+  "94": {
+   "file": "215bb47da8fac334.mp3",
+   "imported": "215bb47da8fac334.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أربعة وتسعين"
+  },
+  "95": {
+   "file": "8e63fd3e77796b10.mp3",
+   "imported": "8e63fd3e77796b10.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خمسة وتسعين"
+  },
+  "96": {
+   "file": "6fb84aed32facd12.mp3",
+   "imported": "6fb84aed32facd12.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ستة وتسعين"
+  },
+  "97": {
+   "file": "812ed4562d321136.mp3",
+   "imported": "812ed4562d321136.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سبعة وتسعين"
+  },
+  "98": {
+   "file": "31bd9b9f5f7b338e.mp3",
+   "imported": "31bd9b9f5f7b338e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تمانية وتسعين"
+  },
+  "99": {
+   "file": "9a79be611e0267e1.mp3",
+   "imported": "9a79be611e0267e1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تسعة وتسعين"
+  },
+  "ء": {
+   "file": "b50383c6d54cbb5e.mp3",
+   "imported": "b50383c6d54cbb5e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "هَمْزَة"
+  },
+  "آ": {
+   "file": "f2f2633911d73e9f.mp3",
+   "imported": "f2f2633911d73e9f.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَلِفٌ مَمْدُودَة"
+  },
+  "آيس كريم": {
+   "file": "06ca64749dc52769.mp3",
+   "imported": "06ca64749dc52769.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "آيِس كْرِيم"
+  },
+  "أ": {
+   "file": "5326c0369eabf67c.mp3",
+   "imported": "7299c27f25c7c458.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَلِف"
+  },
+  "أبيض": {
+   "file": "ec42045b5b90b38a.mp3",
+   "imported": "ec42045b5b90b38a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَبْيَض"
+  },
+  "أحجية": {
+   "file": "fbc50bcc855563aa.mp3",
+   "imported": "fbc50bcc855563aa.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أُحْجِيَّة"
+  },
+  "أحمر": {
+   "file": "96cab1ba1b55e339.mp3",
+   "imported": "96cab1ba1b55e339.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَحْمَر"
+  },
+  "أخضر": {
+   "file": "a6b0763996ccb785.mp3",
+   "imported": "a6b0763996ccb785.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَخْضَر"
+  },
+  "أخطبوط": {
+   "file": "0978a0b832073e96.mp3",
+   "imported": "0978a0b832073e96.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أُخْطُبُوط"
+  },
+  "أذن": {
+   "file": "8fdd59ce548a258a.mp3",
+   "imported": "8fdd59ce548a258a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أُذُن"
+  },
+  "أرز": {
+   "file": "0f428350baf7f88a.mp3",
+   "imported": "0f428350baf7f88a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَرُزّ"
+  },
+  "أرنب": {
+   "file": "1ea41bc613eb437d.mp3",
+   "imported": "1ea41bc613eb437d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَرْنَب"
+  },
+  "أزرق": {
+   "file": "b2d33354b53ca2ef.mp3",
+   "imported": "b2d33354b53ca2ef.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَزْرَق"
+  },
+  "أسد": {
+   "file": "aff2048a7ce0b2ee.mp3",
+   "imported": "aff2048a7ce0b2ee.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَسَد"
+  },
+  "أسود": {
+   "file": "e4d87ab93f8d4b26.mp3",
+   "imported": "e4d87ab93f8d4b26.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَسْوَد"
+  },
+  "أشخاص": {
+   "file": "1f3000914d545c4f.mp3",
+   "imported": "1f3000914d545c4f.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَشْخَاص"
+  },
+  "أشياء": {
+   "file": "5d78b6da4cb60056.mp3",
+   "imported": "5d78b6da4cb60056.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَشْيَاء"
+  },
+  "أصفر": {
+   "file": "62b07216189ac441.mp3",
+   "imported": "62b07216189ac441.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَصْفَر"
+  },
+  "أفوكادو": {
+   "file": "1dc156403183435e.mp3",
+   "imported": "1dc156403183435e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَفُوكَادُو"
+  },
+  "ألعاب": {
+   "file": "7b85642532832c5b.mp3",
+   "imported": "7b85642532832c5b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَلْعَاب"
+  },
+  "ألف": {
+   "file": "7299c27f25c7c458.mp3",
+   "imported": "7299c27f25c7c458.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَلِف"
+  },
+  "أماكن": {
+   "file": "671ef8fce0f8e716.mp3",
+   "imported": "671ef8fce0f8e716.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَمَاكِن"
+  },
+  "أناناس": {
+   "file": "348658a23541402d.mp3",
+   "imported": "348658a23541402d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَنَانَاس"
+  },
+  "أنف": {
+   "file": "12e443897fb1f7c1.mp3",
+   "imported": "12e443897fb1f7c1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَنْف"
+  },
+  "أيل": {
+   "file": "e6f7442eced92076.mp3",
+   "imported": "e6f7442eced92076.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَيِّل"
+  },
+  "إ": {
+   "file": "f2e556760ad98f2e.mp3",
+   "imported": "7299c27f25c7c458.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَلِف"
+  },
+  "ئ": {
+   "file": "46e5a9a911202a8b.mp3",
+   "imported": "46e5a9a911202a8b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "هَمْزَةٌ عَلَى نَبْرَة"
+  },
+  "ا": {
+   "file": "4ceb0e7d10b11e98.mp3",
+   "imported": "7299c27f25c7c458.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَلِف"
+  },
+  "الأرض": {
+   "file": "1c7c6015732713f7.mp3",
+   "imported": "1c7c6015732713f7.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "الْأَرْض"
+  },
+  "الجسم": {
+   "file": "624a3a353e2bad62.mp3",
+   "imported": "624a3a353e2bad62.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "الْجِسْم"
+  },
+  "ب": {
+   "file": "8b5123a22cbcf54a.mp3",
+   "imported": "1c1e43d61d9bb3a0.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَاء"
+  },
+  "باء": {
+   "file": "1c1e43d61d9bb3a0.mp3",
+   "imported": "1c1e43d61d9bb3a0.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَاء"
+  },
+  "باب": {
+   "file": "3b25b51a9c10ec98.mp3",
+   "imported": "3b25b51a9c10ec98.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَاب"
+  },
+  "بالون": {
+   "file": "3fb5c78456f35a78.mp3",
+   "imported": "3fb5c78456f35a78.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَالُون"
+  },
+  "باندا": {
+   "file": "9466a579bd380f81.mp3",
+   "imported": "9466a579bd380f81.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَانْدَا"
+  },
+  "ببغاء": {
+   "file": "ca4f00f247e61160.mp3",
+   "imported": "ca4f00f247e61160.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَبَّغَاء"
+  },
+  "برتقالة": {
+   "file": "01c6ac7f81c3127d.mp3",
+   "imported": "01c6ac7f81c3127d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بُرْتُقَالَة"
+  },
+  "برتقالي": {
+   "file": "cb52310b53049c89.mp3",
+   "imported": "cb52310b53049c89.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بُرْتُقَالِيّ"
+  },
+  "برق": {
+   "file": "8ea60afd03cef2aa.mp3",
+   "imported": "8ea60afd03cef2aa.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَرْق"
+  },
+  "بركان": {
+   "file": "76cd0737b7ec1a19.mp3",
+   "imported": "76cd0737b7ec1a19.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بُرْكَان"
+  },
+  "بسكويت": {
+   "file": "285d9275e10bb205.mp3",
+   "imported": "285d9275e10bb205.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَسْكَوِيت"
+  },
+  "بطاطا": {
+   "file": "fa9340fafe5a1752.mp3",
+   "imported": "fa9340fafe5a1752.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَطَاطَا"
+  },
+  "بطة": {
+   "file": "71e9f446b2c5628b.mp3",
+   "imported": "71e9f446b2c5628b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَطَّة"
+  },
+  "بطريق": {
+   "file": "f17b099aa18d54a9.mp3",
+   "imported": "f17b099aa18d54a9.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بِطْرِيق"
+  },
+  "بطيخ": {
+   "file": "81deadd5eebfd025.mp3",
+   "imported": "81deadd5eebfd025.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بِطِّيخ"
+  },
+  "بقرة": {
+   "file": "a7d17cf001e60eba.mp3",
+   "imported": "a7d17cf001e60eba.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَقَرَة"
+  },
+  "بنت": {
+   "file": "2bff8fd69d3fbe38.mp3",
+   "imported": "2bff8fd69d3fbe38.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بِنْت"
+  },
+  "بنطال": {
+   "file": "374481b504f19b48.mp3",
+   "imported": "374481b504f19b48.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بِنْطَال"
+  },
+  "بنفسجي": {
+   "file": "013ff80b0a988108.mp3",
+   "imported": "013ff80b0a988108.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَنَفْسَجِيّ"
+  },
+  "بني": {
+   "file": "cd8d5b737db47a25.mp3",
+   "imported": "cd8d5b737db47a25.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بُنِّيّ"
+  },
+  "بومة": {
+   "file": "1d828561cd80f64e.mp3",
+   "imported": "1d828561cd80f64e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بُومَة"
+  },
+  "بيت": {
+   "file": "2619065a2ed34e93.mp3",
+   "imported": "2619065a2ed34e93.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَيْت"
+  },
+  "بيتزا": {
+   "file": "9838077b6290c217.mp3",
+   "imported": "9838077b6290c217.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بِيتْزَا"
+  },
+  "بيضة": {
+   "file": "5e17869b800f2915.mp3",
+   "imported": "5e17869b800f2915.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "بَيْضَة"
+  },
+  "ة": {
+   "file": "5c817779b3b52a25.mp3",
+   "imported": "5c817779b3b52a25.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تَاءٌ مَرْبُوطَة"
+  },
+  "ت": {
+   "file": "ee60710e113fb41e.mp3",
+   "imported": "e89244cd6326144b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تَاء"
+  },
+  "تاء": {
+   "file": "e89244cd6326144b.mp3",
+   "imported": "e89244cd6326144b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تَاء"
+  },
+  "تاج": {
+   "file": "e06b1d55e716b840.mp3",
+   "imported": "e06b1d55e716b840.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تَاج"
+  },
+  "تفاحة": {
+   "file": "fd690b206b7b0c5a.mp3",
+   "imported": "fd690b206b7b0c5a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تُفَّاحَة"
+  },
+  "تمساح": {
+   "file": "89d506f93144e942.mp3",
+   "imported": "89d506f93144e942.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "تِمْسَاح"
+  },
+  "ث": {
+   "file": "4fb6b52e45528a65.mp3",
+   "imported": "49bd71c96403d5ab.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ثَاء"
+  },
+  "ثاء": {
+   "file": "49bd71c96403d5ab.mp3",
+   "imported": "49bd71c96403d5ab.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ثَاء"
+  },
+  "ثعبان": {
+   "file": "b04130ebef1a999d.mp3",
+   "imported": "b04130ebef1a999d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ثُعْبَان"
+  },
+  "ثعلب": {
+   "file": "3174cb4bcc30fb28.mp3",
+   "imported": "3174cb4bcc30fb28.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ثَعْلَب"
+  },
+  "ثلج": {
+   "file": "9b7b0aed4fe110fe.mp3",
+   "imported": "9b7b0aed4fe110fe.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ثَلْج"
+  },
+  "ج": {
+   "file": "e2f45e1615914e3f.mp3",
+   "imported": "c38c46a59a35e336.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جِيم"
+  },
+  "جبل": {
+   "file": "0219262d536d70be.mp3",
+   "imported": "0219262d536d70be.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جَبَل"
+  },
+  "جبن": {
+   "file": "c19ff58e8d2bab2e.mp3",
+   "imported": "c19ff58e8d2bab2e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جُبْن"
+  },
+  "جد": {
+   "file": "9fb88aa840790dc0.mp3",
+   "imported": "9fb88aa840790dc0.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جَدّ"
+  },
+  "جدة": {
+   "file": "de8dd0bdf7949f3d.mp3",
+   "imported": "de8dd0bdf7949f3d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جَدَّة"
+  },
+  "جرار": {
+   "file": "df2481ca5b00b5e7.mp3",
+   "imported": "df2481ca5b00b5e7.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جَرَّار"
+  },
+  "جرس": {
+   "file": "00ae70773090c103.mp3",
+   "imported": "00ae70773090c103.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جَرَس"
+  },
+  "جزر": {
+   "file": "e7761d78b2229f19.mp3",
+   "imported": "e7761d78b2229f19.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جَزَر"
+  },
+  "جزيرة": {
+   "file": "830534953dc2cddc.mp3",
+   "imported": "830534953dc2cddc.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جَزِيرَة"
+  },
+  "جمل": {
+   "file": "678574ea77d66170.mp3",
+   "imported": "678574ea77d66170.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جَمَل"
+  },
+  "جوارب": {
+   "file": "e5f9777a36fcb212.mp3",
+   "imported": "e5f9777a36fcb212.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جَوَارِب"
+  },
+  "جوز الهند": {
+   "file": "301c229e3e2c0ab2.mp3",
+   "imported": "301c229e3e2c0ab2.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جَوْزُ الْهِنْد"
+  },
+  "جيم": {
+   "file": "c38c46a59a35e336.mp3",
+   "imported": "c38c46a59a35e336.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "جِيم"
+  },
+  "ح": {
+   "file": "84be511ca7485b74.mp3",
+   "imported": "98b09ba933225b45.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حَاء"
+  },
+  "حاء": {
+   "file": "98b09ba933225b45.mp3",
+   "imported": "98b09ba933225b45.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حَاء"
+  },
+  "حاسوب": {
+   "file": "6f59ef41a94728ac.mp3",
+   "imported": "6f59ef41a94728ac.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حَاسُوب"
+  },
+  "حافلة": {
+   "file": "899dc7b34fa8064a.mp3",
+   "imported": "899dc7b34fa8064a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حَافِلَة"
+  },
+  "حذاء": {
+   "file": "bd60804234a266b1.mp3",
+   "imported": "bd60804234a266b1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حِذَاء"
+  },
+  "حصان": {
+   "file": "7365f70204397c07.mp3",
+   "imported": "7365f70204397c07.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حِصَان"
+  },
+  "حقيبة": {
+   "file": "7f8ce543ef04e6ec.mp3",
+   "imported": "7f8ce543ef04e6ec.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حَقِيبَة"
+  },
+  "حلزون": {
+   "file": "0e2c65fe6aafcc0c.mp3",
+   "imported": "0e2c65fe6aafcc0c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حَلَزُون"
+  },
+  "حليب": {
+   "file": "6a4934e1c9fb228c.mp3",
+   "imported": "6a4934e1c9fb228c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حَلِيب"
+  },
+  "حمار وحشي": {
+   "file": "200ab8008f70ed29.mp3",
+   "imported": "200ab8008f70ed29.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حِمَارٌ وَحْشِيّ"
+  },
+  "حوت": {
+   "file": "6c5afad3636a25c5.mp3",
+   "imported": "6c5afad3636a25c5.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حُوت"
+  },
+  "حيوانات": {
+   "file": "1a27ebf59bfafc55.mp3",
+   "imported": "1a27ebf59bfafc55.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "حَيَوَانَات"
+  },
+  "خ": {
+   "file": "3d20d6d44bb64c62.mp3",
+   "imported": "51b0dd3abeb1c172.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خَاء"
+  },
+  "خاء": {
+   "file": "51b0dd3abeb1c172.mp3",
+   "imported": "51b0dd3abeb1c172.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خَاء"
+  },
+  "خبز": {
+   "file": "0ff3c361e2abc9bc.mp3",
+   "imported": "0ff3c361e2abc9bc.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خُبْز"
+  },
+  "خروف": {
+   "file": "4ca311eec62f5aef.mp3",
+   "imported": "4ca311eec62f5aef.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خَرُوف"
+  },
+  "خوخ": {
+   "file": "27b8558cecc93bc4.mp3",
+   "imported": "27b8558cecc93bc4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خَوْخ"
+  },
+  "خيار": {
+   "file": "9e1bfa85cd565ed2.mp3",
+   "imported": "9e1bfa85cd565ed2.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خِيَار"
+  },
+  "خيمة": {
+   "file": "d53590a1ac59cbda.mp3",
+   "imported": "d53590a1ac59cbda.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "خَيْمَة"
+  },
+  "د": {
+   "file": "5cff1093c42b8740.mp3",
+   "imported": "160ae026797ed418.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "دَال"
+  },
+  "دال": {
+   "file": "160ae026797ed418.mp3",
+   "imported": "160ae026797ed418.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "دَال"
+  },
+  "دب": {
+   "file": "9ce5ff277c5edf6e.mp3",
+   "imported": "9ce5ff277c5edf6e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "دُبّ"
+  },
+  "دجاجة": {
+   "file": "6db125644092e95b.mp3",
+   "imported": "6db125644092e95b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "دَجَاجَة"
+  },
+  "دراجة": {
+   "file": "f4afaa5ac67e1398.mp3",
+   "imported": "f4afaa5ac67e1398.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "دَرَّاجَة"
+  },
+  "دلفين": {
+   "file": "b6949e90f43b8b69.mp3",
+   "imported": "b6949e90f43b8b69.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "دُلْفِين"
+  },
+  "دماغ": {
+   "file": "4414835e9b303dd3.mp3",
+   "imported": "4414835e9b303dd3.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "دِمَاغ"
+  },
+  "دمية دب": {
+   "file": "115687ff7c5e7808.mp3",
+   "imported": "115687ff7c5e7808.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "دُمْيَةُ دُبّ"
+  },
+  "دوار الشمس": {
+   "file": "6e0d7a3b360504ae.mp3",
+   "imported": "6e0d7a3b360504ae.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "دَوَّارُ الشَّمْس"
+  },
+  "ذ": {
+   "file": "4606dd643b06797f.mp3",
+   "imported": "8f46e24ef0118ebf.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ذَال"
+  },
+  "ذئب": {
+   "file": "47750d49ba359a3d.mp3",
+   "imported": "47750d49ba359a3d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ذِئْب"
+  },
+  "ذال": {
+   "file": "8f46e24ef0118ebf.mp3",
+   "imported": "8f46e24ef0118ebf.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ذَال"
+  },
+  "ذرة": {
+   "file": "01f6e668fec140d6.mp3",
+   "imported": "01f6e668fec140d6.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ذُرَة"
+  },
+  "ر": {
+   "file": "7a59c9d30973d6ca.mp3",
+   "imported": "4269697bb98f04dc.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "رَاء"
+  },
+  "راء": {
+   "file": "4269697bb98f04dc.mp3",
+   "imported": "4269697bb98f04dc.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "رَاء"
+  },
+  "رضيع": {
+   "file": "bdcb957e6ba9c781.mp3",
+   "imported": "bdcb957e6ba9c781.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "رَضِيع"
+  },
+  "رمادي": {
+   "file": "1a1680d5632066bc.mp3",
+   "imported": "1a1680d5632066bc.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "رَمَادِيّ"
+  },
+  "ز": {
+   "file": "d8c018d350b6cdce.mp3",
+   "imported": "4480e81cdd139c14.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "زَاي"
+  },
+  "زاي": {
+   "file": "4480e81cdd139c14.mp3",
+   "imported": "4480e81cdd139c14.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "زَاي"
+  },
+  "زرافة": {
+   "file": "2c84fad550160ce2.mp3",
+   "imported": "2c84fad550160ce2.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "زَرَافَة"
+  },
+  "زهرة": {
+   "file": "d5e7b544759c9601.mp3",
+   "imported": "d5e7b544759c9601.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "زَهْرَة"
+  },
+  "زوجي": {
+   "file": "b9eedf66f8e03430.mp3",
+   "imported": "b9eedf66f8e03430.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "زَوْجِيّ"
+  },
+  "س": {
+   "file": "499cc95fd8e42581.mp3",
+   "imported": "36df6a758d4957ec.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سِين"
+  },
+  "ساعة": {
+   "file": "40add5d3e4a1a836.mp3",
+   "imported": "40add5d3e4a1a836.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سَاعَة"
+  },
+  "ساعة يد": {
+   "file": "667c9deaa3230ece.mp3",
+   "imported": "667c9deaa3230ece.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سَاعَةُ يَد"
+  },
+  "ساق": {
+   "file": "c32dec7065782f65.mp3",
+   "imported": "c32dec7065782f65.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سَاق"
+  },
+  "سرير": {
+   "file": "e0f948a7c90c60f9.mp3",
+   "imported": "e0f948a7c90c60f9.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سَرِير"
+  },
+  "سفينة": {
+   "file": "ea03fe5fa35ec936.mp3",
+   "imported": "ea03fe5fa35ec936.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سَفِينَة"
+  },
+  "سلحفاة": {
+   "file": "db39952f552deaee.mp3",
+   "imported": "db39952f552deaee.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سُلَحْفَاة"
+  },
+  "سلطعون": {
+   "file": "29cf2dd581d0d794.mp3",
+   "imported": "29cf2dd581d0d794.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سَلْطَعُون"
+  },
+  "سمكة": {
+   "file": "2ac39bc19eb704bc.mp3",
+   "imported": "2ac39bc19eb704bc.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سَمَكَة"
+  },
+  "سن": {
+   "file": "790c480fd5ba094c.mp3",
+   "imported": "790c480fd5ba094c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سِنّ"
+  },
+  "سيارة": {
+   "file": "b778578712254a42.mp3",
+   "imported": "b778578712254a42.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سَيَّارَة"
+  },
+  "سيارة أجرة": {
+   "file": "9541011c18dc7067.mp3",
+   "imported": "9541011c18dc7067.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سَيَّارَةُ أُجْرَة"
+  },
+  "سيارة إسعاف": {
+   "file": "5a0682f7b4bc987d.mp3",
+   "imported": "5a0682f7b4bc987d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سَيَّارَةُ إِسْعَاف"
+  },
+  "سيارة إطفاء": {
+   "file": "205c2c8c3b05e56b.mp3",
+   "imported": "205c2c8c3b05e56b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سَيَّارَةُ إِطْفَاء"
+  },
+  "سين": {
+   "file": "36df6a758d4957ec.mp3",
+   "imported": "36df6a758d4957ec.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "سِين"
+  },
+  "ش": {
+   "file": "d42b280f42efadd5.mp3",
+   "imported": "8abc5a2e3ac381ea.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "شِين"
+  },
+  "شاحنة": {
+   "file": "5b732146adee66f2.mp3",
+   "imported": "5b732146adee66f2.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "شَاحِنَة"
+  },
+  "شاي": {
+   "file": "18a4d1446bdbf341.mp3",
+   "imported": "18a4d1446bdbf341.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "شَاي"
+  },
+  "شجرة": {
+   "file": "a83efff6f19bfa87.mp3",
+   "imported": "a83efff6f19bfa87.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "شَجَرَة"
+  },
+  "شرطي": {
+   "file": "3f799ae9697cd356.mp3",
+   "imported": "3f799ae9697cd356.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "شُرْطِيّ"
+  },
+  "شمس": {
+   "file": "757be7aac5146d7a.mp3",
+   "imported": "757be7aac5146d7a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "شَمْس"
+  },
+  "شمعة": {
+   "file": "7bd2e6c37997c9e1.mp3",
+   "imported": "7bd2e6c37997c9e1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "شَمْعَة"
+  },
+  "شين": {
+   "file": "8abc5a2e3ac381ea.mp3",
+   "imported": "8abc5a2e3ac381ea.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "شِين"
+  },
+  "ص": {
+   "file": "928a192ed5f39a95.mp3",
+   "imported": "beb1f0d3ca2f35d7.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "صَاد"
+  },
+  "صابون": {
+   "file": "c548ce6655fdfca9.mp3",
+   "imported": "c548ce6655fdfca9.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "صَابُون"
+  },
+  "صاد": {
+   "file": "beb1f0d3ca2f35d7.mp3",
+   "imported": "beb1f0d3ca2f35d7.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "صَاد"
+  },
+  "صاروخ": {
+   "file": "6d8b38cb7f793d3f.mp3",
+   "imported": "6d8b38cb7f793d3f.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "صَارُوخ"
+  },
+  "صبار": {
+   "file": "5025df1216c6ca10.mp3",
+   "imported": "5025df1216c6ca10.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "صَبَّار"
+  },
+  "ض": {
+   "file": "e3303f1a82e8e5ca.mp3",
+   "imported": "644356b6a742bd96.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ضَاد"
+  },
+  "ضاد": {
+   "file": "644356b6a742bd96.mp3",
+   "imported": "644356b6a742bd96.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ضَاد"
+  },
+  "ضفدع": {
+   "file": "4e08c17f7325f83b.mp3",
+   "imported": "4e08c17f7325f83b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ضِفْدَع"
+  },
+  "ط": {
+   "file": "67dd1cf4d8986809.mp3",
+   "imported": "46c5140ef2da69f8.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "طَاء"
+  },
+  "طاء": {
+   "file": "46c5140ef2da69f8.mp3",
+   "imported": "46c5140ef2da69f8.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "طَاء"
+  },
+  "طائرة": {
+   "file": "84c27962de9a339d.mp3",
+   "imported": "84c27962de9a339d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "طَائِرَة"
+  },
+  "طاووس": {
+   "file": "06d54b31a6439425.mp3",
+   "imported": "06d54b31a6439425.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "طَاوُوس"
+  },
+  "طبل": {
+   "file": "0c43b2b20b8ac6e8.mp3",
+   "imported": "0c43b2b20b8ac6e8.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "طَبْل"
+  },
+  "طبيعة": {
+   "file": "b1821d3f271fa1dc.mp3",
+   "imported": "b1821d3f271fa1dc.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "طَبِيعَة"
+  },
+  "طعام": {
+   "file": "3944fbff8cc346c5.mp3",
+   "imported": "3944fbff8cc346c5.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "طَعَام"
+  },
+  "طماطم": {
+   "file": "ef7a1102f9e707ac.mp3",
+   "imported": "ef7a1102f9e707ac.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "طَمَاطِم"
+  },
+  "ظ": {
+   "file": "8ba3ac486a1d7d86.mp3",
+   "imported": "d4127a019f7ea4b8.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ظَاء"
+  },
+  "ظاء": {
+   "file": "d4127a019f7ea4b8.mp3",
+   "imported": "d4127a019f7ea4b8.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ظَاء"
+  },
+  "ظرف": {
+   "file": "85bdf3947166c192.mp3",
+   "imported": "85bdf3947166c192.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "ظَرْف"
+  },
+  "ع": {
+   "file": "80add0b9e028a473.mp3",
+   "imported": "675b46a5bc808734.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "عَيْن"
+  },
+  "عسل": {
+   "file": "fd2a80c8ae592e05.mp3",
+   "imported": "fd2a80c8ae592e05.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "عَسَل"
+  },
+  "عصفور": {
+   "file": "fae3b134596ebcaa.mp3",
+   "imported": "fae3b134596ebcaa.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "عُصْفُور"
+  },
+  "عصير": {
+   "file": "508095033f7085e6.mp3",
+   "imported": "508095033f7085e6.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "عَصِير"
+  },
+  "عنب": {
+   "file": "0d5ed7ec4717bb9d.mp3",
+   "imported": "0d5ed7ec4717bb9d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "عِنَب"
+  },
+  "عنكبوت": {
+   "file": "ccba07f9d507c39a.mp3",
+   "imported": "ccba07f9d507c39a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "عَنْكَبُوت"
+  },
+  "عين": {
+   "file": "675b46a5bc808734.mp3",
+   "imported": "675b46a5bc808734.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "عَيْن"
+  },
+  "غ": {
+   "file": "0e636841e7121af4.mp3",
+   "imported": "ca76e9e564a59daf.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "غَيْن"
+  },
+  "غيتار": {
+   "file": "5989524d0d50f53d.mp3",
+   "imported": "5989524d0d50f53d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "غِيتَار"
+  },
+  "غيمة": {
+   "file": "86970739f79f2599.mp3",
+   "imported": "86970739f79f2599.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "غَيْمَة"
+  },
+  "غين": {
+   "file": "ca76e9e564a59daf.mp3",
+   "imported": "ca76e9e564a59daf.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "غَيْن"
+  },
+  "ف": {
+   "file": "5bb2f0c8c3db95e7.mp3",
+   "imported": "cc5f7ba380b0b5a9.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "فَاء"
+  },
+  "فأر": {
+   "file": "61cd48c38cb20d5e.mp3",
+   "imported": "61cd48c38cb20d5e.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "فَأْر"
+  },
+  "فاء": {
+   "file": "cc5f7ba380b0b5a9.mp3",
+   "imported": "cc5f7ba380b0b5a9.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "فَاء"
+  },
+  "فراشة": {
+   "file": "d52ac06e6513ab62.mp3",
+   "imported": "d52ac06e6513ab62.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "فَرَاشَة"
+  },
+  "فراولة": {
+   "file": "a42d62b2d8517759.mp3",
+   "imported": "a42d62b2d8517759.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "فَرَاوِلَة"
+  },
+  "فردي": {
+   "file": "9a25463d7fb2e3a2.mp3",
+   "imported": "9a25463d7fb2e3a2.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "فَرْدِيّ"
+  },
+  "فستان": {
+   "file": "9906f074d62b6717.mp3",
+   "imported": "9906f074d62b6717.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "فُسْتَان"
+  },
+  "فطر": {
+   "file": "097e6c781aa8694a.mp3",
+   "imported": "097e6c781aa8694a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "فُطْر"
+  },
+  "فم": {
+   "file": "7f3b9d0b95d21686.mp3",
+   "imported": "7f3b9d0b95d21686.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "فَم"
+  },
+  "فيل": {
+   "file": "22caf60a69ac5554.mp3",
+   "imported": "22caf60a69ac5554.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "فِيل"
+  },
+  "ق": {
+   "file": "c4076e05c966fb82.mp3",
+   "imported": "31d2954591d4fd78.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قَاف"
+  },
+  "قارب شراعي": {
+   "file": "79980d572199236c.mp3",
+   "imported": "79980d572199236c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قَارِبٌ شِرَاعِيّ"
+  },
+  "قاف": {
+   "file": "31d2954591d4fd78.mp3",
+   "imported": "31d2954591d4fd78.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قَاف"
+  },
+  "قبعة": {
+   "file": "ca00e853a069a86a.mp3",
+   "imported": "ca00e853a069a86a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قُبَّعَة"
+  },
+  "قدم": {
+   "file": "ad783f940e48cc7c.mp3",
+   "imported": "ad783f940e48cc7c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قَدَم"
+  },
+  "قرد": {
+   "file": "6471586d8e28e3f5.mp3",
+   "imported": "6471586d8e28e3f5.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قِرْد"
+  },
+  "قطار": {
+   "file": "23f115c9212f731b.mp3",
+   "imported": "23f115c9212f731b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قِطَار"
+  },
+  "قطة": {
+   "file": "c3c3a26e1f58ae8f.mp3",
+   "imported": "c3c3a26e1f58ae8f.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قِطَّة"
+  },
+  "قفازات": {
+   "file": "329bb7c3b1650889.mp3",
+   "imported": "329bb7c3b1650889.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قُفَّازَات"
+  },
+  "قفل": {
+   "file": "1f6fc2115a7a15d4.mp3",
+   "imported": "1f6fc2115a7a15d4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قُفْل"
+  },
+  "قلعة": {
+   "file": "8c084851b4d5d7f4.mp3",
+   "imported": "8c084851b4d5d7f4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قَلْعَة"
+  },
+  "قلم رصاص": {
+   "file": "a3f49bf9c9d06165.mp3",
+   "imported": "a3f49bf9c9d06165.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قَلَمُ رَصَاص"
+  },
+  "قمر": {
+   "file": "a6b3ca34ce464b61.mp3",
+   "imported": "a6b3ca34ce464b61.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قَمَر"
+  },
+  "قميص": {
+   "file": "580ed9b1c0fdbcdb.mp3",
+   "imported": "580ed9b1c0fdbcdb.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قَمِيص"
+  },
+  "قوس قزح": {
+   "file": "d089c4dc77f7a2cc.mp3",
+   "imported": "d089c4dc77f7a2cc.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "قَوْسُ قُزَح"
+  },
+  "ك": {
+   "file": "66dcc319bde32e80.mp3",
+   "imported": "f312fcc4c2a95c4d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كَاف"
+  },
+  "كأس": {
+   "file": "e0cb3913b54f7ed4.mp3",
+   "imported": "e0cb3913b54f7ed4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كَأْس"
+  },
+  "كاف": {
+   "file": "f312fcc4c2a95c4d.mp3",
+   "imported": "f312fcc4c2a95c4d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كَاف"
+  },
+  "كتاب": {
+   "file": "0d27d5eb3aa7db10.mp3",
+   "imported": "0d27d5eb3aa7db10.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كِتَاب"
+  },
+  "كرة": {
+   "file": "cc57da04fed3e9a6.mp3",
+   "imported": "cc57da04fed3e9a6.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كُرَة"
+  },
+  "كرز": {
+   "file": "847cae2110228ad8.mp3",
+   "imported": "847cae2110228ad8.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كَرَز"
+  },
+  "كعكة": {
+   "file": "54c734044fc47850.mp3",
+   "imported": "54c734044fc47850.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كَعْكَة"
+  },
+  "كلب": {
+   "file": "ec0c56b3b9a2476d.mp3",
+   "imported": "ec0c56b3b9a2476d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كَلْب"
+  },
+  "كمان": {
+   "file": "788da0f68c5dba9d.mp3",
+   "imported": "788da0f68c5dba9d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كَمَان"
+  },
+  "كمثرى": {
+   "file": "a264838a8ee1289b.mp3",
+   "imported": "a264838a8ee1289b.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كُمَّثْرَى"
+  },
+  "كنغر": {
+   "file": "879c94f18a53a840.mp3",
+   "imported": "879c94f18a53a840.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كَنْغَر"
+  },
+  "كوالا": {
+   "file": "50c0ca94ee724a7c.mp3",
+   "imported": "50c0ca94ee724a7c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كُوَالَا"
+  },
+  "كيوي": {
+   "file": "ca9cb7ff31d5618f.mp3",
+   "imported": "ca9cb7ff31d5618f.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "كِيوِي"
+  },
+  "ل": {
+   "file": "4b4f75b8a7bdbdcf.mp3",
+   "imported": "ada701484a948606.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "لَام"
+  },
+  "لام": {
+   "file": "ada701484a948606.mp3",
+   "imported": "ada701484a948606.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "لَام"
+  },
+  "لسان": {
+   "file": "6e2177a105e831a9.mp3",
+   "imported": "6e2177a105e831a9.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "لِسَان"
+  },
+  "ليمون": {
+   "file": "4dd419c84e61e449.mp3",
+   "imported": "4dd419c84e61e449.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "لَيْمُون"
+  },
+  "م": {
+   "file": "d8fe6f076d7909ff.mp3",
+   "imported": "22f9e7f67a6912f1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مِيم"
+  },
+  "ماعز": {
+   "file": "d45697ef286a8d3d.mp3",
+   "imported": "d45697ef286a8d3d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مَاعِز"
+  },
+  "مانجو": {
+   "file": "2e1a9f5ec12df491.mp3",
+   "imported": "2e1a9f5ec12df491.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مَانْجُو"
+  },
+  "مدرسة": {
+   "file": "44ee4b4e2e8018be.mp3",
+   "imported": "44ee4b4e2e8018be.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مَدْرَسَة"
+  },
+  "مركبات": {
+   "file": "5b6044504869364a.mp3",
+   "imported": "5b6044504869364a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مَرْكَبَات"
+  },
+  "مروحية": {
+   "file": "5b1ed59c56abd0cb.mp3",
+   "imported": "5b1ed59c56abd0cb.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مِرْوَحِيَّة"
+  },
+  "مستشفى": {
+   "file": "dc7cff7f2b485420.mp3",
+   "imported": "dc7cff7f2b485420.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مُسْتَشْفَى"
+  },
+  "مسجد": {
+   "file": "ef36974248244950.mp3",
+   "imported": "ef36974248244950.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مَسْجِد"
+  },
+  "مصباح كهربائي": {
+   "file": "8357fc56507e69ed.mp3",
+   "imported": "8357fc56507e69ed.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مِصْبَاحٌ كَهْرَبَائِيّ"
+  },
+  "مطر": {
+   "file": "41892f96ef6a8947.mp3",
+   "imported": "41892f96ef6a8947.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مَطَر"
+  },
+  "مطرقة": {
+   "file": "47423965b581cb95.mp3",
+   "imported": "47423965b581cb95.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مِطْرَقَة"
+  },
+  "مظلة": {
+   "file": "34ae4ea8baed0c46.mp3",
+   "imported": "34ae4ea8baed0c46.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مِظَلَّة"
+  },
+  "مغناطيس": {
+   "file": "139f123f9a5577fb.mp3",
+   "imported": "139f123f9a5577fb.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مِغْنَاطِيس"
+  },
+  "مفتاح": {
+   "file": "b2e8115b070c5c38.mp3",
+   "imported": "b2e8115b070c5c38.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مِفْتَاح"
+  },
+  "مقص": {
+   "file": "d7cff7523c328ade.mp3",
+   "imported": "d7cff7523c328ade.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مِقَصّ"
+  },
+  "مكنسة": {
+   "file": "9bf67454741698a4.mp3",
+   "imported": "9bf67454741698a4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مِكْنَسَة"
+  },
+  "ملابس": {
+   "file": "fff2282efd2749db.mp3",
+   "imported": "fff2282efd2749db.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مَلَابِس"
+  },
+  "ملكة": {
+   "file": "66a73fb0d48d4108.mp3",
+   "imported": "66a73fb0d48d4108.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مَلِكَة"
+  },
+  "موجة": {
+   "file": "d4e881ea709e4f6c.mp3",
+   "imported": "d4e881ea709e4f6c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مَوْجَة"
+  },
+  "موز": {
+   "file": "66dbc2e1c012ec93.mp3",
+   "imported": "66dbc2e1c012ec93.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مَوْز"
+  },
+  "ميم": {
+   "file": "22f9e7f67a6912f1.mp3",
+   "imported": "22f9e7f67a6912f1.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "مِيم"
+  },
+  "ن": {
+   "file": "178a13dd63132684.mp3",
+   "imported": "3b09344f4e3dc0f2.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "نُون"
+  },
+  "نار": {
+   "file": "7f8765ad45ee4a54.mp3",
+   "imported": "7f8765ad45ee4a54.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "نَار"
+  },
+  "نجمة": {
+   "file": "0f79127f29964b1c.mp3",
+   "imported": "0f79127f29964b1c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "نَجْمَة"
+  },
+  "نحلة": {
+   "file": "6042bec03a25cb4a.mp3",
+   "imported": "6042bec03a25cb4a.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "نَحْلَة"
+  },
+  "نخلة": {
+   "file": "57fd23ff8f574857.mp3",
+   "imported": "57fd23ff8f574857.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "نَخْلَة"
+  },
+  "نرد": {
+   "file": "bcd1e61c5a5c6a4d.mp3",
+   "imported": "bcd1e61c5a5c6a4d.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "نَرْد"
+  },
+  "نسر": {
+   "file": "43f4129c93498abf.mp3",
+   "imported": "43f4129c93498abf.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "نَسْر"
+  },
+  "نظارة": {
+   "file": "86c32309e908a621.mp3",
+   "imported": "86c32309e908a621.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "نَظَّارَة"
+  },
+  "نمر": {
+   "file": "616b14dd6a91757f.mp3",
+   "imported": "616b14dd6a91757f.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "نَمِر"
+  },
+  "نملة": {
+   "file": "600199ac02333b72.mp3",
+   "imported": "600199ac02333b72.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "نَمْلَة"
+  },
+  "نون": {
+   "file": "3b09344f4e3dc0f2.mp3",
+   "imported": "3b09344f4e3dc0f2.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "نُون"
+  },
+  "ه": {
+   "file": "e9edeb603dee8147.mp3",
+   "imported": "73f92afa3697946c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "هَاء"
+  },
+  "هاء": {
+   "file": "73f92afa3697946c.mp3",
+   "imported": "73f92afa3697946c.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "هَاء"
+  },
+  "هاتف": {
+   "file": "b9e9459cfa6331e5.mp3",
+   "imported": "b9e9459cfa6331e5.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "هَاتِف"
+  },
+  "هدية": {
+   "file": "41b0d16460a46f09.mp3",
+   "imported": "41b0d16460a46f09.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "هَدِيَّة"
+  },
+  "و": {
+   "file": "304117b6c7c96221.mp3",
+   "imported": "15c265f301037df3.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وَاو"
+  },
+  "واو": {
+   "file": "15c265f301037df3.mp3",
+   "imported": "15c265f301037df3.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وَاو"
+  },
+  "وردة": {
+   "file": "67da8ffec224b4ca.mp3",
+   "imported": "67da8ffec224b4ca.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وَرْدَة"
+  },
+  "وردي": {
+   "file": "836d81cd5fd10002.mp3",
+   "imported": "836d81cd5fd10002.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وَرْدِيّ"
+  },
+  "ورقة شجر": {
+   "file": "12af117dc928fea4.mp3",
+   "imported": "12af117dc928fea4.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وَرَقَةُ شَجَر"
+  },
+  "وشاح": {
+   "file": "80d742f41300de31.mp3",
+   "imported": "80d742f41300de31.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وِشَاح"
+  },
+  "ولد": {
+   "file": "44415f38350b4a25.mp3",
+   "imported": "44415f38350b4a25.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "وَلَد"
+  },
+  "ى": {
+   "file": "f776b60a859e8114.mp3",
+   "imported": "f776b60a859e8114.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "أَلِفٌ مَقْصُورَة"
+  },
+  "ي": {
+   "file": "f9025892e5db8194.mp3",
+   "imported": "d6271f5f075055fd.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "يَاء"
+  },
+  "ياء": {
+   "file": "d6271f5f075055fd.mp3",
+   "imported": "d6271f5f075055fd.mp3",
+   "voice": "elevenlabs-nour",
+   "voiced": "يَاء"
+  },
+  "يد": {
+   "file": "abf2fb682d518fac.mp3",
+   "imported": "abf2fb682d518fac.mp3",
+   "voice": "elevenlabs-nour",
    "voiced": "يَد"
   }
  },
