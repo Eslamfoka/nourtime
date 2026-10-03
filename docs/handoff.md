@@ -3,16 +3,22 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (next session, written 2026-10-03):** everything is on `master` (Learning Hub + the
-> four voice packs, merged and pushed). The Honor runs `dist/NourTime-2026-10-03-voice-packs-release.apk`;
-> the owner tested the voice packs and they work. Work through the roadmap in [§18](#18-roadmap-for-the-next-sessions-in-order)
-> **in order**; task 1 comes first:
+> **Resume here (2026-10-04, written at the end of 2026-10-03):** everything is on `master`. Last
+> pushed commit: `e95d8a6c`; the review commits after it (`6aff3563`, `0a8d1a50`, `154bf965` and the
+> docs commit) are **local only, push them first** (`git push origin master`). The Honor runs
+> `dist/NourTime-2026-10-03-voice-packs-release.apk` (before the review fixes). 401 tests pass.
 >
-> 1. **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs,
->    glitches, or edge cases.**
-> 2. Number Connect: shape preview at the top + completely mute number pronunciation.
-> 3. Parent app integration of the Learning Hub.
-> 4. Release preparation. 5. Real-device testing. 6. Audio assets. 7. G9 (on hold).
+> Task 1 (comprehensive review) is **done**; results in [§18 Task 1](#task-1-first-comprehensive-review).
+> Start tomorrow with:
+>
+> 1. **Two small Home fixes left from the review:** during a learning break Home should say it's a
+>    break and that the lock resumes (now it just says "Available"), and "End the lock" should work
+>    while a lock waits under the break (it's disabled now). Ask the owner, then build a new APK for
+>    the Honor with all the review fixes.
+> 2. Number Connect: shape preview at the top + completely mute number pronunciation (U5, U6).
+> 3. Parent app integration of the Learning Hub (ask before starting).
+> 4. Release preparation (target API 36, battery permission, …). 5. Real-device testing.
+> 6. Audio assets. 7. G9 (on hold).
 
 ## 1. Architecture at a glance
 
@@ -1163,7 +1169,7 @@ human recordings first; no Google Translate TTS; a premium voice only for what n
 
 Written 2026-10-03 at the end of the voice-pack session. Do the tasks in this order.
 
-### Task 1 (FIRST): comprehensive review
+### Task 1 (FIRST): comprehensive review ✅ done 2026-10-03
 **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs,
 glitches, or edge cases.** Scope: Phase 1 (time engine, locks, overlay, bedtime, schedule, PIN /
 parent pass / security question, protection of Settings and uninstall), Phase 1.5, Phase 2 remote

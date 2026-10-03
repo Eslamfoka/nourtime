@@ -10,6 +10,9 @@ in Egyptian), English **American** (Liz, 360) and **British** (Ana, 360). The pa
 per language in the Learning Hub settings. Tested by the owner on the Honor; the Learning Hub and the
 voice packs are merged into `master` and pushed.
 
+**2026-10-03 (end):** ✅ **Comprehensive review done** (roadmap task 1, details in handoff §18). 401
+tests. Next session starts from the "Resume here" block at the top of `handoff.md`.
+
 Phase 1 is feature-complete on the emulator (Android 12 and 15). What's left is testing on real
 phones, recorded audio, release plumbing, Phase 1.5 (below) and Phase 2.
 
@@ -371,7 +374,7 @@ screen option, pack, how a level starts). A new game is a `GameId`, one registry
 
 | # | Task | Status |
 |---|---|---|
-| 1 | **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs, glitches, or edge cases.** | ⏳ **First** |
+| 1 | **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs, glitches, or edge cases.** | ✅ Done 2026-10-03: core solid; fixed Play language split, replay/bank rewards (owner's decisions), repeated math questions, cut-off chips, Home ring caption. Left: 2 small Home items during a learning break (handoff resume block) |
 | 2 | Number Connect UX: U5 (shape preview) and U6 (completely mute number pronunciation) | ⏳ |
 | 3 | Parent app integration of the Learning Hub (settings, voice per language, minutes bank on the parent's phone) | ⏳ Ask the owner before starting |
 | 4 | Release preparation: rotate the ElevenLabs key, upload key, Play listing, screenshots, video, account-deletion page | ⏳ |
