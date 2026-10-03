@@ -8,7 +8,7 @@ and the file map are in the [`README`](../README.md).
 > docs commit) are **local only, push them first** (`git push origin master`). The Honor runs
 > `dist/NourTime-2026-10-03-voice-packs-release.apk` (before the review fixes). 401 tests pass.
 >
-> Task 1 (comprehensive review) is **done**; results in [§18 Task 1](#task-1-first-comprehensive-review).
+> Task 1 (comprehensive review) is **done**; results in [§18 Task 1](#task-1-first-comprehensive-review--done-2026-10-03).
 > Start tomorrow with:
 >
 > 1. **Two small Home fixes left from the review:** during a learning break Home should say it's a
