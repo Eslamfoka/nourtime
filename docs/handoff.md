@@ -1185,7 +1185,17 @@ validation of remote settings, ask-for-time, Learning Hub controller and rewards
   easiest level could be replayed up to the daily maximum); (2) the minutes bank has no cap and never
   expires, so a week of earning (7 × 15 min) can be spent in one break.
 - Release blockers moved to Task 4: target API 36, the battery-optimization permission.
-- Not yet done: a hands-on pass on the emulator through every screen and game.
+- ✅ Owner decided both (2026-10-03): a replay earns only with more stars; the bank holds at most the
+  daily maximum. Built with tests; the end-of-level screen says why nothing was earned.
+- Hands-on pass on the API 31 emulator (Arabic): settings voice choice + sample clip, lock → Time's up
+  → Learning Hub → Math levels 1–2 (earned 5, then "box is full"), "Use my minutes" → break (lock
+  pending underneath). Fixed from it: Math tiny levels asked the same question 3× in a row (now never
+  twice running); minute and voice chips cut off at the screen edge (now wrap); the Home ring's
+  "left of …" caption crossed the ring in Arabic (now wraps inside).
+- **Still open (small UX):** during a learning break Home just says "Available" (it should say it's a
+  break and the lock resumes), and "End the lock" is disabled although a lock is waiting underneath.
+- Not covered by hand this time: the other 10 games' screens (each was emulator-tested when built),
+  onboarding, the parent's remote phone.
 
 ### Task 2: Number Connect UX (owner, 2026-10-03)
 - **Preview of the final shape:** a small outline of the finished drawing at the top of the screen so

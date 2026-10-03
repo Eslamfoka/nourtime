@@ -1,9 +1,10 @@
 package com.nourtime.app.feature.learning
 
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
@@ -126,9 +127,11 @@ fun LearningSettingsCard(ageGroup: AgeGroup?, gender: ChildGender?, viewModel: L
     if (previewing) LearningPreviewDialog(viewModel.repository, viewModel.content, ageGroup, gender ?: ChildGender.GIRL) { previewing = false }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun MinuteChips(options: List<Int>, selected: Int, onSelect: (Int) -> Unit) {
-    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    // Wraps rather than scrolls sideways, so options past the edge (30 and 60 min) can't be missed.
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         options.forEach { m ->
             FilterChip(
                 selected = m == selected,
@@ -144,6 +147,7 @@ private fun MinuteChips(options: List<Int>, selected: Int, onSelect: (Int) -> Un
 }
 
 /** The voice per language, for languages with more than one; choosing one plays a sample. */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun VoicePackChoice(chosen: Map<LearnLanguage, VoicePack>, onSelect: (VoicePack) -> Unit) {
     val speaker = rememberSpeaker()
@@ -154,7 +158,7 @@ private fun VoicePackChoice(chosen: Map<LearnLanguage, VoicePack>, onSelect: (Vo
             LearnLanguage.ENGLISH -> R.string.learn_settings_voice_title_en
         }
         Text(stringResource(title), style = MaterialTheme.typography.titleSmall)
-        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             packs.forEach { pack ->
                 FilterChip(
                     selected = pack == current,

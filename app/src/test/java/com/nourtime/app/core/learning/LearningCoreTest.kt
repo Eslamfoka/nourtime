@@ -104,6 +104,16 @@ class LearningCoreTest {
     }
 
     @Test
+    fun `a tiny level repeats questions but never the same one twice in a row`() {
+        // add-3 has only three sums (1+1, 1+2, 2+1) for six questions; seen on the emulator as 2+1 three times running.
+        repeat(50) { seed ->
+            val prompts = MathGame.questions(mathLevel("add-3"), Random(seed)).map { it.prompt }
+            assertEquals(MathGame.QUESTIONS, prompts.size)
+            prompts.zipWithNext().forEach { (a, b) -> assertTrue("seed $seed: $a twice", a != b) }
+        }
+    }
+
+    @Test
     fun `missing-number levels hide the second number and ask for it`() {
         MathGame.questions(mathLevel("missing-sub-20"), Random(5)).forEach { q ->
             assertEquals(Card.Symbol("?"), q.prompt[2])

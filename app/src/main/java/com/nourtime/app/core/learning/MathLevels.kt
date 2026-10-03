@@ -46,8 +46,10 @@ object MathGame {
         var tries = 0
         while (out.size < count) {
             val q = question(spec, random)
-            // Tiny levels have few distinct questions; allow repeats rather than loop forever.
-            if (seen.add(q.prompt) || ++tries > 50) out += q
+            // Tiny levels have few distinct questions; allow repeats rather than loop forever, but not
+            // the same one twice in a row (looks stuck to a child) unless there's truly nothing else.
+            val again = q.prompt == out.lastOrNull()?.prompt
+            if (seen.add(q.prompt) || (++tries > 50 && !again) || tries > 500) out += q
         }
         return out
     }
