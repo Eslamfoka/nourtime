@@ -42,7 +42,7 @@ def norm(s: str) -> str:
     return re.sub(r"[^\w]", "", s)
 
 
-def speech_spans(path: Path, min_pause: float, noise: str) -> list[tuple[float, float]]:
+def speech_spans(path: Path, min_pause: float, noise: str, start: float = 0.0) -> list[tuple[float, float]]:
     """Where someone is speaking, between pauses of at least [min_pause] seconds."""
     r = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(path), "-af", f"silencedetect=noise={noise}:d={min_pause}",
                         "-f", "null", "-"], capture_output=True, text=True)
@@ -51,8 +51,10 @@ def speech_spans(path: Path, min_pause: float, noise: str) -> list[tuple[float, 
     dur = float(re.search(r"Duration: (\d+):(\d+):([\d.]+)", r.stderr).group(3)) + \
         60 * float(re.search(r"Duration: (\d+):(\d+)", r.stderr).group(2)) + \
         3600 * float(re.search(r"Duration: (\d+)", r.stderr).group(1))
-    spans, cursor = [], 0.0
+    spans, cursor = [], start
     for s, e in zip(starts, ends + [dur] * (len(starts) - len(ends))):
+        if e <= start:
+            continue
         if s - cursor > 0.12:
             spans.append((cursor, s))
         cursor = e
@@ -61,10 +63,10 @@ def speech_spans(path: Path, min_pause: float, noise: str) -> list[tuple[float, 
     return spans
 
 
-def split(path: Path, expected: int) -> list[tuple[float, float]] | None:
+def split(path: Path, expected: int, start: float = 0.0) -> list[tuple[float, float]] | None:
     for noise in ("-40dB", "-35dB", "-45dB", "-30dB"):
         for tenths in range(25, 2, -1):  # 2.5 s down to 0.3 s
-            spans = speech_spans(path, tenths / 10, noise)
+            spans = speech_spans(path, tenths / 10, noise, start)
             if len(spans) == expected:
                 return spans
     return None
@@ -80,6 +82,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-check", action="store_true", help="skip speech recognition")
     ap.add_argument("--min-score", type=float, default=0.6)
+    ap.add_argument("--start", type=float, default=0.0,
+                    help="seconds to skip first (e.g. when the voice read the instructions aloud)")
     args = ap.parse_args()
     lines = defaultdict(list)
     with INDEX.open(encoding="utf-8-sig", newline="") as f:
@@ -96,7 +100,7 @@ def main() -> None:
         if not src:
             print(f"{batch}: no recording yet")
             continue
-        spans = split(src, len(items))
+        spans = split(src, len(items), args.start)
         if not spans:
             print(f"{batch}: couldn't split into {len(items)} pieces (lines skipped or merged?); redo this batch")
             bad += len(items)

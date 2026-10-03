@@ -601,19 +601,15 @@
    "voiced": "صِفْر"
   },
   "1": {
-   "author": "Speaker: Spotless Mind1988\nRecorder: Spotless Mind1988",
    "file": "356a192b7913b04c.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-وَاحِد.wav",
-   "voice": "human",
+   "imported": "356a192b7913b04c.wav",
+   "voice": "elevenlabs",
    "voiced": "وَاحِد"
   },
   "10": {
-   "author": "Speaker: Zinou2go\nRecorder: Zinou2go",
    "file": "b1d5781111d84f7b.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-عشرة.wav",
-   "voice": "human",
+   "imported": "b1d5781111d84f7b.wav",
+   "voice": "elevenlabs",
    "voiced": "عَشَرَة"
   },
   "100": {
@@ -631,89 +627,69 @@
    "voiced": "أَلْف"
   },
   "11": {
-   "author": "Speaker: Fenakhay\nRecorder: Fenakhay",
    "file": "17ba0791499db908.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أحد_عشر.wav",
-   "voice": "human",
+   "imported": "17ba0791499db908.wav",
+   "voice": "elevenlabs",
    "voiced": "أَحَدَ عَشَر"
   },
   "12": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "7b52009b64fd0a2a.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-اثنا_عشر.wav",
-   "voice": "human",
+   "imported": "7b52009b64fd0a2a.wav",
+   "voice": "elevenlabs",
    "voiced": "اثْنَا عَشَر"
   },
   "13": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "bd307a3ec329e10a.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-ثلاثة_عشر.wav",
-   "voice": "human",
+   "imported": "bd307a3ec329e10a.wav",
+   "voice": "elevenlabs",
    "voiced": "ثَلَاثَةَ عَشَر"
   },
   "14": {
-   "author": "Speaker: Fenakhay\nRecorder: Fenakhay",
    "file": "fa35e192121eabf3.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أربعة_عشر.wav",
-   "voice": "human",
+   "imported": "fa35e192121eabf3.wav",
+   "voice": "elevenlabs",
    "voiced": "أَرْبَعَةَ عَشَر"
   },
   "15": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "f1abd670358e036c.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-خمسة_عشر.wav",
-   "voice": "human",
+   "imported": "f1abd670358e036c.wav",
+   "voice": "elevenlabs",
    "voiced": "خَمْسَةَ عَشَر"
   },
   "16": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "1574bddb75c78a6f.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-ستة_عشر.wav",
-   "voice": "human",
+   "imported": "1574bddb75c78a6f.wav",
+   "voice": "elevenlabs",
    "voiced": "سِتَّةَ عَشَر"
   },
   "17": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "0716d9708d321ffb.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-سبعة_عشر.wav",
-   "voice": "human",
+   "imported": "0716d9708d321ffb.wav",
+   "voice": "elevenlabs",
    "voiced": "سَبْعَةَ عَشَر"
   },
   "18": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "9e6a55b6b4563e65.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-ثمانية_عشر.wav",
-   "voice": "human",
+   "imported": "9e6a55b6b4563e65.wav",
+   "voice": "elevenlabs",
    "voiced": "ثَمَانِيَةَ عَشَر"
   },
   "19": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "b3f0c7f6bb763af1.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-تسعة_عشر.wav",
-   "voice": "human",
+   "imported": "b3f0c7f6bb763af1.wav",
+   "voice": "elevenlabs",
    "voiced": "تِسْعَةَ عَشَر"
   },
   "2": {
-   "author": "Speaker: Ov3for\nRecorder: Ov3for",
    "file": "da4b9237bacccdf1.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Ov3for-اثنان.wav",
-   "voice": "human",
+   "imported": "da4b9237bacccdf1.wav",
+   "voice": "elevenlabs",
    "voiced": "اثْنَان"
   },
   "20": {
    "file": "91032ad7bbcb6cf7.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "91032ad7bbcb6cf7.wav",
+   "voice": "elevenlabs",
    "voiced": "عِشْرُون"
   },
   "200": {
@@ -724,32 +700,32 @@
   },
   "21": {
    "file": "472b07b9fcf2c245.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "472b07b9fcf2c245.wav",
+   "voice": "elevenlabs",
    "voiced": "وَاحِدٌ وَعِشْرُون"
   },
   "22": {
    "file": "12c6fc06c99a4623.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "12c6fc06c99a4623.wav",
+   "voice": "elevenlabs",
    "voiced": "اثْنَانِ وَعِشْرُون"
   },
   "23": {
    "file": "d435a6cdd786300d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d435a6cdd786300d.wav",
+   "voice": "elevenlabs",
    "voiced": "ثَلَاثَةٌ وَعِشْرُون"
   },
   "24": {
    "file": "4d134bc072212ace.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4d134bc072212ace.wav",
+   "voice": "elevenlabs",
    "voiced": "أَرْبَعَةٌ وَعِشْرُون"
   },
   "25": {
    "file": "f6e1126cedebf23e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "f6e1126cedebf23e.wav",
+   "voice": "elevenlabs",
    "voiced": "خَمْسَةٌ وَعِشْرُون"
   },
   "26": {
@@ -777,11 +753,9 @@
    "voiced": "تِسْعَةٌ وَعِشْرُون"
   },
   "3": {
-   "author": "Speaker: Nehaoua\nRecorder: Nehaoua",
    "file": "77de68daecd823ba.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Nehaoua-ثلاثة.wav",
-   "voice": "human",
+   "imported": "77de68daecd823ba.wav",
+   "voice": "elevenlabs",
    "voiced": "ثَلَاثَة"
   },
   "30": {
@@ -853,11 +827,9 @@
    "voiced": "تِسْعَةٌ وَثَلَاثُون"
   },
   "4": {
-   "author": "Speaker: Fenakhay\nRecorder: Fenakhay",
    "file": "1b6453892473a467.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أربعة.wav",
-   "voice": "human",
+   "imported": "1b6453892473a467.wav",
+   "voice": "elevenlabs",
    "voiced": "أَرْبَعَة"
   },
   "40": {
@@ -929,11 +901,9 @@
    "voiced": "تِسْعَةٌ وَأَرْبَعُون"
   },
   "5": {
-   "author": "Speaker: Spotless Mind1988\nRecorder: Spotless Mind1988",
    "file": "ac3478d69a3c81fa.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-خمسة.wav",
-   "voice": "human",
+   "imported": "ac3478d69a3c81fa.wav",
+   "voice": "elevenlabs",
    "voiced": "خَمْسَة"
   },
   "50": {
@@ -1006,8 +976,8 @@
   },
   "6": {
    "file": "c1dfd96eea8cc2b6.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "c1dfd96eea8cc2b6.wav",
+   "voice": "elevenlabs",
    "voiced": "سِتَّة"
   },
   "60": {
@@ -1080,8 +1050,8 @@
   },
   "7": {
    "file": "902ba3cda1883801.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "902ba3cda1883801.wav",
+   "voice": "elevenlabs",
    "voiced": "سَبْعَة"
   },
   "70": {
@@ -1153,11 +1123,9 @@
    "voiced": "تِسْعَةٌ وَسَبْعُون"
   },
   "8": {
-   "author": "Speaker: Ov3for\nRecorder: Ov3for",
    "file": "fe5dbbcea5ce7e29.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Ov3for-ثمانية.wav",
-   "voice": "human",
+   "imported": "fe5dbbcea5ce7e29.wav",
+   "voice": "elevenlabs",
    "voiced": "ثَمَانِيَة"
   },
   "80": {
@@ -1228,8 +1196,8 @@
   },
   "9": {
    "file": "0ade7c2cf97f75d0.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "0ade7c2cf97f75d0.wav",
+   "voice": "elevenlabs",
    "voiced": "تِسْعَة"
   },
   "90": {
@@ -1515,13 +1483,13 @@
   "ب": {
    "file": "8b5123a22cbcf54a.mp3",
    "imported": "1c1e43d61d9bb3a0.mp3",
-   "voice": "gemini-aistudio",
+   "voice": "elevenlabs",
    "voiced": "بَاء"
   },
   "باء": {
    "file": "1c1e43d61d9bb3a0.mp3",
    "imported": "1c1e43d61d9bb3a0.mp3",
-   "voice": "gemini-aistudio",
+   "voice": "elevenlabs",
    "voiced": "بَاء"
   },
   "باب": {

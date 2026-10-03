@@ -35,6 +35,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--replace-human", action="store_true",
                     help="also replace volunteer recordings (e.g. so all numbers share one voice)")
+    ap.add_argument("--voice", default="gemini-aistudio", help="where the clips came from, e.g. elevenlabs")
     args = ap.parse_args()
     rows = {}
     for path in CSVS:
@@ -59,7 +60,7 @@ def main() -> None:
                 continue
             out = g.ASSETS / "ar" / f"{g.key(clip)}.mp3"
             g.encode(raw, out)
-            manifest["ar"][clip] = {"file": out.name, "voice": "gemini-aistudio", "voiced": voiced, "imported": src.name}
+            manifest["ar"][clip] = {"file": out.name, "voice": args.voice, "voiced": voiced, "imported": src.name}
             done += 1
     g.MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
     import fetch_human_audio  # credits list follows the clips that are still volunteer recordings

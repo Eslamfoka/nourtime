@@ -534,18 +534,8 @@ Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q
 أنف - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-أنف.ogg
 أيل - Speaker: Fjmustak
 Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-أيل.wav
-أَحَدَ عَشَر - Speaker: Fenakhay
-Recorder: Fenakhay - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أحد_عشر.wav
-أَرْبَعَة - Speaker: Fenakhay
-Recorder: Fenakhay - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أربعة.wav
-أَرْبَعَةَ عَشَر - Speaker: Fenakhay
-Recorder: Fenakhay - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أربعة_عشر.wav
 أَرْبَعُون - Speaker: Fenakhay
 Recorder: Fenakhay - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أربعون.wav
-اثْنَا عَشَر - Speaker: Rashed Aljahdali
-Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-اثنا_عشر.wav
-اثْنَان - Speaker: Ov3for
-Recorder: Ov3for - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Ov3for-اثنان.wav
 باب - Speaker: Annisa Tiara Ramadhani
 Recorder: Annisa Tiara Ramadhani - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Annisa_Tiara_Ramadhani-باب.wav
 بالون - Speaker: Fjmustak
@@ -568,22 +558,12 @@ Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File
 بيت - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-بيت.ogg
 تمساح - Speaker: Fjmustak
 Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-تمساح.wav
-تِسْعَةَ عَشَر - Speaker: Rashed Aljahdali
-Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-تسعة_عشر.wav
 تِسْعُون - Speaker: Fjmustak
 Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-تسعون.wav
 ثعبان - Speaker: AlNatiq
 Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-ثعبان.wav
-ثَلَاثَة - Speaker: Nehaoua
-Recorder: Nehaoua - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Nehaoua-ثلاثة.wav
-ثَلَاثَةَ عَشَر - Speaker: Rashed Aljahdali
-Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-ثلاثة_عشر.wav
 ثَلَاثُون - Speaker: Fjmustak
 Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-ثلاثون.wav
-ثَمَانِيَة - Speaker: Ov3for
-Recorder: Ov3for - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Ov3for-ثمانية.wav
-ثَمَانِيَةَ عَشَر - Speaker: Rashed Aljahdali
-Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-ثمانية_عشر.wav
 جبل - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-جبل.ogg
 جد - Speaker: Spotless Mind1988
 Recorder: Spotless Mind1988 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-جَدَّ.wav
@@ -607,10 +587,6 @@ Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara
 خيار - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-خيار.ogg
 خيمة - Speaker: Rashed Aljahdali
 Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-خيمة.wav
-خَمْسَة - Speaker: Spotless Mind1988
-Recorder: Spotless Mind1988 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-خمسة.wav
-خَمْسَةَ عَشَر - Speaker: Rashed Aljahdali
-Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-خمسة_عشر.wav
 خَمْسُون - Speaker: Fjmustak
 Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-خمسون.wav
 دراجة - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-دراجة.ogg
@@ -631,12 +607,8 @@ Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara
 سيارة - Nhaily Mustapha, Vion Nicolas - CC BY 3.0 us - https://commons.wikimedia.org/wiki/File:Ar-سيارة.ogg
 سين - Speaker: Raghda
 Recorder: Akbarali - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Raghda_(Akbarali)-سين.wav
-سَبْعَةَ عَشَر - Speaker: Rashed Aljahdali
-Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-سبعة_عشر.wav
 سَبْعُون - Speaker: Fjmustak
 Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-سبعون.wav
-سِتَّةَ عَشَر - Speaker: Fjmustak
-Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-ستة_عشر.wav
 سِتُّون - Speaker: Fjmustak
 Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-ستون.wav
 شاحنة - Speaker: Fjmustak
@@ -657,8 +629,6 @@ Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File
 Recorder: Fjmustak - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-عسل.wav
 عنكبوت - Speaker: Zinou2go
 Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-عنكبوت.wav
-عَشَرَة - Speaker: Zinou2go
-Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-عشرة.wav
 فأر - Speaker: Rashed Aljahdali
 Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-فأر.wav
 فراشة - Speaker: Fjmustak
@@ -708,5 +678,3 @@ Recorder: AlNatiq - CC0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara
 Recorder: Rashed Aljahdali - CC BY 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-وردة.wav
 ولد - Speaker: Zinou2go
 Recorder: Zinou2go - CC BY-SA 3.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-وَلَدَ.wav
-وَاحِد - Speaker: Spotless Mind1988
-Recorder: Spotless Mind1988 - CC BY-SA 4.0 - https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-وَاحِد.wav
