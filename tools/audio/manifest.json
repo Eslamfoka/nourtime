@@ -5645,2850 +5645,4326 @@
  },
  "en": {
   "0": {
-   "author": "Commander Keane",
    "file": "b6589fc6ab0dc82c.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-zero.ogg",
-   "voice": "human",
+   "imported": "b6589fc6ab0dc82c.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "zero"
   },
   "1": {
-   "author": "Akafinland",
    "file": "356a192b7913b04c.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-US-One.oga",
-   "voice": "human",
+   "imported": "356a192b7913b04c.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "one"
   },
   "10": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "b1d5781111d84f7b.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ten.wav",
-   "voice": "human",
+   "imported": "b1d5781111d84f7b.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "ten"
   },
   "100": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "310b86e0b62b8285.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-one_hundred.wav",
-   "voice": "human",
+   "imported": "310b86e0b62b8285.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "one hundred"
   },
   "1000": {
    "file": "e3cbba8883fe746c.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "e3cbba8883fe746c.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "one thousand"
   },
   "11": {
-   "author": "Commander Keane",
    "file": "17ba0791499db908.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-eleven.ogg",
-   "voice": "human",
+   "imported": "17ba0791499db908.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eleven"
   },
   "12": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "7b52009b64fd0a2a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-Twelve.wav",
-   "voice": "human",
+   "imported": "7b52009b64fd0a2a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "twelve"
   },
   "13": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "bd307a3ec329e10a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirteen.wav",
-   "voice": "human",
+   "imported": "bd307a3ec329e10a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "thirteen"
   },
   "14": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "fa35e192121eabf3.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fourteen.wav",
-   "voice": "human",
+   "imported": "fa35e192121eabf3.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "fourteen"
   },
   "15": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "f1abd670358e036c.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifteen.wav",
-   "voice": "human",
+   "imported": "f1abd670358e036c.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "fifteen"
   },
   "16": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "1574bddb75c78a6f.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixteen.wav",
-   "voice": "human",
+   "imported": "1574bddb75c78a6f.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "sixteen"
   },
   "17": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "0716d9708d321ffb.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventeen.wav",
-   "voice": "human",
+   "imported": "0716d9708d321ffb.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seventeen"
   },
   "18": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "9e6a55b6b4563e65.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighteen.wav",
-   "voice": "human",
+   "imported": "9e6a55b6b4563e65.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eighteen"
   },
   "19": {
-   "author": "No machine-readable author provided. TheDaveRoss assumed (based on copyright claims).",
    "file": "b3f0c7f6bb763af1.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-nineteen.ogg",
-   "voice": "human",
+   "imported": "b3f0c7f6bb763af1.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "nineteen"
   },
   "2": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "da4b9237bacccdf1.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-two.wav",
-   "voice": "human",
+   "imported": "da4b9237bacccdf1.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "two"
   },
   "20": {
-   "author": "unknown",
    "file": "91032ad7bbcb6cf7.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-twenty.ogg",
-   "voice": "human",
+   "imported": "91032ad7bbcb6cf7.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "twenty"
   },
   "200": {
-   "author": "Speaker: Persent101\nRecorder: Persent101",
    "file": "9f9af029585ba014.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-two_hundred.wav",
-   "voice": "human",
+   "imported": "9f9af029585ba014.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "two hundred"
   },
   "21": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "472b07b9fcf2c245.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-one.wav",
-   "voice": "human",
+   "imported": "472b07b9fcf2c245.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "twenty-one"
   },
   "22": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "12c6fc06c99a4623.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-two.wav",
-   "voice": "human",
+   "imported": "12c6fc06c99a4623.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "twenty-two"
   },
   "23": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "d435a6cdd786300d.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-three.wav",
-   "voice": "human",
+   "imported": "d435a6cdd786300d.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "twenty-three"
   },
   "24": {
-   "author": "Steve Shives",
    "file": "4d134bc072212ace.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-twenty-four.ogg",
-   "voice": "human",
+   "imported": "4d134bc072212ace.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "twenty-four"
   },
   "25": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "f6e1126cedebf23e.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-five.wav",
-   "voice": "human",
+   "imported": "f6e1126cedebf23e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "twenty-five"
   },
   "26": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "887309d048beef83.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-six.wav",
-   "voice": "human",
+   "imported": "887309d048beef83.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "twenty-six"
   },
   "27": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "bc33ea4e26e5e1af.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-seven.wav",
-   "voice": "human",
+   "imported": "bc33ea4e26e5e1af.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "twenty-seven"
   },
   "28": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "0a57cb53ba59c46f.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-eight.wav",
-   "voice": "human",
+   "imported": "0a57cb53ba59c46f.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "twenty-eight"
   },
   "29": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "7719a1c782a1ba91.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-twenty-nine.wav",
-   "voice": "human",
+   "imported": "7719a1c782a1ba91.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "twenty-nine"
   },
   "3": {
-   "author": "Speaker: Andre Vitor Kerr Lima\nRecorder: Andrevitorkerr",
    "file": "77de68daecd823ba.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Andre_Vitor_Kerr_Lima_(Andrevitorkerr)-three.wav",
-   "voice": "human",
+   "imported": "77de68daecd823ba.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "three"
   },
   "30": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "22d200f8670dbdb3.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty.wav",
-   "voice": "human",
+   "imported": "22d200f8670dbdb3.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "thirty"
   },
   "300": {
-   "author": "Speaker: Persent101\nRecorder: Persent101",
    "file": "e26973e6ee8ab9cd.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-three_hundred.wav",
-   "voice": "human",
+   "imported": "e26973e6ee8ab9cd.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "three hundred"
   },
   "31": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "632667547e7cd3e0.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-one.wav",
-   "voice": "human",
+   "imported": "632667547e7cd3e0.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "thirty-one"
   },
   "32": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "cb4e5208b4cd8726.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-two.wav",
-   "voice": "human",
+   "imported": "cb4e5208b4cd8726.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "thirty-two"
   },
   "33": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "b6692ea5df920cad.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-three.wav",
-   "voice": "human",
+   "imported": "b6692ea5df920cad.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "thirty-three"
   },
   "34": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "f1f836cb4ea6efb2.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-four.wav",
-   "voice": "human",
+   "imported": "f1f836cb4ea6efb2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "thirty-four"
   },
   "35": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "972a67c48192728a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-five.wav",
-   "voice": "human",
+   "imported": "972a67c48192728a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "thirty-five"
   },
   "36": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "fc074d501302eb2b.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-six.wav",
-   "voice": "human",
+   "imported": "fc074d501302eb2b.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "thirty-six"
   },
   "37": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "cb7a1d775e800fd1.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-seven.wav",
-   "voice": "human",
+   "imported": "cb7a1d775e800fd1.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "thirty-seven"
   },
   "38": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "5b384ce32d8cdef0.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-eight.wav",
-   "voice": "human",
+   "imported": "5b384ce32d8cdef0.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "thirty-eight"
   },
   "39": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "ca3512f4dfa95a03.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-thirty-nine.wav",
-   "voice": "human",
+   "imported": "ca3512f4dfa95a03.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "thirty-nine"
   },
   "4": {
-   "author": "Commander Keane",
    "file": "1b6453892473a467.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-au-four.ogg",
-   "voice": "human",
+   "imported": "1b6453892473a467.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "four"
   },
   "40": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "af3e133428b9e25c.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty.wav",
-   "voice": "human",
+   "imported": "af3e133428b9e25c.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "forty"
   },
   "400": {
-   "author": "Speaker: Persent101\nRecorder: Persent101",
    "file": "ab7f7b955330dc8d.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-four_hundred.wav",
-   "voice": "human",
+   "imported": "ab7f7b955330dc8d.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "four hundred"
   },
   "41": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "761f22b2c1593d0b.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-one.wav",
-   "voice": "human",
+   "imported": "761f22b2c1593d0b.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "forty-one"
   },
   "42": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "92cfceb39d57d914.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-two.wav",
-   "voice": "human",
+   "imported": "92cfceb39d57d914.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "forty-two"
   },
   "43": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "0286dd552c9bea9a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-three.wav",
-   "voice": "human",
+   "imported": "0286dd552c9bea9a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "forty-three"
   },
   "44": {
-   "author": "Commander Keane",
    "file": "98fbc42faedc0249.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-forty-four.ogg",
-   "voice": "human",
+   "imported": "98fbc42faedc0249.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "forty-four"
   },
   "45": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "fb644351560d8296.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-five.wav",
-   "voice": "human",
+   "imported": "fb644351560d8296.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "forty-five"
   },
   "46": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "fe2ef495a1152561.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-six.wav",
-   "voice": "human",
+   "imported": "fe2ef495a1152561.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "forty-six"
   },
   "47": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "827bfc458708f0b4.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-seven.wav",
-   "voice": "human",
+   "imported": "827bfc458708f0b4.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "forty-seven"
   },
   "48": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "64e095fe763fc624.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-eight.wav",
-   "voice": "human",
+   "imported": "64e095fe763fc624.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "forty-eight"
   },
   "49": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "2e01e17467891f7c.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-forty-nine.wav",
-   "voice": "human",
+   "imported": "2e01e17467891f7c.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "forty-nine"
   },
   "5": {
-   "author": "No machine-readable author provided. NumberOne~commonswiki assumed (based on copyright claims).",
    "file": "ac3478d69a3c81fa.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-Five.ogg",
-   "voice": "human",
+   "imported": "ac3478d69a3c81fa.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "five"
   },
   "50": {
-   "author": "Commander Keane",
    "file": "e1822db470e60d09.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-fifty.ogg",
-   "voice": "human",
+   "imported": "e1822db470e60d09.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "fifty"
   },
   "500": {
-   "author": "Speaker: PerfectSoundWhatever\nRecorder: PerfectSoundWhatever",
    "file": "f83a383c0fa81f29.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-PerfectSoundWhatever-five_hundred.wav",
-   "voice": "human",
+   "imported": "f83a383c0fa81f29.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "five hundred"
   },
   "51": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "b7eb6c689c037217.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-one.wav",
-   "voice": "human",
+   "imported": "b7eb6c689c037217.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "fifty-one"
   },
   "52": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "a9334987ece78b6f.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-two.wav",
-   "voice": "human",
+   "imported": "a9334987ece78b6f.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "fifty-two"
   },
   "53": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "c5b76da3e608d34e.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-three.wav",
-   "voice": "human",
+   "imported": "c5b76da3e608d34e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "fifty-three"
   },
   "54": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "80e28a51cbc26fa4.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-four.wav",
-   "voice": "human",
+   "imported": "80e28a51cbc26fa4.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "fifty-four"
   },
   "55": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "8effee409c625e1a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-five.wav",
-   "voice": "human",
+   "imported": "8effee409c625e1a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "fifty-five"
   },
   "56": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "54ceb91256e8190e.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-six.wav",
-   "voice": "human",
+   "imported": "54ceb91256e8190e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "fifty-six"
   },
   "57": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "9109c85a45b703f8.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-seven.wav",
-   "voice": "human",
+   "imported": "9109c85a45b703f8.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "fifty-seven"
   },
   "58": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "667be543b02294b7.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-eight.wav",
-   "voice": "human",
+   "imported": "667be543b02294b7.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "fifty-eight"
   },
   "59": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "5a5b0f9b7d3f8fc8.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-fifty-nine.wav",
-   "voice": "human",
+   "imported": "5a5b0f9b7d3f8fc8.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "fifty-nine"
   },
   "6": {
-   "author": "No machine-readable author provided. NumberOne~commonswiki assumed (based on copyright claims).",
    "file": "c1dfd96eea8cc2b6.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-Six.ogg",
-   "voice": "human",
+   "imported": "c1dfd96eea8cc2b6.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "six"
   },
   "60": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "e6c3dd630428fd54.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty.wav",
-   "voice": "human",
+   "imported": "e6c3dd630428fd54.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "sixty"
   },
   "600": {
-   "author": "Speaker: Persent101\nRecorder: Persent101",
    "file": "15aa0c7e8fbd2923.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-six_hundred.wav",
-   "voice": "human",
+   "imported": "15aa0c7e8fbd2923.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "six hundred"
   },
   "61": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "6c1e671f9af5b46d.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-one.wav",
-   "voice": "human",
+   "imported": "6c1e671f9af5b46d.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "sixty-one"
   },
   "62": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "511a418e72591eb7.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-two.wav",
-   "voice": "human",
+   "imported": "511a418e72591eb7.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "sixty-two"
   },
   "63": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "a17554a0d2b15a66.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-three.wav",
-   "voice": "human",
+   "imported": "a17554a0d2b15a66.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "sixty-three"
   },
   "64": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "c66c65175fecc310.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-four.wav",
-   "voice": "human",
+   "imported": "c66c65175fecc310.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "sixty-four"
   },
   "65": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "2a459380709e2fe4.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-five.wav",
-   "voice": "human",
+   "imported": "2a459380709e2fe4.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "sixty-five"
   },
   "66": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "59129aacfb6cebbe.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-six.wav",
-   "voice": "human",
+   "imported": "59129aacfb6cebbe.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "sixty-six"
   },
   "67": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "4d89d294cd4ca9f2.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-seven.wav",
-   "voice": "human",
+   "imported": "4d89d294cd4ca9f2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "sixty-seven"
   },
   "68": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "b4c96d80854dd27e.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-sixty-eight.wav",
-   "voice": "human",
+   "imported": "b4c96d80854dd27e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "sixty-eight"
   },
   "69": {
-   "author": "Commander Keane",
    "file": "a72b20062ec2c47a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-sixty-nine.ogg",
-   "voice": "human",
+   "imported": "a72b20062ec2c47a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "sixty-nine"
   },
   "7": {
-   "author": "No machine-readable author provided. NumberOne~commonswiki assumed (based on copyright claims).",
    "file": "902ba3cda1883801.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-Seven.ogg",
-   "voice": "human",
+   "imported": "902ba3cda1883801.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seven"
   },
   "70": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "b7103ca278a75cad.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy.wav",
-   "voice": "human",
+   "imported": "b7103ca278a75cad.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seventy"
   },
   "700": {
-   "author": "Speaker: Persent101\nRecorder: Persent101",
    "file": "d8e4bbea3af2e486.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-seven_hundred.wav",
-   "voice": "human",
+   "imported": "d8e4bbea3af2e486.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seven hundred"
   },
   "71": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "d02560dd9d7db446.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-one.wav",
-   "voice": "human",
+   "imported": "d02560dd9d7db446.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seventy-one"
   },
   "72": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "c097638f92de80ba.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-two.wav",
-   "voice": "human",
+   "imported": "c097638f92de80ba.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seventy-two"
   },
   "73": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "35e995c107a71cae.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-three.wav",
-   "voice": "human",
+   "imported": "35e995c107a71cae.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seventy-three"
   },
   "74": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "1f1362ea41d1bc65.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-four.wav",
-   "voice": "human",
+   "imported": "1f1362ea41d1bc65.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seventy-four"
   },
   "75": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "450ddec8dd206c2e.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-five.wav",
-   "voice": "human",
+   "imported": "450ddec8dd206c2e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seventy-five"
   },
   "76": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "d54ad009d179ae34.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-six.wav",
-   "voice": "human",
+   "imported": "d54ad009d179ae34.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seventy-six"
   },
   "77": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "d321d6f7ccf98b51.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-seven.wav",
-   "voice": "human",
+   "imported": "d321d6f7ccf98b51.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seventy-seven"
   },
   "78": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "eb4ac3033e8ab359.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-eight.wav",
-   "voice": "human",
+   "imported": "eb4ac3033e8ab359.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seventy-eight"
   },
   "79": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "b74f5ee9461495ba.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-seventy-nine.wav",
-   "voice": "human",
+   "imported": "b74f5ee9461495ba.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "seventy-nine"
   },
   "8": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "fe5dbbcea5ce7e29.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eight.wav",
-   "voice": "human",
+   "imported": "fe5dbbcea5ce7e29.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eight"
   },
   "80": {
-   "author": "Speaker: Arlo Barnes\nRecorder: Arlo Barnes",
    "file": "b888b29826bb53dc.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-eighty.wav",
-   "voice": "human",
+   "imported": "b888b29826bb53dc.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eighty"
   },
   "800": {
-   "author": "Speaker: Persent101\nRecorder: Persent101",
    "file": "290a52e4dd6282ca.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-eight_hundred.wav",
-   "voice": "human",
+   "imported": "290a52e4dd6282ca.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eight hundred"
   },
   "81": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "1d513c0bcbe33b2e.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-one.wav",
-   "voice": "human",
+   "imported": "1d513c0bcbe33b2e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eighty-one"
   },
   "82": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "76546f9a641ede2b.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-two.wav",
-   "voice": "human",
+   "imported": "76546f9a641ede2b.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eighty-two"
   },
   "83": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "7d7116e23efef729.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-three.wav",
-   "voice": "human",
+   "imported": "7d7116e23efef729.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eighty-three"
   },
   "84": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "be461a0cd1fda052.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-four.wav",
-   "voice": "human",
+   "imported": "be461a0cd1fda052.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eighty-four"
   },
   "85": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "1352246e33277e9d.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-five.wav",
-   "voice": "human",
+   "imported": "1352246e33277e9d.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eighty-five"
   },
   "86": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "3c26dffc8a2e8804.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-six.wav",
-   "voice": "human",
+   "imported": "3c26dffc8a2e8804.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eighty-six"
   },
   "87": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "e62d7f1eb43d87c2.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-seven.wav",
-   "voice": "human",
+   "imported": "e62d7f1eb43d87c2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eighty-seven"
   },
   "88": {
-   "author": "Commander Keane",
    "file": "b37f6ddcefad7e86.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-eighty-eight.ogg",
-   "voice": "human",
+   "imported": "b37f6ddcefad7e86.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eighty-eight"
   },
   "89": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "16b06bd9b738835e.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-eighty-nine.wav",
-   "voice": "human",
+   "imported": "16b06bd9b738835e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "eighty-nine"
   },
   "9": {
-   "author": "No machine-readable author provided. NumberOne~commonswiki assumed (based on copyright claims).",
    "file": "0ade7c2cf97f75d0.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-Nine.ogg",
-   "voice": "human",
+   "imported": "0ade7c2cf97f75d0.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "nine"
   },
   "90": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "2d0c8af807ef45ac.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety.wav",
-   "voice": "human",
+   "imported": "2d0c8af807ef45ac.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "ninety"
   },
   "900": {
-   "author": "Speaker: Persent101\nRecorder: Persent101",
    "file": "28cc2209b234d918.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-nine_hundred.wav",
-   "voice": "human",
+   "imported": "28cc2209b234d918.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "nine hundred"
   },
   "91": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "4cd66dfabbd964f8.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-one.wav",
-   "voice": "human",
+   "imported": "4cd66dfabbd964f8.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "ninety-one"
   },
   "92": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "8ee51caaa2c2f4ee.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-two.wav",
-   "voice": "human",
+   "imported": "8ee51caaa2c2f4ee.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "ninety-two"
   },
   "93": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "08a35293e09f5084.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-three.wav",
-   "voice": "human",
+   "imported": "08a35293e09f5084.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "ninety-three"
   },
   "94": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "215bb47da8fac334.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-four.wav",
-   "voice": "human",
+   "imported": "215bb47da8fac334.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "ninety-four"
   },
   "95": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "8e63fd3e77796b10.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-five.wav",
-   "voice": "human",
+   "imported": "8e63fd3e77796b10.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "ninety-five"
   },
   "96": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "6fb84aed32facd12.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-six.wav",
-   "voice": "human",
+   "imported": "6fb84aed32facd12.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "ninety-six"
   },
   "97": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "812ed4562d321136.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-seven.wav",
-   "voice": "human",
+   "imported": "812ed4562d321136.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "ninety-seven"
   },
   "98": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "31bd9b9f5f7b338e.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-eight.wav",
-   "voice": "human",
+   "imported": "31bd9b9f5f7b338e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "ninety-eight"
   },
   "99": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "9a79be611e0267e1.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ninety-nine.wav",
-   "voice": "human",
+   "imported": "9a79be611e0267e1.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "ninety-nine"
   },
   "A": {
-   "author": "No machine-readable author provided. Xnux assumed (based on copyright claims).",
    "file": "6dcd4ce23d88e2ee.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-a.ogg",
-   "voice": "human",
-   "voiced": "A"
+   "imported": "6dcd4ce23d88e2ee.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "A."
   },
   "Airplane": {
-   "author": "Dvortygirl",
    "file": "db34be90d58adae7.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-airplane.ogg",
-   "voice": "human",
+   "imported": "db34be90d58adae7.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Airplane"
   },
   "Ambulance": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "6ed272289e5ab5f2.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-ambulance.wav",
-   "voice": "human",
+   "imported": "6ed272289e5ab5f2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Ambulance"
   },
   "Animals": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "1780ecaa1645d8f2.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-animals.wav",
-   "voice": "human",
+   "imported": "1780ecaa1645d8f2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Animals"
   },
   "Ant": {
-   "author": "Speaker: Naomi Persephone Amethyst\nRecorder: NaomiAmethyst",
    "file": "02cc2a69720bd8bf.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Naomi_Persephone_Amethyst_(NaomiAmethyst)-ant.wav",
-   "voice": "human",
+   "imported": "02cc2a69720bd8bf.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Ant"
   },
   "Apple": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "476432a3e85a0aa2.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-apple.ogg",
-   "voice": "human",
+   "imported": "476432a3e85a0aa2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Apple"
   },
   "Avocado": {
-   "author": "Dvortygirl",
    "file": "f6706ea333bbff8e.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-avocado.ogg",
-   "voice": "human",
+   "imported": "f6706ea333bbff8e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Avocado"
   },
   "B": {
-   "author": "Speaker: Flame, not lame\nRecorder: Flame, not lame",
    "file": "ae4f281df5a5d0ff.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-B.wav",
-   "voice": "human",
-   "voiced": "B"
+   "imported": "ae4f281df5a5d0ff.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "B."
   },
   "Baby": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "13c3d98d3a2445af.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-baby.ogg",
-   "voice": "human",
+   "imported": "13c3d98d3a2445af.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Baby"
   },
   "Bag": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "ef6155a5eccf4717.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-bag.wav",
-   "voice": "human",
+   "imported": "ef6155a5eccf4717.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Bag"
   },
   "Ball": {
-   "author": "Dvortygirl",
    "file": "3d373949a33fb6f5.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-ball.ogg",
-   "voice": "human",
+   "imported": "3d373949a33fb6f5.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Ball"
   },
   "Balloon": {
-   "author": "Dvortygirl",
    "file": "64f241f5415d400e.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-balloon.ogg",
-   "voice": "human",
+   "imported": "64f241f5415d400e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Balloon"
   },
   "Banana": {
-   "author": "D3VIL",
    "file": "fc6fae10db2bd0b6.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-banana.ogg",
-   "voice": "human",
+   "imported": "fc6fae10db2bd0b6.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Banana"
   },
   "Bear": {
-   "author": "Speaker: Muldoonsamuel55\nRecorder: Muldoonsamuel55",
    "file": "7b9f56b445e86e6a.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Muldoonsamuel55-bear.wav",
-   "voice": "human",
+   "imported": "7b9f56b445e86e6a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Bear"
   },
   "Bed": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "1a706e2365dd70ae.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-bed.ogg",
-   "voice": "human",
+   "imported": "1a706e2365dd70ae.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Bed"
   },
   "Bee": {
    "file": "6304f0d269c8ce83.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "6304f0d269c8ce83.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Bee"
   },
   "Bell": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "d4198662a72fd519.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-bell.wav",
-   "voice": "human",
+   "imported": "d4198662a72fd519.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Bell"
   },
   "Bicycle": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "4e83ab72f5680a79.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-Bicycle.wav",
-   "voice": "human",
+   "imported": "4e83ab72f5680a79.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Bicycle"
   },
   "Bird": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "fe7e2953e9474b2b.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-bird.wav",
-   "voice": "human",
+   "imported": "fe7e2953e9474b2b.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Bird"
   },
   "Black": {
-   "author": "Atcovi",
    "file": "b406fb57b29fc76f.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-Black.ogg",
-   "voice": "human",
+   "imported": "b406fb57b29fc76f.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Black"
   },
   "Blue": {
-   "author": "Atcovi",
    "file": "7d44bc449c2a2637.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-Blue.ogg",
-   "voice": "human",
+   "imported": "7d44bc449c2a2637.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Blue"
   },
   "Body": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "718a7e8a582e982e.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-body.wav",
-   "voice": "human",
+   "imported": "718a7e8a582e982e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Body"
   },
   "Book": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "f69f233005f15802.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-book.ogg",
-   "voice": "human",
+   "imported": "f69f233005f15802.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Book"
   },
   "Boy": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "b9dc9d8cb52edb82.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-boy.wav",
-   "voice": "human",
+   "imported": "b9dc9d8cb52edb82.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Boy"
   },
   "Brain": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "97fb724268c2de1e.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-brain.wav",
-   "voice": "human",
+   "imported": "97fb724268c2de1e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Brain"
   },
   "Bread": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "c61eb5df5d78529f.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-bread.ogg",
-   "voice": "human",
+   "imported": "c61eb5df5d78529f.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Bread"
   },
   "Broom": {
-   "author": "Dvortygirl",
    "file": "d67620ceba7d1045.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-broom.ogg",
-   "voice": "human",
+   "imported": "d67620ceba7d1045.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Broom"
   },
   "Brown": {
-   "author": "Atcovi",
    "file": "3a47350b7d7cb691.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-Brown.ogg",
-   "voice": "human",
+   "imported": "3a47350b7d7cb691.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Brown"
   },
   "Bus": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "56070a568367d5a4.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-bus.wav",
-   "voice": "human",
+   "imported": "56070a568367d5a4.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Bus"
   },
   "Butterfly": {
-   "author": "Speaker: Simplificationalizer\nRecorder: Simplificationalizer",
    "file": "41a76f2148dc8625.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Simplificationalizer-butterfly.wav",
-   "voice": "human",
+   "imported": "41a76f2148dc8625.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Butterfly"
   },
   "C": {
-   "author": "Logictheo",
    "file": "32096c2e0eff33d8.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-uk-c.ogg",
-   "voice": "human",
-   "voiced": "C"
+   "imported": "32096c2e0eff33d8.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "C."
   },
   "Cactus": {
-   "author": "Speaker: Wodencafe\nRecorder: Wodencafe",
    "file": "ffbcb973995142c8.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-cactus.wav",
-   "voice": "human",
+   "imported": "ffbcb973995142c8.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Cactus"
   },
   "Cake": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "9c6e5a3f44fc5506.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-cake.ogg",
-   "voice": "human",
+   "imported": "9c6e5a3f44fc5506.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Cake"
   },
   "Camel": {
-   "author": "Tooironic",
    "file": "4151715f8ef766d2.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-camel.ogg",
-   "voice": "human",
+   "imported": "4151715f8ef766d2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Camel"
   },
   "Candle": {
-   "author": "Dvortygirl",
    "file": "8d8fd6765e184419.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-candle.ogg",
-   "voice": "human",
+   "imported": "8d8fd6765e184419.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Candle"
   },
   "Cap": {
-   "author": "Dvortygirl",
    "file": "b38fd978df2ce239.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-cap.ogg",
-   "voice": "human",
+   "imported": "b38fd978df2ce239.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Cap"
   },
   "Car": {
-   "author": "Dvortygirl",
    "file": "bc47a3dce0c76270.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-car.ogg",
-   "voice": "human",
+   "imported": "bc47a3dce0c76270.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Car"
   },
   "Carrot": {
-   "author": "No machine-readable author provided. Dvortygirl assumed (based on copyright claims).",
    "file": "617fec0ebd8f2fad.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-carrot.ogg",
-   "voice": "human",
+   "imported": "617fec0ebd8f2fad.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Carrot"
   },
   "Castle": {
-   "author": "Commander Keane",
    "file": "e9d8ee928c783e6c.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-castle.ogg",
-   "voice": "human",
+   "imported": "e9d8ee928c783e6c.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Castle"
   },
   "Cat": {
-   "author": "Commander Keane",
    "file": "cebe54c7626cb1ce.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-Cat.ogg",
-   "voice": "human",
+   "imported": "cebe54c7626cb1ce.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Cat"
   },
   "Cheese": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "d48b39393f18c374.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-cheese.wav",
-   "voice": "human",
+   "imported": "d48b39393f18c374.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Cheese"
   },
   "Cherry": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "d6eee90533dffc1f.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-cherry.ogg",
-   "voice": "human",
+   "imported": "d6eee90533dffc1f.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Cherry"
   },
   "Chicken": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "baaa18844b8db958.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-chicken.wav",
-   "voice": "human",
+   "imported": "baaa18844b8db958.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Chicken"
   },
   "Clock": {
-   "author": "ATMarsden",
    "file": "04f6b3ea183eb9d7.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-clock.ogg",
-   "voice": "human",
+   "imported": "04f6b3ea183eb9d7.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Clock"
   },
   "Clothes": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "0ac111125c7cb3c6.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-clothes.ogg",
-   "voice": "human",
+   "imported": "0ac111125c7cb3c6.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Clothes"
   },
   "Cloud": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "b2efeaa1a7d6d218.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-cloud.ogg",
-   "voice": "human",
+   "imported": "b2efeaa1a7d6d218.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Cloud"
   },
   "Coconut": {
-   "author": "Speaker: Wodencafe\nRecorder: Wodencafe",
    "file": "3a0f02a0558acbe8.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-coconut.wav",
-   "voice": "human",
+   "imported": "3a0f02a0558acbe8.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Coconut"
   },
   "Computer": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "924645b3e345a600.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-computer.ogg",
-   "voice": "human",
+   "imported": "924645b3e345a600.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Computer"
   },
   "Cookie": {
-   "author": "Commander Keane",
    "file": "e4f81994fed009c2.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-cookie.ogg",
-   "voice": "human",
+   "imported": "e4f81994fed009c2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Cookie"
   },
   "Corn": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "50efb42de671b478.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-corn.wav",
-   "voice": "human",
+   "imported": "50efb42de671b478.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Corn"
   },
   "Cow": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "33935f03e2050408.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-cow.wav",
-   "voice": "human",
+   "imported": "33935f03e2050408.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Cow"
   },
   "Crab": {
-   "author": "Speaker: Berrely\nRecorder: Berrely",
    "file": "186a5f6d3da38189.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Berrely-crab.wav",
-   "voice": "human",
+   "imported": "186a5f6d3da38189.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Crab"
   },
   "Crocodile": {
-   "author": "Speaker: Vealhurl\nRecorder: Vealhurl",
    "file": "9550e2815afbb248.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-crocodile.wav",
-   "voice": "human",
+   "imported": "9550e2815afbb248.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Crocodile"
   },
   "Crown": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "410494f2cf468cb9.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-crown.wav",
-   "voice": "human",
+   "imported": "410494f2cf468cb9.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Crown"
   },
   "Cucumber": {
-   "author": "Dvortygirl",
    "file": "2270b4873eb9e505.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-cucumber.ogg",
-   "voice": "human",
+   "imported": "2270b4873eb9e505.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Cucumber"
   },
   "D": {
-   "author": "Twocs",
    "file": "50c9e8d5fc98727b.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-d.ogg",
-   "voice": "human",
-   "voiced": "D"
+   "imported": "50c9e8d5fc98727b.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "D."
   },
   "Deer": {
    "file": "612ac470badcb542.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "612ac470badcb542.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Deer"
   },
   "Dice": {
    "file": "7927f138711ad7d1.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "7927f138711ad7d1.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Dice"
   },
   "Dog": {
-   "author": "Speaker: Adélaïde Calais WMFr\nRecorder: Adélaïde Calais WMFr",
    "file": "b866865be01a47a3.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Adélaïde_Calais_WMFr-dog.wav",
-   "voice": "human",
+   "imported": "b866865be01a47a3.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Dog"
   },
   "Dolphin": {
    "file": "b352a36f62c29eef.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "b352a36f62c29eef.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Dolphin"
   },
   "Door": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "478d47b06dda44ac.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-door.ogg",
-   "voice": "human",
+   "imported": "478d47b06dda44ac.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Door"
   },
   "Dress": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "f61e33bf74dc6cb2.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-dress.ogg",
-   "voice": "human",
+   "imported": "f61e33bf74dc6cb2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Dress"
   },
   "Drum": {
-   "author": "Dvortygirl",
    "file": "32bad1d2cace2a26.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-drum.ogg",
-   "voice": "human",
+   "imported": "32bad1d2cace2a26.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Drum"
   },
   "Duck": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "e30bb6b05bdfacd3.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-duck.wav",
-   "voice": "human",
+   "imported": "e30bb6b05bdfacd3.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Duck"
   },
   "E": {
-   "author": "Missionary",
    "file": "e0184adedf913b07.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-e.ogg",
-   "voice": "human",
-   "voiced": "E"
+   "imported": "e0184adedf913b07.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "E."
   },
   "Eagle": {
    "file": "0af99bc6a304e3cb.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "0af99bc6a304e3cb.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Eagle"
   },
   "Ear": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "27b938020515cf5b.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-ear.wav",
-   "voice": "human",
+   "imported": "27b938020515cf5b.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Ear"
   },
   "Earth": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "a074430f352b879e.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-earth.ogg",
-   "voice": "human",
+   "imported": "a074430f352b879e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Earth"
   },
   "Egg": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "32c9bcb10ced7fe6.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-egg.ogg",
-   "voice": "human",
+   "imported": "32c9bcb10ced7fe6.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Egg"
   },
   "Elephant": {
-   "author": "unknown",
    "file": "1c6f116ce35bbe8b.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-elephant.ogg",
-   "voice": "human",
+   "imported": "1c6f116ce35bbe8b.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Elephant"
   },
   "Envelope": {
-   "author": "unknown",
    "file": "7f4a2c89d81b1edd.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-envelope.ogg",
-   "voice": "human",
+   "imported": "7f4a2c89d81b1edd.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Envelope"
   },
   "Even": {
-   "author": "Dvortygirl",
    "file": "9e767ad03e5547f2.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-even.ogg",
-   "voice": "human",
+   "imported": "9e767ad03e5547f2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Even"
   },
   "Eye": {
    "file": "dd17a6fae9289e39.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "dd17a6fae9289e39.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Eye"
   },
   "F": {
-   "author": "Logictheo",
    "file": "e69f20e9f683920d.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-uk-f.ogg",
-   "voice": "human",
-   "voiced": "F"
+   "imported": "e69f20e9f683920d.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "F."
   },
   "Fire": {
-   "author": "Dvortygirl",
    "file": "78baebfcb4b52665.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-fire.ogg",
-   "voice": "human",
+   "imported": "78baebfcb4b52665.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Fire"
   },
   "Fire engine": {
-   "author": "Speaker: Persent101\nRecorder: Persent101",
    "file": "8e6e8007b9837a2c.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-fire_engine.wav",
-   "voice": "human",
+   "imported": "8e6e8007b9837a2c.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Fire engine"
   },
   "Fish": {
-   "author": "Commander Keane",
    "file": "3030e8ec7633ec1a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-fish.ogg",
-   "voice": "human",
+   "imported": "3030e8ec7633ec1a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Fish"
   },
   "Flower": {
-   "author": "Speaker: Adélaïde Calais WMFr\nRecorder: Adélaïde Calais WMFr",
    "file": "ac81468fdc6a2d40.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Adélaïde_Calais_WMFr-flower.wav",
-   "voice": "human",
+   "imported": "ac81468fdc6a2d40.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Flower"
   },
   "Food": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "35b259290ec3acbb.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-food.ogg",
-   "voice": "human",
+   "imported": "35b259290ec3acbb.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Food"
   },
   "Foot": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "d88c8ea10f076325.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-foot.wav",
-   "voice": "human",
+   "imported": "d88c8ea10f076325.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Foot"
   },
   "Fox": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "dfcd3454bbea788a.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-fox.wav",
-   "voice": "human",
+   "imported": "dfcd3454bbea788a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Fox"
   },
   "Frog": {
-   "author": "Dvortygirl",
    "file": "075e4feb426bf015.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-frog.ogg",
-   "voice": "human",
+   "imported": "075e4feb426bf015.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Frog"
   },
   "G": {
-   "author": "Twocs",
    "file": "a36a6718f54524d8.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-g.ogg",
-   "voice": "human",
-   "voiced": "G"
+   "imported": "a36a6718f54524d8.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "G."
   },
   "Gift": {
-   "author": "Speaker: Arlo Barnes\nRecorder: Arlo Barnes",
    "file": "8d0a32ed63390771.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-gift.wav",
-   "voice": "human",
+   "imported": "8d0a32ed63390771.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Gift"
   },
   "Giraffe": {
-   "author": "Dvortygirl",
    "file": "70dd942bcb5bc262.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-giraffe.ogg",
-   "voice": "human",
+   "imported": "70dd942bcb5bc262.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Giraffe"
   },
   "Girl": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "29fb58174b748291.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-girl.wav",
-   "voice": "human",
+   "imported": "29fb58174b748291.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Girl"
   },
   "Glasses": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "4b00bd3f2f0c4c9c.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-glasses.ogg",
-   "voice": "human",
+   "imported": "4b00bd3f2f0c4c9c.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Glasses"
   },
   "Gloves": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "1fb2c11ac7e25406.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-gloves.wav",
-   "voice": "human",
+   "imported": "1fb2c11ac7e25406.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Gloves"
   },
   "Goat": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "0e3f5fc25846b7ff.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-goat.wav",
-   "voice": "human",
+   "imported": "0e3f5fc25846b7ff.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Goat"
   },
   "Grandma": {
-   "author": "Speaker: Ajshul\nRecorder: Ajshul",
    "file": "1e3c573a02d26111.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Ajshul-grandma.wav",
-   "voice": "human",
+   "imported": "1e3c573a02d26111.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Grandma"
   },
   "Grandpa": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "32807eef531a5f06.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-grandpa.wav",
-   "voice": "human",
+   "imported": "32807eef531a5f06.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Grandpa"
   },
   "Grapes": {
-   "author": "Speaker: Persent101\nRecorder: Persent101",
    "file": "0de47448267ba383.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-grapes.wav",
-   "voice": "human",
+   "imported": "0de47448267ba383.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Grapes"
   },
   "Gray": {
-   "author": "Atcovi",
    "file": "4f9beff18cc6852b.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-Gray.ogg",
-   "voice": "human",
+   "imported": "4f9beff18cc6852b.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Gray"
   },
   "Green": {
-   "author": "Atcovi",
    "file": "933bf21afdd55a0d.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-Green.ogg",
-   "voice": "human",
+   "imported": "933bf21afdd55a0d.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Green"
   },
   "Guitar": {
-   "author": "No machine-readable author provided. Celestianpower assumed (based on copyright claims).",
    "file": "94af6c4088103e96.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:en-uk-guitar.ogg",
-   "voice": "human",
+   "imported": "94af6c4088103e96.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Guitar"
   },
   "H": {
-   "author": "Twocs",
    "file": "7cf184f4c67ad582.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-h.ogg",
-   "voice": "human",
-   "voiced": "H"
+   "imported": "7cf184f4c67ad582.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "H."
   },
   "Hammer": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "ab7b8ea47eadf931.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-hammer.wav",
-   "voice": "human",
+   "imported": "ab7b8ea47eadf931.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Hammer"
   },
   "Hand": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "c65d489c9e64ec07.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-hand.ogg",
-   "voice": "human",
+   "imported": "c65d489c9e64ec07.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Hand"
   },
   "Helicopter": {
-   "author": "Commander Keane",
    "file": "fda201fd52a223f4.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-helicopter.ogg",
-   "voice": "human",
+   "imported": "fda201fd52a223f4.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Helicopter"
   },
   "Honey": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "4c3e3ab8ee1c1860.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-honey.wav",
-   "voice": "human",
+   "imported": "4c3e3ab8ee1c1860.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Honey"
   },
   "Horse": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "26dfe8116b93ced6.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-horse.wav",
-   "voice": "human",
+   "imported": "26dfe8116b93ced6.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Horse"
   },
   "Hospital": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "dbb927867e102f75.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-hospital.wav",
-   "voice": "human",
+   "imported": "dbb927867e102f75.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Hospital"
   },
   "House": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "dc8745ba30beefa5.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-house.ogg",
-   "voice": "human",
+   "imported": "dc8745ba30beefa5.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "House"
   },
   "I": {
-   "author": "Speaker: Flame, not lame\nRecorder: Flame, not lame",
    "file": "ca73ab65568cd125.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-I.wav",
-   "voice": "human",
-   "voiced": "I"
+   "imported": "ca73ab65568cd125.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "I."
   },
   "Ice cream": {
-   "author": "Speaker: Arlo Barnes\nRecorder: Arlo Barnes",
    "file": "1242a215b0edd66e.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-ice-cream.wav",
-   "voice": "human",
+   "imported": "1242a215b0edd66e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Ice cream"
   },
   "Island": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "132a732d69f030cd.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-island.ogg",
-   "voice": "human",
+   "imported": "132a732d69f030cd.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Island"
   },
   "J": {
-   "author": "Logictheo",
    "file": "58668e7669fd564d.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-j.ogg",
-   "voice": "human",
-   "voiced": "J"
+   "imported": "58668e7669fd564d.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "J."
   },
   "Juice": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "8c943c28d6453d59.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-juice.wav",
-   "voice": "human",
+   "imported": "8c943c28d6453d59.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Juice"
   },
   "K": {
-   "author": "Logictheo",
    "file": "a7ee38bb7be4fc44.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-k.ogg",
-   "voice": "human",
-   "voiced": "K"
+   "imported": "a7ee38bb7be4fc44.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "K."
   },
   "Kangaroo": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "609c214c477cebd0.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-Kangaroo.wav",
-   "voice": "human",
+   "imported": "609c214c477cebd0.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Kangaroo"
   },
   "Key": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "c67dd20ee8429860.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:en-uk-key.ogg",
-   "voice": "human",
+   "imported": "c67dd20ee8429860.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Key"
   },
   "Kiwi": {
-   "author": "Commander Keane",
    "file": "d271f02db25cd6f2.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-kiwi.ogg",
-   "voice": "human",
+   "imported": "d271f02db25cd6f2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Kiwi"
   },
   "Koala": {
-   "author": "Paul2520",
    "file": "74ae77190d30e948.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-koala.oga",
-   "voice": "human",
+   "imported": "74ae77190d30e948.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Koala"
   },
   "L": {
-   "author": "Twocs",
    "file": "d160e0986aca4714.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-L.ogg",
-   "voice": "human",
-   "voiced": "L"
+   "imported": "d160e0986aca4714.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "L."
   },
   "Leaf": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "00fe42c277c791c1.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-leaf.wav",
-   "voice": "human",
+   "imported": "00fe42c277c791c1.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Leaf"
   },
   "Leg": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "eda9a0f7ff8ad494.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-leg.ogg",
-   "voice": "human",
+   "imported": "eda9a0f7ff8ad494.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Leg"
   },
   "Lemon": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "4459b791a6805728.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-lemon.ogg",
-   "voice": "human",
+   "imported": "4459b791a6805728.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Lemon"
   },
   "Light bulb": {
-   "author": "Speaker: Status 401\nRecorder: Status 401",
    "file": "3d3771d55ddd54f8.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Status_401-Light_bulb.wav",
-   "voice": "human",
+   "imported": "3d3771d55ddd54f8.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Light bulb"
   },
   "Lightning": {
-   "author": "Dvortygirl",
    "file": "4504e5f0bfccb6e4.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-lightning.ogg",
-   "voice": "human",
+   "imported": "4504e5f0bfccb6e4.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Lightning"
   },
   "Lion": {
-   "author": "Speaker: ForTheGrammar\nRecorder: ForTheGrammar",
    "file": "9f19d4dcd45171a9.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-ForTheGrammar-Lion.wav",
-   "voice": "human",
+   "imported": "9f19d4dcd45171a9.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Lion"
   },
   "Lock": {
-   "author": "Speaker: Naomi Persephone Amethyst\nRecorder: NaomiAmethyst",
    "file": "891ebccd5baa32da.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Naomi_Persephone_Amethyst_(NaomiAmethyst)-lock.wav",
-   "voice": "human",
+   "imported": "891ebccd5baa32da.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Lock"
   },
   "M": {
-   "author": "Logictheo",
    "file": "c63ae6dd4fc9f9dd.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-m.ogg",
-   "voice": "human",
-   "voiced": "M"
+   "imported": "c63ae6dd4fc9f9dd.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "M."
   },
   "Magnet": {
-   "author": "Speaker: Vealhurl\nRecorder: Vealhurl",
    "file": "d7f87f222d12dda1.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-magnet.wav",
-   "voice": "human",
+   "imported": "d7f87f222d12dda1.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Magnet"
   },
   "Mango": {
-   "author": "Speaker: Louisalphonse28\nRecorder: Louisalphonse28",
    "file": "fbc34dccfdfcf9a1.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Louisalphonse28-Mango.wav",
-   "voice": "human",
+   "imported": "fbc34dccfdfcf9a1.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Mango"
   },
   "Milk": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "f2f4decd56d814d6.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-milk.ogg",
-   "voice": "human",
+   "imported": "f2f4decd56d814d6.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Milk"
   },
   "Monkey": {
-   "author": "Dvortygirl",
    "file": "4bd0ec65b8f729d2.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-monkey.ogg",
-   "voice": "human",
+   "imported": "4bd0ec65b8f729d2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Monkey"
   },
   "Moon": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "846b90266cabf4b3.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-moon.ogg",
-   "voice": "human",
+   "imported": "846b90266cabf4b3.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Moon"
   },
   "Mosque": {
-   "author": "Dvortygirl",
    "file": "1c699ce8860582e7.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-mosque.ogg",
-   "voice": "human",
+   "imported": "1c699ce8860582e7.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Mosque"
   },
   "Mountain": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "c61755a1ee288094.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-mountain.ogg",
-   "voice": "human",
+   "imported": "c61755a1ee288094.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Mountain"
   },
   "Mouse": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "573dd2c2ed953b97.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-mouse.wav",
-   "voice": "human",
+   "imported": "573dd2c2ed953b97.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Mouse"
   },
   "Mouth": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "8b89346ec19490ee.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-mouth.wav",
-   "voice": "human",
+   "imported": "8b89346ec19490ee.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Mouth"
   },
   "Mushroom": {
-   "author": "Speaker: Arlo Barnes\nRecorder: Arlo Barnes",
    "file": "aa146572cac44a81.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-mushroom.wav",
-   "voice": "human",
+   "imported": "aa146572cac44a81.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Mushroom"
   },
   "N": {
-   "author": "Logictheo",
    "file": "b51a60734da64be0.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-uk-n.ogg",
-   "voice": "human",
-   "voiced": "N"
+   "imported": "b51a60734da64be0.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "N."
   },
   "Nature": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "bddc7adb1204fed1.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-nature.ogg",
-   "voice": "human",
+   "imported": "bddc7adb1204fed1.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Nature"
   },
   "Nose": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "eb9f9930aed653b8.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-nose.ogg",
-   "voice": "human",
+   "imported": "eb9f9930aed653b8.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Nose"
   },
   "O": {
    "file": "08a914cde0503969.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "08a914cde0503969.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "O."
   },
   "Octopus": {
-   "author": "Speaker: Simplificationalizer\nRecorder: Simplificationalizer",
    "file": "c10a60e4dac35159.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Simplificationalizer-octopus.wav",
-   "voice": "human",
+   "imported": "c10a60e4dac35159.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Octopus"
   },
   "Odd": {
-   "author": "Speaker: Ajshul\nRecorder: Ajshul",
    "file": "dc28f5f3c65ec611.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Ajshul-odd.wav",
-   "voice": "human",
+   "imported": "dc28f5f3c65ec611.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Odd"
   },
   "Orange": {
-   "author": "Atcovi",
    "file": "09fb6aaba7940a7b.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-Orange.ogg",
-   "voice": "human",
+   "imported": "09fb6aaba7940a7b.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Orange"
   },
   "Owl": {
-   "author": "Dvortygirl",
    "file": "05198a3d9b463abf.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-owl.ogg",
-   "voice": "human",
+   "imported": "05198a3d9b463abf.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Owl"
   },
   "P": {
-   "author": "Dvortygirl",
    "file": "511993d3c99719e3.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-p.ogg",
-   "voice": "human",
-   "voiced": "P"
+   "imported": "511993d3c99719e3.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "P."
   },
   "Palm tree": {
-   "author": "Speaker: Vealhurl\nRecorder: Vealhurl",
    "file": "97dc9f2d67c2496a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-palm_tree.wav",
-   "voice": "human",
+   "imported": "97dc9f2d67c2496a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Palm tree"
   },
   "Panda": {
-   "author": "Dvortygirl",
    "file": "65c91fe4e3e72018.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-panda.ogg",
-   "voice": "human",
+   "imported": "65c91fe4e3e72018.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Panda"
   },
   "Parrot": {
-   "author": "Dvortygirl",
    "file": "0fcb11d8c3d43126.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-parrot.ogg",
-   "voice": "human",
+   "imported": "0fcb11d8c3d43126.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Parrot"
   },
   "Peach": {
-   "author": "Dvortygirl",
    "file": "9d572da1024594cb.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-peach.ogg",
-   "voice": "human",
+   "imported": "9d572da1024594cb.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Peach"
   },
   "Peacock": {
-   "author": "Speaker: Arlo Barnes\nRecorder: Arlo Barnes",
    "file": "1bc2ab46e33564f4.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-peacock.wav",
-   "voice": "human",
+   "imported": "1bc2ab46e33564f4.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Peacock"
   },
   "Pear": {
-   "author": "Speaker: Mélody Xu YANG WMFr\nRecorder: Mélody Xu YANG WMFr",
    "file": "547a82ee0d8700ee.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Mélody_Xu_YANG_WMFr-pear.wav",
-   "voice": "human",
+   "imported": "547a82ee0d8700ee.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Pear"
   },
   "Pencil": {
-   "author": "Speaker: Naomi Persephone Amethyst\nRecorder: NaomiAmethyst",
    "file": "5136ae1b5bfe9175.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Naomi_Persephone_Amethyst_(NaomiAmethyst)-pencil.wav",
-   "voice": "human",
+   "imported": "5136ae1b5bfe9175.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Pencil"
   },
   "Penguin": {
-   "author": "Speaker: Simplificationalizer\nRecorder: Simplificationalizer",
    "file": "e1df2eb673fedd05.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Simplificationalizer-penguin.wav",
-   "voice": "human",
+   "imported": "e1df2eb673fedd05.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Penguin"
   },
   "People": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "b37554f695b15005.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-people.ogg",
-   "voice": "human",
+   "imported": "b37554f695b15005.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "People"
   },
   "Phone": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "77064d5265236e0a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-Phone.wav",
-   "voice": "human",
+   "imported": "77064d5265236e0a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Phone"
   },
   "Pineapple": {
-   "author": "Speaker: Arlo Barnes\nRecorder: Arlo Barnes",
    "file": "347aecd593ec2bc5.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-pineapple.wav",
-   "voice": "human",
+   "imported": "347aecd593ec2bc5.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Pineapple"
   },
   "Pink": {
-   "author": "Commander Keane",
    "file": "54076359fdc7f1f0.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-Pink.ogg",
-   "voice": "human",
+   "imported": "54076359fdc7f1f0.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Pink"
   },
   "Pizza": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "01eb73e0be9e6007.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-Pizza.wav",
-   "voice": "human",
+   "imported": "01eb73e0be9e6007.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Pizza"
   },
   "Places": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "0cd3597453ab504a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-places.wav",
-   "voice": "human",
+   "imported": "0cd3597453ab504a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Places"
   },
   "Police officer": {
-   "author": "Speaker: StuckInLagToad\nRecorder: StuckInLagToad",
    "file": "6ce064a547c69a8a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-StuckInLagToad-police_officer.wav",
-   "voice": "human",
+   "imported": "6ce064a547c69a8a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Police officer"
   },
   "Potato": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "cd9830ae76f94f43.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-potato.ogg",
-   "voice": "human",
+   "imported": "cd9830ae76f94f43.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Potato"
   },
   "Purple": {
-   "author": "Dvortygirl",
    "file": "32576f4fedc07f63.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-purple.ogg",
-   "voice": "human",
+   "imported": "32576f4fedc07f63.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Purple"
   },
   "Puzzle": {
    "file": "62705e1804838aca.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "62705e1804838aca.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Puzzle"
   },
   "Q": {
-   "author": "Speaker: Flame, not lame\nRecorder: Flame, not lame",
    "file": "c3156e00d3c2588c.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-Q.wav",
-   "voice": "human",
-   "voiced": "Q"
+   "imported": "c3156e00d3c2588c.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "Q."
   },
   "Queen": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "6911adcc6c625bb5.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-queen.wav",
-   "voice": "human",
+   "imported": "6911adcc6c625bb5.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Queen"
   },
   "R": {
-   "author": "Logictheo",
    "file": "06576556d1ad802f.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-r.ogg",
-   "voice": "human",
-   "voiced": "R"
+   "imported": "06576556d1ad802f.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "R."
   },
   "Rabbit": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "29f716260a7733eb.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-rabbit.wav",
-   "voice": "human",
+   "imported": "29f716260a7733eb.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Rabbit"
   },
   "Rain": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "0a858c95bc97fa8f.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-rain.ogg",
-   "voice": "human",
+   "imported": "0a858c95bc97fa8f.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Rain"
   },
   "Rainbow": {
-   "author": "Dvortygirl",
    "file": "b4a9395d25398654.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-rainbow.ogg",
-   "voice": "human",
+   "imported": "b4a9395d25398654.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Rainbow"
   },
   "Red": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "cc9db3a795571c7e.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-red.ogg",
-   "voice": "human",
+   "imported": "cc9db3a795571c7e.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Red"
   },
   "Rice": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "e3f3a94c4cf96c61.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-rice.wav",
-   "voice": "human",
+   "imported": "e3f3a94c4cf96c61.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Rice"
   },
   "Rocket": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "186cd74009911bf4.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-rocket.wav",
-   "voice": "human",
+   "imported": "186cd74009911bf4.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Rocket"
   },
   "Rose": {
-   "author": "Speaker: Gsinti\nRecorder: Gsinti",
    "file": "51ad0eae3f66ecd3.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Gsinti-Rose.wav",
-   "voice": "human",
+   "imported": "51ad0eae3f66ecd3.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Rose"
   },
   "S": {
-   "author": "Twocs",
    "file": "02aa629c8b16cd17.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-s.ogg",
-   "voice": "human",
-   "voiced": "S"
+   "imported": "02aa629c8b16cd17.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "S."
   },
   "Scarf": {
-   "author": "Commander Keane",
    "file": "83dfe3a27a798e89.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-scarf.ogg",
-   "voice": "human",
+   "imported": "83dfe3a27a798e89.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Scarf"
   },
   "School": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "f2f3d66a7978c207.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-school.ogg",
-   "voice": "human",
+   "imported": "f2f3d66a7978c207.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "School"
   },
   "Scissors": {
-   "author": "Speaker: Naomi Persephone Amethyst\nRecorder: NaomiAmethyst",
    "file": "faf4c3ea4e2730f2.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Naomi_Persephone_Amethyst_(NaomiAmethyst)-scissors.wav",
-   "voice": "human",
+   "imported": "faf4c3ea4e2730f2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Scissors"
   },
   "Sheep": {
-   "author": "Dvortygirl",
    "file": "02df9167bdb67c63.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-sheep.ogg",
-   "voice": "human",
+   "imported": "02df9167bdb67c63.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Sheep"
   },
   "Ship": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "323d4fc7337134a2.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-ship.wav",
-   "voice": "human",
+   "imported": "323d4fc7337134a2.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Ship"
   },
   "Shirt": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "56cc042a91b167d9.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-shirt.ogg",
-   "voice": "human",
+   "imported": "56cc042a91b167d9.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Shirt"
   },
   "Shoe": {
-   "author": "Dvortygirl",
    "file": "9806a3f0c05273b3.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-shoe.ogg",
-   "voice": "human",
+   "imported": "9806a3f0c05273b3.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Shoe"
   },
   "Snail": {
-   "author": "Dvortygirl",
    "file": "9404d283bda8febb.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-snail.ogg",
-   "voice": "human",
+   "imported": "9404d283bda8febb.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Snail"
   },
   "Snake": {
-   "author": "Commander Keane",
    "file": "90ec00c2b9ab0a18.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-snake.ogg",
-   "voice": "human",
+   "imported": "90ec00c2b9ab0a18.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Snake"
   },
   "Snow": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "9c8238f65551f40b.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-snow.ogg",
-   "voice": "human",
+   "imported": "9c8238f65551f40b.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Snow"
   },
   "Soap": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "d28624e3a23c903c.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-soap.ogg",
-   "voice": "human",
+   "imported": "d28624e3a23c903c.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Soap"
   },
   "Socks": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "775367b31885d608.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-socks.ogg",
-   "voice": "human",
+   "imported": "775367b31885d608.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Socks"
   },
   "Spider": {
-   "author": "Dvortygirl",
    "file": "7d09d488b5d724ce.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-spider.ogg",
-   "voice": "human",
+   "imported": "7d09d488b5d724ce.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Spider"
   },
   "Star": {
-   "author": "Speaker: Catjj\nRecorder: Catjj",
    "file": "85a7de6e270547e8.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Catjj-star.wav",
-   "voice": "human",
+   "imported": "85a7de6e270547e8.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Star"
   },
   "Strawberry": {
-   "author": "Dvortygirl",
    "file": "393d46da8467a9e4.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-strawberry.ogg",
-   "voice": "human",
+   "imported": "393d46da8467a9e4.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Strawberry"
   },
   "Sun": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "48c98cab7866e606.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-sun.ogg",
-   "voice": "human",
+   "imported": "48c98cab7866e606.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Sun"
   },
   "Sunflower": {
-   "author": "Speaker: Arlo Barnes\nRecorder: Arlo Barnes",
    "file": "3a1480394fe36756.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Arlo_Barnes-sunflower.wav",
-   "voice": "human",
+   "imported": "3a1480394fe36756.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Sunflower"
   },
   "T": {
    "file": "c2c53d6694821425.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "c2c53d6694821425.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "T."
   },
   "Taxi": {
-   "author": "Speaker: GonFreeaks\nRecorder: GonFreeaks",
    "file": "82e2b91027511aad.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-GonFreeaks-taxi.wav",
-   "voice": "human",
+   "imported": "82e2b91027511aad.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Taxi"
   },
   "Tea": {
-   "author": "Speaker: Wodencafe\nRecorder: Wodencafe",
    "file": "c675bc77db00a20d.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Wodencafe-tea.wav",
-   "voice": "human",
+   "imported": "c675bc77db00a20d.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Tea"
   },
   "Teddy bear": {
-   "author": "Speaker: Vealhurl\nRecorder: Vealhurl",
    "file": "ab94ce741fc210d5.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-teddy_bear.wav",
-   "voice": "human",
+   "imported": "ab94ce741fc210d5.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Teddy bear"
   },
   "Tent": {
    "file": "eae12d19e86e1dd6.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "eae12d19e86e1dd6.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Tent"
   },
   "Things": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "0db3fdd9af360e2f.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-things.wav",
-   "voice": "human",
+   "imported": "0db3fdd9af360e2f.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Things"
   },
   "Tiger": {
-   "author": "Speaker: ForTheGrammar\nRecorder: ForTheGrammar",
    "file": "dd697aa8cce5c810.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-ForTheGrammar-Tiger.wav",
-   "voice": "human",
+   "imported": "dd697aa8cce5c810.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Tiger"
   },
   "Tomato": {
-   "author": "Simeon Higgs User:TehKewl1",
    "file": "85cd2366c323520d.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-tomato.ogg",
-   "voice": "human",
+   "imported": "85cd2366c323520d.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Tomato"
   },
   "Tongue": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "2c0af9c54fe52a81.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-tongue.ogg",
-   "voice": "human",
+   "imported": "2c0af9c54fe52a81.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Tongue"
   },
   "Tooth": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "0d7c7e8a5407acc5.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-tooth.ogg",
-   "voice": "human",
+   "imported": "0d7c7e8a5407acc5.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Tooth"
   },
   "Toys": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "e97de84466071589.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-toys.wav",
-   "voice": "human",
+   "imported": "e97de84466071589.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Toys"
   },
   "Tractor": {
-   "author": "Dvortygirl",
    "file": "38c33375ac13545f.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-tractor.ogg",
-   "voice": "human",
+   "imported": "38c33375ac13545f.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Tractor"
   },
   "Train": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "3b278ea9e74a0427.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-train.wav",
-   "voice": "human",
+   "imported": "3b278ea9e74a0427.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Train"
   },
   "Tree": {
-   "author": "Association Shtooka, Judith Franck",
    "file": "99f5ff6378a0b48f.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-tree.ogg",
-   "voice": "human",
+   "imported": "99f5ff6378a0b48f.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Tree"
   },
   "Trophy": {
-   "author": "Speaker: Berrely\nRecorder: Berrely",
    "file": "1075c086b703df3b.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Berrely-trophy.wav",
-   "voice": "human",
+   "imported": "1075c086b703df3b.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Trophy"
   },
   "Trousers": {
-   "author": "Tooironic",
    "file": "28f230cf676f68d1.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-au-trousers.ogg",
-   "voice": "human",
+   "imported": "28f230cf676f68d1.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Trousers"
   },
   "Truck": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "5bfebf2e99965d14.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-truck.wav",
-   "voice": "human",
+   "imported": "5bfebf2e99965d14.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Truck"
   },
   "Turtle": {
-   "author": "Dvortygirl",
    "file": "7039da614328dbb7.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-turtle.ogg",
-   "voice": "human",
+   "imported": "7039da614328dbb7.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Turtle"
   },
   "U": {
    "file": "b2c7c0caa10a0cca.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "b2c7c0caa10a0cca.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "U."
   },
   "Umbrella": {
-   "author": "Speaker: Naomi Persephone Amethyst\nRecorder: NaomiAmethyst",
    "file": "483fed9c10fcb09d.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Naomi_Persephone_Amethyst_(NaomiAmethyst)-umbrella.wav",
-   "voice": "human",
+   "imported": "483fed9c10fcb09d.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Umbrella"
   },
   "V": {
-   "author": "Twocs",
    "file": "c9ee5681d3c59f75.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-v.ogg",
-   "voice": "human",
-   "voiced": "V"
+   "imported": "c9ee5681d3c59f75.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "V."
   },
   "Vehicles": {
-   "author": "Speaker: Persent101\nRecorder: Persent101",
    "file": "60261ed2752b78de.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Persent101-vehicles.wav",
-   "voice": "human",
+   "imported": "60261ed2752b78de.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Vehicles"
   },
   "Violin": {
-   "author": "Dvortygirl",
    "file": "c64d3409dcdd8152.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-violin.ogg",
-   "voice": "human",
+   "imported": "c64d3409dcdd8152.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Violin"
   },
   "Volcano": {
-   "author": "Dvortygirl",
    "file": "8ea2c5b5f236297f.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-volcano.ogg",
-   "voice": "human",
+   "imported": "8ea2c5b5f236297f.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Volcano"
   },
   "W": {
-   "author": "Commander Keane",
    "file": "e2415cb7f63df0c9.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-au-W.ogg",
-   "voice": "human",
-   "voiced": "W"
+   "imported": "e2415cb7f63df0c9.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "W."
   },
   "Watch": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "d91ebf5887cf9ee3.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-watch.wav",
-   "voice": "human",
+   "imported": "d91ebf5887cf9ee3.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Watch"
   },
   "Watermelon": {
-   "author": "Dvortygirl",
    "file": "654a5083667369ba.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-watermelon.ogg",
-   "voice": "human",
+   "imported": "654a5083667369ba.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Watermelon"
   },
   "Wave": {
-   "author": "Speaker: Grendelkhan\nRecorder: Grendelkhan",
    "file": "a24d601189fbbd80.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Grendelkhan-wave.wav",
-   "voice": "human",
+   "imported": "a24d601189fbbd80.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Wave"
   },
   "Whale": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "2be913c6a4cf9189.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-whale.wav",
-   "voice": "human",
+   "imported": "2be913c6a4cf9189.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Whale"
   },
   "White": {
-   "author": "Atcovi",
    "file": "37619fc13053f82b.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-White.ogg",
-   "voice": "human",
+   "imported": "37619fc13053f82b.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "White"
   },
   "Wolf": {
-   "author": "Dvortygirl",
    "file": "5b7c6cb41497b133.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-wolf.ogg",
-   "voice": "human",
+   "imported": "5b7c6cb41497b133.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Wolf"
   },
   "X": {
-   "author": "Speaker: Flame, not lame\nRecorder: Flame, not lame",
    "file": "c032adc1ff629c9b.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-X.wav",
-   "voice": "human",
-   "voiced": "X"
+   "imported": "c032adc1ff629c9b.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "X."
   },
   "Xylophone": {
-   "author": "Dvortygirl",
    "file": "88e3fac6bcb7bd8f.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-xylophone.ogg",
-   "voice": "human",
+   "imported": "88e3fac6bcb7bd8f.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Xylophone"
   },
   "Y": {
    "file": "23eb4d3f4155395a.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "23eb4d3f4155395a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Y."
   },
   "Yacht": {
-   "author": "Speaker: Vealhurl\nRecorder: Vealhurl",
    "file": "88d655bf0a04a3e5.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Vealhurl-yacht.wav",
-   "voice": "human",
+   "imported": "88d655bf0a04a3e5.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Yacht"
   },
   "Yellow": {
-   "author": "Speaker: Back ache\nRecorder: Back ache",
    "file": "3526f607bcd4f51a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Back_ache-yellow.wav",
-   "voice": "human",
+   "imported": "3526f607bcd4f51a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Yellow"
   },
   "Z": {
-   "author": "Speaker: Flame, not lame\nRecorder: Flame, not lame",
    "file": "909f99a779adb66a.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-Z.wav",
-   "voice": "human",
-   "voiced": "Z"
+   "imported": "909f99a779adb66a.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "Z."
   },
   "Zebra": {
-   "author": "No machine-readable author provided. Celestianpower assumed (based on copyright claims).",
    "file": "b2d43dc84d9fb986.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:en-uk-zebra.ogg",
-   "voice": "human",
+   "imported": "b2d43dc84d9fb986.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Zebra"
   },
   "a": {
-   "author": "No machine-readable author provided. Xnux assumed (based on copyright claims).",
    "file": "86f7e437faa5a7fc.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-a.ogg",
-   "voice": "human",
-   "voiced": "A"
+   "imported": "6dcd4ce23d88e2ee.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "A."
   },
   "b": {
-   "author": "Speaker: Flame, not lame\nRecorder: Flame, not lame",
    "file": "e9d71f5ee7c92d6d.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-B.wav",
-   "voice": "human",
-   "voiced": "B"
+   "imported": "ae4f281df5a5d0ff.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "B."
   },
   "c": {
-   "author": "Logictheo",
    "file": "84a516841ba77a5b.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-uk-c.ogg",
-   "voice": "human",
-   "voiced": "C"
+   "imported": "32096c2e0eff33d8.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "C."
   },
   "d": {
-   "author": "Twocs",
    "file": "3c363836cf4e1666.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-d.ogg",
-   "voice": "human",
-   "voiced": "D"
+   "imported": "50c9e8d5fc98727b.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "D."
   },
   "e": {
-   "author": "Missionary",
    "file": "58e6b3a414a1e090.mp3",
-   "licence": "Public domain",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-e.ogg",
-   "voice": "human",
-   "voiced": "E"
+   "imported": "e0184adedf913b07.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "E."
   },
   "f": {
-   "author": "Logictheo",
    "file": "4a0a19218e082a34.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-uk-f.ogg",
-   "voice": "human",
-   "voiced": "F"
+   "imported": "e69f20e9f683920d.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "F."
   },
   "g": {
-   "author": "Twocs",
    "file": "54fd1711209fb1c0.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-g.ogg",
-   "voice": "human",
-   "voiced": "G"
+   "imported": "a36a6718f54524d8.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "G."
   },
   "h": {
-   "author": "Twocs",
    "file": "27d5482eebd075de.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-h.ogg",
-   "voice": "human",
-   "voiced": "H"
+   "imported": "7cf184f4c67ad582.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "H."
   },
   "i": {
-   "author": "Speaker: Flame, not lame\nRecorder: Flame, not lame",
    "file": "042dc4512fa3d391.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-I.wav",
-   "voice": "human",
-   "voiced": "I"
+   "imported": "ca73ab65568cd125.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "I."
   },
   "k": {
-   "author": "Logictheo",
    "file": "13fbd79c3d390e5d.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-k.ogg",
-   "voice": "human",
-   "voiced": "K"
+   "imported": "a7ee38bb7be4fc44.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "K."
   },
   "l": {
-   "author": "Twocs",
    "file": "07c342be6e560e7f.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-L.ogg",
-   "voice": "human",
-   "voiced": "L"
+   "imported": "d160e0986aca4714.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "L."
   },
   "m": {
-   "author": "Logictheo",
    "file": "6b0d31c0d5632230.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-uk-m.ogg",
-   "voice": "human",
-   "voiced": "M"
+   "imported": "c63ae6dd4fc9f9dd.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "M."
   },
   "n": {
-   "author": "Logictheo",
    "file": "d1854cae891ec7b2.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-uk-n.ogg",
-   "voice": "human",
-   "voiced": "N"
+   "imported": "b51a60734da64be0.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "N."
   },
   "o": {
    "file": "7a81af3e591ac713.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "08a914cde0503969.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "O."
   },
   "p": {
-   "author": "Dvortygirl",
    "file": "516b9783fca517ee.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-p.ogg",
-   "voice": "human",
-   "voiced": "P"
+   "imported": "511993d3c99719e3.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "P."
   },
   "q": {
-   "author": "Speaker: Flame, not lame\nRecorder: Flame, not lame",
    "file": "22ea1c649c82946a.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-Q.wav",
-   "voice": "human",
-   "voiced": "Q"
+   "imported": "c3156e00d3c2588c.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "Q."
   },
   "r": {
-   "author": "Logictheo",
    "file": "4dc7c9ec434ed065.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:En-us-r.ogg",
-   "voice": "human",
-   "voiced": "R"
+   "imported": "06576556d1ad802f.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "R."
   },
   "s": {
-   "author": "Twocs",
    "file": "a0f1490a20d0211c.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-s.ogg",
-   "voice": "human",
-   "voiced": "S"
+   "imported": "02aa629c8b16cd17.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "S."
   },
   "t": {
    "file": "8efd86fb78a56a51.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "c2c53d6694821425.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "T."
   },
   "u": {
    "file": "51e69892ab49df85.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "b2c7c0caa10a0cca.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "U."
   },
   "v": {
-   "author": "Twocs",
    "file": "7a38d8cbd20d9932.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-us-v.ogg",
-   "voice": "human",
-   "voiced": "V"
+   "imported": "c9ee5681d3c59f75.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "V."
   },
   "w": {
-   "author": "Commander Keane",
    "file": "aff024fe4ab0fece.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:en-au-W.ogg",
-   "voice": "human",
-   "voiced": "W"
+   "imported": "e2415cb7f63df0c9.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "W."
   },
   "x": {
-   "author": "Speaker: Flame, not lame\nRecorder: Flame, not lame",
    "file": "11f6ad8ec52a2984.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-X.wav",
-   "voice": "human",
-   "voiced": "X"
+   "imported": "c032adc1ff629c9b.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "X."
   },
   "y": {
    "file": "95cb0bfd2977c761.mp3",
-   "placeholder": true,
-   "voice": "en-US-AnaNeural",
+   "imported": "23eb4d3f4155395a.mp3",
+   "voice": "elevenlabs-liz",
    "voiced": "Y."
   },
   "z": {
-   "author": "Speaker: Flame, not lame\nRecorder: Flame, not lame",
    "file": "395df8f7c51f0070.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q1860_(eng)-Flame,_not_lame-Z.wav",
-   "voice": "human",
-   "voiced": "Z"
+   "imported": "909f99a779adb66a.mp3",
+   "voice": "elevenlabs-liz",
+   "voiced": "Z."
+  }
+ },
+ "en-gb": {
+  "0": {
+   "file": "b6589fc6ab0dc82c.mp3",
+   "imported": "b6589fc6ab0dc82c.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "zero"
+  },
+  "1": {
+   "file": "356a192b7913b04c.mp3",
+   "imported": "356a192b7913b04c.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "one"
+  },
+  "10": {
+   "file": "b1d5781111d84f7b.mp3",
+   "imported": "b1d5781111d84f7b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "ten"
+  },
+  "100": {
+   "file": "310b86e0b62b8285.mp3",
+   "imported": "310b86e0b62b8285.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "one hundred"
+  },
+  "1000": {
+   "file": "e3cbba8883fe746c.mp3",
+   "imported": "e3cbba8883fe746c.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "one thousand"
+  },
+  "11": {
+   "file": "17ba0791499db908.mp3",
+   "imported": "17ba0791499db908.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eleven"
+  },
+  "12": {
+   "file": "7b52009b64fd0a2a.mp3",
+   "imported": "7b52009b64fd0a2a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "twelve"
+  },
+  "13": {
+   "file": "bd307a3ec329e10a.mp3",
+   "imported": "bd307a3ec329e10a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "thirteen"
+  },
+  "14": {
+   "file": "fa35e192121eabf3.mp3",
+   "imported": "fa35e192121eabf3.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "fourteen"
+  },
+  "15": {
+   "file": "f1abd670358e036c.mp3",
+   "imported": "f1abd670358e036c.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "fifteen"
+  },
+  "16": {
+   "file": "1574bddb75c78a6f.mp3",
+   "imported": "1574bddb75c78a6f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "sixteen"
+  },
+  "17": {
+   "file": "0716d9708d321ffb.mp3",
+   "imported": "0716d9708d321ffb.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seventeen"
+  },
+  "18": {
+   "file": "9e6a55b6b4563e65.mp3",
+   "imported": "9e6a55b6b4563e65.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eighteen"
+  },
+  "19": {
+   "file": "b3f0c7f6bb763af1.mp3",
+   "imported": "b3f0c7f6bb763af1.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "nineteen"
+  },
+  "2": {
+   "file": "da4b9237bacccdf1.mp3",
+   "imported": "da4b9237bacccdf1.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "two"
+  },
+  "20": {
+   "file": "91032ad7bbcb6cf7.mp3",
+   "imported": "91032ad7bbcb6cf7.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "twenty"
+  },
+  "200": {
+   "file": "9f9af029585ba014.mp3",
+   "imported": "9f9af029585ba014.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "two hundred"
+  },
+  "21": {
+   "file": "472b07b9fcf2c245.mp3",
+   "imported": "472b07b9fcf2c245.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "twenty-one"
+  },
+  "22": {
+   "file": "12c6fc06c99a4623.mp3",
+   "imported": "12c6fc06c99a4623.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "twenty-two"
+  },
+  "23": {
+   "file": "d435a6cdd786300d.mp3",
+   "imported": "d435a6cdd786300d.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "twenty-three"
+  },
+  "24": {
+   "file": "4d134bc072212ace.mp3",
+   "imported": "4d134bc072212ace.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "twenty-four"
+  },
+  "25": {
+   "file": "f6e1126cedebf23e.mp3",
+   "imported": "f6e1126cedebf23e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "twenty-five"
+  },
+  "26": {
+   "file": "887309d048beef83.mp3",
+   "imported": "887309d048beef83.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "twenty-six"
+  },
+  "27": {
+   "file": "bc33ea4e26e5e1af.mp3",
+   "imported": "bc33ea4e26e5e1af.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "twenty-seven"
+  },
+  "28": {
+   "file": "0a57cb53ba59c46f.mp3",
+   "imported": "0a57cb53ba59c46f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "twenty-eight"
+  },
+  "29": {
+   "file": "7719a1c782a1ba91.mp3",
+   "imported": "7719a1c782a1ba91.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "twenty-nine"
+  },
+  "3": {
+   "file": "77de68daecd823ba.mp3",
+   "imported": "77de68daecd823ba.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "three"
+  },
+  "30": {
+   "file": "22d200f8670dbdb3.mp3",
+   "imported": "22d200f8670dbdb3.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "thirty"
+  },
+  "300": {
+   "file": "e26973e6ee8ab9cd.mp3",
+   "imported": "e26973e6ee8ab9cd.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "three hundred"
+  },
+  "31": {
+   "file": "632667547e7cd3e0.mp3",
+   "imported": "632667547e7cd3e0.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "thirty-one"
+  },
+  "32": {
+   "file": "cb4e5208b4cd8726.mp3",
+   "imported": "cb4e5208b4cd8726.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "thirty-two"
+  },
+  "33": {
+   "file": "b6692ea5df920cad.mp3",
+   "imported": "b6692ea5df920cad.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "thirty-three"
+  },
+  "34": {
+   "file": "f1f836cb4ea6efb2.mp3",
+   "imported": "f1f836cb4ea6efb2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "thirty-four"
+  },
+  "35": {
+   "file": "972a67c48192728a.mp3",
+   "imported": "972a67c48192728a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "thirty-five"
+  },
+  "36": {
+   "file": "fc074d501302eb2b.mp3",
+   "imported": "fc074d501302eb2b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "thirty-six"
+  },
+  "37": {
+   "file": "cb7a1d775e800fd1.mp3",
+   "imported": "cb7a1d775e800fd1.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "thirty-seven"
+  },
+  "38": {
+   "file": "5b384ce32d8cdef0.mp3",
+   "imported": "5b384ce32d8cdef0.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "thirty-eight"
+  },
+  "39": {
+   "file": "ca3512f4dfa95a03.mp3",
+   "imported": "ca3512f4dfa95a03.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "thirty-nine"
+  },
+  "4": {
+   "file": "1b6453892473a467.mp3",
+   "imported": "1b6453892473a467.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "four"
+  },
+  "40": {
+   "file": "af3e133428b9e25c.mp3",
+   "imported": "af3e133428b9e25c.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "forty"
+  },
+  "400": {
+   "file": "ab7f7b955330dc8d.mp3",
+   "imported": "ab7f7b955330dc8d.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "four hundred"
+  },
+  "41": {
+   "file": "761f22b2c1593d0b.mp3",
+   "imported": "761f22b2c1593d0b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "forty-one"
+  },
+  "42": {
+   "file": "92cfceb39d57d914.mp3",
+   "imported": "92cfceb39d57d914.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "forty-two"
+  },
+  "43": {
+   "file": "0286dd552c9bea9a.mp3",
+   "imported": "0286dd552c9bea9a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "forty-three"
+  },
+  "44": {
+   "file": "98fbc42faedc0249.mp3",
+   "imported": "98fbc42faedc0249.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "forty-four"
+  },
+  "45": {
+   "file": "fb644351560d8296.mp3",
+   "imported": "fb644351560d8296.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "forty-five"
+  },
+  "46": {
+   "file": "fe2ef495a1152561.mp3",
+   "imported": "fe2ef495a1152561.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "forty-six"
+  },
+  "47": {
+   "file": "827bfc458708f0b4.mp3",
+   "imported": "827bfc458708f0b4.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "forty-seven"
+  },
+  "48": {
+   "file": "64e095fe763fc624.mp3",
+   "imported": "64e095fe763fc624.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "forty-eight"
+  },
+  "49": {
+   "file": "2e01e17467891f7c.mp3",
+   "imported": "2e01e17467891f7c.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "forty-nine"
+  },
+  "5": {
+   "file": "ac3478d69a3c81fa.mp3",
+   "imported": "ac3478d69a3c81fa.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "five"
+  },
+  "50": {
+   "file": "e1822db470e60d09.mp3",
+   "imported": "e1822db470e60d09.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "fifty"
+  },
+  "500": {
+   "file": "f83a383c0fa81f29.mp3",
+   "imported": "f83a383c0fa81f29.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "five hundred"
+  },
+  "51": {
+   "file": "b7eb6c689c037217.mp3",
+   "imported": "b7eb6c689c037217.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "fifty-one"
+  },
+  "52": {
+   "file": "a9334987ece78b6f.mp3",
+   "imported": "a9334987ece78b6f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "fifty-two"
+  },
+  "53": {
+   "file": "c5b76da3e608d34e.mp3",
+   "imported": "c5b76da3e608d34e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "fifty-three"
+  },
+  "54": {
+   "file": "80e28a51cbc26fa4.mp3",
+   "imported": "80e28a51cbc26fa4.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "fifty-four"
+  },
+  "55": {
+   "file": "8effee409c625e1a.mp3",
+   "imported": "8effee409c625e1a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "fifty-five"
+  },
+  "56": {
+   "file": "54ceb91256e8190e.mp3",
+   "imported": "54ceb91256e8190e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "fifty-six"
+  },
+  "57": {
+   "file": "9109c85a45b703f8.mp3",
+   "imported": "9109c85a45b703f8.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "fifty-seven"
+  },
+  "58": {
+   "file": "667be543b02294b7.mp3",
+   "imported": "667be543b02294b7.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "fifty-eight"
+  },
+  "59": {
+   "file": "5a5b0f9b7d3f8fc8.mp3",
+   "imported": "5a5b0f9b7d3f8fc8.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "fifty-nine"
+  },
+  "6": {
+   "file": "c1dfd96eea8cc2b6.mp3",
+   "imported": "c1dfd96eea8cc2b6.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "six"
+  },
+  "60": {
+   "file": "e6c3dd630428fd54.mp3",
+   "imported": "e6c3dd630428fd54.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "sixty"
+  },
+  "600": {
+   "file": "15aa0c7e8fbd2923.mp3",
+   "imported": "15aa0c7e8fbd2923.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "six hundred"
+  },
+  "61": {
+   "file": "6c1e671f9af5b46d.mp3",
+   "imported": "6c1e671f9af5b46d.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "sixty-one"
+  },
+  "62": {
+   "file": "511a418e72591eb7.mp3",
+   "imported": "511a418e72591eb7.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "sixty-two"
+  },
+  "63": {
+   "file": "a17554a0d2b15a66.mp3",
+   "imported": "a17554a0d2b15a66.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "sixty-three"
+  },
+  "64": {
+   "file": "c66c65175fecc310.mp3",
+   "imported": "c66c65175fecc310.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "sixty-four"
+  },
+  "65": {
+   "file": "2a459380709e2fe4.mp3",
+   "imported": "2a459380709e2fe4.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "sixty-five"
+  },
+  "66": {
+   "file": "59129aacfb6cebbe.mp3",
+   "imported": "59129aacfb6cebbe.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "sixty-six"
+  },
+  "67": {
+   "file": "4d89d294cd4ca9f2.mp3",
+   "imported": "4d89d294cd4ca9f2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "sixty-seven"
+  },
+  "68": {
+   "file": "b4c96d80854dd27e.mp3",
+   "imported": "b4c96d80854dd27e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "sixty-eight"
+  },
+  "69": {
+   "file": "a72b20062ec2c47a.mp3",
+   "imported": "a72b20062ec2c47a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "sixty-nine"
+  },
+  "7": {
+   "file": "902ba3cda1883801.mp3",
+   "imported": "902ba3cda1883801.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seven"
+  },
+  "70": {
+   "file": "b7103ca278a75cad.mp3",
+   "imported": "b7103ca278a75cad.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seventy"
+  },
+  "700": {
+   "file": "d8e4bbea3af2e486.mp3",
+   "imported": "d8e4bbea3af2e486.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seven hundred"
+  },
+  "71": {
+   "file": "d02560dd9d7db446.mp3",
+   "imported": "d02560dd9d7db446.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seventy-one"
+  },
+  "72": {
+   "file": "c097638f92de80ba.mp3",
+   "imported": "c097638f92de80ba.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seventy-two"
+  },
+  "73": {
+   "file": "35e995c107a71cae.mp3",
+   "imported": "35e995c107a71cae.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seventy-three"
+  },
+  "74": {
+   "file": "1f1362ea41d1bc65.mp3",
+   "imported": "1f1362ea41d1bc65.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seventy-four"
+  },
+  "75": {
+   "file": "450ddec8dd206c2e.mp3",
+   "imported": "450ddec8dd206c2e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seventy-five"
+  },
+  "76": {
+   "file": "d54ad009d179ae34.mp3",
+   "imported": "d54ad009d179ae34.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seventy-six"
+  },
+  "77": {
+   "file": "d321d6f7ccf98b51.mp3",
+   "imported": "d321d6f7ccf98b51.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seventy-seven"
+  },
+  "78": {
+   "file": "eb4ac3033e8ab359.mp3",
+   "imported": "eb4ac3033e8ab359.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seventy-eight"
+  },
+  "79": {
+   "file": "b74f5ee9461495ba.mp3",
+   "imported": "b74f5ee9461495ba.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "seventy-nine"
+  },
+  "8": {
+   "file": "fe5dbbcea5ce7e29.mp3",
+   "imported": "fe5dbbcea5ce7e29.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eight"
+  },
+  "80": {
+   "file": "b888b29826bb53dc.mp3",
+   "imported": "b888b29826bb53dc.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eighty"
+  },
+  "800": {
+   "file": "290a52e4dd6282ca.mp3",
+   "imported": "290a52e4dd6282ca.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eight hundred"
+  },
+  "81": {
+   "file": "1d513c0bcbe33b2e.mp3",
+   "imported": "1d513c0bcbe33b2e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eighty-one"
+  },
+  "82": {
+   "file": "76546f9a641ede2b.mp3",
+   "imported": "76546f9a641ede2b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eighty-two"
+  },
+  "83": {
+   "file": "7d7116e23efef729.mp3",
+   "imported": "7d7116e23efef729.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eighty-three"
+  },
+  "84": {
+   "file": "be461a0cd1fda052.mp3",
+   "imported": "be461a0cd1fda052.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eighty-four"
+  },
+  "85": {
+   "file": "1352246e33277e9d.mp3",
+   "imported": "1352246e33277e9d.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eighty-five"
+  },
+  "86": {
+   "file": "3c26dffc8a2e8804.mp3",
+   "imported": "3c26dffc8a2e8804.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eighty-six"
+  },
+  "87": {
+   "file": "e62d7f1eb43d87c2.mp3",
+   "imported": "e62d7f1eb43d87c2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eighty-seven"
+  },
+  "88": {
+   "file": "b37f6ddcefad7e86.mp3",
+   "imported": "b37f6ddcefad7e86.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eighty-eight"
+  },
+  "89": {
+   "file": "16b06bd9b738835e.mp3",
+   "imported": "16b06bd9b738835e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "eighty-nine"
+  },
+  "9": {
+   "file": "0ade7c2cf97f75d0.mp3",
+   "imported": "0ade7c2cf97f75d0.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "nine"
+  },
+  "90": {
+   "file": "2d0c8af807ef45ac.mp3",
+   "imported": "2d0c8af807ef45ac.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "ninety"
+  },
+  "900": {
+   "file": "28cc2209b234d918.mp3",
+   "imported": "28cc2209b234d918.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "nine hundred"
+  },
+  "91": {
+   "file": "4cd66dfabbd964f8.mp3",
+   "imported": "4cd66dfabbd964f8.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "ninety-one"
+  },
+  "92": {
+   "file": "8ee51caaa2c2f4ee.mp3",
+   "imported": "8ee51caaa2c2f4ee.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "ninety-two"
+  },
+  "93": {
+   "file": "08a35293e09f5084.mp3",
+   "imported": "08a35293e09f5084.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "ninety-three"
+  },
+  "94": {
+   "file": "215bb47da8fac334.mp3",
+   "imported": "215bb47da8fac334.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "ninety-four"
+  },
+  "95": {
+   "file": "8e63fd3e77796b10.mp3",
+   "imported": "8e63fd3e77796b10.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "ninety-five"
+  },
+  "96": {
+   "file": "6fb84aed32facd12.mp3",
+   "imported": "6fb84aed32facd12.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "ninety-six"
+  },
+  "97": {
+   "file": "812ed4562d321136.mp3",
+   "imported": "812ed4562d321136.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "ninety-seven"
+  },
+  "98": {
+   "file": "31bd9b9f5f7b338e.mp3",
+   "imported": "31bd9b9f5f7b338e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "ninety-eight"
+  },
+  "99": {
+   "file": "9a79be611e0267e1.mp3",
+   "imported": "9a79be611e0267e1.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "ninety-nine"
+  },
+  "A": {
+   "file": "6dcd4ce23d88e2ee.mp3",
+   "imported": "6dcd4ce23d88e2ee.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "A."
+  },
+  "Airplane": {
+   "file": "db34be90d58adae7.mp3",
+   "imported": "db34be90d58adae7.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Airplane"
+  },
+  "Ambulance": {
+   "file": "6ed272289e5ab5f2.mp3",
+   "imported": "6ed272289e5ab5f2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Ambulance"
+  },
+  "Animals": {
+   "file": "1780ecaa1645d8f2.mp3",
+   "imported": "1780ecaa1645d8f2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Animals"
+  },
+  "Ant": {
+   "file": "02cc2a69720bd8bf.mp3",
+   "imported": "02cc2a69720bd8bf.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Ant"
+  },
+  "Apple": {
+   "file": "476432a3e85a0aa2.mp3",
+   "imported": "476432a3e85a0aa2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Apple"
+  },
+  "Avocado": {
+   "file": "f6706ea333bbff8e.mp3",
+   "imported": "f6706ea333bbff8e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Avocado"
+  },
+  "B": {
+   "file": "ae4f281df5a5d0ff.mp3",
+   "imported": "ae4f281df5a5d0ff.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "B."
+  },
+  "Baby": {
+   "file": "13c3d98d3a2445af.mp3",
+   "imported": "13c3d98d3a2445af.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Baby"
+  },
+  "Bag": {
+   "file": "ef6155a5eccf4717.mp3",
+   "imported": "ef6155a5eccf4717.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Bag"
+  },
+  "Ball": {
+   "file": "3d373949a33fb6f5.mp3",
+   "imported": "3d373949a33fb6f5.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Ball"
+  },
+  "Balloon": {
+   "file": "64f241f5415d400e.mp3",
+   "imported": "64f241f5415d400e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Balloon"
+  },
+  "Banana": {
+   "file": "fc6fae10db2bd0b6.mp3",
+   "imported": "fc6fae10db2bd0b6.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Banana"
+  },
+  "Bear": {
+   "file": "7b9f56b445e86e6a.mp3",
+   "imported": "7b9f56b445e86e6a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Bear"
+  },
+  "Bed": {
+   "file": "1a706e2365dd70ae.mp3",
+   "imported": "1a706e2365dd70ae.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Bed"
+  },
+  "Bee": {
+   "file": "6304f0d269c8ce83.mp3",
+   "imported": "6304f0d269c8ce83.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Bee"
+  },
+  "Bell": {
+   "file": "d4198662a72fd519.mp3",
+   "imported": "d4198662a72fd519.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Bell"
+  },
+  "Bicycle": {
+   "file": "4e83ab72f5680a79.mp3",
+   "imported": "4e83ab72f5680a79.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Bicycle"
+  },
+  "Bird": {
+   "file": "fe7e2953e9474b2b.mp3",
+   "imported": "fe7e2953e9474b2b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Bird"
+  },
+  "Black": {
+   "file": "b406fb57b29fc76f.mp3",
+   "imported": "b406fb57b29fc76f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Black"
+  },
+  "Blue": {
+   "file": "7d44bc449c2a2637.mp3",
+   "imported": "7d44bc449c2a2637.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Blue"
+  },
+  "Body": {
+   "file": "718a7e8a582e982e.mp3",
+   "imported": "718a7e8a582e982e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Body"
+  },
+  "Book": {
+   "file": "f69f233005f15802.mp3",
+   "imported": "f69f233005f15802.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Book"
+  },
+  "Boy": {
+   "file": "b9dc9d8cb52edb82.mp3",
+   "imported": "b9dc9d8cb52edb82.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Boy"
+  },
+  "Brain": {
+   "file": "97fb724268c2de1e.mp3",
+   "imported": "97fb724268c2de1e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Brain"
+  },
+  "Bread": {
+   "file": "c61eb5df5d78529f.mp3",
+   "imported": "c61eb5df5d78529f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Bread"
+  },
+  "Broom": {
+   "file": "d67620ceba7d1045.mp3",
+   "imported": "d67620ceba7d1045.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Broom"
+  },
+  "Brown": {
+   "file": "3a47350b7d7cb691.mp3",
+   "imported": "3a47350b7d7cb691.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Brown"
+  },
+  "Bus": {
+   "file": "56070a568367d5a4.mp3",
+   "imported": "56070a568367d5a4.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Bus"
+  },
+  "Butterfly": {
+   "file": "41a76f2148dc8625.mp3",
+   "imported": "41a76f2148dc8625.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Butterfly"
+  },
+  "C": {
+   "file": "32096c2e0eff33d8.mp3",
+   "imported": "32096c2e0eff33d8.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "C."
+  },
+  "Cactus": {
+   "file": "ffbcb973995142c8.mp3",
+   "imported": "ffbcb973995142c8.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Cactus"
+  },
+  "Cake": {
+   "file": "9c6e5a3f44fc5506.mp3",
+   "imported": "9c6e5a3f44fc5506.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Cake"
+  },
+  "Camel": {
+   "file": "4151715f8ef766d2.mp3",
+   "imported": "4151715f8ef766d2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Camel"
+  },
+  "Candle": {
+   "file": "8d8fd6765e184419.mp3",
+   "imported": "8d8fd6765e184419.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Candle"
+  },
+  "Cap": {
+   "file": "b38fd978df2ce239.mp3",
+   "imported": "b38fd978df2ce239.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Cap"
+  },
+  "Car": {
+   "file": "bc47a3dce0c76270.mp3",
+   "imported": "bc47a3dce0c76270.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Car"
+  },
+  "Carrot": {
+   "file": "617fec0ebd8f2fad.mp3",
+   "imported": "617fec0ebd8f2fad.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Carrot"
+  },
+  "Castle": {
+   "file": "e9d8ee928c783e6c.mp3",
+   "imported": "e9d8ee928c783e6c.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Castle"
+  },
+  "Cat": {
+   "file": "cebe54c7626cb1ce.mp3",
+   "imported": "cebe54c7626cb1ce.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Cat"
+  },
+  "Cheese": {
+   "file": "d48b39393f18c374.mp3",
+   "imported": "d48b39393f18c374.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Cheese"
+  },
+  "Cherry": {
+   "file": "d6eee90533dffc1f.mp3",
+   "imported": "d6eee90533dffc1f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Cherry"
+  },
+  "Chicken": {
+   "file": "baaa18844b8db958.mp3",
+   "imported": "baaa18844b8db958.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Chicken"
+  },
+  "Clock": {
+   "file": "04f6b3ea183eb9d7.mp3",
+   "imported": "04f6b3ea183eb9d7.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Clock"
+  },
+  "Clothes": {
+   "file": "0ac111125c7cb3c6.mp3",
+   "imported": "0ac111125c7cb3c6.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Clothes"
+  },
+  "Cloud": {
+   "file": "b2efeaa1a7d6d218.mp3",
+   "imported": "b2efeaa1a7d6d218.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Cloud"
+  },
+  "Coconut": {
+   "file": "3a0f02a0558acbe8.mp3",
+   "imported": "3a0f02a0558acbe8.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Coconut"
+  },
+  "Computer": {
+   "file": "924645b3e345a600.mp3",
+   "imported": "924645b3e345a600.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Computer"
+  },
+  "Cookie": {
+   "file": "e4f81994fed009c2.mp3",
+   "imported": "e4f81994fed009c2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Cookie"
+  },
+  "Corn": {
+   "file": "50efb42de671b478.mp3",
+   "imported": "50efb42de671b478.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Corn"
+  },
+  "Cow": {
+   "file": "33935f03e2050408.mp3",
+   "imported": "33935f03e2050408.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Cow"
+  },
+  "Crab": {
+   "file": "186a5f6d3da38189.mp3",
+   "imported": "186a5f6d3da38189.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Crab"
+  },
+  "Crocodile": {
+   "file": "9550e2815afbb248.mp3",
+   "imported": "9550e2815afbb248.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Crocodile"
+  },
+  "Crown": {
+   "file": "410494f2cf468cb9.mp3",
+   "imported": "410494f2cf468cb9.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Crown"
+  },
+  "Cucumber": {
+   "file": "2270b4873eb9e505.mp3",
+   "imported": "2270b4873eb9e505.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Cucumber"
+  },
+  "D": {
+   "file": "50c9e8d5fc98727b.mp3",
+   "imported": "50c9e8d5fc98727b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "D."
+  },
+  "Deer": {
+   "file": "612ac470badcb542.mp3",
+   "imported": "612ac470badcb542.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Deer"
+  },
+  "Dice": {
+   "file": "7927f138711ad7d1.mp3",
+   "imported": "7927f138711ad7d1.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Dice"
+  },
+  "Dog": {
+   "file": "b866865be01a47a3.mp3",
+   "imported": "b866865be01a47a3.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Dog"
+  },
+  "Dolphin": {
+   "file": "b352a36f62c29eef.mp3",
+   "imported": "b352a36f62c29eef.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Dolphin"
+  },
+  "Door": {
+   "file": "478d47b06dda44ac.mp3",
+   "imported": "478d47b06dda44ac.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Door"
+  },
+  "Dress": {
+   "file": "f61e33bf74dc6cb2.mp3",
+   "imported": "f61e33bf74dc6cb2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Dress"
+  },
+  "Drum": {
+   "file": "32bad1d2cace2a26.mp3",
+   "imported": "32bad1d2cace2a26.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Drum"
+  },
+  "Duck": {
+   "file": "e30bb6b05bdfacd3.mp3",
+   "imported": "e30bb6b05bdfacd3.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Duck"
+  },
+  "E": {
+   "file": "e0184adedf913b07.mp3",
+   "imported": "e0184adedf913b07.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "E."
+  },
+  "Eagle": {
+   "file": "0af99bc6a304e3cb.mp3",
+   "imported": "0af99bc6a304e3cb.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Eagle"
+  },
+  "Ear": {
+   "file": "27b938020515cf5b.mp3",
+   "imported": "27b938020515cf5b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Ear"
+  },
+  "Earth": {
+   "file": "a074430f352b879e.mp3",
+   "imported": "a074430f352b879e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Earth"
+  },
+  "Egg": {
+   "file": "32c9bcb10ced7fe6.mp3",
+   "imported": "32c9bcb10ced7fe6.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Egg"
+  },
+  "Elephant": {
+   "file": "1c6f116ce35bbe8b.mp3",
+   "imported": "1c6f116ce35bbe8b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Elephant"
+  },
+  "Envelope": {
+   "file": "7f4a2c89d81b1edd.mp3",
+   "imported": "7f4a2c89d81b1edd.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Envelope"
+  },
+  "Even": {
+   "file": "9e767ad03e5547f2.mp3",
+   "imported": "9e767ad03e5547f2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Even"
+  },
+  "Eye": {
+   "file": "dd17a6fae9289e39.mp3",
+   "imported": "dd17a6fae9289e39.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Eye"
+  },
+  "F": {
+   "file": "e69f20e9f683920d.mp3",
+   "imported": "e69f20e9f683920d.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "F."
+  },
+  "Fire": {
+   "file": "78baebfcb4b52665.mp3",
+   "imported": "78baebfcb4b52665.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Fire"
+  },
+  "Fire engine": {
+   "file": "8e6e8007b9837a2c.mp3",
+   "imported": "8e6e8007b9837a2c.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Fire engine"
+  },
+  "Fish": {
+   "file": "3030e8ec7633ec1a.mp3",
+   "imported": "3030e8ec7633ec1a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Fish"
+  },
+  "Flower": {
+   "file": "ac81468fdc6a2d40.mp3",
+   "imported": "ac81468fdc6a2d40.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Flower"
+  },
+  "Food": {
+   "file": "35b259290ec3acbb.mp3",
+   "imported": "35b259290ec3acbb.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Food"
+  },
+  "Foot": {
+   "file": "d88c8ea10f076325.mp3",
+   "imported": "d88c8ea10f076325.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Foot"
+  },
+  "Fox": {
+   "file": "dfcd3454bbea788a.mp3",
+   "imported": "dfcd3454bbea788a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Fox"
+  },
+  "Frog": {
+   "file": "075e4feb426bf015.mp3",
+   "imported": "075e4feb426bf015.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Frog"
+  },
+  "G": {
+   "file": "a36a6718f54524d8.mp3",
+   "imported": "a36a6718f54524d8.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "G."
+  },
+  "Gift": {
+   "file": "8d0a32ed63390771.mp3",
+   "imported": "8d0a32ed63390771.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Gift"
+  },
+  "Giraffe": {
+   "file": "70dd942bcb5bc262.mp3",
+   "imported": "70dd942bcb5bc262.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Giraffe"
+  },
+  "Girl": {
+   "file": "29fb58174b748291.mp3",
+   "imported": "29fb58174b748291.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Girl"
+  },
+  "Glasses": {
+   "file": "4b00bd3f2f0c4c9c.mp3",
+   "imported": "4b00bd3f2f0c4c9c.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Glasses"
+  },
+  "Gloves": {
+   "file": "1fb2c11ac7e25406.mp3",
+   "imported": "1fb2c11ac7e25406.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Gloves"
+  },
+  "Goat": {
+   "file": "0e3f5fc25846b7ff.mp3",
+   "imported": "0e3f5fc25846b7ff.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Goat"
+  },
+  "Grandma": {
+   "file": "1e3c573a02d26111.mp3",
+   "imported": "1e3c573a02d26111.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Grandma"
+  },
+  "Grandpa": {
+   "file": "32807eef531a5f06.mp3",
+   "imported": "32807eef531a5f06.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Grandpa"
+  },
+  "Grapes": {
+   "file": "0de47448267ba383.mp3",
+   "imported": "0de47448267ba383.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Grapes"
+  },
+  "Gray": {
+   "file": "4f9beff18cc6852b.mp3",
+   "imported": "4f9beff18cc6852b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Gray"
+  },
+  "Green": {
+   "file": "933bf21afdd55a0d.mp3",
+   "imported": "933bf21afdd55a0d.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Green"
+  },
+  "Guitar": {
+   "file": "94af6c4088103e96.mp3",
+   "imported": "94af6c4088103e96.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Guitar"
+  },
+  "H": {
+   "file": "7cf184f4c67ad582.mp3",
+   "imported": "7cf184f4c67ad582.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "H."
+  },
+  "Hammer": {
+   "file": "ab7b8ea47eadf931.mp3",
+   "imported": "ab7b8ea47eadf931.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Hammer"
+  },
+  "Hand": {
+   "file": "c65d489c9e64ec07.mp3",
+   "imported": "c65d489c9e64ec07.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Hand"
+  },
+  "Helicopter": {
+   "file": "fda201fd52a223f4.mp3",
+   "imported": "fda201fd52a223f4.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Helicopter"
+  },
+  "Honey": {
+   "file": "4c3e3ab8ee1c1860.mp3",
+   "imported": "4c3e3ab8ee1c1860.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Honey"
+  },
+  "Horse": {
+   "file": "26dfe8116b93ced6.mp3",
+   "imported": "26dfe8116b93ced6.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Horse"
+  },
+  "Hospital": {
+   "file": "dbb927867e102f75.mp3",
+   "imported": "dbb927867e102f75.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Hospital"
+  },
+  "House": {
+   "file": "dc8745ba30beefa5.mp3",
+   "imported": "dc8745ba30beefa5.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "House"
+  },
+  "I": {
+   "file": "ca73ab65568cd125.mp3",
+   "imported": "ca73ab65568cd125.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "I."
+  },
+  "Ice cream": {
+   "file": "1242a215b0edd66e.mp3",
+   "imported": "1242a215b0edd66e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Ice cream"
+  },
+  "Island": {
+   "file": "132a732d69f030cd.mp3",
+   "imported": "132a732d69f030cd.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Island"
+  },
+  "J": {
+   "file": "58668e7669fd564d.mp3",
+   "imported": "58668e7669fd564d.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "J."
+  },
+  "Juice": {
+   "file": "8c943c28d6453d59.mp3",
+   "imported": "8c943c28d6453d59.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Juice"
+  },
+  "K": {
+   "file": "a7ee38bb7be4fc44.mp3",
+   "imported": "a7ee38bb7be4fc44.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "K."
+  },
+  "Kangaroo": {
+   "file": "609c214c477cebd0.mp3",
+   "imported": "609c214c477cebd0.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Kangaroo"
+  },
+  "Key": {
+   "file": "c67dd20ee8429860.mp3",
+   "imported": "c67dd20ee8429860.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Key"
+  },
+  "Kiwi": {
+   "file": "d271f02db25cd6f2.mp3",
+   "imported": "d271f02db25cd6f2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Kiwi"
+  },
+  "Koala": {
+   "file": "74ae77190d30e948.mp3",
+   "imported": "74ae77190d30e948.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Koala"
+  },
+  "L": {
+   "file": "d160e0986aca4714.mp3",
+   "imported": "d160e0986aca4714.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "L."
+  },
+  "Leaf": {
+   "file": "00fe42c277c791c1.mp3",
+   "imported": "00fe42c277c791c1.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Leaf"
+  },
+  "Leg": {
+   "file": "eda9a0f7ff8ad494.mp3",
+   "imported": "eda9a0f7ff8ad494.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Leg"
+  },
+  "Lemon": {
+   "file": "4459b791a6805728.mp3",
+   "imported": "4459b791a6805728.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Lemon"
+  },
+  "Light bulb": {
+   "file": "3d3771d55ddd54f8.mp3",
+   "imported": "3d3771d55ddd54f8.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Light bulb"
+  },
+  "Lightning": {
+   "file": "4504e5f0bfccb6e4.mp3",
+   "imported": "4504e5f0bfccb6e4.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Lightning"
+  },
+  "Lion": {
+   "file": "9f19d4dcd45171a9.mp3",
+   "imported": "9f19d4dcd45171a9.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Lion"
+  },
+  "Lock": {
+   "file": "891ebccd5baa32da.mp3",
+   "imported": "891ebccd5baa32da.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Lock"
+  },
+  "M": {
+   "file": "c63ae6dd4fc9f9dd.mp3",
+   "imported": "c63ae6dd4fc9f9dd.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "M."
+  },
+  "Magnet": {
+   "file": "d7f87f222d12dda1.mp3",
+   "imported": "d7f87f222d12dda1.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Magnet"
+  },
+  "Mango": {
+   "file": "fbc34dccfdfcf9a1.mp3",
+   "imported": "fbc34dccfdfcf9a1.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Mango"
+  },
+  "Milk": {
+   "file": "f2f4decd56d814d6.mp3",
+   "imported": "f2f4decd56d814d6.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Milk"
+  },
+  "Monkey": {
+   "file": "4bd0ec65b8f729d2.mp3",
+   "imported": "4bd0ec65b8f729d2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Monkey"
+  },
+  "Moon": {
+   "file": "846b90266cabf4b3.mp3",
+   "imported": "846b90266cabf4b3.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Moon"
+  },
+  "Mosque": {
+   "file": "1c699ce8860582e7.mp3",
+   "imported": "1c699ce8860582e7.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Mosque"
+  },
+  "Mountain": {
+   "file": "c61755a1ee288094.mp3",
+   "imported": "c61755a1ee288094.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Mountain"
+  },
+  "Mouse": {
+   "file": "573dd2c2ed953b97.mp3",
+   "imported": "573dd2c2ed953b97.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Mouse"
+  },
+  "Mouth": {
+   "file": "8b89346ec19490ee.mp3",
+   "imported": "8b89346ec19490ee.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Mouth"
+  },
+  "Mushroom": {
+   "file": "aa146572cac44a81.mp3",
+   "imported": "aa146572cac44a81.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Mushroom"
+  },
+  "N": {
+   "file": "b51a60734da64be0.mp3",
+   "imported": "b51a60734da64be0.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "N."
+  },
+  "Nature": {
+   "file": "bddc7adb1204fed1.mp3",
+   "imported": "bddc7adb1204fed1.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Nature"
+  },
+  "Nose": {
+   "file": "eb9f9930aed653b8.mp3",
+   "imported": "eb9f9930aed653b8.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Nose"
+  },
+  "O": {
+   "file": "08a914cde0503969.mp3",
+   "imported": "08a914cde0503969.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "O."
+  },
+  "Octopus": {
+   "file": "c10a60e4dac35159.mp3",
+   "imported": "c10a60e4dac35159.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Octopus"
+  },
+  "Odd": {
+   "file": "dc28f5f3c65ec611.mp3",
+   "imported": "dc28f5f3c65ec611.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Odd"
+  },
+  "Orange": {
+   "file": "09fb6aaba7940a7b.mp3",
+   "imported": "09fb6aaba7940a7b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Orange"
+  },
+  "Owl": {
+   "file": "05198a3d9b463abf.mp3",
+   "imported": "05198a3d9b463abf.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Owl"
+  },
+  "P": {
+   "file": "511993d3c99719e3.mp3",
+   "imported": "511993d3c99719e3.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "P."
+  },
+  "Palm tree": {
+   "file": "97dc9f2d67c2496a.mp3",
+   "imported": "97dc9f2d67c2496a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Palm tree"
+  },
+  "Panda": {
+   "file": "65c91fe4e3e72018.mp3",
+   "imported": "65c91fe4e3e72018.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Panda"
+  },
+  "Parrot": {
+   "file": "0fcb11d8c3d43126.mp3",
+   "imported": "0fcb11d8c3d43126.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Parrot"
+  },
+  "Peach": {
+   "file": "9d572da1024594cb.mp3",
+   "imported": "9d572da1024594cb.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Peach"
+  },
+  "Peacock": {
+   "file": "1bc2ab46e33564f4.mp3",
+   "imported": "1bc2ab46e33564f4.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Peacock"
+  },
+  "Pear": {
+   "file": "547a82ee0d8700ee.mp3",
+   "imported": "547a82ee0d8700ee.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Pear"
+  },
+  "Pencil": {
+   "file": "5136ae1b5bfe9175.mp3",
+   "imported": "5136ae1b5bfe9175.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Pencil"
+  },
+  "Penguin": {
+   "file": "e1df2eb673fedd05.mp3",
+   "imported": "e1df2eb673fedd05.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Penguin"
+  },
+  "People": {
+   "file": "b37554f695b15005.mp3",
+   "imported": "b37554f695b15005.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "People"
+  },
+  "Phone": {
+   "file": "77064d5265236e0a.mp3",
+   "imported": "77064d5265236e0a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Phone"
+  },
+  "Pineapple": {
+   "file": "347aecd593ec2bc5.mp3",
+   "imported": "347aecd593ec2bc5.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Pineapple"
+  },
+  "Pink": {
+   "file": "54076359fdc7f1f0.mp3",
+   "imported": "54076359fdc7f1f0.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Pink"
+  },
+  "Pizza": {
+   "file": "01eb73e0be9e6007.mp3",
+   "imported": "01eb73e0be9e6007.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Pizza"
+  },
+  "Places": {
+   "file": "0cd3597453ab504a.mp3",
+   "imported": "0cd3597453ab504a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Places"
+  },
+  "Police officer": {
+   "file": "6ce064a547c69a8a.mp3",
+   "imported": "6ce064a547c69a8a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Police officer"
+  },
+  "Potato": {
+   "file": "cd9830ae76f94f43.mp3",
+   "imported": "cd9830ae76f94f43.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Potato"
+  },
+  "Purple": {
+   "file": "32576f4fedc07f63.mp3",
+   "imported": "32576f4fedc07f63.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Purple"
+  },
+  "Puzzle": {
+   "file": "62705e1804838aca.mp3",
+   "imported": "62705e1804838aca.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Puzzle"
+  },
+  "Q": {
+   "file": "c3156e00d3c2588c.mp3",
+   "imported": "c3156e00d3c2588c.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Q."
+  },
+  "Queen": {
+   "file": "6911adcc6c625bb5.mp3",
+   "imported": "6911adcc6c625bb5.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Queen"
+  },
+  "R": {
+   "file": "06576556d1ad802f.mp3",
+   "imported": "06576556d1ad802f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "R."
+  },
+  "Rabbit": {
+   "file": "29f716260a7733eb.mp3",
+   "imported": "29f716260a7733eb.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Rabbit"
+  },
+  "Rain": {
+   "file": "0a858c95bc97fa8f.mp3",
+   "imported": "0a858c95bc97fa8f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Rain"
+  },
+  "Rainbow": {
+   "file": "b4a9395d25398654.mp3",
+   "imported": "b4a9395d25398654.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Rainbow"
+  },
+  "Red": {
+   "file": "cc9db3a795571c7e.mp3",
+   "imported": "cc9db3a795571c7e.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Red"
+  },
+  "Rice": {
+   "file": "e3f3a94c4cf96c61.mp3",
+   "imported": "e3f3a94c4cf96c61.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Rice"
+  },
+  "Rocket": {
+   "file": "186cd74009911bf4.mp3",
+   "imported": "186cd74009911bf4.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Rocket"
+  },
+  "Rose": {
+   "file": "51ad0eae3f66ecd3.mp3",
+   "imported": "51ad0eae3f66ecd3.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Rose"
+  },
+  "S": {
+   "file": "02aa629c8b16cd17.mp3",
+   "imported": "02aa629c8b16cd17.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "S."
+  },
+  "Scarf": {
+   "file": "83dfe3a27a798e89.mp3",
+   "imported": "83dfe3a27a798e89.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Scarf"
+  },
+  "School": {
+   "file": "f2f3d66a7978c207.mp3",
+   "imported": "f2f3d66a7978c207.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "School"
+  },
+  "Scissors": {
+   "file": "faf4c3ea4e2730f2.mp3",
+   "imported": "faf4c3ea4e2730f2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Scissors"
+  },
+  "Sheep": {
+   "file": "02df9167bdb67c63.mp3",
+   "imported": "02df9167bdb67c63.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Sheep"
+  },
+  "Ship": {
+   "file": "323d4fc7337134a2.mp3",
+   "imported": "323d4fc7337134a2.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Ship"
+  },
+  "Shirt": {
+   "file": "56cc042a91b167d9.mp3",
+   "imported": "56cc042a91b167d9.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Shirt"
+  },
+  "Shoe": {
+   "file": "9806a3f0c05273b3.mp3",
+   "imported": "9806a3f0c05273b3.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Shoe"
+  },
+  "Snail": {
+   "file": "9404d283bda8febb.mp3",
+   "imported": "9404d283bda8febb.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Snail"
+  },
+  "Snake": {
+   "file": "90ec00c2b9ab0a18.mp3",
+   "imported": "90ec00c2b9ab0a18.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Snake"
+  },
+  "Snow": {
+   "file": "9c8238f65551f40b.mp3",
+   "imported": "9c8238f65551f40b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Snow"
+  },
+  "Soap": {
+   "file": "d28624e3a23c903c.mp3",
+   "imported": "d28624e3a23c903c.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Soap"
+  },
+  "Socks": {
+   "file": "775367b31885d608.mp3",
+   "imported": "775367b31885d608.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Socks"
+  },
+  "Spider": {
+   "file": "7d09d488b5d724ce.mp3",
+   "imported": "7d09d488b5d724ce.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Spider"
+  },
+  "Star": {
+   "file": "85a7de6e270547e8.mp3",
+   "imported": "85a7de6e270547e8.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Star"
+  },
+  "Strawberry": {
+   "file": "393d46da8467a9e4.mp3",
+   "imported": "393d46da8467a9e4.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Strawberry"
+  },
+  "Sun": {
+   "file": "48c98cab7866e606.mp3",
+   "imported": "48c98cab7866e606.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Sun"
+  },
+  "Sunflower": {
+   "file": "3a1480394fe36756.mp3",
+   "imported": "3a1480394fe36756.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Sunflower"
+  },
+  "T": {
+   "file": "c2c53d6694821425.mp3",
+   "imported": "c2c53d6694821425.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "T."
+  },
+  "Taxi": {
+   "file": "82e2b91027511aad.mp3",
+   "imported": "82e2b91027511aad.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Taxi"
+  },
+  "Tea": {
+   "file": "c675bc77db00a20d.mp3",
+   "imported": "c675bc77db00a20d.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Tea"
+  },
+  "Teddy bear": {
+   "file": "ab94ce741fc210d5.mp3",
+   "imported": "ab94ce741fc210d5.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Teddy bear"
+  },
+  "Tent": {
+   "file": "eae12d19e86e1dd6.mp3",
+   "imported": "eae12d19e86e1dd6.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Tent"
+  },
+  "Things": {
+   "file": "0db3fdd9af360e2f.mp3",
+   "imported": "0db3fdd9af360e2f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Things"
+  },
+  "Tiger": {
+   "file": "dd697aa8cce5c810.mp3",
+   "imported": "dd697aa8cce5c810.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Tiger"
+  },
+  "Tomato": {
+   "file": "85cd2366c323520d.mp3",
+   "imported": "85cd2366c323520d.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Tomato"
+  },
+  "Tongue": {
+   "file": "2c0af9c54fe52a81.mp3",
+   "imported": "2c0af9c54fe52a81.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Tongue"
+  },
+  "Tooth": {
+   "file": "0d7c7e8a5407acc5.mp3",
+   "imported": "0d7c7e8a5407acc5.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Tooth"
+  },
+  "Toys": {
+   "file": "e97de84466071589.mp3",
+   "imported": "e97de84466071589.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Toys"
+  },
+  "Tractor": {
+   "file": "38c33375ac13545f.mp3",
+   "imported": "38c33375ac13545f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Tractor"
+  },
+  "Train": {
+   "file": "3b278ea9e74a0427.mp3",
+   "imported": "3b278ea9e74a0427.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Train"
+  },
+  "Tree": {
+   "file": "99f5ff6378a0b48f.mp3",
+   "imported": "99f5ff6378a0b48f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Tree"
+  },
+  "Trophy": {
+   "file": "1075c086b703df3b.mp3",
+   "imported": "1075c086b703df3b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Trophy"
+  },
+  "Trousers": {
+   "file": "28f230cf676f68d1.mp3",
+   "imported": "28f230cf676f68d1.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Trousers"
+  },
+  "Truck": {
+   "file": "5bfebf2e99965d14.mp3",
+   "imported": "5bfebf2e99965d14.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Truck"
+  },
+  "Turtle": {
+   "file": "7039da614328dbb7.mp3",
+   "imported": "7039da614328dbb7.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Turtle"
+  },
+  "U": {
+   "file": "b2c7c0caa10a0cca.mp3",
+   "imported": "b2c7c0caa10a0cca.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "U."
+  },
+  "Umbrella": {
+   "file": "483fed9c10fcb09d.mp3",
+   "imported": "483fed9c10fcb09d.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Umbrella"
+  },
+  "V": {
+   "file": "c9ee5681d3c59f75.mp3",
+   "imported": "c9ee5681d3c59f75.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "V."
+  },
+  "Vehicles": {
+   "file": "60261ed2752b78de.mp3",
+   "imported": "60261ed2752b78de.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Vehicles"
+  },
+  "Violin": {
+   "file": "c64d3409dcdd8152.mp3",
+   "imported": "c64d3409dcdd8152.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Violin"
+  },
+  "Volcano": {
+   "file": "8ea2c5b5f236297f.mp3",
+   "imported": "8ea2c5b5f236297f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Volcano"
+  },
+  "W": {
+   "file": "e2415cb7f63df0c9.mp3",
+   "imported": "e2415cb7f63df0c9.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "W."
+  },
+  "Watch": {
+   "file": "d91ebf5887cf9ee3.mp3",
+   "imported": "d91ebf5887cf9ee3.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Watch"
+  },
+  "Watermelon": {
+   "file": "654a5083667369ba.mp3",
+   "imported": "654a5083667369ba.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Watermelon"
+  },
+  "Wave": {
+   "file": "a24d601189fbbd80.mp3",
+   "imported": "a24d601189fbbd80.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Wave"
+  },
+  "Whale": {
+   "file": "2be913c6a4cf9189.mp3",
+   "imported": "2be913c6a4cf9189.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Whale"
+  },
+  "White": {
+   "file": "37619fc13053f82b.mp3",
+   "imported": "37619fc13053f82b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "White"
+  },
+  "Wolf": {
+   "file": "5b7c6cb41497b133.mp3",
+   "imported": "5b7c6cb41497b133.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Wolf"
+  },
+  "X": {
+   "file": "c032adc1ff629c9b.mp3",
+   "imported": "c032adc1ff629c9b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "X."
+  },
+  "Xylophone": {
+   "file": "88e3fac6bcb7bd8f.mp3",
+   "imported": "88e3fac6bcb7bd8f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Xylophone"
+  },
+  "Y": {
+   "file": "23eb4d3f4155395a.mp3",
+   "imported": "23eb4d3f4155395a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Y."
+  },
+  "Yacht": {
+   "file": "88d655bf0a04a3e5.mp3",
+   "imported": "88d655bf0a04a3e5.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Yacht"
+  },
+  "Yellow": {
+   "file": "3526f607bcd4f51a.mp3",
+   "imported": "3526f607bcd4f51a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Yellow"
+  },
+  "Z": {
+   "file": "909f99a779adb66a.mp3",
+   "imported": "909f99a779adb66a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Z."
+  },
+  "Zebra": {
+   "file": "b2d43dc84d9fb986.mp3",
+   "imported": "b2d43dc84d9fb986.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Zebra"
+  },
+  "a": {
+   "file": "86f7e437faa5a7fc.mp3",
+   "imported": "6dcd4ce23d88e2ee.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "A."
+  },
+  "b": {
+   "file": "e9d71f5ee7c92d6d.mp3",
+   "imported": "ae4f281df5a5d0ff.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "B."
+  },
+  "c": {
+   "file": "84a516841ba77a5b.mp3",
+   "imported": "32096c2e0eff33d8.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "C."
+  },
+  "d": {
+   "file": "3c363836cf4e1666.mp3",
+   "imported": "50c9e8d5fc98727b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "D."
+  },
+  "e": {
+   "file": "58e6b3a414a1e090.mp3",
+   "imported": "e0184adedf913b07.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "E."
+  },
+  "f": {
+   "file": "4a0a19218e082a34.mp3",
+   "imported": "e69f20e9f683920d.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "F."
+  },
+  "g": {
+   "file": "54fd1711209fb1c0.mp3",
+   "imported": "a36a6718f54524d8.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "G."
+  },
+  "h": {
+   "file": "27d5482eebd075de.mp3",
+   "imported": "7cf184f4c67ad582.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "H."
+  },
+  "i": {
+   "file": "042dc4512fa3d391.mp3",
+   "imported": "ca73ab65568cd125.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "I."
+  },
+  "k": {
+   "file": "13fbd79c3d390e5d.mp3",
+   "imported": "a7ee38bb7be4fc44.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "K."
+  },
+  "l": {
+   "file": "07c342be6e560e7f.mp3",
+   "imported": "d160e0986aca4714.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "L."
+  },
+  "m": {
+   "file": "6b0d31c0d5632230.mp3",
+   "imported": "c63ae6dd4fc9f9dd.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "M."
+  },
+  "n": {
+   "file": "d1854cae891ec7b2.mp3",
+   "imported": "b51a60734da64be0.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "N."
+  },
+  "o": {
+   "file": "7a81af3e591ac713.mp3",
+   "imported": "08a914cde0503969.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "O."
+  },
+  "p": {
+   "file": "516b9783fca517ee.mp3",
+   "imported": "511993d3c99719e3.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "P."
+  },
+  "q": {
+   "file": "22ea1c649c82946a.mp3",
+   "imported": "c3156e00d3c2588c.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Q."
+  },
+  "r": {
+   "file": "4dc7c9ec434ed065.mp3",
+   "imported": "06576556d1ad802f.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "R."
+  },
+  "s": {
+   "file": "a0f1490a20d0211c.mp3",
+   "imported": "02aa629c8b16cd17.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "S."
+  },
+  "t": {
+   "file": "8efd86fb78a56a51.mp3",
+   "imported": "c2c53d6694821425.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "T."
+  },
+  "u": {
+   "file": "51e69892ab49df85.mp3",
+   "imported": "b2c7c0caa10a0cca.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "U."
+  },
+  "v": {
+   "file": "7a38d8cbd20d9932.mp3",
+   "imported": "c9ee5681d3c59f75.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "V."
+  },
+  "w": {
+   "file": "aff024fe4ab0fece.mp3",
+   "imported": "e2415cb7f63df0c9.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "W."
+  },
+  "x": {
+   "file": "11f6ad8ec52a2984.mp3",
+   "imported": "c032adc1ff629c9b.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "X."
+  },
+  "y": {
+   "file": "95cb0bfd2977c761.mp3",
+   "imported": "23eb4d3f4155395a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Y."
+  },
+  "z": {
+   "file": "395df8f7c51f0070.mp3",
+   "imported": "909f99a779adb66a.mp3",
+   "voice": "elevenlabs-ana",
+   "voiced": "Z."
   }
  }
 }

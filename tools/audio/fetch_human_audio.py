@@ -259,9 +259,12 @@ def write_credits(manifest: dict) -> None:
         for clip, e in clips.items():
             if e.get("voice") == "human":
                 rows[e["source"]] = f"{e['voiced']} - {e['author']} - {e['licence']} - {e['source']}"
-    text = ("Voice recordings from Wikimedia Commons / Lingua Libre, used under their free licences.\n"
-            "Each line: word - recorded by - licence - source. Clips were trimmed and loudness-matched.\n\n"
-            + "\n".join(sorted(rows.values())) + "\n")
+    text = ("Voices made with ElevenLabs (elevenlabs.io), used under a paid plan's commercial licence.\n"
+            "Arabic: Jessica (Standard Arabic), NOUR (Egyptian). English: Liz (American), Ana (British).\n")
+    if rows:  # volunteer recordings still in a pack: CC BY / BY-SA need the names
+        text += ("\nVoice recordings from Wikimedia Commons / Lingua Libre, used under their free licences.\n"
+                 "Each line: word - recorded by - licence - source. Clips were trimmed and loudness-matched.\n\n"
+                 + "\n".join(sorted(rows.values())) + "\n")
     (g.ASSETS / "CREDITS.txt").write_text(text, encoding="utf-8")
     print(f"credits: {len(rows)} recordings -> {g.ASSETS / 'CREDITS.txt'}")
 
