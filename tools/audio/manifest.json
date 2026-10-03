@@ -2,512 +2,512 @@
  "ar": {
   "+1": {
    "file": "acb72b94764e4802.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "acb72b94764e4802.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَوَاحِد"
   },
   "+10": {
    "file": "00741a03074f0be0.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "00741a03074f0be0.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَعَشَرَة"
   },
   "+11": {
    "file": "bcc9d740ac210d33.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "bcc9d740ac210d33.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَأَحَدَ عَشَر"
   },
   "+12": {
    "file": "a3f0610b232acecf.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "a3f0610b232acecf.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاثْنَا عَشَر"
   },
   "+13": {
    "file": "0da39007c191cee7.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "0da39007c191cee7.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَلَاثَةَ عَشَر"
   },
   "+14": {
    "file": "e3f6dc90a22e97b4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "e3f6dc90a22e97b4.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَأَرْبَعَةَ عَشَر"
   },
   "+15": {
    "file": "59ed917f95852556.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "59ed917f95852556.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَخَمْسَةَ عَشَر"
   },
   "+16": {
    "file": "b2c192e1a1d9626b.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "b2c192e1a1d9626b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسِتَّةَ عَشَر"
   },
   "+17": {
    "file": "4a9d00561e1794b1.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4a9d00561e1794b1.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسَبْعَةَ عَشَر"
   },
   "+18": {
    "file": "52a70c0e5e35e029.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "52a70c0e5e35e029.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَمَانِيَةَ عَشَر"
   },
   "+19": {
    "file": "5c26d9fb710edfe1.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5c26d9fb710edfe1.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَتِسْعَةَ عَشَر"
   },
   "+2": {
    "file": "bf8bf1a08e9e7528.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "bf8bf1a08e9e7528.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاثْنَان"
   },
   "+20": {
    "file": "030c4c3e4011b2bb.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "030c4c3e4011b2bb.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَعِشْرُون"
   },
   "+21": {
    "file": "0872294bb06f44b5.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "0872294bb06f44b5.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَوَاحِدٌ وَعِشْرُون"
   },
   "+22": {
    "file": "aef7e5073ba932e3.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "aef7e5073ba932e3.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاثْنَانِ وَعِشْرُون"
   },
   "+23": {
    "file": "00631fdc73e32ed7.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "00631fdc73e32ed7.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَلَاثَةٌ وَعِشْرُون"
   },
   "+24": {
    "file": "90c1903a25bb4434.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "90c1903a25bb4434.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَأَرْبَعَةٌ وَعِشْرُون"
   },
   "+25": {
    "file": "c1d84174d54b7aa4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "c1d84174d54b7aa4.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَخَمْسَةٌ وَعِشْرُون"
   },
   "+26": {
    "file": "31ab74a33a428aab.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "31ab74a33a428aab.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسِتَّةٌ وَعِشْرُون"
   },
   "+27": {
    "file": "ab8a9fcd460458ea.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "ab8a9fcd460458ea.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسَبْعَةٌ وَعِشْرُون"
   },
   "+28": {
    "file": "561f9730bed0971d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "561f9730bed0971d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَمَانِيَةٌ وَعِشْرُون"
   },
   "+29": {
    "file": "fc703a7f7b03ce5d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "fc703a7f7b03ce5d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَتِسْعَةٌ وَعِشْرُون"
   },
   "+3": {
    "file": "803263c700250460.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "803263c700250460.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَلَاثَة"
   },
   "+30": {
    "file": "ed33bab00c961d49.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "ed33bab00c961d49.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَلَاثُون"
   },
   "+31": {
    "file": "373b133cc78120cb.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "373b133cc78120cb.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَوَاحِدٌ وَثَلَاثُون"
   },
   "+32": {
    "file": "aa133d146132d7ec.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "aa133d146132d7ec.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاثْنَانِ وَثَلَاثُون"
   },
   "+33": {
    "file": "d39b20d00d63f7d1.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d39b20d00d63f7d1.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَلَاثَةٌ وَثَلَاثُون"
   },
   "+34": {
    "file": "d1a48206bbbb7abd.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d1a48206bbbb7abd.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَأَرْبَعَةٌ وَثَلَاثُون"
   },
   "+35": {
    "file": "4a804d6982faaff5.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4a804d6982faaff5.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَخَمْسَةٌ وَثَلَاثُون"
   },
   "+36": {
    "file": "9a527add8072f845.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "9a527add8072f845.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسِتَّةٌ وَثَلَاثُون"
   },
   "+37": {
    "file": "243739b216729a7f.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "243739b216729a7f.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسَبْعَةٌ وَثَلَاثُون"
   },
   "+38": {
    "file": "074b51040f152ef8.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "074b51040f152ef8.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَمَانِيَةٌ وَثَلَاثُون"
   },
   "+39": {
    "file": "4850d5bfd1c931dd.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4850d5bfd1c931dd.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَتِسْعَةٌ وَثَلَاثُون"
   },
   "+4": {
    "file": "f098bc5e259ef48b.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "f098bc5e259ef48b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَأَرْبَعَة"
   },
   "+40": {
    "file": "5459b2fb7c0484ec.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5459b2fb7c0484ec.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَأَرْبَعُون"
   },
   "+41": {
    "file": "251bd49e85a44286.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "251bd49e85a44286.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَوَاحِدٌ وَأَرْبَعُون"
   },
   "+42": {
    "file": "689118cfb603244a.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "689118cfb603244a.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاثْنَانِ وَأَرْبَعُون"
   },
   "+43": {
    "file": "762fed4224072631.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "762fed4224072631.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَلَاثَةٌ وَأَرْبَعُون"
   },
   "+44": {
    "file": "b098894773c31fe6.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "b098894773c31fe6.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَأَرْبَعَةٌ وَأَرْبَعُون"
   },
   "+45": {
    "file": "4c911dd7de5f44d3.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4c911dd7de5f44d3.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَخَمْسَةٌ وَأَرْبَعُون"
   },
   "+46": {
    "file": "2c81ede9c020f955.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "2c81ede9c020f955.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسِتَّةٌ وَأَرْبَعُون"
   },
   "+47": {
    "file": "032428fe69620f51.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "032428fe69620f51.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسَبْعَةٌ وَأَرْبَعُون"
   },
   "+48": {
    "file": "f69cc5bf17c022cf.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "f69cc5bf17c022cf.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَمَانِيَةٌ وَأَرْبَعُون"
   },
   "+49": {
    "file": "28116a103f0311ea.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "28116a103f0311ea.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَتِسْعَةٌ وَأَرْبَعُون"
   },
   "+5": {
    "file": "af64fe7e1fcf0d5c.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "af64fe7e1fcf0d5c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَخَمْسَة"
   },
   "+50": {
    "file": "35baa06cfbad8016.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "35baa06cfbad8016.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَخَمْسُون"
   },
   "+51": {
    "file": "4731d059c6e32f00.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4731d059c6e32f00.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَوَاحِدٌ وَخَمْسُون"
   },
   "+52": {
    "file": "49e9e1ec9eacb225.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "49e9e1ec9eacb225.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاثْنَانِ وَخَمْسُون"
   },
   "+53": {
    "file": "d1fd9e7cdae8c63a.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d1fd9e7cdae8c63a.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَلَاثَةٌ وَخَمْسُون"
   },
   "+54": {
    "file": "618c2aabe5ef95b4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "618c2aabe5ef95b4.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَأَرْبَعَةٌ وَخَمْسُون"
   },
   "+55": {
    "file": "033de21c8f778fc7.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "033de21c8f778fc7.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَخَمْسَةٌ وَخَمْسُون"
   },
   "+56": {
    "file": "941d1c352c839735.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "941d1c352c839735.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسِتَّةٌ وَخَمْسُون"
   },
   "+57": {
    "file": "35f2b4aeb0bad1cf.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "35f2b4aeb0bad1cf.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسَبْعَةٌ وَخَمْسُون"
   },
   "+58": {
    "file": "bdbe83f7afc068b5.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "bdbe83f7afc068b5.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَمَانِيَةٌ وَخَمْسُون"
   },
   "+59": {
    "file": "7d562192bbcdcd94.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "7d562192bbcdcd94.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَتِسْعَةٌ وَخَمْسُون"
   },
   "+6": {
    "file": "7b6eb155cf8622f1.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "7b6eb155cf8622f1.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسِتَّة"
   },
   "+60": {
    "file": "8dc649ce6680fea3.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "8dc649ce6680fea3.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسِتُّون"
   },
   "+61": {
    "file": "cbc016fa8baf1e62.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "cbc016fa8baf1e62.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَوَاحِدٌ وَسِتُّون"
   },
   "+62": {
    "file": "a7649b7511a2d150.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "a7649b7511a2d150.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاثْنَانِ وَسِتُّون"
   },
   "+63": {
    "file": "a13ec413d584c209.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "a13ec413d584c209.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَلَاثَةٌ وَسِتُّون"
   },
   "+64": {
    "file": "ee836d5dd24126ac.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "ee836d5dd24126ac.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَأَرْبَعَةٌ وَسِتُّون"
   },
   "+65": {
    "file": "ecb988785b20eedb.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "ecb988785b20eedb.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَخَمْسَةٌ وَسِتُّون"
   },
   "+66": {
    "file": "60228e881f8829c6.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "60228e881f8829c6.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسِتَّةٌ وَسِتُّون"
   },
   "+67": {
    "file": "039b157c892c1744.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "039b157c892c1744.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسَبْعَةٌ وَسِتُّون"
   },
   "+68": {
    "file": "193af4d778c46a24.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "193af4d778c46a24.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَمَانِيَةٌ وَسِتُّون"
   },
   "+69": {
    "file": "75002c832ef33913.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "75002c832ef33913.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَتِسْعَةٌ وَسِتُّون"
   },
   "+7": {
    "file": "f148dee743a0f8dd.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "f148dee743a0f8dd.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسَبْعَة"
   },
   "+70": {
    "file": "c0d4724f3d42210b.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "c0d4724f3d42210b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسَبْعُون"
   },
   "+71": {
    "file": "a828da29f565e231.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "a828da29f565e231.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَوَاحِدٌ وَسَبْعُون"
   },
   "+72": {
    "file": "fc22d75007bfebef.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "fc22d75007bfebef.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاثْنَانِ وَسَبْعُون"
   },
   "+73": {
    "file": "486d5bc1af239a09.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "486d5bc1af239a09.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَلَاثَةٌ وَسَبْعُون"
   },
   "+74": {
    "file": "57ee151eb4539434.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "57ee151eb4539434.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَأَرْبَعَةٌ وَسَبْعُون"
   },
   "+75": {
    "file": "7d613e4de5bde873.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "7d613e4de5bde873.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَخَمْسَةٌ وَسَبْعُون"
   },
   "+76": {
    "file": "597390b3d5a70d0f.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "597390b3d5a70d0f.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسِتَّةٌ وَسَبْعُون"
   },
   "+77": {
    "file": "181138bbb6c4bc7c.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "181138bbb6c4bc7c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسَبْعَةٌ وَسَبْعُون"
   },
   "+78": {
    "file": "64a071e5e477d49e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "64a071e5e477d49e.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَمَانِيَةٌ وَسَبْعُون"
   },
   "+79": {
    "file": "efda496a45da8830.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "efda496a45da8830.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَتِسْعَةٌ وَسَبْعُون"
   },
   "+8": {
    "file": "1d0e634d769ed03d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "1d0e634d769ed03d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَمَانِيَة"
   },
   "+80": {
    "file": "828c28775a944cd4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "828c28775a944cd4.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَمَانُون"
   },
   "+81": {
    "file": "613d8e9527746742.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "613d8e9527746742.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَوَاحِدٌ وَثَمَانُون"
   },
   "+82": {
    "file": "5ffb09c7c9029837.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5ffb09c7c9029837.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاثْنَانِ وَثَمَانُون"
   },
   "+83": {
    "file": "d6ff9086c7b218e4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d6ff9086c7b218e4.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَثَلَاثَةٌ وَثَمَانُون"
   },
   "+84": {
    "file": "1136cd18462794f9.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "1136cd18462794f9.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَأَرْبَعَةٌ وَثَمَانُون"
   },
   "+85": {
    "file": "7d50fe98096a57e8.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "7d50fe98096a57e8.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَخَمْسَةٌ وَثَمَانُون"
   },
   "+86": {
    "file": "edbaaa7caed44f7c.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "edbaaa7caed44f7c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَسِتَّةٌ وَثَمَانُون"
   },
   "+87": {
@@ -530,8 +530,8 @@
   },
   "+9": {
    "file": "6d7aeffa7dc16a9d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "6d7aeffa7dc16a9d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَتِسْعَة"
   },
   "+90": {
@@ -596,8 +596,8 @@
   },
   "0": {
    "file": "b6589fc6ab0dc82c.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "b6589fc6ab0dc82c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "صِفْر"
   },
   "1": {
@@ -614,8 +614,8 @@
   },
   "100": {
    "file": "310b86e0b62b8285.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "310b86e0b62b8285.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مِئَة"
   },
   "1000": {
@@ -730,26 +730,26 @@
   },
   "26": {
    "file": "887309d048beef83.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "887309d048beef83.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سِتَّةٌ وَعِشْرُون"
   },
   "27": {
    "file": "bc33ea4e26e5e1af.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "bc33ea4e26e5e1af.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَبْعَةٌ وَعِشْرُون"
   },
   "28": {
    "file": "0a57cb53ba59c46f.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "0a57cb53ba59c46f.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَمَانِيَةٌ وَعِشْرُون"
   },
   "29": {
    "file": "7719a1c782a1ba91.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "7719a1c782a1ba91.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تِسْعَةٌ وَعِشْرُون"
   },
   "3": {
@@ -774,56 +774,56 @@
   },
   "31": {
    "file": "632667547e7cd3e0.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "632667547e7cd3e0.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاحِدٌ وَثَلَاثُون"
   },
   "32": {
    "file": "cb4e5208b4cd8726.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "cb4e5208b4cd8726.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "اثْنَانِ وَثَلَاثُون"
   },
   "33": {
    "file": "b6692ea5df920cad.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "b6692ea5df920cad.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَلَاثَةٌ وَثَلَاثُون"
   },
   "34": {
    "file": "f1f836cb4ea6efb2.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "f1f836cb4ea6efb2.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَرْبَعَةٌ وَثَلَاثُون"
   },
   "35": {
    "file": "972a67c48192728a.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "972a67c48192728a.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "خَمْسَةٌ وَثَلَاثُون"
   },
   "36": {
    "file": "fc074d501302eb2b.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "fc074d501302eb2b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سِتَّةٌ وَثَلَاثُون"
   },
   "37": {
    "file": "cb7a1d775e800fd1.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "cb7a1d775e800fd1.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَبْعَةٌ وَثَلَاثُون"
   },
   "38": {
    "file": "5b384ce32d8cdef0.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5b384ce32d8cdef0.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَمَانِيَةٌ وَثَلَاثُون"
   },
   "39": {
    "file": "ca3512f4dfa95a03.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "ca3512f4dfa95a03.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تِسْعَةٌ وَثَلَاثُون"
   },
   "4": {
@@ -848,56 +848,56 @@
   },
   "41": {
    "file": "761f22b2c1593d0b.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "761f22b2c1593d0b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاحِدٌ وَأَرْبَعُون"
   },
   "42": {
    "file": "92cfceb39d57d914.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "92cfceb39d57d914.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "اثْنَانِ وَأَرْبَعُون"
   },
   "43": {
    "file": "0286dd552c9bea9a.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "0286dd552c9bea9a.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَلَاثَةٌ وَأَرْبَعُون"
   },
   "44": {
    "file": "98fbc42faedc0249.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "98fbc42faedc0249.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَرْبَعَةٌ وَأَرْبَعُون"
   },
   "45": {
    "file": "fb644351560d8296.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "fb644351560d8296.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "خَمْسَةٌ وَأَرْبَعُون"
   },
   "46": {
    "file": "fe2ef495a1152561.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "fe2ef495a1152561.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سِتَّةٌ وَأَرْبَعُون"
   },
   "47": {
    "file": "827bfc458708f0b4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "827bfc458708f0b4.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَبْعَةٌ وَأَرْبَعُون"
   },
   "48": {
    "file": "64e095fe763fc624.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "64e095fe763fc624.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَمَانِيَةٌ وَأَرْبَعُون"
   },
   "49": {
    "file": "2e01e17467891f7c.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "2e01e17467891f7c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تِسْعَةٌ وَأَرْبَعُون"
   },
   "5": {
@@ -922,56 +922,56 @@
   },
   "51": {
    "file": "b7eb6c689c037217.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "b7eb6c689c037217.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاحِدٌ وَخَمْسُون"
   },
   "52": {
    "file": "a9334987ece78b6f.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "a9334987ece78b6f.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "اثْنَانِ وَخَمْسُون"
   },
   "53": {
    "file": "c5b76da3e608d34e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "c5b76da3e608d34e.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَلَاثَةٌ وَخَمْسُون"
   },
   "54": {
    "file": "80e28a51cbc26fa4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "80e28a51cbc26fa4.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَرْبَعَةٌ وَخَمْسُون"
   },
   "55": {
    "file": "8effee409c625e1a.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "8effee409c625e1a.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "خَمْسَةٌ وَخَمْسُون"
   },
   "56": {
    "file": "54ceb91256e8190e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "54ceb91256e8190e.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سِتَّةٌ وَخَمْسُون"
   },
   "57": {
    "file": "9109c85a45b703f8.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "9109c85a45b703f8.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَبْعَةٌ وَخَمْسُون"
   },
   "58": {
    "file": "667be543b02294b7.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "667be543b02294b7.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَمَانِيَةٌ وَخَمْسُون"
   },
   "59": {
    "file": "5a5b0f9b7d3f8fc8.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5a5b0f9b7d3f8fc8.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تِسْعَةٌ وَخَمْسُون"
   },
   "6": {
@@ -996,56 +996,56 @@
   },
   "61": {
    "file": "6c1e671f9af5b46d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "6c1e671f9af5b46d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاحِدٌ وَسِتُّون"
   },
   "62": {
    "file": "511a418e72591eb7.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "511a418e72591eb7.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "اثْنَانِ وَسِتُّون"
   },
   "63": {
    "file": "a17554a0d2b15a66.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "a17554a0d2b15a66.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَلَاثَةٌ وَسِتُّون"
   },
   "64": {
    "file": "c66c65175fecc310.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "c66c65175fecc310.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَرْبَعَةٌ وَسِتُّون"
   },
   "65": {
    "file": "2a459380709e2fe4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "2a459380709e2fe4.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "خَمْسَةٌ وَسِتُّون"
   },
   "66": {
    "file": "59129aacfb6cebbe.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "59129aacfb6cebbe.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سِتَّةٌ وَسِتُّون"
   },
   "67": {
    "file": "4d89d294cd4ca9f2.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4d89d294cd4ca9f2.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَبْعَةٌ وَسِتُّون"
   },
   "68": {
    "file": "b4c96d80854dd27e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "b4c96d80854dd27e.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَمَانِيَةٌ وَسِتُّون"
   },
   "69": {
    "file": "a72b20062ec2c47a.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "a72b20062ec2c47a.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تِسْعَةٌ وَسِتُّون"
   },
   "7": {
@@ -1070,32 +1070,32 @@
   },
   "71": {
    "file": "d02560dd9d7db446.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d02560dd9d7db446.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاحِدٌ وَسَبْعُون"
   },
   "72": {
    "file": "c097638f92de80ba.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "c097638f92de80ba.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "اثْنَانِ وَسَبْعُون"
   },
   "73": {
    "file": "35e995c107a71cae.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "35e995c107a71cae.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَلَاثَةٌ وَسَبْعُون"
   },
   "74": {
    "file": "1f1362ea41d1bc65.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "1f1362ea41d1bc65.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَرْبَعَةٌ وَسَبْعُون"
   },
   "75": {
    "file": "450ddec8dd206c2e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "450ddec8dd206c2e.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "خَمْسَةٌ وَسَبْعُون"
   },
   "76": {
@@ -1106,8 +1106,8 @@
   },
   "77": {
    "file": "d321d6f7ccf98b51.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d321d6f7ccf98b51.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَبْعَةٌ وَسَبْعُون"
   },
   "78": {
@@ -1118,8 +1118,8 @@
   },
   "79": {
    "file": "b74f5ee9461495ba.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "b74f5ee9461495ba.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تِسْعَةٌ وَسَبْعُون"
   },
   "8": {
@@ -1130,8 +1130,8 @@
   },
   "80": {
    "file": "b888b29826bb53dc.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "b888b29826bb53dc.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَمَانُون"
   },
   "800": {
@@ -1142,56 +1142,56 @@
   },
   "81": {
    "file": "1d513c0bcbe33b2e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "1d513c0bcbe33b2e.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاحِدٌ وَثَمَانُون"
   },
   "82": {
    "file": "76546f9a641ede2b.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "76546f9a641ede2b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "اثْنَانِ وَثَمَانُون"
   },
   "83": {
    "file": "7d7116e23efef729.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "7d7116e23efef729.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَلَاثَةٌ وَثَمَانُون"
   },
   "84": {
    "file": "be461a0cd1fda052.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "be461a0cd1fda052.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَرْبَعَةٌ وَثَمَانُون"
   },
   "85": {
    "file": "1352246e33277e9d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "1352246e33277e9d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "خَمْسَةٌ وَثَمَانُون"
   },
   "86": {
    "file": "3c26dffc8a2e8804.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "3c26dffc8a2e8804.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سِتَّةٌ وَثَمَانُون"
   },
   "87": {
    "file": "e62d7f1eb43d87c2.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "e62d7f1eb43d87c2.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَبْعَةٌ وَثَمَانُون"
   },
   "88": {
    "file": "b37f6ddcefad7e86.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "b37f6ddcefad7e86.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَمَانِيَةٌ وَثَمَانُون"
   },
   "89": {
    "file": "16b06bd9b738835e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "16b06bd9b738835e.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تِسْعَةٌ وَثَمَانُون"
   },
   "9": {
@@ -1216,74 +1216,74 @@
   },
   "91": {
    "file": "4cd66dfabbd964f8.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4cd66dfabbd964f8.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَاحِدٌ وَتِسْعُون"
   },
   "92": {
    "file": "8ee51caaa2c2f4ee.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "8ee51caaa2c2f4ee.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "اثْنَانِ وَتِسْعُون"
   },
   "93": {
    "file": "08a35293e09f5084.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "08a35293e09f5084.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَلَاثَةٌ وَتِسْعُون"
   },
   "94": {
    "file": "215bb47da8fac334.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "215bb47da8fac334.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَرْبَعَةٌ وَتِسْعُون"
   },
   "95": {
    "file": "8e63fd3e77796b10.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "8e63fd3e77796b10.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "خَمْسَةٌ وَتِسْعُون"
   },
   "96": {
    "file": "6fb84aed32facd12.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "6fb84aed32facd12.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سِتَّةٌ وَتِسْعُون"
   },
   "97": {
    "file": "812ed4562d321136.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "812ed4562d321136.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَبْعَةٌ وَتِسْعُون"
   },
   "98": {
    "file": "31bd9b9f5f7b338e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "31bd9b9f5f7b338e.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَمَانِيَةٌ وَتِسْعُون"
   },
   "99": {
    "file": "9a79be611e0267e1.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "9a79be611e0267e1.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تِسْعَةٌ وَتِسْعُون"
   },
   "ء": {
    "file": "b50383c6d54cbb5e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "b50383c6d54cbb5e.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "هَمْزَة"
   },
   "آ": {
    "file": "f2f2633911d73e9f.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "f2f2633911d73e9f.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَلِفٌ مَمْدُودَة"
   },
   "آيس كريم": {
    "file": "06ca64749dc52769.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "06ca64749dc52769.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "آيِس كْرِيم"
   },
   "أ": {
@@ -1304,8 +1304,8 @@
   },
   "أحجية": {
    "file": "fbc50bcc855563aa.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "fbc50bcc855563aa.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أُحْجِيَّة"
   },
   "أحمر": {
@@ -1326,8 +1326,8 @@
   },
   "أخطبوط": {
    "file": "0978a0b832073e96.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "0978a0b832073e96.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أُخْطُبُوط"
   },
   "أذن": {
@@ -1380,32 +1380,32 @@
   },
   "أشخاص": {
    "file": "1f3000914d545c4f.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "1f3000914d545c4f.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَشْخَاص"
   },
   "أشياء": {
    "file": "5d78b6da4cb60056.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5d78b6da4cb60056.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَشْيَاء"
   },
   "أصفر": {
    "file": "62b07216189ac441.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "62b07216189ac441.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَصْفَر"
   },
   "أفوكادو": {
    "file": "1dc156403183435e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "1dc156403183435e.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَفُوكَادُو"
   },
   "ألعاب": {
    "file": "7b85642532832c5b.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "7b85642532832c5b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَلْعَاب"
   },
   "ألف": {
@@ -1418,8 +1418,8 @@
   },
   "أماكن": {
    "file": "671ef8fce0f8e716.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "671ef8fce0f8e716.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَمَاكِن"
   },
   "أناناس": {
@@ -1456,8 +1456,8 @@
   },
   "ئ": {
    "file": "46e5a9a911202a8b.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "46e5a9a911202a8b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "هَمْزَةٌ عَلَى نَبْرَة"
   },
   "ا": {
@@ -1470,26 +1470,26 @@
   },
   "الأرض": {
    "file": "1c7c6015732713f7.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "1c7c6015732713f7.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "الْأَرْض"
   },
   "الجسم": {
    "file": "624a3a353e2bad62.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "624a3a353e2bad62.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "الْجِسْم"
   },
   "ب": {
    "file": "8b5123a22cbcf54a.mp3",
    "imported": "1c1e43d61d9bb3a0.mp3",
-   "voice": "elevenlabs",
+   "voice": "elevenlabs-jessica",
    "voiced": "بَاء"
   },
   "باء": {
    "file": "1c1e43d61d9bb3a0.mp3",
    "imported": "1c1e43d61d9bb3a0.mp3",
-   "voice": "elevenlabs",
+   "voice": "elevenlabs-jessica",
    "voiced": "بَاء"
   },
   "باب": {
@@ -1510,14 +1510,14 @@
   },
   "باندا": {
    "file": "9466a579bd380f81.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "9466a579bd380f81.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "بَانْدَا"
   },
   "ببغاء": {
    "file": "ca4f00f247e61160.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "ca4f00f247e61160.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "بَبَّغَاء"
   },
   "برتقالة": {
@@ -1530,8 +1530,8 @@
   },
   "برتقالي": {
    "file": "cb52310b53049c89.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "cb52310b53049c89.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "بُرْتُقَالِيّ"
   },
   "برق": {
@@ -1552,14 +1552,14 @@
   },
   "بسكويت": {
    "file": "285d9275e10bb205.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "285d9275e10bb205.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "بَسْكَوِيت"
   },
   "بطاطا": {
    "file": "fa9340fafe5a1752.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "fa9340fafe5a1752.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "بَطَاطَا"
   },
   "بطة": {
@@ -1572,8 +1572,8 @@
   },
   "بطريق": {
    "file": "f17b099aa18d54a9.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "f17b099aa18d54a9.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "بِطْرِيق"
   },
   "بطيخ": {
@@ -1586,8 +1586,8 @@
   },
   "بقرة": {
    "file": "a7d17cf001e60eba.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "a7d17cf001e60eba.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "بَقَرَة"
   },
   "بنت": {
@@ -1600,14 +1600,14 @@
   },
   "بنطال": {
    "file": "374481b504f19b48.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "374481b504f19b48.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "بِنْطَال"
   },
   "بنفسجي": {
    "file": "013ff80b0a988108.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "013ff80b0a988108.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "بَنَفْسَجِيّ"
   },
   "بني": {
@@ -1636,20 +1636,20 @@
   },
   "بيتزا": {
    "file": "9838077b6290c217.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "9838077b6290c217.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "بِيتْزَا"
   },
   "بيضة": {
    "file": "5e17869b800f2915.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5e17869b800f2915.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "بَيْضَة"
   },
   "ة": {
    "file": "5c817779b3b52a25.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5c817779b3b52a25.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تَاءٌ مَرْبُوطَة"
   },
   "ت": {
@@ -1672,8 +1672,8 @@
   },
   "تفاحة": {
    "file": "fd690b206b7b0c5a.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "fd690b206b7b0c5a.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تُفَّاحَة"
   },
   "تمساح": {
@@ -1706,20 +1706,20 @@
   },
   "ثعلب": {
    "file": "3174cb4bcc30fb28.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "3174cb4bcc30fb28.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَعْلَب"
   },
   "ثلج": {
    "file": "9b7b0aed4fe110fe.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "9b7b0aed4fe110fe.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَلْج"
   },
   "ج": {
    "file": "e2f45e1615914e3f.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "c38c46a59a35e336.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "جِيم"
   },
   "جبل": {
@@ -1732,8 +1732,8 @@
   },
   "جبن": {
    "file": "c19ff58e8d2bab2e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "c19ff58e8d2bab2e.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "جُبْن"
   },
   "جد": {
@@ -1746,14 +1746,14 @@
   },
   "جدة": {
    "file": "de8dd0bdf7949f3d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "de8dd0bdf7949f3d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "جَدَّة"
   },
   "جرار": {
    "file": "df2481ca5b00b5e7.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "df2481ca5b00b5e7.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "جَرَّار"
   },
   "جرس": {
@@ -1790,20 +1790,20 @@
   },
   "جوارب": {
    "file": "e5f9777a36fcb212.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "e5f9777a36fcb212.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "جَوَارِب"
   },
   "جوز الهند": {
    "file": "301c229e3e2c0ab2.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "301c229e3e2c0ab2.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "جَوْزُ الْهِنْد"
   },
   "جيم": {
    "file": "c38c46a59a35e336.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "c38c46a59a35e336.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "جِيم"
   },
   "ح": {
@@ -1820,8 +1820,8 @@
   },
   "حاسوب": {
    "file": "6f59ef41a94728ac.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "6f59ef41a94728ac.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "حَاسُوب"
   },
   "حافلة": {
@@ -1840,14 +1840,14 @@
   },
   "حصان": {
    "file": "7365f70204397c07.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "7365f70204397c07.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "حِصَان"
   },
   "حقيبة": {
    "file": "7f8ce543ef04e6ec.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "7f8ce543ef04e6ec.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "حَقِيبَة"
   },
   "حلزون": {
@@ -1868,8 +1868,8 @@
   },
   "حمار وحشي": {
    "file": "200ab8008f70ed29.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "200ab8008f70ed29.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "حِمَارٌ وَحْشِيّ"
   },
   "حوت": {
@@ -1882,8 +1882,8 @@
   },
   "حيوانات": {
    "file": "1a27ebf59bfafc55.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "1a27ebf59bfafc55.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "حَيَوَانَات"
   },
   "خ": {
@@ -1900,8 +1900,8 @@
   },
   "خبز": {
    "file": "0ff3c361e2abc9bc.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "0ff3c361e2abc9bc.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "خُبْز"
   },
   "خروف": {
@@ -1938,26 +1938,26 @@
   },
   "د": {
    "file": "5cff1093c42b8740.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "160ae026797ed418.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "دَال"
   },
   "دال": {
    "file": "160ae026797ed418.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "160ae026797ed418.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "دَال"
   },
   "دب": {
    "file": "9ce5ff277c5edf6e.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "9ce5ff277c5edf6e.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "دُبّ"
   },
   "دجاجة": {
    "file": "6db125644092e95b.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "6db125644092e95b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "دَجَاجَة"
   },
   "دراجة": {
@@ -1978,62 +1978,62 @@
   },
   "دماغ": {
    "file": "4414835e9b303dd3.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4414835e9b303dd3.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "دِمَاغ"
   },
   "دمية دب": {
    "file": "115687ff7c5e7808.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "115687ff7c5e7808.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "دُمْيَةُ دُبّ"
   },
   "دوار الشمس": {
    "file": "6e0d7a3b360504ae.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "6e0d7a3b360504ae.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "دَوَّارُ الشَّمْس"
   },
   "ذ": {
    "file": "4606dd643b06797f.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "8f46e24ef0118ebf.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ذَال"
   },
   "ذئب": {
    "file": "47750d49ba359a3d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "47750d49ba359a3d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ذِئْب"
   },
   "ذال": {
    "file": "8f46e24ef0118ebf.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "8f46e24ef0118ebf.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ذَال"
   },
   "ذرة": {
    "file": "01f6e668fec140d6.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "01f6e668fec140d6.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ذُرَة"
   },
   "ر": {
    "file": "7a59c9d30973d6ca.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4269697bb98f04dc.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "رَاء"
   },
   "راء": {
    "file": "4269697bb98f04dc.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4269697bb98f04dc.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "رَاء"
   },
   "رضيع": {
    "file": "bdcb957e6ba9c781.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "bdcb957e6ba9c781.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "رَضِيع"
   },
   "رمادي": {
@@ -2046,14 +2046,14 @@
   },
   "ز": {
    "file": "d8c018d350b6cdce.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4480e81cdd139c14.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "زَاي"
   },
   "زاي": {
    "file": "4480e81cdd139c14.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "4480e81cdd139c14.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "زَاي"
   },
   "زرافة": {
@@ -2074,8 +2074,8 @@
   },
   "زوجي": {
    "file": "b9eedf66f8e03430.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "b9eedf66f8e03430.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "زَوْجِيّ"
   },
   "س": {
@@ -2096,8 +2096,8 @@
   },
   "ساعة يد": {
    "file": "667c9deaa3230ece.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "667c9deaa3230ece.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَاعَةُ يَد"
   },
   "ساق": {
@@ -2110,8 +2110,8 @@
   },
   "سرير": {
    "file": "e0f948a7c90c60f9.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "e0f948a7c90c60f9.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَرِير"
   },
   "سفينة": {
@@ -2132,8 +2132,8 @@
   },
   "سلطعون": {
    "file": "29cf2dd581d0d794.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "29cf2dd581d0d794.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَلْطَعُون"
   },
   "سمكة": {
@@ -2162,20 +2162,20 @@
   },
   "سيارة أجرة": {
    "file": "9541011c18dc7067.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "9541011c18dc7067.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَيَّارَةُ أُجْرَة"
   },
   "سيارة إسعاف": {
    "file": "5a0682f7b4bc987d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5a0682f7b4bc987d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَيَّارَةُ إِسْعَاف"
   },
   "سيارة إطفاء": {
    "file": "205c2c8c3b05e56b.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "205c2c8c3b05e56b.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَيَّارَةُ إِطْفَاء"
   },
   "سين": {
@@ -2188,8 +2188,8 @@
   },
   "ش": {
    "file": "d42b280f42efadd5.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "8abc5a2e3ac381ea.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "شِين"
   },
   "شاحنة": {
@@ -2218,8 +2218,8 @@
   },
   "شرطي": {
    "file": "3f799ae9697cd356.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "3f799ae9697cd356.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "شُرْطِيّ"
   },
   "شمس": {
@@ -2240,14 +2240,14 @@
   },
   "شين": {
    "file": "8abc5a2e3ac381ea.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "8abc5a2e3ac381ea.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "شِين"
   },
   "ص": {
    "file": "928a192ed5f39a95.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "beb1f0d3ca2f35d7.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "صَاد"
   },
   "صابون": {
@@ -2260,20 +2260,20 @@
   },
   "صاد": {
    "file": "beb1f0d3ca2f35d7.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "beb1f0d3ca2f35d7.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "صَاد"
   },
   "صاروخ": {
    "file": "6d8b38cb7f793d3f.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "6d8b38cb7f793d3f.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "صَارُوخ"
   },
   "صبار": {
    "file": "5025df1216c6ca10.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5025df1216c6ca10.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "صَبَّار"
   },
   "ض": {
@@ -2296,26 +2296,26 @@
   },
   "ط": {
    "file": "67dd1cf4d8986809.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "46c5140ef2da69f8.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "طَاء"
   },
   "طاء": {
    "file": "46c5140ef2da69f8.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "46c5140ef2da69f8.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "طَاء"
   },
   "طائرة": {
    "file": "84c27962de9a339d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "84c27962de9a339d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "طَائِرَة"
   },
   "طاووس": {
    "file": "06d54b31a6439425.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "06d54b31a6439425.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "طَاوُوس"
   },
   "طبل": {
@@ -2364,14 +2364,14 @@
   },
   "ظرف": {
    "file": "85bdf3947166c192.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "85bdf3947166c192.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ظَرْف"
   },
   "ع": {
    "file": "80add0b9e028a473.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "675b46a5bc808734.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "عَيْن"
   },
   "عسل": {
@@ -2384,20 +2384,20 @@
   },
   "عصفور": {
    "file": "fae3b134596ebcaa.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "fae3b134596ebcaa.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "عُصْفُور"
   },
   "عصير": {
    "file": "508095033f7085e6.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "508095033f7085e6.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "عَصِير"
   },
   "عنب": {
    "file": "0d5ed7ec4717bb9d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "0d5ed7ec4717bb9d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "عِنَب"
   },
   "عنكبوت": {
@@ -2410,38 +2410,38 @@
   },
   "عين": {
    "file": "675b46a5bc808734.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "675b46a5bc808734.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "عَيْن"
   },
   "غ": {
    "file": "0e636841e7121af4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "ca76e9e564a59daf.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "غَيْن"
   },
   "غيتار": {
    "file": "5989524d0d50f53d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5989524d0d50f53d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "غِيتَار"
   },
   "غيمة": {
    "file": "86970739f79f2599.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "86970739f79f2599.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "غَيْمَة"
   },
   "غين": {
    "file": "ca76e9e564a59daf.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "ca76e9e564a59daf.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "غَيْن"
   },
   "ف": {
    "file": "5bb2f0c8c3db95e7.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "cc5f7ba380b0b5a9.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "فَاء"
   },
   "فأر": {
@@ -2454,8 +2454,8 @@
   },
   "فاء": {
    "file": "cc5f7ba380b0b5a9.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "cc5f7ba380b0b5a9.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "فَاء"
   },
   "فراشة": {
@@ -2476,8 +2476,8 @@
   },
   "فردي": {
    "file": "9a25463d7fb2e3a2.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "9a25463d7fb2e3a2.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "فَرْدِيّ"
   },
   "فستان": {
@@ -2490,44 +2490,44 @@
   },
   "فطر": {
    "file": "097e6c781aa8694a.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "097e6c781aa8694a.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "فُطْر"
   },
   "فم": {
    "file": "7f3b9d0b95d21686.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "7f3b9d0b95d21686.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "فَم"
   },
   "فيل": {
    "file": "22caf60a69ac5554.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "22caf60a69ac5554.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "فِيل"
   },
   "ق": {
    "file": "c4076e05c966fb82.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "31d2954591d4fd78.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قَاف"
   },
   "قارب شراعي": {
    "file": "79980d572199236c.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "79980d572199236c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قَارِبٌ شِرَاعِيّ"
   },
   "قاف": {
    "file": "31d2954591d4fd78.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "31d2954591d4fd78.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قَاف"
   },
   "قبعة": {
    "file": "ca00e853a069a86a.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "ca00e853a069a86a.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قُبَّعَة"
   },
   "قدم": {
@@ -2540,8 +2540,8 @@
   },
   "قرد": {
    "file": "6471586d8e28e3f5.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "6471586d8e28e3f5.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قِرْد"
   },
   "قطار": {
@@ -2560,32 +2560,32 @@
   },
   "قفازات": {
    "file": "329bb7c3b1650889.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "329bb7c3b1650889.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قُفَّازَات"
   },
   "قفل": {
    "file": "1f6fc2115a7a15d4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "1f6fc2115a7a15d4.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قُفْل"
   },
   "قلعة": {
    "file": "8c084851b4d5d7f4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "8c084851b4d5d7f4.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قَلْعَة"
   },
   "قلم رصاص": {
    "file": "a3f49bf9c9d06165.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "a3f49bf9c9d06165.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قَلَمُ رَصَاص"
   },
   "قمر": {
    "file": "a6b3ca34ce464b61.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "a6b3ca34ce464b61.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قَمَر"
   },
   "قميص": {
@@ -2596,26 +2596,26 @@
   },
   "قوس قزح": {
    "file": "d089c4dc77f7a2cc.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d089c4dc77f7a2cc.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "قَوْسُ قُزَح"
   },
   "ك": {
    "file": "66dcc319bde32e80.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "f312fcc4c2a95c4d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "كَاف"
   },
   "كأس": {
    "file": "e0cb3913b54f7ed4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "e0cb3913b54f7ed4.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "كَأْس"
   },
   "كاف": {
    "file": "f312fcc4c2a95c4d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "f312fcc4c2a95c4d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "كَاف"
   },
   "كتاب": {
@@ -2628,8 +2628,8 @@
   },
   "كرة": {
    "file": "cc57da04fed3e9a6.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "cc57da04fed3e9a6.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "كُرَة"
   },
   "كرز": {
@@ -2672,20 +2672,20 @@
   },
   "كنغر": {
    "file": "879c94f18a53a840.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "879c94f18a53a840.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "كَنْغَر"
   },
   "كوالا": {
    "file": "50c0ca94ee724a7c.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "50c0ca94ee724a7c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "كُوَالَا"
   },
   "كيوي": {
    "file": "ca9cb7ff31d5618f.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "ca9cb7ff31d5618f.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "كِيوِي"
   },
   "ل": {
@@ -2722,8 +2722,8 @@
   },
   "م": {
    "file": "d8fe6f076d7909ff.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "22f9e7f67a6912f1.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مِيم"
   },
   "ماعز": {
@@ -2736,8 +2736,8 @@
   },
   "مانجو": {
    "file": "2e1a9f5ec12df491.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "2e1a9f5ec12df491.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مَانْجُو"
   },
   "مدرسة": {
@@ -2750,14 +2750,14 @@
   },
   "مركبات": {
    "file": "5b6044504869364a.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5b6044504869364a.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مَرْكَبَات"
   },
   "مروحية": {
    "file": "5b1ed59c56abd0cb.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "5b1ed59c56abd0cb.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مِرْوَحِيَّة"
   },
   "مستشفى": {
@@ -2778,8 +2778,8 @@
   },
   "مصباح كهربائي": {
    "file": "8357fc56507e69ed.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "8357fc56507e69ed.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مِصْبَاحٌ كَهْرَبَائِيّ"
   },
   "مطر": {
@@ -2792,20 +2792,20 @@
   },
   "مطرقة": {
    "file": "47423965b581cb95.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "47423965b581cb95.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مِطْرَقَة"
   },
   "مظلة": {
    "file": "34ae4ea8baed0c46.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "34ae4ea8baed0c46.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مِظَلَّة"
   },
   "مغناطيس": {
    "file": "139f123f9a5577fb.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "139f123f9a5577fb.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مِغْنَاطِيس"
   },
   "مفتاح": {
@@ -2818,8 +2818,8 @@
   },
   "مقص": {
    "file": "d7cff7523c328ade.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d7cff7523c328ade.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مِقَصّ"
   },
   "مكنسة": {
@@ -2848,20 +2848,20 @@
   },
   "موجة": {
    "file": "d4e881ea709e4f6c.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "d4e881ea709e4f6c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مَوْجَة"
   },
   "موز": {
    "file": "66dbc2e1c012ec93.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "66dbc2e1c012ec93.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مَوْز"
   },
   "ميم": {
    "file": "22f9e7f67a6912f1.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "22f9e7f67a6912f1.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "مِيم"
   },
   "ن": {
@@ -2874,44 +2874,44 @@
   },
   "نار": {
    "file": "7f8765ad45ee4a54.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "7f8765ad45ee4a54.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "نَار"
   },
   "نجمة": {
    "file": "0f79127f29964b1c.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "0f79127f29964b1c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "نَجْمَة"
   },
   "نحلة": {
    "file": "6042bec03a25cb4a.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "6042bec03a25cb4a.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "نَحْلَة"
   },
   "نخلة": {
    "file": "57fd23ff8f574857.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "57fd23ff8f574857.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "نَخْلَة"
   },
   "نرد": {
    "file": "bcd1e61c5a5c6a4d.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "bcd1e61c5a5c6a4d.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "نَرْد"
   },
   "نسر": {
    "file": "43f4129c93498abf.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "43f4129c93498abf.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "نَسْر"
   },
   "نظارة": {
    "file": "86c32309e908a621.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "86c32309e908a621.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "نَظَّارَة"
   },
   "نمر": {
@@ -2924,8 +2924,8 @@
   },
   "نملة": {
    "file": "600199ac02333b72.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "600199ac02333b72.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "نَمْلَة"
   },
   "نون": {
@@ -2938,14 +2938,14 @@
   },
   "ه": {
    "file": "e9edeb603dee8147.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "73f92afa3697946c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "هَاء"
   },
   "هاء": {
    "file": "73f92afa3697946c.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "73f92afa3697946c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "هَاء"
   },
   "هاتف": {
@@ -2986,20 +2986,20 @@
   },
   "وردي": {
    "file": "836d81cd5fd10002.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "836d81cd5fd10002.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَرْدِيّ"
   },
   "ورقة شجر": {
    "file": "12af117dc928fea4.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "12af117dc928fea4.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وَرَقَةُ شَجَر"
   },
   "وشاح": {
    "file": "80d742f41300de31.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "80d742f41300de31.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "وِشَاح"
   },
   "ولد": {
@@ -3012,8 +3012,8 @@
   },
   "ى": {
    "file": "f776b60a859e8114.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "f776b60a859e8114.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَلِفٌ مَقْصُورَة"
   },
   "ي": {
@@ -3030,8 +3030,8 @@
   },
   "يد": {
    "file": "abf2fb682d518fac.mp3",
-   "placeholder": true,
-   "voice": "ar-SA-ZariyahNeural",
+   "imported": "abf2fb682d518fac.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "يَد"
   }
  },

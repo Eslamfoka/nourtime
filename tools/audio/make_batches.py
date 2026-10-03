@@ -27,7 +27,7 @@ def clip_groups(only_missing: bool = True) -> list[tuple[str, list[str]]]:
     """(group name, clips) in reading order."""
     manifest = json.loads(g.MANIFEST.read_text(encoding="utf-8"))["ar"]
     clips = [c for c in g.load_lists(refresh=False)["ar"]
-             if not only_missing or manifest.get(c, {}).get("voice") not in ("human", "gemini-aistudio", "elevenlabs")]
+             if not only_missing or not (manifest.get(c, {}).get("voice") or "").startswith(("human", "gemini-aistudio", "elevenlabs"))]
     pack = json.loads((g.ROOT / "app/src/main/assets/learning/letters/ar.json").read_text(encoding="utf-8"))
     concepts = json.loads((g.ROOT / "app/src/main/assets/learning/concepts.json").read_text(encoding="utf-8"))
     category = {c["id"]: c["category"] for c in concepts["concepts"]}

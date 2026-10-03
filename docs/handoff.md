@@ -1123,3 +1123,17 @@ human recordings first; no Google Translate TTS; a premium voice only for what n
 2. Ask: keep volunteer recordings for 1–5, 8, 10–19, or replace them all for one voice?
 3. Ask: results of `letters-review-commons` (which files say which letter name).
 4. Then the full batch run. Still open from before: وشاح check, merge only after the owner approves.
+
+### 17.5 ElevenLabs Jessica voice (2026-10-03)
+- Owner picked **Jessica** (premade, works on the free plan) with the `[cheerfully]` tag, eleven_v4,
+  stability 0.45 / similarity 0.80 / style 0.35 / speed 0.92, over Sarah and Laura. Library voices
+  (Habibah, Farida) and his own NOUR clones need a paid plan via the API.
+- `tools/audio/elevenlabs_generate.py` → `import_audio.py --voice elevenlabs-jessica`: 293 app clips
+  imported. The free 10k credits ran out (the tag is billed too: 13 chars per line).
+- **Still to make (37 lines, ~1,000 credits; credits reset 2026-11-02, or Starter plan):** numbers 1–19
+  (1–25 stay Sarah until then; Jessica takes for 6, 7, 9, 20–25 wait in `tools/audio/incoming-hold/`),
+  hundreds 200–900, "و + 87–99". Then rerun the generator, move incoming-hold/* to incoming/, import.
+- 16 clips Whisper doubted wait in `tools/audio/incoming-review/` (mostly letter names);
+  owner listens to `Downloads/jessica_16_to_check.mp3`; good ones → incoming/, import.
+- APK: `dist/NourTime-2026-10-03-jessica-release.apk` (debug key, tests pass).
+- ElevenLabs key was pasted in chat: owner should rotate it after the run.
