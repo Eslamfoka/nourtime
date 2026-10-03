@@ -77,6 +77,11 @@ android {
         // Debug and build metadata that a phone never reads.
         resources.excludes += listOf("DebugProbesKt.bin", "kotlin-tooling-metadata.json", "META-INF/*.version", "META-INF/{AL2.0,LGPL2.1}")
     }
+    bundle {
+        // The in-app language switcher can pick Arabic on an English phone (and the reverse), so a
+        // Play download must carry both languages' strings, not only the phone's.
+        language { enableSplit = false }
+    }
 }
 
 dependencies {

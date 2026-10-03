@@ -10,7 +10,7 @@ and the file map are in the [`README`](../README.md).
 >
 > 1. **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs,
 >    glitches, or edge cases.**
-> 2. Number Connect: shape preview at the top + no number voice while dragging.
+> 2. Number Connect: shape preview at the top + completely mute number pronunciation.
 > 3. Parent app integration of the Learning Hub.
 > 4. Release preparation. 5. Real-device testing. 6. Audio assets. 7. G9 (on hold).
 
@@ -1174,12 +1174,26 @@ packs, settings choice, RTL, TalkBack). Use the code-review tooling plus the emu
 found with tests; list anything that needs the owner. Remember the universal-Android rule (fixes
 work on every brand) and run only one emulator at a time.
 
+#### Task 1 results so far (2026-10-03, code reading)
+Reviewed: time engine and rules, block policy and coordinator, lock overlay, parent pass, screen-off
+timer, timer service, PIN / security answer (both with escalating lockouts), Firestore rules and the
+validation of remote settings, ask-for-time, Learning Hub controller and rewards, game generators
+(loops guarded by content validation), voice packs, manifest, lint. 396 tests pass.
+- Fixed: Play app bundle split strings by language, so the in-app language switcher could pick a
+  language whose strings weren't downloaded (`bundle { language { enableSplit = false } }`).
+- **Owner decisions needed:** (1) replaying an already-finished level earns full minutes again (the
+  easiest level could be replayed up to the daily maximum); (2) the minutes bank has no cap and never
+  expires, so a week of earning (7 × 15 min) can be spent in one break.
+- Release blockers moved to Task 4: target API 36, the battery-optimization permission.
+- Not yet done: a hands-on pass on the emulator through every screen and game.
+
 ### Task 2: Number Connect UX (owner, 2026-10-03)
 - **Preview of the final shape:** a small outline of the finished drawing at the top of the screen so
   the child knows what they're building (`feature/learning/DrawingScreens.kt`, `ConnectScreen`).
-- **No number voice while dragging:** don't say each number while the child drags the line from one
-  dot to the next; it's unnecessary during that action (the call is `speaker.say((dot + 1)…)` at
-  `DrawingScreens.kt:147`). Decide with the owner whether a tap on a dot still says its number.
+- **Completely mute number pronunciation in the Connect the Dots game** (owner's decision,
+  2026-10-03): no number voice whether the child taps a dot or drags the line; the numbers are only a
+  visual guide for drawing the shape. The call to remove is `speaker.say((dot + 1)…)` at
+  `DrawingScreens.kt:147`.
 
 ### Task 3: Parent app integration of the Learning Hub
 The parent's phone shows and changes the Learning Hub settings (on/off, minutes per level, daily
@@ -1189,6 +1203,10 @@ maximum, **voice per language**) and the child's minutes bank, synced like the o
 ### Task 4: Release preparation
 - **Rotate the ElevenLabs API key** (it was pasted in chat on 2026-10-03); keep the paid plan
   active while publishing (commercial licence for the clips).
+- **Target API 36:** Play now requires it for new apps and updates (app targets 35); raise
+  `targetSdk`/`compileSdk` and test Android 16 behaviour changes.
+- **`REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`** is restricted by Play policy: justify it in Play Console
+  or open the battery settings list instead (no permission needed).
 - Upload key + Play App Signing, store listing, screenshots, feature graphic, Accessibility demo
   video, publish `docs/account-deletion.md` (contact email). APK is now 13.6 MB (four voice packs);
   an AAB keeps downloads smaller.

@@ -365,14 +365,14 @@ screen option, pack, how a level starts). A new game is a `GameId`, one registry
 | U3 | **Forgot PIN** recovery with the security question, from the app and the Time's up screen. Requested 2026-09-29. | High | ✅ Built 2026-09-29 (`06e0163`); emulator-tested. Waiting for the Honor test |
 | U4 | **Language switcher** (Phone language / Arabic / English), all Android versions. Requested 2026-09-29. | High | ✅ Built 2026-09-29 (`e6a3f23`); tested on Android 12 and 15 emulators. Waiting for the Honor test |
 | U5 | **Number Connect: preview of the final shape.** A small outline of the finished drawing at the top of the screen, so the child knows what they're building. Requested by the owner 2026-10-03. | Medium | ⏳ Roadmap task 2 |
-| U6 | **Number Connect: no number voice while dragging.** Don't say each number while the child drags the line from dot to dot (`DrawingScreens.kt:147`). Requested by the owner 2026-10-03. | Medium | ⏳ Roadmap task 2 |
+| U6 | **Completely mute number pronunciation in the Connect the Dots game.** No number voice when the child taps a dot or drags the line; the numbers are only a visual guide for drawing the shape (`speaker.say` at `DrawingScreens.kt:147`). Owner's decision 2026-10-03. | Medium | ⏳ Roadmap task 2 |
 
 ## Roadmap (next sessions, in order)
 
 | # | Task | Status |
 |---|---|---|
 | 1 | **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs, glitches, or edge cases.** | ⏳ **First** |
-| 2 | Number Connect UX: U5 (shape preview) and U6 (no voice while dragging) | ⏳ |
+| 2 | Number Connect UX: U5 (shape preview) and U6 (completely mute number pronunciation) | ⏳ |
 | 3 | Parent app integration of the Learning Hub (settings, voice per language, minutes bank on the parent's phone) | ⏳ Ask the owner before starting |
 | 4 | Release preparation: rotate the ElevenLabs key, upload key, Play listing, screenshots, video, account-deletion page | ⏳ |
 | 5 | Real-device testing on Samsung and Xiaomi (+ open Honor re-tests) | ⏳ |
