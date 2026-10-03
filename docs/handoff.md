@@ -1137,3 +1137,15 @@ human recordings first; no Google Translate TTS; a premium voice only for what n
   owner listens to `Downloads/jessica_16_to_check.mp3`; good ones → incoming/, import.
 - APK: `dist/NourTime-2026-10-03-jessica-release.apk` (debug key, tests pass).
 - ElevenLabs key was pasted in chat: owner should rotate it after the run.
+
+### 17.6 Voice packs (2026-10-03)
+- App: `VoicePack` (core/learning/VoicePack.kt) = folder under assets/audio. Parent's Learning Hub
+  settings: "Arabic voice" Fusha/Egyptian, "English voice" American/British; tapping plays a sample.
+  A pack lacking a clip borrows it from the language's default (first) pack; test checks packs complete.
+- Packs, all ElevenLabs (Starter plan, owner's account), eleven_v4, one voice each:
+  ar = Jessica (470), ar-eg = NOUR (470; numbers in Egyptian words, words stay written Fusha),
+  en = Liz (360, volunteers replaced), en-gb = Ana (360). CREDITS.txt names the voices.
+- Tools: `elevenlabs_generate.py --pack X` → `import_audio.py --pack X --voice elevenlabs-<name>`
+  (add `--replace-human` for ar/en). The `[cheerfully]` tag hurt short English words (and تاء):
+  re-record those without it.
+- Owner still to hear: طعام (Jessica). APK not built since the packs.
