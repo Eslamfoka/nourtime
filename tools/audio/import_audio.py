@@ -38,7 +38,7 @@ def main() -> None:
     ap.add_argument("--replace-human", action="store_true",
                     help="also replace volunteer recordings (e.g. so all numbers share one voice)")
     ap.add_argument("--voice", default="gemini-aistudio", help="where the clips came from, e.g. elevenlabs")
-    ap.add_argument("--pack", default="ar", choices=[p for p in g.PACK_VOICED if p != "en"],
+    ap.add_argument("--pack", default="ar", choices=list(g.PACK_VOICED),
                     help="the voice pack (folder under assets/audio) the clips are for")
     args = ap.parse_args()
     lang, voiced_of = g.PACK_VOICED[args.pack]

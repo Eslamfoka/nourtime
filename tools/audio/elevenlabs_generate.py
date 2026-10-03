@@ -1,5 +1,5 @@
 """
-Records a voice pack's Arabic clips with the ElevenLabs API, one request per line (no long batch
+Records a voice pack's clips with the ElevenLabs API, one request per line (no long batch
 recording to cut apart), for import_audio.py.
 
     python tools/audio/elevenlabs_generate.py --list                  # models + voices on the account
@@ -9,11 +9,15 @@ recording to cut apart), for import_audio.py.
 
 Packs (folders under app/src/main/assets/audio, see VoicePack.kt):
   ar     Fusha. Jessica (premade) with the "[cheerfully]" tag: the owner's pick from voice tests on
-         2026-10-03. Only clips not yet in Jessica's voice, and never a volunteer (human) recording.
+         2026-10-03. Only clips not yet in Jessica's voice; volunteer recordings are replaced too so the
+         pack is one voice (owner's choice).
          Files go to incoming/.
   ar-eg  Egyptian. The owner's own NOUR voice; numbers in Egyptian words (generate_audio.eg_number),
          everything else the written Fusha word so it matches the screen. Every clip. Files go to
          incoming-ar-eg/.
+  en     American English. Liz ("Educational & excited"), replacing the volunteer recordings too so
+         the pack is one voice (owner's choice). incoming-en/.
+  en-gb  British English. Ana ("upbeat, for children's books"). incoming-en-gb/.
 
 Needs ELEVENLABS_API_KEY in tools/audio/keys.env (or the environment). Each clip is checked with
 speech recognition; an unsure clip is recorded once more with another seed, then goes to the
@@ -39,9 +43,17 @@ MODEL = "eleven_v4"
 
 PACKS = {
     "ar": {"voice": "cgSgspJ2msm6clMCkdW9",  # Jessica
-           "label": "elevenlabs-jessica", "tag": "[cheerfully] ",
+           "label": "elevenlabs-jessica", "tag": "[cheerfully] ", "replace_human": True,
            "settings": {"stability": 0.45, "similarity_boost": 0.80, "style": 0.35, "use_speaker_boost": True,
                         "speed": 0.92}},
+    "en": {"voice": "wvk9Caj0nEx4l3I9LaR6",  # Liz
+           "label": "elevenlabs-liz", "tag": "[cheerfully] ", "lang": "en", "replace_human": True,
+           "settings": {"stability": 0.45, "similarity_boost": 0.80, "style": 0.35, "use_speaker_boost": True,
+                        "speed": 0.92}},
+    "en-gb": {"voice": "rCmVtv8cYU60uhlsOo1M",  # Ana
+              "label": "elevenlabs-ana", "tag": "[cheerfully] ", "lang": "en",
+              "settings": {"stability": 0.45, "similarity_boost": 0.80, "style": 0.35, "use_speaker_boost": True,
+                           "speed": 0.92}},
     "ar-eg": {"voice": "bDnD7e0SdoJ1nFjISM4J",  # NOUR, the owner's voice
               "label": "elevenlabs-nour", "tag": "[cheerfully] ",
               # Close to NOUR's own sound (high similarity), lively, a little slow for children.
@@ -77,7 +89,7 @@ def get(path: str, key: str) -> dict:
 
 
 def speak(key: str, pack: dict, text: str, seed: int = 7) -> bytes:
-    body = {"text": pack["tag"] + text, "model_id": MODEL, "language_code": "ar", "seed": seed,
+    body = {"text": pack["tag"] + text, "model_id": MODEL, "language_code": pack.get("lang", "ar"), "seed": seed,
             "voice_settings": pack["settings"]}
     for attempt in range(5):
         r = requests.post(f"{API}/text-to-speech/{pack['voice']}?output_format=mp3_44100_128",
@@ -101,7 +113,8 @@ def todo(pack_name: str, force: bool) -> list[tuple[str, str]]:
     seen: dict[str, str] = {}
     for clip in g.load_lists(refresh=False)[lang]:
         entry = manifest.get(clip, {})
-        if not force and entry.get("voice") in (label, "human"):
+        keep = (label,) if pack_name in PACKS and PACKS[pack_name].get("replace_human") else (label, "human")
+        if not force and entry.get("voice") in keep:
             continue
         seen.setdefault(voiced_of(clip), g.key(clip))
     return [(t, s) for t, s in seen.items() if force or s not in waiting]
@@ -146,10 +159,11 @@ def main() -> None:
         out = out_dir / f"{stem}.mp3"
 
         def heard_right() -> tuple[bool, str]:
-            heard = " ".join(x.text for x in model.transcribe(str(out), language="ar", beam_size=5,
+            heard = " ".join(x.text for x in model.transcribe(str(out), language=pack.get("lang", "ar"), beam_size=5,
                                                                condition_on_previous_text=False)[0]).strip()
-            score = SequenceMatcher(None, norm(text), norm(heard)).ratio()
-            return score >= 0.6 or heard.replace(" ", "").replace(".", "").isdigit(), heard
+            score = SequenceMatcher(None, norm(text).lower(), norm(heard).lower()).ratio()
+            # Digits for a number said in words ("17", "و 93") are right too.
+            return score >= 0.6 or norm(heard).removeprefix("و").isdigit(), heard
 
         out.write_bytes(speak(key, pack, text))
         if model:

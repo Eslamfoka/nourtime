@@ -162,7 +162,8 @@ def ar_eg_voiced(clip: str) -> str:
 
 VOICED = {"ar": ar_voiced, "en": en_voiced}
 # Voice packs: the folder under assets/audio -> (language of the clip lists, what the voice says).
-PACK_VOICED = {"ar": ("ar", ar_voiced), "ar-eg": ("ar", ar_eg_voiced), "en": ("en", en_voiced)}
+PACK_VOICED = {"ar": ("ar", ar_voiced), "ar-eg": ("ar", ar_eg_voiced), "en": ("en", en_voiced),
+               "en-gb": ("en", en_voiced)}
 
 # ---------------------------------------------------------------- recording
 

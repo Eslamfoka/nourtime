@@ -149,14 +149,18 @@ private fun VoicePackChoice(chosen: Map<LearnLanguage, VoicePack>, onSelect: (Vo
     val speaker = rememberSpeaker()
     LearnLanguage.entries.map(VoicePack::of).filter { it.size > 1 }.forEach { packs ->
         val current = VoicePack.chosen(chosen, packs.first().language)
-        Text(stringResource(R.string.learn_settings_voice_title), style = MaterialTheme.typography.titleSmall)
+        val title = when (current.language) {
+            LearnLanguage.ARABIC -> R.string.learn_settings_voice_title_ar
+            LearnLanguage.ENGLISH -> R.string.learn_settings_voice_title_en
+        }
+        Text(stringResource(title), style = MaterialTheme.typography.titleSmall)
         Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             packs.forEach { pack ->
                 FilterChip(
                     selected = pack == current,
                     onClick = {
                         onSelect(pack)
-                        speaker.sayIn(pack, VOICE_SAMPLE)
+                        speaker.sayIn(pack, voiceSample(pack.language))
                     },
                     label = { Text(stringResource(pack.label)) },
                     colors = FilterChipDefaults.filterChipColors(
@@ -169,14 +173,18 @@ private fun VoicePackChoice(chosen: Map<LearnLanguage, VoicePack>, onSelect: (Vo
     }
 }
 
-/** Eleven: أحد عشر in Fusha, حداشر in Egyptian, so the difference is heard at once. */
-private const val VOICE_SAMPLE = "11"
+/** Arabic: eleven, أحد عشر in Fusha and حداشر in Egyptian, so the difference is heard at once. */
+private fun voiceSample(language: LearnLanguage): String = when (language) {
+    LearnLanguage.ARABIC -> "11"
+    LearnLanguage.ENGLISH -> "Butterfly"
+}
 
 private val VoicePack.label: Int
     get() = when (this) {
         VoicePack.ARABIC_FUSHA -> R.string.learn_voice_ar_fusha
         VoicePack.ARABIC_EGYPTIAN -> R.string.learn_voice_ar_egyptian
         VoicePack.ENGLISH_AMERICAN -> R.string.learn_voice_en_american
+        VoicePack.ENGLISH_BRITISH -> R.string.learn_voice_en_british
     }
 
 /** The hub exactly as the child sees it, without earning minutes. */

@@ -12,6 +12,7 @@ enum class VoicePack(val language: LearnLanguage, val dir: String) {
     ARABIC_FUSHA(LearnLanguage.ARABIC, "ar"),
     ARABIC_EGYPTIAN(LearnLanguage.ARABIC, "ar-eg"),
     ENGLISH_AMERICAN(LearnLanguage.ENGLISH, "en"),
+    ENGLISH_BRITISH(LearnLanguage.ENGLISH, "en-gb"),
     ;
 
     val isDefault: Boolean get() = this == defaultFor(language)

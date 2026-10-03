@@ -619,11 +619,9 @@
    "voiced": "مِئَة"
   },
   "1000": {
-   "author": "Speaker: Spotless Mind1988\nRecorder: Spotless Mind1988",
    "file": "e3cbba8883fe746c.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-ألف.wav",
-   "voice": "human",
+   "imported": "e3cbba8883fe746c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَلْف"
   },
   "11": {
@@ -759,11 +757,9 @@
    "voiced": "ثَلَاثَة"
   },
   "30": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "22d200f8670dbdb3.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-ثلاثون.wav",
-   "voice": "human",
+   "imported": "22d200f8670dbdb3.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "ثَلَاثُون"
   },
   "300": {
@@ -833,11 +829,9 @@
    "voiced": "أَرْبَعَة"
   },
   "40": {
-   "author": "Speaker: Fenakhay\nRecorder: Fenakhay",
    "file": "af3e133428b9e25c.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أربعون.wav",
-   "voice": "human",
+   "imported": "af3e133428b9e25c.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "أَرْبَعُون"
   },
   "400": {
@@ -907,11 +901,9 @@
    "voiced": "خَمْسَة"
   },
   "50": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "e1822db470e60d09.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-خمسون.wav",
-   "voice": "human",
+   "imported": "e1822db470e60d09.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "خَمْسُون"
   },
   "500": {
@@ -981,11 +973,9 @@
    "voiced": "سِتَّة"
   },
   "60": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "e6c3dd630428fd54.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-ستون.wav",
-   "voice": "human",
+   "imported": "e6c3dd630428fd54.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سِتُّون"
   },
   "600": {
@@ -1055,11 +1045,9 @@
    "voiced": "سَبْعَة"
   },
   "70": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "b7103ca278a75cad.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-سبعون.wav",
-   "voice": "human",
+   "imported": "b7103ca278a75cad.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "سَبْعُون"
   },
   "700": {
@@ -1201,11 +1189,9 @@
    "voiced": "تِسْعَة"
   },
   "90": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "2d0c8af807ef45ac.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-تسعون.wav",
-   "voice": "human",
+   "imported": "2d0c8af807ef45ac.mp3",
+   "voice": "elevenlabs-jessica",
    "voiced": "تِسْعُون"
   },
   "900": {
@@ -1287,20 +1273,16 @@
    "voiced": "آيِس كْرِيم"
   },
   "أ": {
-   "author": "Speaker: Spotless Mind1988\nRecorder: Spotless Mind1988",
    "file": "5326c0369eabf67c.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-ألف.wav",
-   "voice": "human",
-   "voiced": "ألف"
+   "imported": "7299c27f25c7c458.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَلِف"
   },
   "أبيض": {
-   "author": "Speaker: Zakaria Mimouni\nRecorder: Zakaria Mimouni",
    "file": "ec42045b5b90b38a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zakaria_Mimouni-أَبْيَض.wav",
-   "voice": "human",
-   "voiced": "أبيض"
+   "imported": "ec42045b5b90b38a.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَبْيَض"
   },
   "أحجية": {
    "file": "fbc50bcc855563aa.mp3",
@@ -1309,20 +1291,16 @@
    "voiced": "أُحْجِيَّة"
   },
   "أحمر": {
-   "author": "Zannane Mohamed, Heulin Frederic",
    "file": "96cab1ba1b55e339.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-أحمر.ogg",
-   "voice": "human",
-   "voiced": "أحمر"
+   "imported": "96cab1ba1b55e339.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَحْمَر"
   },
   "أخضر": {
-   "author": "Speaker: Fenakhay\nRecorder: Fenakhay",
    "file": "a6b0763996ccb785.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أخضر.wav",
-   "voice": "human",
-   "voiced": "أخضر"
+   "imported": "a6b0763996ccb785.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَخْضَر"
   },
   "أخطبوط": {
    "file": "0978a0b832073e96.mp3",
@@ -1331,52 +1309,40 @@
    "voiced": "أُخْطُبُوط"
   },
   "أذن": {
-   "author": "Speaker: Zakaria Mimouni\nRecorder: Zakaria Mimouni",
    "file": "8fdd59ce548a258a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zakaria_Mimouni-آذن.wav",
-   "voice": "human",
-   "voiced": "أذن"
+   "imported": "8fdd59ce548a258a.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أُذُن"
   },
   "أرز": {
-   "author": "Speaker: Fenakhay\nRecorder: Fenakhay",
    "file": "0f428350baf7f88a.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أرز.wav",
-   "voice": "human",
-   "voiced": "أرز"
+   "imported": "0f428350baf7f88a.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَرُزّ"
   },
   "أرنب": {
-   "author": "Speaker: Fenakhay\nRecorder: Fenakhay",
    "file": "1ea41bc613eb437d.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أرنب.wav",
-   "voice": "human",
-   "voiced": "أرنب"
+   "imported": "1ea41bc613eb437d.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَرْنَب"
   },
   "أزرق": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "b2d33354b53ca2ef.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-ازرق.wav",
-   "voice": "human",
-   "voiced": "أزرق"
+   "imported": "b2d33354b53ca2ef.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَزْرَق"
   },
   "أسد": {
-   "author": "Speaker: Fenakhay\nRecorder: Fenakhay",
    "file": "aff2048a7ce0b2ee.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fenakhay-أسد.wav",
-   "voice": "human",
-   "voiced": "أسد"
+   "imported": "aff2048a7ce0b2ee.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَسَد"
   },
   "أسود": {
-   "author": "Zannane Mohamed, Heulin Frederic",
    "file": "e4d87ab93f8d4b26.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-أسود.ogg",
-   "voice": "human",
-   "voiced": "أسود"
+   "imported": "e4d87ab93f8d4b26.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَسْوَد"
   },
   "أشخاص": {
    "file": "1f3000914d545c4f.mp3",
@@ -1409,12 +1375,10 @@
    "voiced": "أَلْعَاب"
   },
   "ألف": {
-   "author": "Speaker: Spotless Mind1988\nRecorder: Spotless Mind1988",
    "file": "7299c27f25c7c458.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-ألف.wav",
-   "voice": "human",
-   "voiced": "ألف"
+   "imported": "7299c27f25c7c458.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَلِف"
   },
   "أماكن": {
    "file": "671ef8fce0f8e716.mp3",
@@ -1423,36 +1387,28 @@
    "voiced": "أَمَاكِن"
   },
   "أناناس": {
-   "author": "Speaker: Zinou2go\nRecorder: Zinou2go",
    "file": "348658a23541402d.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-أناناس.wav",
-   "voice": "human",
-   "voiced": "أناناس"
+   "imported": "348658a23541402d.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَنَانَاس"
   },
   "أنف": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "12e443897fb1f7c1.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-أنف.ogg",
-   "voice": "human",
-   "voiced": "أنف"
+   "imported": "12e443897fb1f7c1.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَنْف"
   },
   "أيل": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "e6f7442eced92076.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-أيل.wav",
-   "voice": "human",
-   "voiced": "أيل"
+   "imported": "e6f7442eced92076.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَيِّل"
   },
   "إ": {
-   "author": "Speaker: Spotless Mind1988\nRecorder: Spotless Mind1988",
    "file": "f2e556760ad98f2e.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-ألف.wav",
-   "voice": "human",
-   "voiced": "ألف"
+   "imported": "7299c27f25c7c458.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَلِف"
   },
   "ئ": {
    "file": "46e5a9a911202a8b.mp3",
@@ -1461,12 +1417,10 @@
    "voiced": "هَمْزَةٌ عَلَى نَبْرَة"
   },
   "ا": {
-   "author": "Speaker: Spotless Mind1988\nRecorder: Spotless Mind1988",
    "file": "4ceb0e7d10b11e98.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-ألف.wav",
-   "voice": "human",
-   "voiced": "ألف"
+   "imported": "7299c27f25c7c458.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "أَلِف"
   },
   "الأرض": {
    "file": "1c7c6015732713f7.mp3",
@@ -1493,20 +1447,16 @@
    "voiced": "بَاء"
   },
   "باب": {
-   "author": "Speaker: Annisa Tiara Ramadhani\nRecorder: Annisa Tiara Ramadhani",
    "file": "3b25b51a9c10ec98.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Annisa_Tiara_Ramadhani-باب.wav",
-   "voice": "human",
-   "voiced": "باب"
+   "imported": "3b25b51a9c10ec98.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "بَاب"
   },
   "بالون": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "3fb5c78456f35a78.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-بالون.wav",
-   "voice": "human",
-   "voiced": "بالون"
+   "imported": "3fb5c78456f35a78.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "بَالُون"
   },
   "باندا": {
    "file": "9466a579bd380f81.mp3",
@@ -1521,12 +1471,10 @@
    "voiced": "بَبَّغَاء"
   },
   "برتقالة": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "01c6ac7f81c3127d.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-برتقالة.wav",
-   "voice": "human",
-   "voiced": "برتقالة"
+   "imported": "01c6ac7f81c3127d.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "بُرْتُقَالَة"
   },
   "برتقالي": {
    "file": "cb52310b53049c89.mp3",
@@ -1535,20 +1483,16 @@
    "voiced": "بُرْتُقَالِيّ"
   },
   "برق": {
-   "author": "Speaker: Zinou2go\nRecorder: Zinou2go",
    "file": "8ea60afd03cef2aa.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-بَرْق.wav",
-   "voice": "human",
-   "voiced": "برق"
+   "imported": "8ea60afd03cef2aa.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "بَرْق"
   },
   "بركان": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "76cd0737b7ec1a19.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-بركان.wav",
-   "voice": "human",
-   "voiced": "بركان"
+   "imported": "76cd0737b7ec1a19.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "بُرْكَان"
   },
   "بسكويت": {
    "file": "285d9275e10bb205.mp3",
@@ -1563,12 +1507,10 @@
    "voiced": "بَطَاطَا"
   },
   "بطة": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "71e9f446b2c5628b.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-بطة.wav",
-   "voice": "human",
-   "voiced": "بطة"
+   "imported": "71e9f446b2c5628b.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "بَطَّة"
   },
   "بطريق": {
    "file": "f17b099aa18d54a9.mp3",
@@ -1577,12 +1519,10 @@
    "voiced": "بِطْرِيق"
   },
   "بطيخ": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "81deadd5eebfd025.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-بطيخ.wav",
-   "voice": "human",
-   "voiced": "بطيخ"
+   "imported": "81deadd5eebfd025.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "بِطِّيخ"
   },
   "بقرة": {
    "file": "a7d17cf001e60eba.mp3",
@@ -1591,12 +1531,10 @@
    "voiced": "بَقَرَة"
   },
   "بنت": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "2bff8fd69d3fbe38.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-بنت.wav",
-   "voice": "human",
-   "voiced": "بنت"
+   "imported": "2bff8fd69d3fbe38.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "بِنْت"
   },
   "بنطال": {
    "file": "374481b504f19b48.mp3",
@@ -1611,28 +1549,22 @@
    "voiced": "بَنَفْسَجِيّ"
   },
   "بني": {
-   "author": "Zannane Mohamed, Heulin Frederic",
    "file": "cd8d5b737db47a25.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-بني.ogg",
-   "voice": "human",
-   "voiced": "بني"
+   "imported": "cd8d5b737db47a25.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "بُنِّيّ"
   },
   "بومة": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "1d828561cd80f64e.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-بومة.wav",
-   "voice": "human",
-   "voiced": "بومة"
+   "imported": "1d828561cd80f64e.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "بُومَة"
   },
   "بيت": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "2619065a2ed34e93.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-بيت.ogg",
-   "voice": "human",
-   "voiced": "بيت"
+   "imported": "2619065a2ed34e93.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "بَيْت"
   },
   "بيتزا": {
    "file": "9838077b6290c217.mp3",
@@ -1677,12 +1609,10 @@
    "voiced": "تُفَّاحَة"
   },
   "تمساح": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "89d506f93144e942.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-تمساح.wav",
-   "voice": "human",
-   "voiced": "تمساح"
+   "imported": "89d506f93144e942.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "تِمْسَاح"
   },
   "ث": {
    "file": "4fb6b52e45528a65.mp3",
@@ -1697,12 +1627,10 @@
    "voiced": "ثَاء"
   },
   "ثعبان": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "b04130ebef1a999d.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-ثعبان.wav",
-   "voice": "human",
-   "voiced": "ثعبان"
+   "imported": "b04130ebef1a999d.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "ثُعْبَان"
   },
   "ثعلب": {
    "file": "3174cb4bcc30fb28.mp3",
@@ -1723,12 +1651,10 @@
    "voiced": "جِيم"
   },
   "جبل": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "0219262d536d70be.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-جبل.ogg",
-   "voice": "human",
-   "voiced": "جبل"
+   "imported": "0219262d536d70be.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "جَبَل"
   },
   "جبن": {
    "file": "c19ff58e8d2bab2e.mp3",
@@ -1737,12 +1663,10 @@
    "voiced": "جُبْن"
   },
   "جد": {
-   "author": "Speaker: Spotless Mind1988\nRecorder: Spotless Mind1988",
    "file": "9fb88aa840790dc0.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-جَدَّ.wav",
-   "voice": "human",
-   "voiced": "جد"
+   "imported": "9fb88aa840790dc0.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "جَدّ"
   },
   "جدة": {
    "file": "de8dd0bdf7949f3d.mp3",
@@ -1757,36 +1681,28 @@
    "voiced": "جَرَّار"
   },
   "جرس": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "00ae70773090c103.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-جرس.wav",
-   "voice": "human",
-   "voiced": "جرس"
+   "imported": "00ae70773090c103.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "جَرَس"
   },
   "جزر": {
-   "author": "Speaker: Zinou2go\nRecorder: Zinou2go",
    "file": "e7761d78b2229f19.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-جزر.wav",
-   "voice": "human",
-   "voiced": "جزر"
+   "imported": "e7761d78b2229f19.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "جَزَر"
   },
   "جزيرة": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "830534953dc2cddc.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-جزيرة.ogg",
-   "voice": "human",
-   "voiced": "جزيرة"
+   "imported": "830534953dc2cddc.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "جَزِيرَة"
   },
   "جمل": {
-   "author": "Speaker: Annisa Tiara Ramadhani\nRecorder: Annisa Tiara Ramadhani",
    "file": "678574ea77d66170.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Annisa_Tiara_Ramadhani-جمل.wav",
-   "voice": "human",
-   "voiced": "جمل"
+   "imported": "678574ea77d66170.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "جَمَل"
   },
   "جوارب": {
    "file": "e5f9777a36fcb212.mp3",
@@ -1825,12 +1741,10 @@
    "voiced": "حَاسُوب"
   },
   "حافلة": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "899dc7b34fa8064a.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-حافلة.wav",
-   "voice": "human",
-   "voiced": "حافلة"
+   "imported": "899dc7b34fa8064a.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "حَافِلَة"
   },
   "حذاء": {
    "file": "bd60804234a266b1.mp3",
@@ -1851,20 +1765,16 @@
    "voiced": "حَقِيبَة"
   },
   "حلزون": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "0e2c65fe6aafcc0c.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-حلزون.wav",
-   "voice": "human",
-   "voiced": "حلزون"
+   "imported": "0e2c65fe6aafcc0c.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "حَلَزُون"
   },
   "حليب": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "6a4934e1c9fb228c.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-حليب.ogg",
-   "voice": "human",
-   "voiced": "حليب"
+   "imported": "6a4934e1c9fb228c.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "حَلِيب"
   },
   "حمار وحشي": {
    "file": "200ab8008f70ed29.mp3",
@@ -1873,12 +1783,10 @@
    "voiced": "حِمَارٌ وَحْشِيّ"
   },
   "حوت": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "6c5afad3636a25c5.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-حوت.wav",
-   "voice": "human",
-   "voiced": "حوت"
+   "imported": "6c5afad3636a25c5.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "حُوت"
   },
   "حيوانات": {
    "file": "1a27ebf59bfafc55.mp3",
@@ -1905,36 +1813,28 @@
    "voiced": "خُبْز"
   },
   "خروف": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "4ca311eec62f5aef.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-خروف.ogg",
-   "voice": "human",
-   "voiced": "خروف"
+   "imported": "4ca311eec62f5aef.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "خَرُوف"
   },
   "خوخ": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "27b8558cecc93bc4.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-خوخ.wav",
-   "voice": "human",
-   "voiced": "خوخ"
+   "imported": "27b8558cecc93bc4.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "خَوْخ"
   },
   "خيار": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "9e1bfa85cd565ed2.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-خيار.ogg",
-   "voice": "human",
-   "voiced": "خيار"
+   "imported": "9e1bfa85cd565ed2.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "خِيَار"
   },
   "خيمة": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "d53590a1ac59cbda.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-خيمة.wav",
-   "voice": "human",
-   "voiced": "خيمة"
+   "imported": "d53590a1ac59cbda.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "خَيْمَة"
   },
   "د": {
    "file": "5cff1093c42b8740.mp3",
@@ -1961,20 +1861,16 @@
    "voiced": "دَجَاجَة"
   },
   "دراجة": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "f4afaa5ac67e1398.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-دراجة.ogg",
-   "voice": "human",
-   "voiced": "دراجة"
+   "imported": "f4afaa5ac67e1398.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "دَرَّاجَة"
   },
   "دلفين": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "b6949e90f43b8b69.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-دلفين.wav",
-   "voice": "human",
-   "voiced": "دلفين"
+   "imported": "b6949e90f43b8b69.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "دُلْفِين"
   },
   "دماغ": {
    "file": "4414835e9b303dd3.mp3",
@@ -2037,12 +1933,10 @@
    "voiced": "رَضِيع"
   },
   "رمادي": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "1a1680d5632066bc.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-رمادي.ogg",
-   "voice": "human",
-   "voiced": "رمادي"
+   "imported": "1a1680d5632066bc.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "رَمَادِيّ"
   },
   "ز": {
    "file": "d8c018d350b6cdce.mp3",
@@ -2057,20 +1951,16 @@
    "voiced": "زَاي"
   },
   "زرافة": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "2c84fad550160ce2.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-زرافة.wav",
-   "voice": "human",
-   "voiced": "زرافة"
+   "imported": "2c84fad550160ce2.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "زَرَافَة"
   },
   "زهرة": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "d5e7b544759c9601.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-زهرة.ogg",
-   "voice": "human",
-   "voiced": "زهرة"
+   "imported": "d5e7b544759c9601.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "زَهْرَة"
   },
   "زوجي": {
    "file": "b9eedf66f8e03430.mp3",
@@ -2079,20 +1969,16 @@
    "voiced": "زَوْجِيّ"
   },
   "س": {
-   "author": "Speaker: Raghda\nRecorder: Akbarali",
    "file": "499cc95fd8e42581.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Raghda_(Akbarali)-سين.wav",
-   "voice": "human",
-   "voiced": "سين"
+   "imported": "36df6a758d4957ec.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "سِين"
   },
   "ساعة": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "40add5d3e4a1a836.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-ساعة.ogg",
-   "voice": "human",
-   "voiced": "ساعة"
+   "imported": "40add5d3e4a1a836.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "سَاعَة"
   },
   "ساعة يد": {
    "file": "667c9deaa3230ece.mp3",
@@ -2101,12 +1987,10 @@
    "voiced": "سَاعَةُ يَد"
   },
   "ساق": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "c32dec7065782f65.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-ساق.ogg",
-   "voice": "human",
-   "voiced": "ساق"
+   "imported": "c32dec7065782f65.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "سَاق"
   },
   "سرير": {
    "file": "e0f948a7c90c60f9.mp3",
@@ -2115,20 +1999,16 @@
    "voiced": "سَرِير"
   },
   "سفينة": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "ea03fe5fa35ec936.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-سفينة.ogg",
-   "voice": "human",
-   "voiced": "سفينة"
+   "imported": "ea03fe5fa35ec936.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "سَفِينَة"
   },
   "سلحفاة": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "db39952f552deaee.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-سلحفاة.wav",
-   "voice": "human",
-   "voiced": "سلحفاة"
+   "imported": "db39952f552deaee.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "سُلَحْفَاة"
   },
   "سلطعون": {
    "file": "29cf2dd581d0d794.mp3",
@@ -2137,28 +2017,22 @@
    "voiced": "سَلْطَعُون"
   },
   "سمكة": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "2ac39bc19eb704bc.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-سمكة.wav",
-   "voice": "human",
-   "voiced": "سمكة"
+   "imported": "2ac39bc19eb704bc.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "سَمَكَة"
   },
   "سن": {
-   "author": "Zannane Mohamed, Heulin Frederic",
    "file": "790c480fd5ba094c.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-سن.ogg",
-   "voice": "human",
-   "voiced": "سن"
+   "imported": "790c480fd5ba094c.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "سِنّ"
   },
   "سيارة": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "b778578712254a42.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-سيارة.ogg",
-   "voice": "human",
-   "voiced": "سيارة"
+   "imported": "b778578712254a42.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "سَيَّارَة"
   },
   "سيارة أجرة": {
    "file": "9541011c18dc7067.mp3",
@@ -2179,12 +2053,10 @@
    "voiced": "سَيَّارَةُ إِطْفَاء"
   },
   "سين": {
-   "author": "Speaker: Raghda\nRecorder: Akbarali",
    "file": "36df6a758d4957ec.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Raghda_(Akbarali)-سين.wav",
-   "voice": "human",
-   "voiced": "سين"
+   "imported": "36df6a758d4957ec.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "سِين"
   },
   "ش": {
    "file": "d42b280f42efadd5.mp3",
@@ -2193,28 +2065,22 @@
    "voiced": "شِين"
   },
   "شاحنة": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "5b732146adee66f2.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-شاحنة.wav",
-   "voice": "human",
-   "voiced": "شاحنة"
+   "imported": "5b732146adee66f2.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "شَاحِنَة"
   },
   "شاي": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "18a4d1446bdbf341.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-شاي.wav",
-   "voice": "human",
-   "voiced": "شاي"
+   "imported": "18a4d1446bdbf341.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "شَاي"
   },
   "شجرة": {
-   "author": "Zannane Mohamed, Heulin Frederic",
    "file": "a83efff6f19bfa87.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-شجرة.ogg",
-   "voice": "human",
-   "voiced": "شجرة"
+   "imported": "a83efff6f19bfa87.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "شَجَرَة"
   },
   "شرطي": {
    "file": "3f799ae9697cd356.mp3",
@@ -2223,20 +2089,16 @@
    "voiced": "شُرْطِيّ"
   },
   "شمس": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "757be7aac5146d7a.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-شمس.ogg",
-   "voice": "human",
-   "voiced": "شمس"
+   "imported": "757be7aac5146d7a.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "شَمْس"
   },
   "شمعة": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "7bd2e6c37997c9e1.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-شمعة.wav",
-   "voice": "human",
-   "voiced": "شمعة"
+   "imported": "7bd2e6c37997c9e1.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "شَمْعَة"
   },
   "شين": {
    "file": "8abc5a2e3ac381ea.mp3",
@@ -2251,12 +2113,10 @@
    "voiced": "صَاد"
   },
   "صابون": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "c548ce6655fdfca9.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-صابون.ogg",
-   "voice": "human",
-   "voiced": "صابون"
+   "imported": "c548ce6655fdfca9.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "صَابُون"
   },
   "صاد": {
    "file": "beb1f0d3ca2f35d7.mp3",
@@ -2319,36 +2179,28 @@
    "voiced": "طَاوُوس"
   },
   "طبل": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "0c43b2b20b8ac6e8.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-طبل.ogg",
-   "voice": "human",
-   "voiced": "طبل"
+   "imported": "0c43b2b20b8ac6e8.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "طَبْل"
   },
   "طبيعة": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "b1821d3f271fa1dc.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-طبيعة.ogg",
-   "voice": "human",
-   "voiced": "طبيعة"
+   "imported": "b1821d3f271fa1dc.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "طَبِيعَة"
   },
   "طعام": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "3944fbff8cc346c5.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-طعام.ogg",
-   "voice": "human",
-   "voiced": "طعام"
+   "imported": "3944fbff8cc346c5.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "طَعَام"
   },
   "طماطم": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "ef7a1102f9e707ac.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-طماطم.wav",
-   "voice": "human",
-   "voiced": "طماطم"
+   "imported": "ef7a1102f9e707ac.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "طَمَاطِم"
   },
   "ظ": {
    "file": "8ba3ac486a1d7d86.mp3",
@@ -2375,12 +2227,10 @@
    "voiced": "عَيْن"
   },
   "عسل": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "fd2a80c8ae592e05.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-عسل.wav",
-   "voice": "human",
-   "voiced": "عسل"
+   "imported": "fd2a80c8ae592e05.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "عَسَل"
   },
   "عصفور": {
    "file": "fae3b134596ebcaa.mp3",
@@ -2401,12 +2251,10 @@
    "voiced": "عِنَب"
   },
   "عنكبوت": {
-   "author": "Speaker: Zinou2go\nRecorder: Zinou2go",
    "file": "ccba07f9d507c39a.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-عنكبوت.wav",
-   "voice": "human",
-   "voiced": "عنكبوت"
+   "imported": "ccba07f9d507c39a.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "عَنْكَبُوت"
   },
   "عين": {
    "file": "675b46a5bc808734.mp3",
@@ -2445,12 +2293,10 @@
    "voiced": "فَاء"
   },
   "فأر": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "61cd48c38cb20d5e.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-فأر.wav",
-   "voice": "human",
-   "voiced": "فأر"
+   "imported": "61cd48c38cb20d5e.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "فَأْر"
   },
   "فاء": {
    "file": "cc5f7ba380b0b5a9.mp3",
@@ -2459,20 +2305,16 @@
    "voiced": "فَاء"
   },
   "فراشة": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "d52ac06e6513ab62.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-فراشة.wav",
-   "voice": "human",
-   "voiced": "فراشة"
+   "imported": "d52ac06e6513ab62.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "فَرَاشَة"
   },
   "فراولة": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "a42d62b2d8517759.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-فراولة.wav",
-   "voice": "human",
-   "voiced": "فراولة"
+   "imported": "a42d62b2d8517759.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "فَرَاوِلَة"
   },
   "فردي": {
    "file": "9a25463d7fb2e3a2.mp3",
@@ -2481,12 +2323,10 @@
    "voiced": "فَرْدِيّ"
   },
   "فستان": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "9906f074d62b6717.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-فستان.ogg",
-   "voice": "human",
-   "voiced": "فستان"
+   "imported": "9906f074d62b6717.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "فُسْتَان"
   },
   "فطر": {
    "file": "097e6c781aa8694a.mp3",
@@ -2531,12 +2371,10 @@
    "voiced": "قُبَّعَة"
   },
   "قدم": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "ad783f940e48cc7c.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-قدم.ogg",
-   "voice": "human",
-   "voiced": "قدم"
+   "imported": "ad783f940e48cc7c.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "قَدَم"
   },
   "قرد": {
    "file": "6471586d8e28e3f5.mp3",
@@ -2545,12 +2383,10 @@
    "voiced": "قِرْد"
   },
   "قطار": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "23f115c9212f731b.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-قطار.ogg",
-   "voice": "human",
-   "voiced": "قطار"
+   "imported": "23f115c9212f731b.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "قِطَار"
   },
   "قطة": {
    "file": "c3c3a26e1f58ae8f.mp3",
@@ -2619,12 +2455,10 @@
    "voiced": "كَاف"
   },
   "كتاب": {
-   "author": "Speaker: Zinou2go\nRecorder: Zinou2go",
    "file": "0d27d5eb3aa7db10.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-كتاب.wav",
-   "voice": "human",
-   "voiced": "كتاب"
+   "imported": "0d27d5eb3aa7db10.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "كِتَاب"
   },
   "كرة": {
    "file": "cc57da04fed3e9a6.mp3",
@@ -2633,12 +2467,10 @@
    "voiced": "كُرَة"
   },
   "كرز": {
-   "author": "Speaker: Fjmustak\nRecorder: Fjmustak",
    "file": "847cae2110228ad8.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Fjmustak-كرز.wav",
-   "voice": "human",
-   "voiced": "كرز"
+   "imported": "847cae2110228ad8.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "كَرَز"
   },
   "كعكة": {
    "file": "54c734044fc47850.mp3",
@@ -2647,28 +2479,22 @@
    "voiced": "كَعْكَة"
   },
   "كلب": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "ec0c56b3b9a2476d.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-كلب.ogg",
-   "voice": "human",
-   "voiced": "كلب"
+   "imported": "ec0c56b3b9a2476d.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "كَلْب"
   },
   "كمان": {
-   "author": "Speaker: Zinou2go\nRecorder: Zinou2go",
    "file": "788da0f68c5dba9d.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-كمان.wav",
-   "voice": "human",
-   "voiced": "كمان"
+   "imported": "788da0f68c5dba9d.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "كَمَان"
   },
   "كمثرى": {
-   "author": "Speaker: Zinou2go\nRecorder: Zinou2go",
    "file": "a264838a8ee1289b.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-كمثرى.wav",
-   "voice": "human",
-   "voiced": "كمثرى"
+   "imported": "a264838a8ee1289b.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "كُمَّثْرَى"
   },
   "كنغر": {
    "file": "879c94f18a53a840.mp3",
@@ -2689,36 +2515,28 @@
    "voiced": "كِيوِي"
   },
   "ل": {
-   "author": "Speaker: Spotless Mind1988\nRecorder: Spotless Mind1988",
    "file": "4b4f75b8a7bdbdcf.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-لام.wav",
-   "voice": "human",
-   "voiced": "لام"
+   "imported": "ada701484a948606.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "لَام"
   },
   "لام": {
-   "author": "Speaker: Spotless Mind1988\nRecorder: Spotless Mind1988",
    "file": "ada701484a948606.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Spotless_Mind1988-لام.wav",
-   "voice": "human",
-   "voiced": "لام"
+   "imported": "ada701484a948606.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "لَام"
   },
   "لسان": {
-   "author": "Speaker: Shahjina\nRecorder: Shahjina",
    "file": "6e2177a105e831a9.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Shahjina-لسان.wav",
-   "voice": "human",
-   "voiced": "لسان"
+   "imported": "6e2177a105e831a9.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "لِسَان"
   },
   "ليمون": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "4dd419c84e61e449.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-ليمون.wav",
-   "voice": "human",
-   "voiced": "ليمون"
+   "imported": "4dd419c84e61e449.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "لَيْمُون"
   },
   "م": {
    "file": "d8fe6f076d7909ff.mp3",
@@ -2727,12 +2545,10 @@
    "voiced": "مِيم"
   },
   "ماعز": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "d45697ef286a8d3d.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-ماعز.wav",
-   "voice": "human",
-   "voiced": "ماعز"
+   "imported": "d45697ef286a8d3d.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "مَاعِز"
   },
   "مانجو": {
    "file": "2e1a9f5ec12df491.mp3",
@@ -2741,12 +2557,10 @@
    "voiced": "مَانْجُو"
   },
   "مدرسة": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "44ee4b4e2e8018be.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-مدرسة.ogg",
-   "voice": "human",
-   "voiced": "مدرسة"
+   "imported": "44ee4b4e2e8018be.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "مَدْرَسَة"
   },
   "مركبات": {
    "file": "5b6044504869364a.mp3",
@@ -2761,20 +2575,16 @@
    "voiced": "مِرْوَحِيَّة"
   },
   "مستشفى": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "dc7cff7f2b485420.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-مستشفى.ogg",
-   "voice": "human",
-   "voiced": "مستشفى"
+   "imported": "dc7cff7f2b485420.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "مُسْتَشْفَى"
   },
   "مسجد": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "ef36974248244950.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-مسجد.wav",
-   "voice": "human",
-   "voiced": "مسجد"
+   "imported": "ef36974248244950.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "مَسْجِد"
   },
   "مصباح كهربائي": {
    "file": "8357fc56507e69ed.mp3",
@@ -2783,12 +2593,10 @@
    "voiced": "مِصْبَاحٌ كَهْرَبَائِيّ"
   },
   "مطر": {
-   "author": "Speaker: Raghda\nRecorder: Akbarali",
    "file": "41892f96ef6a8947.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Raghda_(Akbarali)-مطر.wav",
-   "voice": "human",
-   "voiced": "مطر"
+   "imported": "41892f96ef6a8947.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "مَطَر"
   },
   "مطرقة": {
    "file": "47423965b581cb95.mp3",
@@ -2809,12 +2617,10 @@
    "voiced": "مِغْنَاطِيس"
   },
   "مفتاح": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "b2e8115b070c5c38.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-مفتاح.ogg",
-   "voice": "human",
-   "voiced": "مفتاح"
+   "imported": "b2e8115b070c5c38.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "مِفْتَاح"
   },
   "مقص": {
    "file": "d7cff7523c328ade.mp3",
@@ -2823,28 +2629,22 @@
    "voiced": "مِقَصّ"
   },
   "مكنسة": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "9bf67454741698a4.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-مكنسة.wav",
-   "voice": "human",
-   "voiced": "مكنسة"
+   "imported": "9bf67454741698a4.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "مِكْنَسَة"
   },
   "ملابس": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "fff2282efd2749db.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-ملابس.ogg",
-   "voice": "human",
-   "voiced": "ملابس"
+   "imported": "fff2282efd2749db.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "مَلَابِس"
   },
   "ملكة": {
-   "author": "Speaker: Zinou2go\nRecorder: Zinou2go",
    "file": "66a73fb0d48d4108.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-ملكة.wav",
-   "voice": "human",
-   "voiced": "ملكة"
+   "imported": "66a73fb0d48d4108.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "مَلِكَة"
   },
   "موجة": {
    "file": "d4e881ea709e4f6c.mp3",
@@ -2865,12 +2665,10 @@
    "voiced": "مِيم"
   },
   "ن": {
-   "author": "Speaker: Kareem\nRecorder: Akbarali",
    "file": "178a13dd63132684.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Kareem_(Akbarali)-نون.wav",
-   "voice": "human",
-   "voiced": "نون"
+   "imported": "3b09344f4e3dc0f2.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "نُون"
   },
   "نار": {
    "file": "7f8765ad45ee4a54.mp3",
@@ -2915,12 +2713,10 @@
    "voiced": "نَظَّارَة"
   },
   "نمر": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "616b14dd6a91757f.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-نمر.wav",
-   "voice": "human",
-   "voiced": "نمر"
+   "imported": "616b14dd6a91757f.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "نَمِر"
   },
   "نملة": {
    "file": "600199ac02333b72.mp3",
@@ -2929,12 +2725,10 @@
    "voiced": "نَمْلَة"
   },
   "نون": {
-   "author": "Speaker: Kareem\nRecorder: Akbarali",
    "file": "3b09344f4e3dc0f2.mp3",
-   "licence": "CC BY-SA 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Kareem_(Akbarali)-نون.wav",
-   "voice": "human",
-   "voiced": "نون"
+   "imported": "3b09344f4e3dc0f2.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "نُون"
   },
   "ه": {
    "file": "e9edeb603dee8147.mp3",
@@ -2949,20 +2743,16 @@
    "voiced": "هَاء"
   },
   "هاتف": {
-   "author": "Speaker: AlNatiq\nRecorder: AlNatiq",
    "file": "b9e9459cfa6331e5.mp3",
-   "licence": "CC0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-AlNatiq-هاتف.wav",
-   "voice": "human",
-   "voiced": "هاتف"
+   "imported": "b9e9459cfa6331e5.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "هَاتِف"
   },
   "هدية": {
-   "author": "Nhaily Mustapha, Vion Nicolas",
    "file": "41b0d16460a46f09.mp3",
-   "licence": "CC BY 3.0 us",
-   "source": "https://commons.wikimedia.org/wiki/File:Ar-هدية.ogg",
-   "voice": "human",
-   "voiced": "هدية"
+   "imported": "41b0d16460a46f09.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "هَدِيَّة"
   },
   "و": {
    "file": "304117b6c7c96221.mp3",
@@ -2977,12 +2767,10 @@
    "voiced": "وَاو"
   },
   "وردة": {
-   "author": "Speaker: Rashed Aljahdali\nRecorder: Rashed Aljahdali",
    "file": "67da8ffec224b4ca.mp3",
-   "licence": "CC BY 4.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Rashed_Aljahdali-وردة.wav",
-   "voice": "human",
-   "voiced": "وردة"
+   "imported": "67da8ffec224b4ca.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "وَرْدَة"
   },
   "وردي": {
    "file": "836d81cd5fd10002.mp3",
@@ -3003,12 +2791,10 @@
    "voiced": "وِشَاح"
   },
   "ولد": {
-   "author": "Speaker: Zinou2go\nRecorder: Zinou2go",
    "file": "44415f38350b4a25.mp3",
-   "licence": "CC BY-SA 3.0",
-   "source": "https://commons.wikimedia.org/wiki/File:LL-Q13955_(ara)-Zinou2go-وَلَدَ.wav",
-   "voice": "human",
-   "voiced": "ولد"
+   "imported": "44415f38350b4a25.mp3",
+   "voice": "elevenlabs-jessica",
+   "voiced": "وَلَد"
   },
   "ى": {
    "file": "f776b60a859e8114.mp3",
