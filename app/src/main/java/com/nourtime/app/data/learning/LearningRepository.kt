@@ -14,6 +14,7 @@ import com.nourtime.app.core.learning.LearningSettings
 import com.nourtime.app.core.learning.LevelProgress
 import com.nourtime.app.core.learning.NumeralStyle
 import com.nourtime.app.core.learning.RewardPolicy
+import com.nourtime.app.core.learning.Stars
 import com.nourtime.app.core.learning.VoicePack
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -40,8 +41,17 @@ data class LearningState(
     fun earnedOn(today: LocalDate): Int = if (earnedDay == today) earnedMinutes else 0
 }
 
-/** Result of a finished level. */
-data class LevelOutcome(val earnedMinutes: Int, val progress: LevelProgress, val dailyMaxReached: Boolean)
+/**
+ * Result of a finished level. When it earned nothing, [noBetterStars] (a replay without more stars
+ * than before) and [bankFull] (the bank holds the daily maximum) say why.
+ */
+data class LevelOutcome(
+    val earnedMinutes: Int,
+    val progress: LevelProgress,
+    val dailyMaxReached: Boolean,
+    val noBetterStars: Boolean = false,
+    val bankFull: Boolean = false,
+)
 
 /** Learning Hub state on this phone (DataStore). */
 @Singleton
@@ -82,17 +92,25 @@ class LearningRepository @Inject constructor(
         var outcome: LevelOutcome? = null
         store.edit { prefs ->
             val s = prefs.toState()
+            val before = progressOf(s, game).starsOf(levelId)
             val progress = progressOf(s, game).finished(levelId, stars)
             prefs[progressKey(game)] = progress.encode()
             val earnedToday = s.earnedOn(today)
-            val earned = if (rewards) RewardPolicy.earn(s.settings, stars, earnedToday) else 0
+            val earned = if (rewards) RewardPolicy.earn(s.settings, stars, earnedToday, before, s.bankMinutes) else 0
             if (earned > 0) {
                 prefs[BANK] = s.bankMinutes + earned
                 prefs[EARNED_DAY] = today.toEpochDay()
                 prefs[EARNED_MINUTES] = earnedToday + earned
             }
-            val maxReached = rewards && s.settings.enabled && earnedToday + earned >= s.settings.dailyMaxMinutes
-            outcome = LevelOutcome(earned, progress, maxReached)
+            val counts = rewards && s.settings.enabled && s.settings.dailyMaxMinutes > 0
+            val maxReached = counts && earnedToday + earned >= s.settings.dailyMaxMinutes
+            outcome = LevelOutcome(
+                earnedMinutes = earned,
+                progress = progress,
+                dailyMaxReached = maxReached,
+                noBetterStars = counts && earned == 0 && stars >= Stars.FOR_REWARD && stars <= before,
+                bankFull = counts && s.bankMinutes + earned >= s.settings.dailyMaxMinutes,
+            )
         }
         return outcome!!
     }

@@ -86,6 +86,10 @@ sealed interface HubScreen {
         val earnedMinutes: Int,
         val dailyMaxReached: Boolean,
         val hasNext: Boolean,
+        /** Earned nothing: a replay without more stars than before. */
+        val noBetterStars: Boolean = false,
+        /** Earned nothing (or less): the bank already holds the daily maximum. */
+        val bankFull: Boolean = false,
     ) : HubScreen
 }
 
@@ -431,6 +435,8 @@ class LearningHubController(
             earnedMinutes = outcome?.earnedMinutes ?: 0,
             dailyMaxReached = outcome?.dailyMaxReached ?: false,
             hasNext = level + 1 < count,
+            noBetterStars = outcome?.noBetterStars ?: false,
+            bankFull = outcome?.bankFull ?: false,
         )
     }
 

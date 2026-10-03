@@ -17,10 +17,16 @@ data class LearningSettings(
 }
 
 object RewardPolicy {
-    /** Minutes a finished level earns, given what was already earned today. */
-    fun earn(settings: LearningSettings, stars: Int, earnedToday: Int): Int {
-        if (!settings.enabled || stars < Stars.FOR_REWARD) return 0
-        return minOf(settings.minutesPerLevel, (settings.dailyMaxMinutes - earnedToday).coerceAtLeast(0))
+    /**
+     * Minutes a finished level earns, given what was already earned today. A replay earns only with
+     * more stars than [previousStars] (the level's best so far), so the easiest level can't be played
+     * again and again for minutes; and the [bank] never holds more than the daily maximum, so a
+     * week's minutes can't be saved up for one long break (owner's decisions, 2026-10-03).
+     */
+    fun earn(settings: LearningSettings, stars: Int, earnedToday: Int, previousStars: Int = 0, bank: Int = 0): Int {
+        if (!settings.enabled || stars < Stars.FOR_REWARD || stars <= previousStars) return 0
+        val max = settings.dailyMaxMinutes
+        return minOf(settings.minutesPerLevel, max - earnedToday, max - bank).coerceAtLeast(0)
     }
 }
 

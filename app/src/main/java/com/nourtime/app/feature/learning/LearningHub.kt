@@ -381,7 +381,19 @@ private fun ColumnScope.DoneScreen(controller: LearningHubController, state: Lea
                 textAlign = TextAlign.Center,
             )
             !controller.rewards || settings == null || !settings.enabled || settings.dailyMaxMinutes == 0 -> Unit
+            s.noBetterStars -> Text(
+                stringResource(Gendered(R.string.learn_more_stars_m, R.string.learn_more_stars_f).pick(gender)),
+                style = MaterialTheme.typography.bodyLarge,
+                color = NourPalette.Navy,
+                textAlign = TextAlign.Center,
+            )
             s.dailyMaxReached -> Text(stringResource(R.string.learn_daily_max_reached), style = MaterialTheme.typography.bodyLarge, color = NourPalette.Navy, textAlign = TextAlign.Center)
+            s.bankFull -> Text(
+                stringResource(Gendered(R.string.learn_bank_full_m, R.string.learn_bank_full_f).pick(gender)),
+                style = MaterialTheme.typography.bodyLarge,
+                color = NourPalette.Navy,
+                textAlign = TextAlign.Center,
+            )
             else -> Text(
                 stringResource(Gendered(R.string.learn_need_stars_m, R.string.learn_need_stars_f).pick(gender)),
                 style = MaterialTheme.typography.bodyLarge,

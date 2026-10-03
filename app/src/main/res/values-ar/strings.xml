@@ -458,6 +458,10 @@
     <string name="learn_use_minutes_m">استخدم دقائقي</string>
     <string name="learn_use_minutes_f">استخدمي دقائقي</string>
     <string name="learn_daily_max_reached">هذه كل دقائق اليوم. يمكن متابعة التعلّم للمتعة!</string>
+    <string name="learn_more_stars_m">اجمع نجومًا أكثر لتكسب دقائق من جديد!</string>
+    <string name="learn_more_stars_f">اجمعي نجومًا أكثر لتكسبي دقائق من جديد!</string>
+    <string name="learn_bank_full_m">صندوق دقائقك ممتلئ. استخدم دقائقك أولًا!</string>
+    <string name="learn_bank_full_f">صندوق دقائقك ممتلئ. استخدمي دقائقك أولًا!</string>
     <string name="learn_game_math">الرياضيات الذكية</string>
     <string name="learn_game_math_hint">جمع وطرح ومقارنة</string>
     <string name="learn_game_letters">الحروف والكلمات</string>

@@ -285,6 +285,26 @@ class LearningCoreTest {
         assertEquals(0, RewardPolicy.earn(s.copy(dailyMaxMinutes = 0), stars = 3, earnedToday = 0))
     }
 
+    @Test
+    fun `a replay earns only with more stars than before`() {
+        val s = LearningSettings(minutesPerLevel = 5, dailyMaxMinutes = 15)
+        assertEquals(0, RewardPolicy.earn(s, stars = 2, earnedToday = 0, previousStars = 2))
+        assertEquals(0, RewardPolicy.earn(s, stars = 3, earnedToday = 0, previousStars = 3))
+        assertEquals(5, RewardPolicy.earn(s, stars = 3, earnedToday = 0, previousStars = 2))
+        // One star earned nothing, so two stars later is the first win.
+        assertEquals(5, RewardPolicy.earn(s, stars = 2, earnedToday = 0, previousStars = 1))
+    }
+
+    @Test
+    fun `the bank never holds more than the daily maximum`() {
+        val s = LearningSettings(minutesPerLevel = 5, dailyMaxMinutes = 15)
+        assertEquals(5, RewardPolicy.earn(s, stars = 3, earnedToday = 0, bank = 10))
+        assertEquals(3, RewardPolicy.earn(s, stars = 3, earnedToday = 0, bank = 12))
+        assertEquals(0, RewardPolicy.earn(s, stars = 3, earnedToday = 0, bank = 15))
+        // The parent lowered the maximum below what's already banked: nothing more.
+        assertEquals(0, RewardPolicy.earn(s.copy(dailyMaxMinutes = 10), stars = 3, earnedToday = 0, bank = 15))
+    }
+
     private data class L(override val id: String) : Level
 
     private val three = GamePack(listOf(L("a"), L("b"), L("c")))

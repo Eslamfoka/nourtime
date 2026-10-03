@@ -448,6 +448,10 @@
     <string name="learn_use_minutes_m">Use my minutes</string>
     <string name="learn_use_minutes_f">Use my minutes</string>
     <string name="learn_daily_max_reached">That\'s all the minutes for today. Keep learning for fun!</string>
+    <string name="learn_more_stars_m">Get more stars to earn minutes again!</string>
+    <string name="learn_more_stars_f">Get more stars to earn minutes again!</string>
+    <string name="learn_bank_full_m">Your minutes box is full. Use your minutes first!</string>
+    <string name="learn_bank_full_f">Your minutes box is full. Use your minutes first!</string>
     <string name="learn_game_math">Smart Math</string>
     <string name="learn_game_math_hint">Add, subtract, compare</string>
     <string name="learn_game_letters">Letters &amp; Words</string>
