@@ -3,9 +3,16 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (2026-09-29 evening):** go to [§11](#11-evening-of-2026-09-29-overnight-2-request-all-on-master).
-> Everything is on `master`; the APK for the owner is `dist/NourTime-2026-09-29-debug.apk`. First step:
-> ask the owner for the Honor results of the §11 test list.
+> **Resume here (next session, written 2026-10-03):** everything is on `master` (Learning Hub + the
+> four voice packs, merged and pushed). The Honor runs `dist/NourTime-2026-10-03-voice-packs-release.apk`;
+> the owner tested the voice packs and they work. Work through the roadmap in [§18](#18-roadmap-for-the-next-sessions-in-order)
+> **in order**; task 1 comes first:
+>
+> 1. **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs,
+>    glitches, or edge cases.**
+> 2. Number Connect: shape preview at the top + no number voice while dragging.
+> 3. Parent app integration of the Learning Hub.
+> 4. Release preparation. 5. Real-device testing. 6. Audio assets. 7. G9 (on hold).
 
 ## 1. Architecture at a glance
 
@@ -1148,4 +1155,53 @@ human recordings first; no Google Translate TTS; a premium voice only for what n
 - Tools: `elevenlabs_generate.py --pack X` → `import_audio.py --pack X --voice elevenlabs-<name>`
   (add `--replace-human` for ar/en). The `[cheerfully]` tag hurt short English words (and تاء):
   re-record those without it.
-- Owner still to hear: طعام (Jessica). APK not built since the packs.
+- ✅ **Finished 2026-10-03:** APK `dist/NourTime-2026-10-03-voice-packs-release.apk` installed on the
+  Honor; the owner tested the packs and the voice switch ("works perfectly"). `learning-hub`
+  fast-forwarded into `master` and pushed. Next: the roadmap in §18.
+
+## 18. Roadmap for the next sessions (in order)
+
+Written 2026-10-03 at the end of the voice-pack session. Do the tasks in this order.
+
+### Task 1 (FIRST): comprehensive review
+**Conduct a comprehensive review of everything implemented so far to identify and fix any bugs,
+glitches, or edge cases.** Scope: Phase 1 (time engine, locks, overlay, bedtime, schedule, PIN /
+parent pass / security question, protection of Settings and uninstall), Phase 1.5, Phase 2 remote
+control (pairing, commands, ask-for-time, Firestore rules), Phase 4 (weekend limits, history),
+U1–U4 (time pickers, dashboard, Forgot PIN, language switcher), the Learning Hub (12 games, content
+packs, rewards / bank / daily maximum, progress by level id) and the voice packs (fallback between
+packs, settings choice, RTL, TalkBack). Use the code-review tooling plus the emulator; fix what's
+found with tests; list anything that needs the owner. Remember the universal-Android rule (fixes
+work on every brand) and run only one emulator at a time.
+
+### Task 2: Number Connect UX (owner, 2026-10-03)
+- **Preview of the final shape:** a small outline of the finished drawing at the top of the screen so
+  the child knows what they're building (`feature/learning/DrawingScreens.kt`, `ConnectScreen`).
+- **No number voice while dragging:** don't say each number while the child drags the line from one
+  dot to the next; it's unnecessary during that action (the call is `speaker.say((dot + 1)…)` at
+  `DrawingScreens.kt:147`). Decide with the owner whether a tap on a dot still says its number.
+
+### Task 3: Parent app integration of the Learning Hub
+The parent's phone shows and changes the Learning Hub settings (on/off, minutes per level, daily
+maximum, **voice per language**) and the child's minutes bank, synced like the other settings
+(Phase 2 Firestore paths and rules). Ask the owner before starting, as agreed on 2026-09-30.
+
+### Task 4: Release preparation
+- **Rotate the ElevenLabs API key** (it was pasted in chat on 2026-10-03); keep the paid plan
+  active while publishing (commercial licence for the clips).
+- Upload key + Play App Signing, store listing, screenshots, feature graphic, Accessibility demo
+  video, publish `docs/account-deletion.md` (contact email). APK is now 13.6 MB (four voice packs);
+  an AAB keeps downloads smaller.
+
+### Task 5: Real-device testing
+Samsung and Xiaomi with `docs/testing-checklist.md`, plus the open Honor re-tests in §11/§12.
+
+### Task 6: Audio assets
+Voice message for ages 3–6 (masculine and feminine) and a soft lullaby for the sleep screen; the
+ElevenLabs voices (NOUR, Jessica) can now record the message.
+
+### Task 7: G9 short surahs and du'as (on hold)
+Waits for the owner's decision on recitation sources and licensing.
+
+### Later / optional
+Lottie animations, Device Owner mode (Safe Mode), push notifications to the parent (Blaze plan).

@@ -1,7 +1,14 @@
 # Nour Time: progress against the brief
 
-Status as of 2026-09-30 (latest work: [`handoff.md` §14](handoff.md#14-resume-here-2026-09-30-end-of-day)). A copy of the brief with the status of every requirement, plus Phase 4, is in
+Status as of 2026-10-03 (latest work: [`handoff.md` §17.6](handoff.md#176-voice-packs-2026-10-03); next: the
+[roadmap](#roadmap-next-sessions-in-order) and [`handoff.md` §18](handoff.md#18-roadmap-for-the-next-sessions-in-order)). A copy of the brief with the status of every requirement, plus Phase 4, is in
 [`brief-with-status.md`](brief-with-status.md). Legend: ✅ done · 🟡 done with a noted difference · ⏳ pending.
+
+**2026-10-03:** ✅ **Arabic and English voice integration finished.** Four voice packs, each one
+ElevenLabs voice for every clip: Arabic **Fusha** (Jessica, 470) and **Egyptian** (NOUR, 470, numbers
+in Egyptian), English **American** (Liz, 360) and **British** (Ana, 360). The parent picks the voice
+per language in the Learning Hub settings. Tested by the owner on the Honor; the Learning Hub and the
+voice packs are merged into `master` and pushed.
 
 Phase 1 is feature-complete on the emulator (Android 12 and 15). What's left is testing on real
 phones, recorded audio, release plumbing, Phase 1.5 (below) and Phase 2.
@@ -336,7 +343,7 @@ Phase B adds the path and card engines. Phase C adds drag and drop. Phase D need
 screen option, pack, how a level starts). A new game is a `GameId`, one registry entry, its pack in
 `HubContent`, and its engine and screen; menu, level screen, progress, stars and rewards follow.
 
-### Text, content and voice (2026-10-02 night, on `learning-hub`, not merged)
+### Text, content and voice (2026-10-02 → 2026-10-03, merged into `master`)
 | Item | Status |
 |---|---|
 | Long words wrapping over themselves on cards (Peacock, عنكبوت, أفوكادو) | ✅ Fixed: `FitText`, one line, shrinks to fit (emulator-checked) |
@@ -346,7 +353,8 @@ screen option, pack, how a level starts). A new game is a `GameId`, one registry
 | Paid voice (Azure) if Play objects to edge-tts | Superseded by 2026-10-03 below |
 | Owner's Honor test (2026-10-02) | UI fixes ✅; English Ana barely OK; **Arabic synthetic voice rejected** |
 | Real human recordings (Commons / Lingua Libre, speech-checked, credits screen) | ✅ Arabic 123/470, English 343/360 (`dist/NourTime-2026-10-03-human-voices-release.apk`) |
-| Remaining Arabic (347 clips: most numbers, 24 letter names, ~95 words) | ⏳ Manus records batches in AI Studio (voice Kore); test batch numbers 1–25 waiting on the owner; slicer + importer ready (handoff §17) |
+| Remaining Arabic (347 clips: most numbers, 24 letter names, ~95 words) | ✅ Done with ElevenLabs instead of AI Studio batches (handoff §17.5) |
+| **Voice packs** (parent picks per language; a pack borrows a missing clip from the default; test checks every pack is complete) | ✅ Fusha = Jessica 470/470, Egyptian = NOUR 470/470, American = Liz 360/360, British = Ana 360/360; owner-tested on the Honor 2026-10-03 (handoff §17.6) |
 
 ## UX backlog (future polish phase)
 
@@ -356,6 +364,22 @@ screen option, pack, how a level starts). A new game is a `GameId`, one registry
 | U2 | **Single dashboard** instead of the bottom bar: quick actions (Lock now / End the lock), tiles for Apps, Schedule and Settings; Permissions inside Settings. Requested 2026-09-29. | High | ✅ Built 2026-09-29 (`1aa5f8e`); emulator-tested. Waiting for the Honor test |
 | U3 | **Forgot PIN** recovery with the security question, from the app and the Time's up screen. Requested 2026-09-29. | High | ✅ Built 2026-09-29 (`06e0163`); emulator-tested. Waiting for the Honor test |
 | U4 | **Language switcher** (Phone language / Arabic / English), all Android versions. Requested 2026-09-29. | High | ✅ Built 2026-09-29 (`e6a3f23`); tested on Android 12 and 15 emulators. Waiting for the Honor test |
+| U5 | **Number Connect: preview of the final shape.** A small outline of the finished drawing at the top of the screen, so the child knows what they're building. Requested by the owner 2026-10-03. | Medium | ⏳ Roadmap task 2 |
+| U6 | **Number Connect: no number voice while dragging.** Don't say each number while the child drags the line from dot to dot (`DrawingScreens.kt:147`). Requested by the owner 2026-10-03. | Medium | ⏳ Roadmap task 2 |
+
+## Roadmap (next sessions, in order)
+
+| # | Task | Status |
+|---|---|---|
+| 1 | **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs, glitches, or edge cases.** | ⏳ **First** |
+| 2 | Number Connect UX: U5 (shape preview) and U6 (no voice while dragging) | ⏳ |
+| 3 | Parent app integration of the Learning Hub (settings, voice per language, minutes bank on the parent's phone) | ⏳ Ask the owner before starting |
+| 4 | Release preparation: rotate the ElevenLabs key, upload key, Play listing, screenshots, video, account-deletion page | ⏳ |
+| 5 | Real-device testing on Samsung and Xiaomi (+ open Honor re-tests) | ⏳ |
+| 6 | Audio assets: voice message for ages 3–6, lullaby (ElevenLabs voices can record them) | ⏳ |
+| 7 | G9 short surahs and du'as | On hold (licensing decision) |
+
+Details for each task: [`handoff.md` §18](handoff.md#18-roadmap-for-the-next-sessions-in-order).
 
 ## Strictly pending
 
