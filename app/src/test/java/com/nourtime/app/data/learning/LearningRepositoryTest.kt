@@ -2,8 +2,10 @@ package com.nourtime.app.data.learning
 
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import com.nourtime.app.core.learning.GameId
+import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.learning.LearningSettings
 import com.nourtime.app.core.learning.LevelProgress
+import com.nourtime.app.core.learning.VoicePack
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -40,6 +42,15 @@ class LearningRepositoryTest {
     @Test
     fun `defaults are on, 5 minutes a level, 15 a day`() = runTest {
         assertEquals(LearningSettings(true, 5, 15), repo.settings.first())
+    }
+
+    @Test
+    fun `the voice is chosen per language and kept`() = runTest {
+        assertEquals(emptyMap<LearnLanguage, VoicePack>(), repo.state.first().voicePacks)
+        repo.setVoicePack(VoicePack.ARABIC_EGYPTIAN)
+        assertEquals(mapOf(LearnLanguage.ARABIC to VoicePack.ARABIC_EGYPTIAN), repo.state.first().voicePacks)
+        repo.setVoicePack(VoicePack.ARABIC_FUSHA)
+        assertEquals(VoicePack.ARABIC_FUSHA, repo.state.first().voicePacks[LearnLanguage.ARABIC])
     }
 
     @Test

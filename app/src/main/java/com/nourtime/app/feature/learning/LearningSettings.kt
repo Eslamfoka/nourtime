@@ -38,6 +38,7 @@ import com.nourtime.app.core.designsystem.component.NourDialogButton
 import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.learning.LearningSettings
+import com.nourtime.app.core.learning.VoicePack
 import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.data.learning.LearningContentRepository
 import com.nourtime.app.data.learning.LearningRepository
@@ -77,6 +78,7 @@ class LearningSettingsViewModel @Inject constructor(
     fun setEnabled(on: Boolean) = viewModelScope.launch { repository.setEnabled(on) }
     fun setMinutesPerLevel(m: Int) = viewModelScope.launch { repository.setMinutesPerLevel(m) }
     fun setDailyMax(m: Int) = viewModelScope.launch { repository.setDailyMax(m) }
+    fun setVoicePack(pack: VoicePack) = viewModelScope.launch { repository.setVoicePack(pack) }
 }
 
 /** Parent's Settings: Learning Hub on/off, minutes per level, daily maximum, and a preview. */
@@ -115,6 +117,7 @@ fun LearningSettingsCard(ageGroup: AgeGroup?, gender: ChildGender?, viewModel: L
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            VoicePackChoice(state?.voicePacks.orEmpty(), viewModel::setVoicePack)
             NourDialogButton(stringResource(R.string.learn_settings_voice_credits), { showCredits = true })
         }
         NourSecondaryButton(stringResource(R.string.learn_settings_try), { previewing = true })
@@ -139,6 +142,42 @@ private fun MinuteChips(options: List<Int>, selected: Int, onSelect: (Int) -> Un
         }
     }
 }
+
+/** The voice per language, for languages with more than one; choosing one plays a sample. */
+@Composable
+private fun VoicePackChoice(chosen: Map<LearnLanguage, VoicePack>, onSelect: (VoicePack) -> Unit) {
+    val speaker = rememberSpeaker()
+    LearnLanguage.entries.map(VoicePack::of).filter { it.size > 1 }.forEach { packs ->
+        val current = VoicePack.chosen(chosen, packs.first().language)
+        Text(stringResource(R.string.learn_settings_voice_title), style = MaterialTheme.typography.titleSmall)
+        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            packs.forEach { pack ->
+                FilterChip(
+                    selected = pack == current,
+                    onClick = {
+                        onSelect(pack)
+                        speaker.sayIn(pack, VOICE_SAMPLE)
+                    },
+                    label = { Text(stringResource(pack.label)) },
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = MaterialTheme.colorScheme.primary,
+                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
+                )
+            }
+        }
+    }
+}
+
+/** Eleven: أحد عشر in Fusha, حداشر in Egyptian, so the difference is heard at once. */
+private const val VOICE_SAMPLE = "11"
+
+private val VoicePack.label: Int
+    get() = when (this) {
+        VoicePack.ARABIC_FUSHA -> R.string.learn_voice_ar_fusha
+        VoicePack.ARABIC_EGYPTIAN -> R.string.learn_voice_ar_egyptian
+        VoicePack.ENGLISH_AMERICAN -> R.string.learn_voice_en_american
+    }
 
 /** The hub exactly as the child sees it, without earning minutes. */
 @Composable

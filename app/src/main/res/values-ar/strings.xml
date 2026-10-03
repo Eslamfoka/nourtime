@@ -566,6 +566,10 @@
     <string name="learn_settings_try">جرّب الألعاب</string>
     <string name="learn_settings_voice_hint">تقرأ الألعاب الكلمات بتسجيلات بشرية حقيقية (بالعربية الفصحى والإنجليزية)، وبصوت اصطناعي للكلمات التي لم تُسجَّل بعد. صوت الهاتف هو الحل الأخير.</string>
     <string name="learn_settings_voice_credits">حقوق التسجيلات الصوتية</string>
+    <string name="learn_settings_voice_title">الصوت</string>
+    <string name="learn_voice_ar_fusha">العربية الفصحى</string>
+    <string name="learn_voice_ar_egyptian">اللهجة المصرية</string>
+    <string name="learn_voice_en_american">الإنجليزية الأمريكية</string>
     <string name="learn_task_connect">صِل النقاط بالترتيب</string>
     <string name="learn_tutorial_connect_m">اسحب إصبعك من %1$s إلى %2$s</string>
     <string name="learn_tutorial_connect_f">اسحبي إصبعك من %1$s إلى %2$s</string>

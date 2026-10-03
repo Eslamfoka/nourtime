@@ -14,6 +14,7 @@ import com.nourtime.app.core.learning.LearningSettings
 import com.nourtime.app.core.learning.LevelProgress
 import com.nourtime.app.core.learning.NumeralStyle
 import com.nourtime.app.core.learning.RewardPolicy
+import com.nourtime.app.core.learning.VoicePack
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -29,6 +30,8 @@ data class LearningState(
     /** Null until chosen: then it follows the language. */
     val numerals: NumeralStyle? = null,
     val lettersLanguage: LearnLanguage? = null,
+    /** The parent's voice per language (Fusha or Egyptian); missing means the default. */
+    val voicePacks: Map<LearnLanguage, VoicePack> = emptyMap(),
     /** Earned minutes not used yet. */
     val bankMinutes: Int = 0,
     val earnedDay: LocalDate? = null,
@@ -58,6 +61,8 @@ class LearningRepository @Inject constructor(
     suspend fun setNumerals(style: NumeralStyle) = store.edit { it[NUMERALS] = style.name }
 
     suspend fun setLettersLanguage(language: LearnLanguage) = store.edit { it[LETTERS_LANGUAGE] = language.name }
+
+    suspend fun setVoicePack(pack: VoicePack) = store.edit { it[voiceKey(pack.language)] = pack.name }
 
     suspend fun markTutorialSeen(game: GameId) = store.edit { it[TUTORIALS] = it[TUTORIALS].orEmpty() + game.name }
 
@@ -114,6 +119,10 @@ class LearningRepository @Inject constructor(
             tutorialsSeen = this[TUTORIALS].orEmpty().mapNotNull { name -> GameId.entries.firstOrNull { it.name == name } }.toSet(),
             numerals = this[NUMERALS]?.let { name -> NumeralStyle.entries.firstOrNull { it.name == name } },
             lettersLanguage = this[LETTERS_LANGUAGE]?.let { name -> LearnLanguage.entries.firstOrNull { it.name == name } },
+            voicePacks = LearnLanguage.entries.mapNotNull { lang ->
+                this[voiceKey(lang)]?.let { name -> VoicePack.entries.firstOrNull { it.name == name && it.language == lang } }
+                    ?.let { lang to it }
+            }.toMap(),
             bankMinutes = this[BANK] ?: 0,
             earnedDay = this[EARNED_DAY]?.let(LocalDate::ofEpochDay),
             earnedMinutes = this[EARNED_MINUTES] ?: 0,
@@ -133,6 +142,8 @@ class LearningRepository @Inject constructor(
 
         // Stars per level id ("add-5:3,add-10:2"). The first version stored positions under
         // learn_progress_*; that was never released, so it's simply not read any more.
+        fun voiceKey(language: LearnLanguage) = stringPreferencesKey("learn_voice_${language.tag}")
+
         fun progressKey(game: GameId) = stringPreferencesKey("learn_levels_${game.name.lowercase()}")
     }
 }

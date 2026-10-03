@@ -6,8 +6,8 @@ import java.security.MessageDigest
 /**
  * The recorded voice clips behind everything the games say.
  *
- * A clip is the recording of one piece of text, stored as `audio/<language>/<key>.mp3` (see
- * [assetPath]). Words, letters, colors and labels each have their own clip; a letter's "name, word"
+ * A clip is the recording of one piece of text, stored as `audio/<voice pack>/<key>.mp3` (see
+ * [assetPath] and [VoicePack]). Words, letters, colors and labels each have their own clip; a letter's "name, word"
  * phrase ("ألف، أرنب") plays the name's clip, then the word's. Numbers up to [WHOLE_NUMBERS]
  * do too; bigger ones are said as two clips back to back: "three hundred" + "forty-five", and in
  * Arabic "ثلاثمئة" + "وخمسة وأربعون" (the "+45" clip, with its و).
@@ -53,8 +53,22 @@ object SpeechCatalog {
         return out
     }
 
-    /** The asset that holds [clip]: `audio/ar/3f2a…mp3`. */
-    fun assetPath(clip: String, language: LearnLanguage): String = "audio/${language.tag}/${key(clip)}.mp3"
+    /** The asset that holds [clip] in [language]'s default voice: `audio/ar/3f2a…mp3`. */
+    fun assetPath(clip: String, language: LearnLanguage): String = assetPath(clip, VoicePack.defaultFor(language))
+
+    /** The asset that holds [clip] in [pack]: `audio/ar-eg/3f2a…mp3`. */
+    fun assetPath(clip: String, pack: VoicePack): String = "audio/${pack.dir}/${key(clip)}.mp3"
+
+    /**
+     * The files that say [text] in [pack]: each clip from [pack] when it has it, otherwise from the
+     * language's default voice. Null when a clip is in neither ([has] answers "is this file there?").
+     */
+    fun files(text: String, pack: VoicePack, has: (String) -> Boolean): List<String>? {
+        val default = VoicePack.defaultFor(pack.language)
+        return clipsFor(text, pack.language)?.map { clip ->
+            listOf(pack, default).map { assetPath(clip, it) }.firstOrNull(has) ?: return null
+        }
+    }
 
     /** A file name for any text: the first 16 hex digits of its SHA-1 (the generator does the same). */
     fun key(clip: String): String =

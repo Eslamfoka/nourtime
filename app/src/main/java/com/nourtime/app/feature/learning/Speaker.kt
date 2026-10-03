@@ -7,11 +7,13 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.learning.SpeechCatalog
+import com.nourtime.app.core.learning.VoicePack
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +25,9 @@ interface Speaker {
     val voices: StateFlow<Set<LearnLanguage>>
 
     fun say(text: String, language: LearnLanguage)
+
+    /** Says [text] in [pack], whatever voice the parent chose (to preview a voice). */
+    fun sayIn(pack: VoicePack, text: String) = say(text, pack.language)
 
     object Silent : Speaker {
         override val voices: StateFlow<Set<LearnLanguage>> = MutableStateFlow(emptySet())
@@ -37,37 +42,42 @@ private val SPEECH = AudioAttributes.Builder()
     .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
     .build()
 
-/** A [Speaker] on the recorded voices, alive while this composable is. */
+/** A [Speaker] on the recorded voices ([packs]: the parent's choice per language), alive while this composable is. */
 @Composable
-fun rememberSpeaker(): Speaker {
+fun rememberSpeaker(packs: Map<LearnLanguage, VoicePack> = emptyMap()): Speaker {
     val context = LocalContext.current
     val speaker = remember { RecordedSpeaker(context.applicationContext) }
+    SideEffect { speaker.packs = packs }
     DisposableEffect(speaker) { onDispose { speaker.shutdown() } }
     return speaker
 }
 
 /**
- * Plays the recorded clips from `assets/audio` (see [SpeechCatalog]). The phone's text-to-speech is
- * only a fallback for text with no recording; it isn't even started until that happens.
+ * Plays the recorded clips from `assets/audio` (see [SpeechCatalog]) in the chosen [VoicePack]; a
+ * clip that pack lacks comes from the language's default voice. The phone's text-to-speech is only a
+ * fallback for text with no recording; it isn't even started until that happens.
  */
 private class RecordedSpeaker(private val context: Context) : Speaker {
-    /** The clip files each language has, read once. */
-    private val recorded: Map<LearnLanguage, Set<String>> = LearnLanguage.entries.associateWith { lang ->
-        runCatching { context.assets.list("audio/${lang.tag}")?.toSet() }.getOrNull().orEmpty()
-    }
-    private val recordedLanguages = recorded.filterValues { it.isNotEmpty() }.keys
+    var packs: Map<LearnLanguage, VoicePack> = emptyMap()
+
+    /** Every clip file of every pack ("audio/ar-eg/3f2a….mp3"), read once. */
+    private val recorded: Set<String> = VoicePack.entries.flatMap { pack ->
+        runCatching { context.assets.list("audio/${pack.dir}")?.toList() }.getOrNull().orEmpty().map { "audio/${pack.dir}/$it" }
+    }.toSet()
+    private val recordedLanguages = VoicePack.entries.filter { recorded.any { f -> f.startsWith("audio/${it.dir}/") } }
+        .map { it.language }.toSet()
     private val _voices = MutableStateFlow(recordedLanguages)
     override val voices: StateFlow<Set<LearnLanguage>> = _voices.asStateFlow()
 
     private var fallback: TtsSpeaker? = null
     private val playing = mutableListOf<MediaPlayer>()
 
-    override fun say(text: String, language: LearnLanguage) {
-        val clips = SpeechCatalog.clipsFor(text, language)
-        val files = clips?.map { SpeechCatalog.assetPath(it, language) }
-        if (files != null && files.all { it.substringAfterLast('/') in recorded[language].orEmpty() }) {
-            if (play(files)) return
-        }
+    override fun say(text: String, language: LearnLanguage) = sayIn(VoicePack.chosen(packs, language), text)
+
+    override fun sayIn(pack: VoicePack, text: String) {
+        val language = pack.language
+        val files = SpeechCatalog.files(text, pack) { it in recorded }
+        if (files != null && play(files)) return
         Log.i(TAG, "no recording for \"$text\" ($language), using the phone's voice")
         stop()
         val tts = fallback ?: TtsSpeaker(context) { ttsVoices -> _voices.value = recordedLanguages + ttsVoices }.also { fallback = it }

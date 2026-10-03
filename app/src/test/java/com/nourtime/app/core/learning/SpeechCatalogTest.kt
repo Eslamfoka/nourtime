@@ -45,6 +45,26 @@ class SpeechCatalogTest {
     }
 
     @Test
+    fun `a voice pack plays its own clips and borrows the rest from the default voice`() {
+        val egyptian = SpeechCatalog.assetPath("300", VoicePack.ARABIC_EGYPTIAN)
+        val fusha = SpeechCatalog.assetPath("+45", VoicePack.ARABIC_FUSHA)
+        assertEquals("audio/ar-eg/${SpeechCatalog.key("300")}.mp3", egyptian)
+        val have = setOf(egyptian, fusha)
+        assertEquals(listOf(egyptian, fusha), SpeechCatalog.files("345", VoicePack.ARABIC_EGYPTIAN) { it in have })
+        // The default voice never borrows, and a clip in neither leaves the text to the fallback.
+        assertNull(SpeechCatalog.files("345", VoicePack.ARABIC_FUSHA) { it in have })
+        assertNull(SpeechCatalog.files("7", VoicePack.ARABIC_EGYPTIAN) { it in have })
+    }
+
+    @Test
+    fun `the chosen voice must be the language's`() {
+        val choices = mapOf(LearnLanguage.ARABIC to VoicePack.ARABIC_EGYPTIAN, LearnLanguage.ENGLISH to VoicePack.ARABIC_EGYPTIAN)
+        assertEquals(VoicePack.ARABIC_EGYPTIAN, VoicePack.chosen(choices, LearnLanguage.ARABIC))
+        assertEquals(VoicePack.ENGLISH_AMERICAN, VoicePack.chosen(choices, LearnLanguage.ENGLISH))
+        assertEquals(VoicePack.ARABIC_FUSHA, VoicePack.chosen(emptyMap(), LearnLanguage.ARABIC))
+    }
+
+    @Test
     fun `the catalog has what the games say`() {
         val ar = SpeechCatalog.clips(TestContent.loader, LearnLanguage.ARABIC)
         val en = SpeechCatalog.clips(TestContent.loader, LearnLanguage.ENGLISH)
@@ -72,5 +92,17 @@ class SpeechCatalogTest {
             clips.filterNot { File("src/main/assets", SpeechCatalog.assetPath(it, lang)).isFile }.map { "${lang.tag}: $it" }
         }
         assertEquals("clips without a recording (run tools/audio/generate_audio.py)", emptyList<String>(), missing)
+    }
+
+    /** A second voice, once shipped, says everything too (tools/audio/elevenlabs_generate.py --pack). */
+    @Test
+    fun `every voice pack in the assets is complete`() {
+        val missing = VoicePack.entries.filterNot { it.isDefault }
+            .filter { File("src/main/assets/audio/${it.dir}").isDirectory }
+            .flatMap { pack ->
+                SpeechCatalog.clips(TestContent.loader, pack.language)
+                    .filterNot { File("src/main/assets", SpeechCatalog.assetPath(it, pack)).isFile }.map { "${pack.dir}: $it" }
+            }
+        assertEquals("voice pack clips missing", emptyList<String>(), missing)
     }
 }

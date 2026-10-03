@@ -21,3 +21,4 @@ tools/audio/keys.env
 tools/audio/incoming/
 tools/audio/incoming-batches/
 tools/audio/incoming-review/
+tools/audio/incoming-*/

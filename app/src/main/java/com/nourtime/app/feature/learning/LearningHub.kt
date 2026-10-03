@@ -89,7 +89,7 @@ internal val HubBackground = Brush.verticalGradient(listOf(NourPalette.Cream, No
 fun LearningHub(controller: LearningHubController, gender: ChildGender, onClose: () -> Unit) {
     val screen by controller.screen.collectAsStateWithLifecycle()
     val state by controller.state.collectAsStateWithLifecycle()
-    val speaker = rememberSpeaker()
+    val speaker = rememberSpeaker(state?.voicePacks.orEmpty())
     CompositionLocalProvider(LocalSpeaker provides speaker, LocalImageSource provides controller::image) {
         Box(Modifier.fillMaxSize().background(HubBackground)) {
             AnimatedContent(

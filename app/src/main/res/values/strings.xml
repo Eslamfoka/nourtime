@@ -556,6 +556,10 @@
     <string name="learn_settings_try">Try the games</string>
     <string name="learn_settings_voice_hint">Games read words aloud with real human recordings (standard Arabic and English), and a synthetic voice for words not recorded yet. The phone\'s own voice is a last resort.</string>
     <string name="learn_settings_voice_credits">Voice credits</string>
+    <string name="learn_settings_voice_title">Voice</string>
+    <string name="learn_voice_ar_fusha">Standard Arabic (Fusha)</string>
+    <string name="learn_voice_ar_egyptian">Egyptian</string>
+    <string name="learn_voice_en_american">American English</string>
     <string name="learn_task_connect">Connect the dots in order</string>
     <string name="learn_tutorial_connect_m">Drag your finger from %1$s to %2$s</string>
     <string name="learn_tutorial_connect_f">Drag your finger from %1$s to %2$s</string>

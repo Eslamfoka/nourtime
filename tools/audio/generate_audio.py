@@ -131,7 +131,38 @@ def en_voiced(clip: str) -> str:
     return clip
 
 
+# Egyptian numbers, as an Egyptian child hears them (the "ar-eg" voice pack). Only the numbers change:
+# words and letters stay the written Fusha word, so what the child hears matches the screen.
+EG_UNITS = ["صفر", "واحد", "اتنين", "تلاتة", "أربعة", "خمسة", "ستة", "سبعة", "تمانية", "تسعة", "عشرة"]
+EG_TEENS = ["", "حداشر", "اتناشر", "تلاتاشر", "أربعتاشر", "خمستاشر", "ستاشر", "سبعتاشر", "تمنتاشر", "تسعتاشر"]
+EG_TENS = ["", "", "عشرين", "تلاتين", "أربعين", "خمسين", "ستين", "سبعين", "تمانين", "تسعين"]
+EG_HUNDREDS = ["", "مية", "ميتين", "تلتمية", "ربعمية", "خمسمية", "ستمية", "سبعمية", "تمنمية", "تسعمية"]
+
+
+def eg_number(n: int) -> str:
+    if n == 1000:
+        return "ألف"
+    if n >= 100 and n % 100 == 0:
+        return EG_HUNDREDS[n // 100]
+    if n <= 10:
+        return EG_UNITS[n]
+    if n < 20:
+        return EG_TEENS[n - 10]
+    tens, unit = divmod(n, 10)
+    return EG_TENS[tens] if unit == 0 else f"{EG_UNITS[unit]} و{EG_TENS[tens]}"
+
+
+def ar_eg_voiced(clip: str) -> str:
+    if clip.startswith("+") and clip[1:].isdigit():
+        return "و" + eg_number(int(clip[1:]))
+    if clip.isdigit():
+        return eg_number(int(clip))
+    return ar_voiced(clip)
+
+
 VOICED = {"ar": ar_voiced, "en": en_voiced}
+# Voice packs: the folder under assets/audio -> (language of the clip lists, what the voice says).
+PACK_VOICED = {"ar": ("ar", ar_voiced), "ar-eg": ("ar", ar_eg_voiced), "en": ("en", en_voiced)}
 
 # ---------------------------------------------------------------- recording
 
