@@ -233,22 +233,31 @@ class LockOverlay @Inject constructor(
         runCatching { audioManager.abandonAudioFocusRequest(focusRequest) }
     }
 
+    /** Held until it finishes: an unreferenced MediaPlayer can be garbage-collected mid-chime. */
+    private var chime: MediaPlayer? = null
+
     private fun playChime() {
         runCatching {
-            MediaPlayer.create(
+            chime?.let { old -> runCatching { old.release() } }
+            chime = MediaPlayer.create(
                 appContext,
                 R.raw.nour_chime,
                 AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION).build(),
                 audioManager.generateAudioSessionId(),
             )?.apply {
-                setOnCompletionListener { it.release() }
+                setOnCompletionListener(::releaseChime)
                 setOnErrorListener { mp, _, _ ->
-                    mp.release()
+                    releaseChime(mp)
                     true
                 }
                 start()
             }
         }
+    }
+
+    private fun releaseChime(player: MediaPlayer) {
+        runCatching { player.release() }
+        if (chime === player) chime = null
     }
 
     /** One overlay window with its own lifecycle, so Compose can run outside an Activity. */

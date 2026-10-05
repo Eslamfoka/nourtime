@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
@@ -54,7 +55,12 @@ class PinRecoveryControllerTest {
     private suspend fun answer(text: String) {
         recovery.answer.onAnswerChange(text)
         recovery.answer.submit()
-        realTime { recovery.answer.state.first { !it.checking && (it.wrong || recovery.stage.value != PinRecoveryStage.ANSWER) } }
+        // Watch both flows: "checking" ends just before the stage moves on, so waiting on the answer
+        // state alone could miss the stage change and time out.
+        realTime {
+            combine(recovery.answer.state, recovery.stage) { s, stage -> !s.checking && (s.wrong || stage != PinRecoveryStage.ANSWER) }
+                .first { it }
+        }
     }
 
     private fun type(pin: String) = pin.forEach(recovery::onPinDigit)
