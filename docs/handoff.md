@@ -3,22 +3,21 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (2026-10-04, written at the end of 2026-10-03):** everything is on `master`. Last
-> pushed commit: `e95d8a6c`; the review commits after it (`6aff3563`, `0a8d1a50`, `154bf965` and the
-> docs commit) are **local only, push them first** (`git push origin master`). The Honor runs
-> `dist/NourTime-2026-10-03-voice-packs-release.apk` (before the review fixes). 401 tests pass.
+> **Resume here (written 2026-10-05):** everything is on `master`, pushed up to `a7c0726e`; the
+> 2026-10-05 commits (`1e237834` Home break, `d310ecf7` Number Connect, and the docs commit) are
+> **local only, push them first** (`git push origin master`). 403 tests pass.
 >
-> Task 1 (comprehensive review) is **done**; results in [§18 Task 1](#task-1-first-comprehensive-review--done-2026-10-03).
-> Start tomorrow with:
+> **New APK for the Honor:** `dist/NourTime-2026-10-05-break-connect-release.apk` (all review fixes +
+> both items below; same debug key, so `adb install -r` keeps the data). Not installed on the Honor yet.
 >
-> 1. **Two small Home fixes left from the review:** during a learning break Home should say it's a
->    break and that the lock resumes (now it just says "Available"), and "End the lock" should work
->    while a lock waits under the break (it's disabled now). Ask the owner, then build a new APK for
->    the Honor with all the review fixes.
-> 2. Number Connect: shape preview at the top + completely mute number pronunciation (U5, U6).
-> 3. Parent app integration of the Learning Hub (ask before starting).
-> 4. Release preparation (target API 36, battery permission, …). 5. Real-device testing.
-> 6. Audio assets. 7. G9 (on hold).
+> Done 2026-10-05 ([§18](#18-roadmap-for-the-next-sessions-in-order)): the two Home items from the
+> review (learning break shown, End the lock works under it) and Task 2 (Number Connect preview +
+> no number voice), both checked on the API 31 emulator. Next:
+>
+> 1. Owner tests the new APK on the Honor.
+> 2. **Task 3: Parent app integration of the Learning Hub, ask the owner before starting.**
+> 3. Release preparation (target API 36, battery permission, …). 4. Real-device testing.
+> 5. Audio assets. 6. G9 (on hold).
 
 ## 1. Architecture at a glance
 
@@ -1198,12 +1197,22 @@ validation of remote settings, ask-for-time, Learning Hub controller and rewards
   pending underneath). Fixed from it: Math tiny levels asked the same question 3× in a row (now never
   twice running); minute and voice chips cut off at the screen edge (now wrap); the Home ring's
   "left of …" caption crossed the ring in Arabic (now wraps inside).
-- **Still open (small UX):** during a learning break Home just says "Available" (it should say it's a
-  break and the lock resumes), and "End the lock" is disabled although a lock is waiting underneath.
+- ✅ **Done 2026-10-05 (`1e237834`):** during a learning break Home says "Learning break" with the lock
+  time left (and the app in use), the ring says "left of the break", and "End the lock" works under
+  the break (the engine already refilled in that case). Checked on API 31: break shown, End the lock →
+  full budget, card back to "Available". Small leftover: the ring's fill is the break's minutes
+  against the daily budget (e.g. 1:20 of 1 h looks almost empty) because the break's original length
+  isn't stored; a `breakMs` field in `TimerState` would fix it if the owner minds.
+- Parent's phone: `RemoteStatus` doesn't carry the break either (its End the lock is enabled only while
+  LOCKED). Belongs to Task 3.
 - Not covered by hand this time: the other 10 games' screens (each was emulator-tested when built),
   onboarding, the parent's remote phone.
 
-### Task 2: Number Connect UX (owner, 2026-10-03)
+### Task 2: Number Connect UX (owner, 2026-10-03) ✅ done 2026-10-05 (`d310ecf7`)
+Built: a 76 dp card with the finished drawing (outline, filled when closed, game colour) next to the
+instruction; the `speaker.say` on reaching a dot is gone, so neither taps nor drags speak numbers.
+Checked on API 31 (level 1 triangle, Arabic): preview shows, no player started during the drags.
+
 - **Preview of the final shape:** a small outline of the finished drawing at the top of the screen so
   the child knows what they're building (`feature/learning/DrawingScreens.kt`, `ConnectScreen`).
 - **Completely mute number pronunciation in the Connect the Dots game** (owner's decision,

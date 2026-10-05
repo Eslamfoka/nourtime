@@ -367,15 +367,15 @@ screen option, pack, how a level starts). A new game is a `GameId`, one registry
 | U2 | **Single dashboard** instead of the bottom bar: quick actions (Lock now / End the lock), tiles for Apps, Schedule and Settings; Permissions inside Settings. Requested 2026-09-29. | High | ✅ Built 2026-09-29 (`1aa5f8e`); emulator-tested. Waiting for the Honor test |
 | U3 | **Forgot PIN** recovery with the security question, from the app and the Time's up screen. Requested 2026-09-29. | High | ✅ Built 2026-09-29 (`06e0163`); emulator-tested. Waiting for the Honor test |
 | U4 | **Language switcher** (Phone language / Arabic / English), all Android versions. Requested 2026-09-29. | High | ✅ Built 2026-09-29 (`e6a3f23`); tested on Android 12 and 15 emulators. Waiting for the Honor test |
-| U5 | **Number Connect: preview of the final shape.** A small outline of the finished drawing at the top of the screen, so the child knows what they're building. Requested by the owner 2026-10-03. | Medium | ⏳ Roadmap task 2 |
-| U6 | **Completely mute number pronunciation in the Connect the Dots game.** No number voice when the child taps a dot or drags the line; the numbers are only a visual guide for drawing the shape (`speaker.say` at `DrawingScreens.kt:147`). Owner's decision 2026-10-03. | Medium | ⏳ Roadmap task 2 |
+| U5 | **Number Connect: preview of the final shape.** A small outline of the finished drawing at the top of the screen, so the child knows what they're building. Requested by the owner 2026-10-03. | Medium | ✅ Built 2026-10-05 (`d310ecf7`), emulator-checked; waiting for the Honor test |
+| U6 | **Completely mute number pronunciation in the Connect the Dots game.** No number voice when the child taps a dot or drags the line; the numbers are only a visual guide for drawing the shape (`speaker.say` at `DrawingScreens.kt:147`). Owner's decision 2026-10-03. | Medium | ✅ Built 2026-10-05 (`d310ecf7`), emulator-checked; waiting for the Honor test |
 
 ## Roadmap (next sessions, in order)
 
 | # | Task | Status |
 |---|---|---|
-| 1 | **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs, glitches, or edge cases.** | ✅ Done 2026-10-03: core solid; fixed Play language split, replay/bank rewards (owner's decisions), repeated math questions, cut-off chips, Home ring caption. Left: 2 small Home items during a learning break (handoff resume block) |
-| 2 | Number Connect UX: U5 (shape preview) and U6 (completely mute number pronunciation) | ⏳ |
+| 1 | **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs, glitches, or edge cases.** | ✅ Done 2026-10-03: core solid; fixed Play language split, replay/bank rewards (owner's decisions), repeated math questions, cut-off chips, Home ring caption. The 2 Home items during a learning break done 2026-10-05 (`1e237834`) |
+| 2 | Number Connect UX: U5 (shape preview) and U6 (completely mute number pronunciation) | ✅ Done 2026-10-05; APK `dist/NourTime-2026-10-05-break-connect-release.apk` |
 | 3 | Parent app integration of the Learning Hub (settings, voice per language, minutes bank on the parent's phone) | ⏳ Ask the owner before starting |
 | 4 | Release preparation: rotate the ElevenLabs key, upload key, Play listing, screenshots, video, account-deletion page | ⏳ |
 | 5 | Real-device testing on Samsung and Xiaomi (+ open Honor re-tests) | ⏳ |
