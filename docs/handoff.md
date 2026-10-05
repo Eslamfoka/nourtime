@@ -3,20 +3,32 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (written 2026-10-05):** everything is on `master` and pushed (2026-10-05 commits:
-> `1e237834` Home break, `d310ecf7` Number Connect, docs). 403 tests pass.
+> **Resume here (written 2026-10-06, session closed by the owner):** everything is on `master` and
+> pushed up to `43856c8d` (plus this docs commit). 415 unit tests + 50 Firestore rules tests pass.
 >
-> **New APK for the Honor:** `dist/NourTime-2026-10-05-break-connect-release.apk` (all review fixes +
-> both items below; same debug key, so `adb install -r` keeps the data). Not installed on the Honor yet.
+> **Done 2026-10-05/06** ([§18](#18-roadmap-for-the-next-sessions-in-order)): Home learning break ·
+> Task 2 Number Connect (preview, no number voice) · **Task 3** Learning Hub on the parent's phone ·
+> **target API 36** (Android 16; Back on the lock overlay via `OnBackInvokedCallback`) · **AAB**
+> checked with bundletool · brief audit (ages 7–9 ring now shows the time left).
 >
-> Done 2026-10-05 ([§18](#18-roadmap-for-the-next-sessions-in-order)): the two Home items from the
-> review (learning break shown, End the lock works under it) and Task 2 (Number Connect preview +
-> no number voice), both checked on the API 31 emulator. Next:
+> **APKs for the Honor (none installed yet, newest has everything):**
+> `dist/NourTime-2026-10-05-api36-release.apk` (debug key, `adb install -r` keeps the data).
 >
-> 1. Owner tests the new APK on the Honor.
-> 2. **Task 3: Parent app integration of the Learning Hub, ask the owner before starting.**
-> 3. Release preparation (target API 36, battery permission, …). 4. Real-device testing.
-> 5. Audio assets. 6. G9 (on hold).
+> **Unfinished: Android 16 emulator test.** The API 36 system image is half downloaded:
+> `D:/dev-tools/x86_64-36_r07.zip` (~1146 of 1808 MB; slow link, drops; the earlier sdkmanager
+> download was killed for low memory). Resume with
+> `curl -L -C - -o D:/dev-tools/x86_64-36_r07.zip https://dl.google.com/android/repository/sys-img/google_apis/x86_64-36_r07.zip`
+> until it is 1895447397 bytes, unzip so `system.img` ends up in
+> `D:/dev-tools/android-sdk/system-images/android-36/google_apis/x86_64/`, create the AVD
+> (`avdmanager create avd -n nourdm-api36 -k "system-images;android-36;google_apis;x86_64" -d pixel_5`,
+> AVD home `D:/dev-tools/avd`), close other emulators and `gradlew --stop` first (memory). Then
+> onboard Nour Time and check: lock overlay over a limited app, **Back inside the lock screen's
+> games and PIN steps**, the 7–9 ring, Home and Settings layout.
+>
+> **Next, needs the owner:** Honor test of the new APK; two-phone test of Task 3; Task 4 release
+> items (ElevenLabs key rotation, upload key, Play listing/screenshots/video, account-deletion
+> contact email, battery-permission choice); Task 5 Samsung/Xiaomi; Task 6 audio texts; Task 7 G9.
+> Full list: [`status-2026-10-05.md`](status-2026-10-05.md).
 
 ## 1. Architecture at a glance
 
@@ -1254,7 +1266,9 @@ maximum, **voice per language**) and the child's minutes bank, synced like the o
   kept for older versions, which ignore the callback while the app doesn't opt in). Edge-to-edge was
   already on (`enableEdgeToEdge`, safe-drawing padding); no fixed-rate scheduling, ordered broadcast
   priorities or orientation locks in the app. Also fixed from the brief audit: the ages 7–9 ring now
-  shows the share of the lock (or bedtime) still to go (it was a fixed 300°).
+  shows the share of the lock (or bedtime) still to go (it was a fixed 300°). Checked so far: build,
+  tests, lint, APK reports `targetSdkVersion 36`, installs and runs on Android 12 (API 31).
+  ⏳ **Not yet run on an Android 16 emulator** (image download unfinished, see the resume block).
 - **`REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`** is restricted by Play policy: justify it in Play Console
   or open the battery settings list instead (no permission needed).
 - Upload key + Play App Signing, store listing, screenshots, feature graphic, Accessibility demo

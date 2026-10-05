@@ -1,8 +1,15 @@
 # Nour Time: progress against the brief
 
-Status as of 2026-10-03 (latest work: [`handoff.md` §17.6](handoff.md#176-voice-packs-2026-10-03); next: the
+Status as of 2026-10-06 (resume point: the "Resume here" block at the top of [`handoff.md`](handoff.md); next: the
 [roadmap](#roadmap-next-sessions-in-order) and [`handoff.md` §18](handoff.md#18-roadmap-for-the-next-sessions-in-order)). A copy of the brief with the status of every requirement, plus Phase 4, is in
 [`brief-with-status.md`](brief-with-status.md). Legend: ✅ done · 🟡 done with a noted difference · ⏳ pending.
+
+**2026-10-05/06:** ✅ Home learning break, Number Connect preview + no number voice, **Learning Hub
+on the parent's phone** (Task 3, two-phone test pending), **target API 36** (Android 16; Android 16
+emulator test pending, image download unfinished), **AAB** checked (12.3 MB download for a typical
+phone). Brief audit: everything in the brief is built except what needs the owner's input (3–6 voice
+message and lullaby recordings, Lottie artwork, push notifications on the paid Firebase plan); the
+one hidden gap (7–9 ring didn't count down) is fixed. 415 tests.
 
 **2026-10-03:** ✅ **Arabic and English voice integration finished.** Four voice packs, each one
 ElevenLabs voice for every clip: Arabic **Fusha** (Jessica, 470) and **Egyptian** (NOUR, 470, numbers
