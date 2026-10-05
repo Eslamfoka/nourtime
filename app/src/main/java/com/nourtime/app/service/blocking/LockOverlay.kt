@@ -11,6 +11,8 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.util.Log
 import android.view.KeyEvent
+import android.window.OnBackInvokedCallback
+import android.window.OnBackInvokedDispatcher
 import android.view.WindowManager
 import android.widget.FrameLayout
 import androidx.annotation.MainThread
@@ -268,22 +270,29 @@ class LockOverlay @Inject constructor(
         }
         private val wm = context.getSystemService(WindowManager::class.java)
 
+        /** Back inside the overlay: a step back in the games or the parent's PIN flow, never out of the lock. */
+        private fun onBack() {
+            val h = hub.value
+            if (h != null && parentFlow.stage.value == ParentStage.CHILD) {
+                if (!h.back()) closeHub()
+            } else {
+                parentFlow.back()
+            }
+        }
+
+        // Up to Android 15 the window gets the Back key. From Android 16 (target API 36, predictive
+        // back) the key isn't sent any more, so the callback below takes it; older versions ignore the
+        // callback while the app doesn't opt in, so Back is never handled twice.
         private val root = object : FrameLayout(context) {
             override fun dispatchKeyEvent(event: KeyEvent): Boolean {
                 if (event.keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (event.action == KeyEvent.ACTION_UP) {
-                        val h = hub.value
-                        if (h != null && parentFlow.stage.value == ParentStage.CHILD) {
-                            if (!h.back()) closeHub()
-                        } else {
-                            parentFlow.back()
-                        }
-                    }
+                    if (event.action == KeyEvent.ACTION_UP) onBack()
                     return true
                 }
                 return super.dispatchKeyEvent(event)
             }
         }
+        private var backCallback: Any? = null
 
         fun show(): Boolean {
             savedState.performRestore(null)
@@ -349,10 +358,21 @@ class LockOverlay @Inject constructor(
             }
             return runCatching { wm.addView(root, params) }
                 .onFailure { Log.w(TAG, "Couldn't show the lock overlay", it) }
+                .onSuccess { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) registerBack() }
                 .isSuccess
         }
 
+        @androidx.annotation.RequiresApi(Build.VERSION_CODES.TIRAMISU)
+        private fun registerBack() {
+            val callback = OnBackInvokedCallback { onBack() }
+            root.findOnBackInvokedDispatcher()?.registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_OVERLAY, callback)
+            backCallback = callback
+        }
+
         fun dismiss() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                (backCallback as? OnBackInvokedCallback)?.let { cb -> runCatching { root.findOnBackInvokedDispatcher()?.unregisterOnBackInvokedCallback(cb) } }
+            }
             runCatching { wm.removeViewImmediate(root) }
             lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
             viewModelStore.clear()

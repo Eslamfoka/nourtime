@@ -12,12 +12,12 @@ plugins {
 
 android {
     namespace = "com.nourtime.app"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.nourtime.app"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "0.1.0"
         // The app speaks Arabic and English only: leave the libraries' other ~80 translations out.

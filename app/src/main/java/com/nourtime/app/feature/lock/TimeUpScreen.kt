@@ -146,7 +146,7 @@ private fun MiddleLayout(state: LockScreenState, style: TemplateStyle, text: Col
     )
     state.countdownMs?.let { ms ->
         Spacer(Modifier.height(16.dp))
-        CountdownRing(ms, text)
+        CountdownRing(ms, state.countdownTotalMs, text)
     }
     if (style.activities.isNotEmpty()) {
         Spacer(Modifier.height(20.dp))
@@ -192,12 +192,14 @@ private fun OlderLayout(state: LockScreenState, style: TemplateStyle, text: Colo
 }
 
 @Composable
-private fun CountdownRing(ms: Long, text: Color) {
+private fun CountdownRing(ms: Long, totalMs: Long?, text: Color) {
+    // The gold part is what's left of the lock, so the ring empties as the refill comes closer.
+    val sweep = 360f * countdownFraction(ms, totalMs)
     Box(contentAlignment = Alignment.Center) {
         Canvas(Modifier.size(132.dp)) {
             val stroke = 10.dp.toPx()
             drawArc(text.copy(alpha = 0.15f), 0f, 360f, false, Offset(stroke / 2, stroke / 2), Size(size.width - stroke, size.height - stroke), style = Stroke(stroke))
-            drawArc(NourPalette.Gold, -90f, 300f, false, Offset(stroke / 2, stroke / 2), Size(size.width - stroke, size.height - stroke), style = Stroke(stroke, cap = StrokeCap.Round))
+            if (sweep > 0f) drawArc(NourPalette.Gold, -90f, sweep, false, Offset(stroke / 2, stroke / 2), Size(size.width - stroke, size.height - stroke), style = Stroke(stroke, cap = StrokeCap.Round))
         }
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(stringResource(R.string.tu_back_in_label), style = MaterialTheme.typography.labelSmall, color = text.copy(alpha = 0.8f))
@@ -383,3 +385,7 @@ fun ParentPanelFrame(onBack: () -> Unit, content: @Composable () -> Unit) {
         }
     }
 }
+
+/** Share of the countdown still to go (0..1); a full ring when the total isn't known. */
+internal fun countdownFraction(ms: Long, totalMs: Long?): Float =
+    if (totalMs == null || totalMs <= 0) 1f else (ms.toFloat() / totalMs).coerceIn(0f, 1f)

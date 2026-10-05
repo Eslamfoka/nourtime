@@ -44,6 +44,7 @@ fun TimeUpPreviewDialog(ageGroup: AgeGroup, gender: ChildGender, onDismiss: () -
                     ageGroup = age,
                     gender = gender,
                     countdownMs = if (kind == TemplateKind.PARENTS_ONLY) null else 2 * 60 * 60_000L + 15 * 60_000L,
+                    countdownTotalMs = 6 * 60 * 60_000L,
                     soundEnabled = false,
                 ),
                 onOk = onDismiss,

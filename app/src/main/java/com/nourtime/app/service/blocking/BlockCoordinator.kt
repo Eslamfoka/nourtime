@@ -131,6 +131,12 @@ class BlockCoordinator @Inject constructor(
                 BlockReason.BEDTIME -> activeBedtime?.let { untilMinute(now, it.endMinute) }
                 else -> null
             },
+            countdownTotalMs = when (decision.reason) {
+                // The lock period's full length: what has run plus what is left.
+                BlockReason.TIME_UP -> status?.let { it.lockRemainingMs + it.lockElapsedMs }
+                BlockReason.BEDTIME -> activeBedtime?.let { bedtimeLengthMs(it.startMinute, it.endMinute) }
+                else -> null
+            },
             soundEnabled = s.soundEnabled,
             allowedApps = if (decision.reason == BlockReason.TIME_UP || decision.reason == BlockReason.BEDTIME) {
                 allowedApps(s.allowedDuringLock)
@@ -187,6 +193,13 @@ class BlockCoordinator @Inject constructor(
     }
 
     private fun ZonedDateTime.minuteOfDay() = hour * 60 + minute
+
+    /** Bedtime from [start] to [end] (minutes of the day; may cross midnight). */
+    private fun bedtimeLengthMs(start: Int, end: Int): Long {
+        val day = 24 * 60
+        val minutes = ((end - start + day) % day).let { if (it == 0) day else it }
+        return minutes * 60_000L
+    }
 
     private fun untilMinute(now: ZonedDateTime, minute: Int): Long {
         var end = now.toLocalDate().atTime(minute / 60, minute % 60).atZone(now.zone)

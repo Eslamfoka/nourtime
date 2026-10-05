@@ -35,6 +35,8 @@ data class LockScreenState(
     val gender: ChildGender,
     /** Until the refill (time up) or the end of bedtime; null when there's nothing to count down. */
     val countdownMs: Long?,
+    /** The whole lock period or bedtime [countdownMs] counts down from, for the ring; null = unknown. */
+    val countdownTotalMs: Long? = null,
     val soundEnabled: Boolean,
     /** Apps the parent allows during lock periods and bedtime, offered as buttons on the screen. */
     val allowedApps: List<AllowedApp> = emptyList(),
