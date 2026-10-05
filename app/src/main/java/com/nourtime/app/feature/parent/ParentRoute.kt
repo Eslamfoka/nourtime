@@ -286,6 +286,7 @@ private fun DeviceCard(device: ChildDevice, now: Long, onClick: () -> Unit) {
 internal fun DeviceSummary.degraded(): Boolean = when (this) {
     is DeviceSummary.Available -> degraded
     is DeviceSummary.Locked -> degraded
+    is DeviceSummary.Break -> degraded
     else -> false
 }
 
@@ -296,6 +297,11 @@ internal fun summaryText(summary: DeviceSummary): String {
         DeviceSummary.Unknown -> stringResource(R.string.parent_summary_unknown)
         is DeviceSummary.Available -> stringResource(R.string.parent_summary_available, durationText(minutesRoundedUp(summary.remainingMs)))
         is DeviceSummary.Locked -> stringResource(R.string.parent_summary_locked, durationText(minutesRoundedUp(summary.lockRemainingMs)))
+        is DeviceSummary.Break -> stringResource(
+            R.string.parent_summary_break,
+            durationText(minutesRoundedUp(summary.remainingMs)),
+            durationText(minutesRoundedUp(summary.lockPendingMs)),
+        )
         is DeviceSummary.NotSeen -> stringResource(
             R.string.parent_summary_not_seen,
             DateUtils.formatDateTime(context, summary.sinceMs, DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_ABBREV_MONTH),

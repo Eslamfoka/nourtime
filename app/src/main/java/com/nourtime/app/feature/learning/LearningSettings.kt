@@ -91,6 +91,41 @@ fun LearningSettingsCard(ageGroup: AgeGroup?, gender: ChildGender?, viewModel: L
     var previewing by remember { mutableStateOf(false) }
     var showCredits by remember { mutableStateOf(false) }
     NourCard {
+        LearningSettingsEditor(
+            settings = s,
+            voices = state?.voicePacks.orEmpty(),
+            earnedToday = today?.let { day -> state?.earnedOn(day) ?: 0 },
+            bankMinutes = null,
+            onEnabled = viewModel::setEnabled,
+            onMinutesPerLevel = viewModel::setMinutesPerLevel,
+            onDailyMax = viewModel::setDailyMax,
+            onVoice = viewModel::setVoicePack,
+        )
+        if (s.enabled) NourDialogButton(stringResource(R.string.learn_settings_voice_credits), { showCredits = true })
+        NourSecondaryButton(stringResource(R.string.learn_settings_try), { previewing = true })
+    }
+    if (showCredits) VoiceCreditsDialog { showCredits = false }
+    if (previewing) LearningPreviewDialog(viewModel.repository, viewModel.content, ageGroup, gender ?: ChildGender.GIRL) { previewing = false }
+}
+
+/**
+ * The hub's on/off, minutes per level, daily maximum and voices, on this phone's Settings and on
+ * the parent's phone for a child's phone (Phase 2). [earnedToday] and [bankMinutes] are shown when
+ * known.
+ */
+@Composable
+fun LearningSettingsEditor(
+    settings: LearningSettings,
+    voices: Map<LearnLanguage, VoicePack>,
+    earnedToday: Int?,
+    bankMinutes: Int?,
+    onEnabled: (Boolean) -> Unit,
+    onMinutesPerLevel: (Int) -> Unit,
+    onDailyMax: (Int) -> Unit,
+    onVoice: (VoicePack) -> Unit,
+) {
+    val s = settings
+    run {
         Row {
             Column(Modifier.weight(1f)) {
                 Text(stringResource(R.string.learn_settings_toggle_title), style = MaterialTheme.typography.titleMedium)
@@ -100,31 +135,23 @@ fun LearningSettingsCard(ageGroup: AgeGroup?, gender: ChildGender?, viewModel: L
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            NourSwitch(s.enabled, viewModel::setEnabled)
+            NourSwitch(s.enabled, onEnabled)
         }
         if (s.enabled) {
             Text(stringResource(R.string.learn_settings_per_level), style = MaterialTheme.typography.titleSmall)
-            MinuteChips(LearningSettings.MINUTES_PER_LEVEL_OPTIONS, s.minutesPerLevel, viewModel::setMinutesPerLevel)
+            MinuteChips(LearningSettings.MINUTES_PER_LEVEL_OPTIONS, s.minutesPerLevel, onMinutesPerLevel)
             Text(stringResource(R.string.learn_settings_daily_max), style = MaterialTheme.typography.titleSmall)
-            MinuteChips(LearningSettings.DAILY_MAX_OPTIONS, s.dailyMaxMinutes, viewModel::setDailyMax)
-            today?.let { day ->
-                Text(
-                    stringResource(R.string.learn_settings_earned_today, durationText(state?.earnedOn(day) ?: 0)),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
+            MinuteChips(LearningSettings.DAILY_MAX_OPTIONS, s.dailyMaxMinutes, onDailyMax)
+            earnedToday?.let { Text(stringResource(R.string.learn_settings_earned_today, durationText(it)), style = MaterialTheme.typography.bodyMedium) }
+            bankMinutes?.let { Text(stringResource(R.string.learn_settings_bank, durationText(it)), style = MaterialTheme.typography.bodyMedium) }
             Text(
                 stringResource(R.string.learn_settings_voice_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            VoicePackChoice(state?.voicePacks.orEmpty(), viewModel::setVoicePack)
-            NourDialogButton(stringResource(R.string.learn_settings_voice_credits), { showCredits = true })
+            VoicePackChoice(voices, onVoice)
         }
-        NourSecondaryButton(stringResource(R.string.learn_settings_try), { previewing = true })
     }
-    if (showCredits) VoiceCreditsDialog { showCredits = false }
-    if (previewing) LearningPreviewDialog(viewModel.repository, viewModel.content, ageGroup, gender ?: ChildGender.GIRL) { previewing = false }
 }
 
 @OptIn(ExperimentalLayoutApi::class)

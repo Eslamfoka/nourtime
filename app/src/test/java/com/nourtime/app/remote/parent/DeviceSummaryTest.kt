@@ -29,6 +29,12 @@ class DeviceSummaryTest {
     }
 
     @Test
+    fun `a learning break shows its minutes and the waiting lock counting down`() {
+        val onBreak = RemoteStatus(TimerPhase.AVAILABLE, 5 * min, 60 * min, 0, false, at, lockPendingMs = 90 * min)
+        assertEquals(DeviceSummary.Break(5 * min, 80 * min, degraded = false), DeviceSummary.of(onBreak, nowMs = at + 10 * min))
+    }
+
+    @Test
     fun `a lock that should have ended shows zero until the phone reports`() {
         assertEquals(DeviceSummary.Locked(0, degraded = false), DeviceSummary.of(status(TimerPhase.LOCKED, lockLeft = 5 * min), nowMs = at + 10 * min))
     }

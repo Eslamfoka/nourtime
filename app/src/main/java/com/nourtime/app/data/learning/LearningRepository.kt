@@ -64,15 +64,23 @@ class LearningRepository @Inject constructor(
 
     suspend fun setEnabled(on: Boolean) = store.edit { it[ENABLED] = on }
 
-    suspend fun setMinutesPerLevel(minutes: Int) = store.edit { it[MINUTES_PER_LEVEL] = minutes.coerceIn(1, 60) }
+    suspend fun setMinutesPerLevel(minutes: Int) = store.edit { it[MINUTES_PER_LEVEL] = minutes.coerceIn(LearningSettings.MINUTES_PER_LEVEL_RANGE) }
 
-    suspend fun setDailyMax(minutes: Int) = store.edit { it[DAILY_MAX] = minutes.coerceIn(0, 240) }
+    suspend fun setDailyMax(minutes: Int) = store.edit { it[DAILY_MAX] = minutes.coerceIn(LearningSettings.DAILY_MAX_RANGE) }
 
     suspend fun setNumerals(style: NumeralStyle) = store.edit { it[NUMERALS] = style.name }
 
     suspend fun setLettersLanguage(language: LearnLanguage) = store.edit { it[LETTERS_LANGUAGE] = language.name }
 
     suspend fun setVoicePack(pack: VoicePack) = store.edit { it[voiceKey(pack.language)] = pack.name }
+
+    /** The parent's phone changed the hub's settings (Phase 2 sync): one write for all of them. */
+    suspend fun replaceSettings(settings: LearningSettings, voices: Map<LearnLanguage, VoicePack>) = store.edit { prefs ->
+        prefs[ENABLED] = settings.enabled
+        prefs[MINUTES_PER_LEVEL] = settings.minutesPerLevel.coerceIn(LearningSettings.MINUTES_PER_LEVEL_RANGE)
+        prefs[DAILY_MAX] = settings.dailyMaxMinutes.coerceIn(LearningSettings.DAILY_MAX_RANGE)
+        voices.forEach { (lang, pack) -> if (pack.language == lang) prefs[voiceKey(lang)] = pack.name }
+    }
 
     suspend fun markTutorialSeen(game: GameId) = store.edit { it[TUTORIALS] = it[TUTORIALS].orEmpty() + game.name }
 

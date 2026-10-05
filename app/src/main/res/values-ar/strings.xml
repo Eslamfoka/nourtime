@@ -381,6 +381,7 @@
     <string name="parent_summary_unknown">بانتظار أول تحديث</string>
     <string name="parent_summary_available">متبقٍ %1$s</string>
     <string name="parent_summary_locked">مقفل · يعود بعد %1$s</string>
+    <string name="parent_summary_break">استراحة التعلم · متبقٍ %1$s، ثم يعود القفل (%2$s)</string>
     <string name="parent_summary_not_seen">لم يظهر منذ %1$s</string>
     <string name="parent_protection_warning">الحماية تحتاج إلى انتباه على هذا الهاتف</string>
     <string name="add_child_body">على هاتف طفلك: وقت نور ← الإعدادات ← هاتف ولي الأمر ← ربط هاتف ولي الأمر. ثم امسح رمز QR الظاهر.</string>
@@ -571,6 +572,8 @@
     <string name="learn_settings_daily_max">أقصى دقائق في اليوم</string>
     <string name="learn_settings_daily_none">لا شيء، تعلّم فقط</string>
     <string name="learn_settings_earned_today">المكتسب اليوم: %1$s</string>
+    <string name="learn_settings_bank">في صندوق الدقائق (لم تُستخدم بعد): %1$s</string>
+    <string name="device_learning">ركن التعلّم</string>
     <string name="learn_settings_try">جرّب الألعاب</string>
     <string name="learn_settings_voice_hint">تقرأ الألعاب الكلمات بأصوات مسجَّلة. اختر الصوت لكل لغة أدناه، وعند الضغط على أحدها تسمع مثالًا. صوت الهاتف هو الحل الأخير.</string>
     <string name="learn_settings_voice_credits">حقوق التسجيلات الصوتية</string>

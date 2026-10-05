@@ -57,6 +57,7 @@ import com.nourtime.app.data.usage.WeekReport
 import com.nourtime.app.feature.home.BedtimeCard
 import com.nourtime.app.feature.home.WeekCard
 import com.nourtime.app.feature.home.WeekendSection
+import com.nourtime.app.feature.learning.LearningSettingsEditor
 import com.nourtime.app.feature.home.DailyResetCard
 import com.nourtime.app.feature.home.LockTypeEditor
 import com.nourtime.app.feature.setup.AppList
@@ -241,6 +242,20 @@ fun ChildDeviceScreen(
             WeekendSection(settings.weekend) { v -> viewModel.edit { it.copy(weekend = v) } }
             AppListButton(stringResource(R.string.device_limited_apps), settings.limitedApps.size) { picking = AppListKind.LIMITED }
             AppListButton(stringResource(R.string.allowed_section), settings.allowedDuringLock.size) { picking = AppListKind.ALLOWED }
+            Text(stringResource(R.string.device_learning), style = MaterialTheme.typography.titleLarge)
+            NourCard {
+                // "Today" by the parent's date, like the usage above.
+                LearningSettingsEditor(
+                    settings = settings.learning,
+                    voices = settings.voices,
+                    earnedToday = d.learning?.earnedOn(LocalDate.now()),
+                    bankMinutes = d.learning?.bankMinutes,
+                    onEnabled = { v -> viewModel.edit { it.copy(learning = it.learning.copy(enabled = v)) } },
+                    onMinutesPerLevel = { v -> viewModel.edit { it.copy(learning = it.learning.copy(minutesPerLevel = v)) } },
+                    onDailyMax = { v -> viewModel.edit { it.copy(learning = it.learning.copy(dailyMaxMinutes = v)) } },
+                    onVoice = { pack -> viewModel.edit { it.copy(voices = it.voices + (pack.language to pack)) } },
+                )
+            }
         }
         NourDangerButton(stringResource(R.string.device_remove), { removing = true })
     }
@@ -290,6 +305,11 @@ private fun ActionsCard(summary: DeviceSummary, commands: List<SentCommand>, onC
         }
         when (summary) {
             is DeviceSummary.Locked -> NourPrimaryButton(stringResource(R.string.device_end_lock), { onCommand(TimerCommand.EndLock) })
+            // A lock waits under the break: end it, or stop the break with a fresh lock.
+            is DeviceSummary.Break -> {
+                NourPrimaryButton(stringResource(R.string.device_end_lock), { onCommand(TimerCommand.EndLock) })
+                NourSecondaryButton(stringResource(R.string.device_lock_now), { onCommand(TimerCommand.LockNow) })
+            }
             else -> NourPrimaryButton(stringResource(R.string.device_lock_now), { onCommand(TimerCommand.LockNow) })
         }
         val latest = commands.firstOrNull()

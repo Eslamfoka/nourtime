@@ -17,6 +17,7 @@ import com.nourtime.app.remote.RemotePaths
 import com.nourtime.app.remote.child.CommandQueue
 import com.nourtime.app.remote.child.toRequest
 import com.nourtime.app.remote.model.AskPolicy
+import com.nourtime.app.remote.model.RemoteLearning
 import com.nourtime.app.remote.model.RemoteSettings
 import com.nourtime.app.remote.model.RemoteStatus
 import com.nourtime.app.remote.model.TimeRequest
@@ -43,6 +44,8 @@ data class ChildDevice(
     val settingsRev: Long,
     /** When the child last asked for more time (Phase 4c); cleared by the child's phone once answered. */
     val askingAtMs: Long? = null,
+    /** The Learning Hub's minutes box and today's earned minutes; null until the child's phone uploads them. */
+    val learning: RemoteLearning? = null,
 )
 
 /**
@@ -302,6 +305,8 @@ class ParentDevices @Inject constructor(
         @Suppress("UNCHECKED_CAST")
         val statusMap = doc.get("status") as? Map<String, Any?>
         val statusTime = (statusMap?.get("updatedAt") as? Timestamp)?.toDate()?.time
+        @Suppress("UNCHECKED_CAST")
+        val learningMap = doc.get("learning") as? Map<String, Any?>
         return ChildDevice(
             id = doc.id,
             name = doc.getString("name").orEmpty(),
@@ -309,6 +314,7 @@ class ParentDevices @Inject constructor(
             settings = RemoteSettings.fromMap(settingsMap),
             settingsRev = (settingsMap?.get("rev") as? Number)?.toLong() ?: 0,
             askingAtMs = doc.getTimestamp("askingAt")?.toDate()?.time,
+            learning = RemoteLearning.fromMap(learningMap),
         )
     }
 

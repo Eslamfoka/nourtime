@@ -162,6 +162,13 @@ describe("devices", () => {
     await assertSucceeds(updateDoc(doc(child(), "devices", DEVICE), { ownerUid: null, ownerEmail: null }));
   });
 
+  it("the child writes its Learning Hub minutes; the parent only reads them", async () => {
+    await seed((db) => setDoc(doc(db, "devices", DEVICE), pairedDevice));
+    await assertSucceeds(updateDoc(doc(child(), "devices", DEVICE), { learning: { bankMinutes: 10, earnedDay: "2026-10-05", earnedMinutes: 15 } }));
+    await assertFails(updateDoc(doc(parent(), "devices", DEVICE), { learning: { bankMinutes: 999 } }));
+    await assertSucceeds(getDoc(doc(parent(), "devices", DEVICE)));
+  });
+
   it("only the child phone deletes its device (account deletion)", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), pairedDevice));
     await assertFails(deleteDoc(doc(parent(), "devices", DEVICE)));

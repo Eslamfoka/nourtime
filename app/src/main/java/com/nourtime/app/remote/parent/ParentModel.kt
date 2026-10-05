@@ -54,6 +54,8 @@ sealed interface DeviceSummary {
     data object Unknown : DeviceSummary
     data class Available(val remainingMs: Long, val degraded: Boolean) : DeviceSummary
     data class Locked(val lockRemainingMs: Long, val degraded: Boolean) : DeviceSummary
+    /** Apps open on minutes earned in the Learning Hub; the lock resumes after them. */
+    data class Break(val remainingMs: Long, val lockPendingMs: Long, val degraded: Boolean) : DeviceSummary
     data class NotSeen(val sinceMs: Long) : DeviceSummary
 
     companion object {
@@ -70,7 +72,12 @@ sealed interface DeviceSummary {
             if (updatedAt != null && age > STALE_AFTER_MS) return NotSeen(updatedAt)
             return when (status.phase) {
                 // The budget only runs while a limited app is open, so it isn't extrapolated.
-                TimerPhase.AVAILABLE -> Available(status.remainingMs, status.protectionDegraded)
+                TimerPhase.AVAILABLE -> if (status.lockPendingMs > 0) {
+                    // The waiting lock counts down in real time, like a running one.
+                    Break(status.remainingMs, (status.lockPendingMs - age).coerceAtLeast(0), status.protectionDegraded)
+                } else {
+                    Available(status.remainingMs, status.protectionDegraded)
+                }
                 // The lock counts down in real time.
                 TimerPhase.LOCKED -> Locked((status.lockRemainingMs - age).coerceAtLeast(0), status.protectionDegraded)
             }

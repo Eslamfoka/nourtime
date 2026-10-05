@@ -1,5 +1,8 @@
 package com.nourtime.app.remote.model
 
+import com.nourtime.app.core.learning.LearnLanguage
+import com.nourtime.app.core.learning.LearningSettings
+import com.nourtime.app.core.learning.VoicePack
 import com.nourtime.app.data.settings.Bedtime
 import com.nourtime.app.data.settings.LockType
 import com.nourtime.app.data.settings.ParentSettings
@@ -9,8 +12,9 @@ import java.time.DayOfWeek
 import java.util.Locale
 
 /**
- * The settings both phones can edit, as stored in `devices/{id}.settings` (Phase 2). The child's
- * gender, age group, sound and settings protection stay on the child's phone only.
+ * The settings both phones can edit, as stored in `devices/{id}.settings` (Phase 2), including the
+ * Learning Hub's limits and the voice per language. The child's gender, age group, sound and
+ * settings protection stay on the child's phone only.
  */
 data class RemoteSettings(
     val budgetMinutes: Int,
@@ -21,6 +25,9 @@ data class RemoteSettings(
     val bedtime: Bedtime,
     val dailyResetMinute: Int?,
     val weekend: WeekendRules = WeekendRules(),
+    val learning: LearningSettings = LearningSettings(),
+    /** Every language's voice (defaults filled in), so both phones compare equal. */
+    val voices: Map<LearnLanguage, VoicePack> = completeVoices(emptyMap()),
 ) {
     fun toMap(rev: Long, by: String): Map<String, Any?> = mapOf(
         "budgetMinutes" to budgetMinutes,
@@ -40,6 +47,12 @@ data class RemoteSettings(
             "bedtimeEnabled" to weekend.bedtime.enabled,
             "bedtimeStart" to weekend.bedtime.startMinute,
             "bedtimeEnd" to weekend.bedtime.endMinute,
+        ),
+        "learning" to mapOf(
+            "enabled" to learning.enabled,
+            "minutesPerLevel" to learning.minutesPerLevel,
+            "dailyMaxMinutes" to learning.dailyMaxMinutes,
+            "voices" to voices.entries.associate { (lang, pack) -> lang.tag to pack.name },
         ),
         "rev" to rev,
         "by" to by,
@@ -63,6 +76,10 @@ data class RemoteSettings(
         weekend.bedtime.enabled.toString(),
         weekend.bedtime.startMinute.toString(),
         weekend.bedtime.endMinute.toString(),
+        learning.enabled.toString(),
+        learning.minutesPerLevel.toString(),
+        learning.dailyMaxMinutes.toString(),
+        voices.entries.sortedBy { it.key.name }.joinToString(LIST_SEP) { (lang, pack) -> "${lang.tag}=${pack.name}" },
     ).joinToString(FIELD_SEP)
 
     /** Limits or frees an app; limiting takes it off the allowed list (never both). */
@@ -88,14 +105,16 @@ data class RemoteSettings(
     )
 
     companion object {
-        private const val FIELD_SEP = ""
+        internal const val FIELD_SEP = ""
         private const val LIST_SEP = ","
         /** Before Phase 4a the snapshot had no weekend fields; it still decodes (weekend off). */
         private const val FIELDS_BEFORE_WEEKEND = 9
-        private const val FIELDS = 16
+        /** Before the Learning Hub was synced (2026-10-05): its settings read as the defaults. */
+        private const val FIELDS_BEFORE_LEARNING = 16
+        private const val FIELDS = 20
 
         fun decode(text: String?): RemoteSettings? {
-            val f = text?.split(FIELD_SEP)?.takeIf { it.size == FIELDS || it.size == FIELDS_BEFORE_WEEKEND } ?: return null
+            val f = text?.split(FIELD_SEP)?.takeIf { it.size in setOf(FIELDS, FIELDS_BEFORE_LEARNING, FIELDS_BEFORE_WEEKEND) } ?: return null
             fun set(s: String) = if (s.isEmpty()) emptySet() else s.split(LIST_SEP).toSet()
             return runCatching {
                 RemoteSettings(
@@ -117,6 +136,14 @@ data class RemoteSettings(
                             bedtime = Bedtime(f[13].toBooleanStrict(), f[14].toInt(), f[15].toInt()),
                         )
                     },
+                    learning = if (f.size == FIELDS) {
+                        learningOf(f[16].toBooleanStrict(), f[17].toInt(), f[18].toInt())
+                    } else {
+                        LearningSettings()
+                    },
+                    voices = completeVoices(
+                        if (f.size == FIELDS) voicesOf(set(f[19]).associate { it.substringBefore('=') to it.substringAfter('=') }) else emptyMap(),
+                    ),
                 )
             }.getOrNull()
         }
@@ -125,7 +152,11 @@ data class RemoteSettings(
         const val BY_PARENT = "parent"
         private const val MINUTES_PER_DAY = 24 * 60
 
-        fun of(s: ParentSettings) = RemoteSettings(
+        fun of(
+            s: ParentSettings,
+            learning: LearningSettings = LearningSettings(),
+            voices: Map<LearnLanguage, VoicePack> = emptyMap(),
+        ) = RemoteSettings(
             budgetMinutes = s.budgetMinutes,
             lockPeriodHours = s.lockPeriodHours,
             lockType = s.lockType,
@@ -134,7 +165,37 @@ data class RemoteSettings(
             bedtime = s.bedtime,
             dailyResetMinute = s.dailyResetMinute,
             weekend = s.weekend,
+            learning = learningOf(learning.enabled, learning.minutesPerLevel, learning.dailyMaxMinutes),
+            voices = completeVoices(voices),
         )
+
+        fun completeVoices(chosen: Map<LearnLanguage, VoicePack>): Map<LearnLanguage, VoicePack> =
+            LearnLanguage.entries.associateWith { VoicePack.chosen(chosen, it) }
+
+        /** Clamped like the local editors. */
+        private fun learningOf(enabled: Boolean, perLevel: Int, dailyMax: Int) = LearningSettings(
+            enabled = enabled,
+            minutesPerLevel = perLevel.coerceIn(LearningSettings.MINUTES_PER_LEVEL_RANGE),
+            dailyMaxMinutes = dailyMax.coerceIn(LearningSettings.DAILY_MAX_RANGE),
+        )
+
+        /** Language tag to pack name; unknown names, or a pack of another language, are dropped. */
+        private fun voicesOf(m: Map<*, *>): Map<LearnLanguage, VoicePack> = m.entries.mapNotNull { (tag, name) ->
+            val lang = LearnLanguage.entries.firstOrNull { it.tag == tag } ?: return@mapNotNull null
+            VoicePack.entries.firstOrNull { it.name == name && it.language == lang }?.let { lang to it }
+        }.toMap()
+
+        /** Missing (written before the Learning Hub was synced) means the defaults. */
+        private fun learningFrom(l: Map<*, *>?): LearningSettings {
+            @Suppress("UNCHECKED_CAST")
+            val m = (l as? Map<String, Any?>).orEmpty()
+            val defaults = LearningSettings()
+            return learningOf(
+                enabled = m["enabled"] as? Boolean ?: defaults.enabled,
+                perLevel = m.int("minutesPerLevel") ?: defaults.minutesPerLevel,
+                dailyMax = m.int("dailyMaxMinutes") ?: defaults.dailyMaxMinutes,
+            )
+        }
 
         /** Parses and clamps a Firestore map; null when a required value is missing or unknown. */
         fun fromMap(m: Map<String, Any?>?): RemoteSettings? {
@@ -160,6 +221,8 @@ data class RemoteSettings(
                 bedtime = bedtime,
                 dailyResetMinute = m.int("dailyResetMinute")?.takeIf { it in 0 until MINUTES_PER_DAY },
                 weekend = weekendFrom(m["weekend"] as? Map<*, *>, clampedBudget, clampedLock, bedtime),
+                learning = learningFrom(m["learning"] as? Map<*, *>),
+                voices = completeVoices(voicesOf(((m["learning"] as? Map<*, *>)?.get("voices") as? Map<*, *>).orEmpty())),
             )
         }
 

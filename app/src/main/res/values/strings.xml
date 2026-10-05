@@ -371,6 +371,7 @@
     <string name="parent_summary_unknown">Waiting for the first update</string>
     <string name="parent_summary_available">%1$s left</string>
     <string name="parent_summary_locked">Locked · back in %1$s</string>
+    <string name="parent_summary_break">Learning break · %1$s left, then the lock resumes (%2$s)</string>
     <string name="parent_summary_not_seen">Not seen since %1$s</string>
     <string name="parent_protection_warning">Protection needs attention on this phone</string>
     <string name="add_child_body">On your child\'s phone: Nour Time → Settings → Parent\'s phone → Connect a parent\'s phone. Then scan the QR code it shows.</string>
@@ -561,6 +562,8 @@
     <string name="learn_settings_daily_max">Most minutes a day</string>
     <string name="learn_settings_daily_none">None, just learning</string>
     <string name="learn_settings_earned_today">Earned today: %1$s</string>
+    <string name="learn_settings_bank">In the minutes box (not used yet): %1$s</string>
+    <string name="device_learning">Learning Hub</string>
     <string name="learn_settings_try">Try the games</string>
     <string name="learn_settings_voice_hint">Games read words aloud with recorded voices. Choose the voice for each language below; tapping one plays a sample. The phone\'s own voice is a last resort.</string>
     <string name="learn_settings_voice_credits">Voice credits</string>

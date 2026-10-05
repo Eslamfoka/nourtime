@@ -13,6 +13,8 @@ data class LearningSettings(
         const val DEFAULT_DAILY_MAX = 15
         val MINUTES_PER_LEVEL_OPTIONS = listOf(2, 5, 10)
         val DAILY_MAX_OPTIONS = listOf(0, 10, 15, 30, 60)
+        val MINUTES_PER_LEVEL_RANGE = 1..60
+        val DAILY_MAX_RANGE = 0..240
     }
 }
 

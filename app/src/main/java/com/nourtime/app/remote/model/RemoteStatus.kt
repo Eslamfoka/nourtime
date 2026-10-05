@@ -12,6 +12,8 @@ data class RemoteStatus(
     val protectionDegraded: Boolean,
     /** When the child's phone wrote it (server time), or null while the write is pending. */
     val updatedAtMs: Long?,
+    /** On a learning break: the lock time still waiting, which counts down in real time (0 = no break). */
+    val lockPendingMs: Long = 0,
 ) {
     companion object {
         fun fromMap(m: Map<String, Any?>?, updatedAtMs: Long?): RemoteStatus? {
@@ -23,6 +25,7 @@ data class RemoteStatus(
                 budgetMs = (m["budgetMs"] as? Number)?.toLong() ?: 0,
                 lockRemainingMs = (m["lockRemainingMs"] as? Number)?.toLong() ?: 0,
                 protectionDegraded = m["protectionDegraded"] as? Boolean ?: false,
+                lockPendingMs = (m["lockPendingMs"] as? Number)?.toLong() ?: 0,
                 updatedAtMs = updatedAtMs,
             )
         }
@@ -36,6 +39,7 @@ fun statusMap(s: TimerStatus): Map<String, Any> = mapOf(
     "budgetMs" to s.budgetMs,
     "lockRemainingMs" to s.lockRemainingMs,
     "protectionDegraded" to s.protectionDegraded,
+    "lockPendingMs" to s.lockPendingMs,
 )
 
 /**
@@ -53,6 +57,7 @@ object StatusThrottle {
             prev.protectionDegraded != next.protectionDegraded ||
             prev.budgetMs != next.budgetMs ||
             prev.counting != next.counting ||
+            prev.onBreak != next.onBreak ||
             next.remainingMs > prev.remainingMs ||
             next.lockRemainingMs > prev.lockRemainingMs ||
             (next.counting && sinceLastMs >= INTERVAL_MS) ||

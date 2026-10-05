@@ -21,10 +21,12 @@ import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
 import com.nourtime.app.core.timer.TimerStatus
 import com.nourtime.app.data.apps.InstalledAppsRepository
+import com.nourtime.app.data.learning.LearningRepository
 import com.nourtime.app.data.settings.ParentSettingsRepository
 import com.nourtime.app.data.usage.UsageRepository
 import com.nourtime.app.remote.RemotePaths
 import com.nourtime.app.remote.model.AskPolicy
+import com.nourtime.app.remote.model.RemoteLearning
 import com.nourtime.app.remote.model.RemoteSettings
 import com.nourtime.app.remote.model.SettingsSync
 import com.nourtime.app.remote.model.StatusThrottle
@@ -67,6 +69,7 @@ class RemoteSync @Inject constructor(
     private val store: DataStore<Preferences>,
     private val engine: TimeEngine,
     private val settings: ParentSettingsRepository,
+    private val learning: LearningRepository,
     private val usage: UsageRepository,
     private val apps: InstalledAppsRepository,
     private val trustedClock: TrustedClock,
@@ -92,6 +95,7 @@ class RemoteSync @Inject constructor(
                         launch { uploadStatus(device) }
                         launch { uploadUsage(device) }
                         launch { uploadApps(device) }
+                        launch { uploadLearning(device) }
                         launch { followRequests(device) }
                     }
                 }
@@ -127,9 +131,12 @@ class RemoteSync @Inject constructor(
         // Local changes only trigger a check; the decision always reads the current settings, since a
         // debounced value can be older than a parent change applied a moment ago (it would be
         // uploaded back and briefly undo the parent's change).
-        val localChanges = settings.settings.debounce(LOCAL_SETTINGS_DEBOUNCE_MS)
+        // The hub's settings and voices count too (its progress and minutes don't).
+        val hubSettings = learning.state.map { it.settings to it.voicePacks }.distinctUntilChanged()
+        val localChanges = combine(settings.settings, hubSettings) { a, b -> a to b }.debounce(LOCAL_SETTINGS_DEBOUNCE_MS)
         combine(localChanges, device.snapshots()) { _, snap -> snap }.collect { snap ->
-            val localSettings = RemoteSettings.of(settings.settings.first())
+            val hub = learning.state.first()
+            val localSettings = RemoteSettings.of(settings.settings.first(), hub.settings, hub.voicePacks)
             if (!PairingCheck.stillPaired(owner, snap.exists(), snap.metadata.isFromCache, snap.getString("ownerUid"))) {
                 Log.i(TAG, "the parent removed this phone")
                 throw RemovedByParent()
@@ -146,6 +153,7 @@ class RemoteSync @Inject constructor(
                 SyncAction.APPLY_REMOTE -> {
                     remember(remote!!, remoteRev)
                     settings.replaceWith(remote)
+                    learning.replaceSettings(remote.learning, remote.voices)
                 }
                 SyncAction.NOTHING -> Unit
             }
@@ -269,6 +277,11 @@ class RemoteSync @Inject constructor(
             .map { it?.status == AskPolicy.PENDING }
             .distinctUntilChanged()
             .collect { pending -> if (!pending) device.update("askingAt", null) }
+    }
+
+    /** The Learning Hub's minutes box and today's earned minutes, whenever they change. */
+    private suspend fun uploadLearning(device: DocumentReference) {
+        learning.state.map(RemoteLearning::of).distinctUntilChanged().collect { device.update("learning", it.toMap()) }
     }
 
     /** The launchable apps, so the parent can choose limited and allowed apps remotely. */
