@@ -3,9 +3,8 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (written 2026-10-05):** everything is on `master`, pushed up to `a7c0726e`; the
-> 2026-10-05 commits (`1e237834` Home break, `d310ecf7` Number Connect, and the docs commit) are
-> **local only, push them first** (`git push origin master`). 403 tests pass.
+> **Resume here (written 2026-10-05):** everything is on `master` and pushed (2026-10-05 commits:
+> `1e237834` Home break, `d310ecf7` Number Connect, docs). 403 tests pass.
 >
 > **New APK for the Honor:** `dist/NourTime-2026-10-05-break-connect-release.apk` (all review fixes +
 > both items below; same debug key, so `adb install -r` keeps the data). Not installed on the Honor yet.
