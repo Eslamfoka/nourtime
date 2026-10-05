@@ -205,6 +205,10 @@
     <string name="status_available">متاح</string>
     <string name="status_available_body">لا يعمل المؤقت إلا أثناء فتح تطبيق محدد.</string>
     <string name="status_in_use">قيد الاستخدام الآن</string>
+    <string name="status_break">استراحة التعلم</string>
+    <string name="status_break_body">دقائق مكتسبة من ركن التعلّم. يعود القفل عند انتهائها (متبقٍّ من القفل %1$s).</string>
+    <string name="status_break_in_use">قيد الاستخدام: %1$s</string>
+    <string name="home_break_left">متبقٍّ من الاستراحة</string>
     <string name="status_locked">مقفل</string>
     <string name="status_refills_in">يمتلئ الرصيد بعد %1$s</string>
     <string name="status_degraded_title">الحماية تحتاج إلى انتباهك</string>

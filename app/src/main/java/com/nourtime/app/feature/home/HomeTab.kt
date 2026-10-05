@@ -26,6 +26,7 @@ import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.LockClock
 import androidx.compose.material.icons.rounded.LockOpen
 import androidx.compose.material.icons.rounded.PlayCircle
+import androidx.compose.material.icons.rounded.School
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.WarningAmber
 import androidx.compose.material3.AlertDialog
@@ -179,6 +180,8 @@ internal fun Dashboard(
             StatusCard(s, viewModel::label)
             QuickActions(
                 locked = s.phase == TimerPhase.LOCKED,
+                // A lock waits under a learning break: ending it now is still possible.
+                canEndLock = s.phase == TimerPhase.LOCKED || s.onBreak,
                 onLockNow = { confirm = TimerCommand.LockNow },
                 onEndLock = { confirm = TimerCommand.EndLock },
             )
@@ -209,9 +212,9 @@ internal fun Dashboard(
     }
 }
 
-/** "Lock now" and "End the lock": always on the dashboard, only the one that fits is enabled. */
+/** "Lock now" and "End the lock": always on the dashboard, only the ones that fit are enabled. */
 @Composable
-private fun QuickActions(locked: Boolean, onLockNow: () -> Unit, onEndLock: () -> Unit) {
+private fun QuickActions(locked: Boolean, canEndLock: Boolean, onLockNow: () -> Unit, onEndLock: () -> Unit) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         ActionTile(
             icon = Icons.Rounded.Lock,
@@ -225,7 +228,7 @@ private fun QuickActions(locked: Boolean, onLockNow: () -> Unit, onEndLock: () -
         ActionTile(
             icon = Icons.Rounded.LockOpen,
             label = stringResource(R.string.device_end_lock),
-            enabled = locked,
+            enabled = canEndLock,
             onClick = onEndLock,
             container = MaterialTheme.colorScheme.primary,
             content = MaterialTheme.colorScheme.onPrimary,
@@ -313,7 +316,8 @@ private fun BudgetRing(status: TimerStatus) {
                 style = MaterialTheme.typography.displayMedium,
             )
             Text(
-                stringResource(R.string.home_left_of, durationText((status.budgetMs / 60_000).toInt())),
+                if (status.onBreak) stringResource(R.string.home_break_left)
+                else stringResource(R.string.home_left_of, durationText((status.budgetMs / 60_000).toInt())),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -324,7 +328,10 @@ private fun BudgetRing(status: TimerStatus) {
     }
 }
 
-/** One of: available, in use now (with the app name), or locked with the refill countdown. */
+/**
+ * One of: available, in use now (with the app name), on a learning break (the lock resumes after
+ * it), or locked with the refill countdown.
+ */
 @Composable
 @SuppressLint("ProduceStateDoesNotAssignValue") // assigned after the suspend lookup
 private fun StatusCard(status: TimerStatus, label: suspend (String) -> String) {
@@ -335,6 +342,14 @@ private fun StatusCard(status: TimerStatus, label: suspend (String) -> String) {
             Icons.Rounded.LockClock,
             stringResource(R.string.status_locked),
             stringResource(R.string.status_refills_in, formatCountdown(status.lockRemainingMs)),
+        )
+        status.onBreak -> Triple(
+            Icons.Rounded.School,
+            stringResource(R.string.status_break),
+            listOfNotNull(
+                appName?.takeIf { status.counting }?.let { stringResource(R.string.status_break_in_use, it) },
+                stringResource(R.string.status_break_body, formatCountdown(status.lockPendingMs)),
+            ).joinToString("\n"),
         )
         status.counting -> Triple(
             Icons.Rounded.PlayCircle,

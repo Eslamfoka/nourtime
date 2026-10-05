@@ -195,6 +195,10 @@
     <string name="status_available">Available</string>
     <string name="status_available_body">The timer runs only while a limited app is open.</string>
     <string name="status_in_use">In use now</string>
+    <string name="status_break">Learning break</string>
+    <string name="status_break_body">Minutes earned in the Learning Hub. The lock resumes when they run out (%1$s of the lock left).</string>
+    <string name="status_break_in_use">In use: %1$s</string>
+    <string name="home_break_left">left of the break</string>
     <string name="status_locked">Locked</string>
     <string name="status_refills_in">Refills in %1$s</string>
     <string name="status_degraded_title">Protection needs attention</string>

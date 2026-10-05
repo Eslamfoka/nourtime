@@ -34,6 +34,8 @@ data class TimerStatus(
     val source: DetectionSource,
     /** How long the current lock period has run (0 when not locked); frozen while powered off. */
     val lockElapsedMs: Long = 0,
+    /** On a learning break: the lock time still left, which resumes when the break ends (0 = no break). */
+    val lockPendingMs: Long = 0,
 ) {
     /** Accessibility is off or nothing can see the foreground app. */
     val protectionDegraded: Boolean get() = source != DetectionSource.ACCESSIBILITY
@@ -42,6 +44,9 @@ data class TimerStatus(
     val blockLimitedApps: Boolean get() = phase == TimerPhase.LOCKED || protectionDegraded
 
     val counting: Boolean get() = phase == TimerPhase.AVAILABLE && appsInUse.isNotEmpty()
+
+    /** Apps are open on minutes earned in the Learning Hub while a lock waits underneath. */
+    val onBreak: Boolean get() = phase == TimerPhase.AVAILABLE && lockPendingMs > 0
 }
 
 /**
@@ -98,7 +103,7 @@ class TimeEngine @Inject constructor(
             flushUsage(wall.toLocalDate())
             lastSavedElapsed = now
         }
-        _status.value = TimerStatus(next.phase, next.remainingMs, next.budgetMs, next.lockRemainingMs, appsInUse, source, next.lockElapsedMs())
+        _status.value = TimerStatus(next.phase, next.remainingMs, next.budgetMs, next.lockRemainingMs, appsInUse, source, next.lockElapsedMs(), next.lockPendingMs)
     }
 
     /** True while the lock period runs; falls back to the saved state before the first update. */
