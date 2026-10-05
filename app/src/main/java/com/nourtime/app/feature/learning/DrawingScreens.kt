@@ -106,7 +106,6 @@ private fun DotShape.path(size: Size, upTo: Int = segmentCount): Path {
 @Composable
 internal fun ColumnScope.ConnectScreen(controller: LearningHubController, state: LearningState?, s: HubScreen.Connecting, gender: ChildGender, age: AgeGroup?) {
     val numerals = controller.numerals(state)
-    val speaker = LocalSpeaker.current
     val look = lookOf(s.game)
     val round = s.round
     val shape = round.shape
@@ -121,13 +120,20 @@ internal fun ColumnScope.ConnectScreen(controller: LearningHubController, state:
         )
         else -> stringResource(R.string.learn_task_connect)
     }
-    Text(
-        message,
-        style = MaterialTheme.typography.titleLarge,
-        color = if (s.celebrating) NourPalette.MintDeep else NourPalette.Navy,
-        textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-    )
+    Row(
+        Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Text(
+            message,
+            style = MaterialTheme.typography.titleLarge,
+            color = if (s.celebrating) NourPalette.MintDeep else NourPalette.Navy,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1f),
+        )
+        ConnectPreview(shape, look.accent, stringResource(R.string.learn_connect_preview))
+    }
     BoxWithConstraints(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
         Surface(
             shape = RoundedCornerShape(32.dp),
@@ -143,10 +149,8 @@ internal fun ColumnScope.ConnectScreen(controller: LearningHubController, state:
                 numerals = numerals,
                 accent = look.accent,
                 radius = ConnectRules.radiusFor(young = age == null || age == AgeGroup.AGES_3_6),
-                onReach = { dot ->
-                    speaker.say((dot + 1).toString(), controller.appLanguage)
-                    controller.connectReach(dot)
-                },
+                // The numbers are only a visual guide: no voice on a tap or a drag (owner, 2026-10-03).
+                onReach = controller::connectReach,
                 onRelease = controller::connectRelease,
                 fromDot = round.from,
                 nextDot = round.next,
@@ -154,6 +158,23 @@ internal fun ColumnScope.ConnectScreen(controller: LearningHubController, state:
         }
     }
     Spacer(Modifier.height(16.dp))
+}
+
+/** A small picture of the finished drawing, so the child knows what they're building (U5). */
+@Composable
+private fun ConnectPreview(shape: DotShape, accent: Color, description: String) {
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = NourPalette.White,
+        shadowElevation = 2.dp,
+        modifier = Modifier.size(76.dp).semantics { contentDescription = description },
+    ) {
+        Canvas(Modifier.fillMaxSize().padding(8.dp)) {
+            val outline = shape.path(size)
+            if (shape.closed) drawPath(outline, accent.copy(alpha = 0.35f))
+            drawPath(outline, accent, style = Stroke(3.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round))
+        }
+    }
 }
 
 @Composable

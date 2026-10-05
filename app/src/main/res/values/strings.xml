@@ -570,6 +570,7 @@
     <string name="learn_voice_ar_egyptian">Egyptian</string>
     <string name="learn_voice_en_american">American English</string>
     <string name="learn_voice_en_british">British English</string>
+    <string name="learn_connect_preview">The finished picture</string>
     <string name="learn_task_connect">Connect the dots in order</string>
     <string name="learn_tutorial_connect_m">Drag your finger from %1$s to %2$s</string>
     <string name="learn_tutorial_connect_f">Drag your finger from %1$s to %2$s</string>

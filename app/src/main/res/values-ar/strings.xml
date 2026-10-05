@@ -580,6 +580,7 @@
     <string name="learn_voice_ar_egyptian">اللهجة المصرية</string>
     <string name="learn_voice_en_american">الإنجليزية الأمريكية</string>
     <string name="learn_voice_en_british">الإنجليزية البريطانية</string>
+    <string name="learn_connect_preview">الصورة بعد اكتمالها</string>
     <string name="learn_task_connect">صِل النقاط بالترتيب</string>
     <string name="learn_tutorial_connect_m">اسحب إصبعك من %1$s إلى %2$s</string>
     <string name="learn_tutorial_connect_f">اسحبي إصبعك من %1$s إلى %2$s</string>
