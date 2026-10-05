@@ -1224,16 +1224,49 @@ The parent's phone shows and changes the Learning Hub settings (on/off, minutes 
 maximum, **voice per language**) and the child's minutes bank, synced like the other settings
 (Phase 2 Firestore paths and rules). Ask the owner before starting, as agreed on 2026-09-30.
 
+✅ **Built 2026-10-05 (`e2941fb1`), owner said go.**
+- `RemoteSettings` carries `learning` (on/off, minutes per level, daily maximum) and `voices` (every
+  language, defaults filled in so both phones compare equal) inside `devices/{id}.settings`, with the
+  same revisions as the other settings. Clamped on read (1–60 min per level, 0–240 daily max); unknown
+  voices fall back to the default. Settings and local snapshots written before read as the defaults.
+- Child's phone (`RemoteSync`): a change of the hub's settings or voices triggers the sync like any
+  setting; a parent change is applied with `LearningRepository.replaceSettings` (one write). It also
+  uploads `devices/{id}.learning` (minutes box, earned today, its day) whenever they change, and
+  `status.lockPendingMs` (the lock waiting under a learning break).
+- Parent's phone: `DeviceSummary.Break` ("Learning break · 5 min left, then the lock resumes (1 h)",
+  the waiting lock counts down in real time) with **End the lock** and **Lock now**; a Learning Hub
+  card using `LearningSettingsEditor`, now shared with the child's own Settings (choosing a voice plays
+  the sample on the parent's phone); "earned today" by the parent's date and the minutes box.
+- Firestore rules unchanged (the child writes any field but its identity, the parent only
+  `settings`); a new rules test checks only the child writes the minutes box. 50 rules tests pass.
+- Checked: unit tests (RemoteLearningSyncTest, DeviceSummaryTest), the child's own Settings card on
+  API 31 after the refactor. **Not yet checked with two phones** (this machine runs one emulator at a
+  time): owner to test with the Honor as parent + another phone, or a later session with both
+  emulators and the Firebase emulator.
+
 ### Task 4: Release preparation
 - **Rotate the ElevenLabs API key** (it was pasted in chat on 2026-10-03); keep the paid plan
   active while publishing (commercial licence for the clips).
-- **Target API 36:** Play now requires it for new apps and updates (app targets 35); raise
-  `targetSdk`/`compileSdk` and test Android 16 behaviour changes.
+- ✅ **Target API 36 (2026-10-05, `36ddc056`):** `compileSdk`/`targetSdk` 36 (AGP 8.7.3, its "not
+  tested with 36" warning suppressed in `gradle.properties`). Android 16 behaviour changes checked in
+  the code: **predictive back** is on for apps targeting 36, so the lock overlay (a service window)
+  no longer gets `KEYCODE_BACK`; Back there is now an `OnBackInvokedCallback` on API 33+ (key handler
+  kept for older versions, which ignore the callback while the app doesn't opt in). Edge-to-edge was
+  already on (`enableEdgeToEdge`, safe-drawing padding); no fixed-rate scheduling, ordered broadcast
+  priorities or orientation locks in the app. Also fixed from the brief audit: the ages 7–9 ring now
+  shows the share of the lock (or bedtime) still to go (it was a fixed 300°).
 - **`REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`** is restricted by Play policy: justify it in Play Console
   or open the battery settings list instead (no permission needed).
 - Upload key + Play App Signing, store listing, screenshots, feature graphic, Accessibility demo
   video, publish `docs/account-deletion.md` (contact email). APK is now 13.6 MB (four voice packs);
   an AAB keeps downloads smaller.
+- ✅ **AAB checked (2026-10-05):** `./gradlew :app:bundleRelease` → `app/build/outputs/bundle/release/
+  app-release.aab` (17.2 MB). With bundletool 1.17.2 (`build-apks --connected-device` +
+  `install-apks`) it became base + x86_64 + xxhdpi splits, **12.3 MB** for that phone, installed and
+  ran on API 31. Both languages stay in the base (`enableSplit = false`, the in-app switcher needs
+  them). The voice clips are most of the size; Play Asset Delivery could later ship only the chosen
+  voice packs. Signing for Play needs the owner's upload key (`keystore.properties`, README "Release
+  signing"); bundles built without it are unsigned.
 
 ### Task 5: Real-device testing
 Samsung and Xiaomi with `docs/testing-checklist.md`, plus the open Honor re-tests in §11/§12.

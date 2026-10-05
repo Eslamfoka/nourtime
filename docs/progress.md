@@ -98,7 +98,7 @@ reason · PIN + security question · apps, time and lock type, child's gender an
 ### §9 Tech stack
 | Item | Status |
 |---|---|
-| Kotlin, Compose, Material 3, minSdk 26 | ✅ targetSdk 35 |
+| Kotlin, Compose, Material 3, minSdk 26 | ✅ targetSdk 36 (Android 16, since 2026-10-05) |
 | AccessibilityService primary, UsageStatsManager fallback | ✅ |
 | Foreground service for the timer | ✅ `specialUse` type |
 | Room + DataStore | ✅ |
@@ -376,8 +376,8 @@ screen option, pack, how a level starts). A new game is a `GameId`, one registry
 |---|---|---|
 | 1 | **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs, glitches, or edge cases.** | ✅ Done 2026-10-03: core solid; fixed Play language split, replay/bank rewards (owner's decisions), repeated math questions, cut-off chips, Home ring caption. The 2 Home items during a learning break done 2026-10-05 (`1e237834`) |
 | 2 | Number Connect UX: U5 (shape preview) and U6 (completely mute number pronunciation) | ✅ Done 2026-10-05; APK `dist/NourTime-2026-10-05-break-connect-release.apk` |
-| 3 | Parent app integration of the Learning Hub (settings, voice per language, minutes bank on the parent's phone) | ⏳ Ask the owner before starting |
-| 4 | Release preparation: rotate the ElevenLabs key, upload key, Play listing, screenshots, video, account-deletion page | ⏳ |
+| 3 | Parent app integration of the Learning Hub (settings, voice per language, minutes bank on the parent's phone) | ✅ Built 2026-10-05 (`e2941fb1`); two-phone test pending |
+| 4 | Release preparation: rotate the ElevenLabs key, upload key, Play listing, screenshots, video, account-deletion page | 🟡 Target API 36 ✅ and AAB ✅ (2026-10-05); the rest needs the owner |
 | 5 | Real-device testing on Samsung and Xiaomi (+ open Honor re-tests) | ⏳ |
 | 6 | Audio assets: voice message for ages 3–6, lullaby (ElevenLabs voices can record them) | ⏳ |
 | 7 | G9 short surahs and du'as | On hold (licensing decision) |
