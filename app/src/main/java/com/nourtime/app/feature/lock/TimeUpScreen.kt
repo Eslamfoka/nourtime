@@ -352,11 +352,12 @@ private fun Decorations(kind: TemplateKind) {
     Canvas(Modifier.fillMaxSize()) {
         when (kind) {
             TemplateKind.SLEEP -> {
-                val stars = listOf(0.1f to 0.12f, 0.3f to 0.06f, 0.55f to 0.15f, 0.8f to 0.08f, 0.9f to 0.3f, 0.15f to 0.35f, 0.7f to 0.4f)
+                // Kept clear of the top row, where "For parents" sits (right in English, left in Arabic).
+                val stars = listOf(0.1f to 0.2f, 0.3f to 0.06f, 0.55f to 0.15f, 0.8f to 0.05f, 0.92f to 0.34f, 0.15f to 0.35f, 0.7f to 0.4f)
                 stars.forEachIndexed { i, (x, y) ->
                     drawCircle(NourPalette.Cream.copy(alpha = 0.5f + 0.1f * (i % 3)), 3.dp.toPx() + (i % 2), Offset(size.width * x, size.height * y))
                 }
-                val moon = Offset(size.width * 0.82f, size.height * 0.16f)
+                val moon = Offset(size.width * 0.82f, size.height * 0.24f)
                 drawCircle(NourPalette.GoldLight, 34.dp.toPx(), moon)
                 drawCircle(Color(0xFF17203A), 30.dp.toPx(), Offset(moon.x - 16.dp.toPx(), moon.y - 8.dp.toPx()))
             }
