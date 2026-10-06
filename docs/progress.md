@@ -4,9 +4,16 @@ Status as of 2026-10-06 (resume point: the "Resume here" block at the top of [`h
 [roadmap](#roadmap-next-sessions-in-order) and [`handoff.md` §18](handoff.md#18-roadmap-for-the-next-sessions-in-order)). A copy of the brief with the status of every requirement, plus Phase 4, is in
 [`brief-with-status.md`](brief-with-status.md). Legend: ✅ done · 🟡 done with a noted difference · ⏳ pending.
 
+**2026-10-06 (night):** ✅ **Android 16 emulator test passed** (onboarding, permissions, lock overlay,
+predictive Back in the lock screen's games and PIN, 7–9 ring, Home/Settings, RTL, dark mode). Fixed
+from it: lock chime could be cut off, app names stayed in the old language after the language switch,
+sleep screen moon/star under "For parents", a flaky test. Drafts: Play feature graphic, store
+screenshots (AR/EN), 3–6 voice-message texts. APK `dist/NourTime-2026-10-06-android16-release.apk`.
+Details: [`handoff.md` §19](handoff.md#19-night-of-2026-10-06-android-16-emulator-test-owner-asleep).
+
 **2026-10-05/06:** ✅ Home learning break, Number Connect preview + no number voice, **Learning Hub
-on the parent's phone** (Task 3, two-phone test pending), **target API 36** (Android 16; Android 16
-emulator test pending, image download unfinished), **AAB** checked (12.3 MB download for a typical
+on the parent's phone** (Task 3, two-phone test pending), **target API 36** (Android 16; emulator test
+done 2026-10-06), **AAB** checked (12.3 MB download for a typical
 phone). Brief audit: everything in the brief is built except what needs the owner's input (3–6 voice
 message and lullaby recordings, Lottie artwork, push notifications on the paid Firebase plan); the
 one hidden gap (7–9 ring didn't count down) is fixed. 415 tests.
@@ -384,9 +391,9 @@ screen option, pack, how a level starts). A new game is a `GameId`, one registry
 | 1 | **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs, glitches, or edge cases.** | ✅ Done 2026-10-03: core solid; fixed Play language split, replay/bank rewards (owner's decisions), repeated math questions, cut-off chips, Home ring caption. The 2 Home items during a learning break done 2026-10-05 (`1e237834`) |
 | 2 | Number Connect UX: U5 (shape preview) and U6 (completely mute number pronunciation) | ✅ Done 2026-10-05; APK `dist/NourTime-2026-10-05-break-connect-release.apk` |
 | 3 | Parent app integration of the Learning Hub (settings, voice per language, minutes bank on the parent's phone) | ✅ Built 2026-10-05 (`e2941fb1`); two-phone test pending |
-| 4 | Release preparation: rotate the ElevenLabs key, upload key, Play listing, screenshots, video, account-deletion page | 🟡 Target API 36 ✅ and AAB ✅ (2026-10-05); the rest needs the owner |
+| 4 | Release preparation: rotate the ElevenLabs key, upload key, Play listing, screenshots, video, account-deletion page | 🟡 Target API 36 ✅ (Android 16 emulator-tested 2026-10-06), AAB ✅; drafts of the feature graphic and screenshots ✅; the rest needs the owner |
 | 5 | Real-device testing on Samsung and Xiaomi (+ open Honor re-tests) | ⏳ |
-| 6 | Audio assets: voice message for ages 3–6, lullaby (ElevenLabs voices can record them) | ⏳ |
+| 6 | Audio assets: voice message for ages 3–6, lullaby (ElevenLabs voices can record them) | ⏳ Texts drafted ([`audio-texts-draft.md`](audio-texts-draft.md)), waiting for the owner's approval |
 | 7 | G9 short surahs and du'as | On hold (licensing decision) |
 
 Details for each task: [`handoff.md` §18](handoff.md#18-roadmap-for-the-next-sessions-in-order).

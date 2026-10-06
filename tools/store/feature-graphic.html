@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- Play feature graphic (1024x500). Render: tools/store/render-feature-graphic.sh -->
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: Cairo; src: url(../../app/src/main/res/font/cairo_variable.ttf); font-weight: 200 1000; }
+@font-face { font-family: Nunito; src: url(../../app/src/main/res/font/nunito_variable.ttf); font-weight: 200 1000; }
+html, body { margin: 0; width: 1024px; height: 500px; overflow: hidden; }
+body {
+  background: radial-gradient(circle at 26% 50%, #2E3F6B 0%, #1E2A4A 45%, #141C33 100%);
+  display: flex; align-items: center; color: #FFF8EC; position: relative;
+}
+.dot { position: absolute; border-radius: 50%; background: #FFF8EC; opacity: .55; }
+.art { width: 400px; display: flex; justify-content: center; }
+.art svg { width: 300px; height: 300px; filter: drop-shadow(0 0 36px rgba(255,200,87,.55)); }
+.text { flex: 1; padding-right: 64px; text-align: center; }
+.ar { font-family: Cairo; font-weight: 800; font-size: 92px; line-height: 1.1; direction: rtl; }
+.en { font-family: Nunito; font-weight: 800; font-size: 64px; line-height: 1.1; color: #FFC857; }
+.tag { font-family: Nunito; font-weight: 600; font-size: 28px; margin-top: 18px; opacity: .9; }
+.tag-ar { font-family: Cairo; font-weight: 600; font-size: 28px; direction: rtl; opacity: .9; }
+</style></head>
+<body>
+<div class="dot" style="left:60px;top:70px;width:6px;height:6px"></div>
+<div class="dot" style="left:340px;top:40px;width:4px;height:4px"></div>
+<div class="dot" style="left:120px;top:420px;width:5px;height:5px"></div>
+<div class="dot" style="left:930px;top:60px;width:5px;height:5px"></div>
+<div class="dot" style="left:980px;top:440px;width:4px;height:4px"></div>
+<div class="dot" style="left:420px;top:460px;width:3px;height:3px"></div>
+<div class="art">
+  <svg viewBox="24 22 60 60">
+    <path fill="#FFC857" stroke="#FFC857" stroke-width="6" stroke-linejoin="round"
+      d="M54.00,28.00 L61.95,43.06 L78.73,45.97 L66.86,58.18 L69.28,75.03 L54.00,67.52 L38.72,75.03 L41.14,58.18 L29.27,45.97 L46.05,43.06 Z"/>
+    <circle cx="54" cy="56" r="10" fill="#FFF8EC" stroke="#1E2A4A" stroke-width="1.6"/>
+    <path d="M54,56 L54,49.5 M54,56 L58.5,57" stroke="#1E2A4A" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <circle cx="54" cy="56" r="1.4" fill="#FF7A6B"/>
+  </svg>
+</div>
+<div class="text">
+  <div class="ar">وقت نور</div>
+  <div class="en">Nour Time</div>
+  <div class="tag">Kind, fair screen time for your child</div>
+  <div class="tag-ar">وقت شاشة لطيف وعادل لطفلك</div>
+</div>
+</body></html>

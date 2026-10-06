@@ -3,32 +3,24 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (written 2026-10-06, session closed by the owner):** everything is on `master` and
-> pushed up to `43856c8d` (plus this docs commit). 415 unit tests + 50 Firestore rules tests pass.
+> **Resume here (written 2026-10-06 ~03:00, overnight while the owner slept):** everything is on
+> `master` and pushed. 415 unit tests + 50 Firestore rules tests pass, lint clean.
 >
-> **Done 2026-10-05/06** ([§18](#18-roadmap-for-the-next-sessions-in-order)): Home learning break ·
-> Task 2 Number Connect (preview, no number voice) · **Task 3** Learning Hub on the parent's phone ·
-> **target API 36** (Android 16; Back on the lock overlay via `OnBackInvokedCallback`) · **AAB**
-> checked with bundletool · brief audit (ages 7–9 ring now shows the time left).
+> **Done tonight ([§19](#19-night-of-2026-10-06-android-16-emulator-test-owner-asleep)):** Android 16
+> (API 36) emulator test **passed**; fixed what it found: the lock chime could be cut off (unreferenced
+> MediaPlayer), app names stayed in the old language after the in-app language switch, the sleep
+> screen's moon/star sat under "For parents"; a flaky PIN-recovery test. Drafts for the owner: Play
+> feature graphic (`tools/store/feature-graphic.png`), store screenshots (`dist/store-screenshots/`),
+> voice-message texts for ages 3–6 ([`audio-texts-draft.md`](audio-texts-draft.md)).
 >
-> **APKs for the Honor (none installed yet, newest has everything):**
-> `dist/NourTime-2026-10-05-api36-release.apk` (debug key, `adb install -r` keeps the data).
+> **APK for the Honor (newest, has everything):** `dist/NourTime-2026-10-06-android16-release.apk`
+> (debug key, `adb install -r` keeps the data).
 >
-> **Unfinished: Android 16 emulator test.** The API 36 system image is half downloaded:
-> `D:/dev-tools/x86_64-36_r07.zip` (~1146 of 1808 MB; slow link, drops; the earlier sdkmanager
-> download was killed for low memory). Resume with
-> `curl -L -C - -o D:/dev-tools/x86_64-36_r07.zip https://dl.google.com/android/repository/sys-img/google_apis/x86_64-36_r07.zip`
-> until it is 1895447397 bytes, unzip so `system.img` ends up in
-> `D:/dev-tools/android-sdk/system-images/android-36/google_apis/x86_64/`, create the AVD
-> (`avdmanager create avd -n nourdm-api36 -k "system-images;android-36;google_apis;x86_64" -d pixel_5`,
-> AVD home `D:/dev-tools/avd`), close other emulators and `gradlew --stop` first (memory). Then
-> onboard Nour Time and check: lock overlay over a limited app, **Back inside the lock screen's
-> games and PIN steps**, the 7–9 ring, Home and Settings layout.
->
-> **Next, needs the owner:** Honor test of the new APK; two-phone test of Task 3; Task 4 release
-> items (ElevenLabs key rotation, upload key, Play listing/screenshots/video, account-deletion
-> contact email, battery-permission choice); Task 5 Samsung/Xiaomi; Task 6 audio texts; Task 7 G9.
-> Full list: [`status-2026-10-05.md`](status-2026-10-05.md).
+> **Next, needs the owner:** Honor test of the new APK; two-phone test of Task 3; approve the 3–6
+> voice-message texts + lullaby choice (Task 6); Task 4 release items (ElevenLabs key rotation, upload
+> key, Play listing — screenshots/feature graphic drafts are ready —, Accessibility demo video,
+> account-deletion contact email, battery-permission choice); Task 5 Samsung/Xiaomi; Task 7 G9.
+> Small choices in §19.4. Full list: [`status-2026-10-05.md`](status-2026-10-05.md).
 
 ## 1. Architecture at a glance
 
@@ -1268,7 +1260,7 @@ maximum, **voice per language**) and the child's minutes bank, synced like the o
   priorities or orientation locks in the app. Also fixed from the brief audit: the ages 7–9 ring now
   shows the share of the lock (or bedtime) still to go (it was a fixed 300°). Checked so far: build,
   tests, lint, APK reports `targetSdkVersion 36`, installs and runs on Android 12 (API 31).
-  ⏳ **Not yet run on an Android 16 emulator** (image download unfinished, see the resume block).
+  ✅ **Run on an Android 16 emulator 2026-10-06** (`nourdm-api36`), see §19.
 - **`REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`** is restricted by Play policy: justify it in Play Console
   or open the battery settings list instead (no permission needed).
 - Upload key + Play App Signing, store listing, screenshots, feature graphic, Accessibility demo
@@ -1294,3 +1286,56 @@ Waits for the owner's decision on recitation sources and licensing.
 
 ### Later / optional
 Lottie animations, Device Owner mode (Safe Mode), push notifications to the parent (Blaze plan).
+
+## 19. Night of 2026-10-06: Android 16 emulator test (owner asleep)
+
+### 19.1 Android 16 (API 36) emulator
+Image `system-images;android-36;google_apis;x86_64` r07 (SHA-1 checked), AVD `nourdm-api36`
+(pixel_5, 2 GB; avdmanager wrote Arabic-Indic digits into `config.ini` (`٢G`, `٦G`), fixed by hand,
+and the `<temp>` data path was removed so the data survives restarts). Start it with
+`-no-snapshot-load -no-snapshot-save` (cold boot keeps the setup; an empty `default_boot` snapshot
+exists). On this PC System UI shows "isn't responding" for ~a minute after each boot: tap Wait.
+Nour Time is set up there: child, PIN 4827 / "Favourite colour" blue, boy 7–9, Calendar + Chrome
+limited, 15 min budget, 6 h lock, the suggested schedule, app language English.
+
+Passed on Android 16:
+- Onboarding, all permission screens (Accessibility with auto-return, usage access, overlay — Android
+  opens the list, not the app page —, device admin, notifications, battery), Test protection step.
+- Lock overlay over Chrome; the 7–9 ring shows the time left (5:59 of 6 h ≈ full).
+- **Back (predictive back, `OnBackInvokedCallback`)**, key and edge-swipe gesture: game level →
+  level list → Learning Hub → Time's up; PIN pad → Time's up; Back on Time's up keeps the lock; Forgot
+  PIN opens the app's recovery (by design); leaving the app brings the overlay back over Chrome.
+- Home, Settings, Schedule, Apps, language switch both ways (per-app language), dark mode, RTL.
+- No crashes in the log. Calendar can't be the test app there (it opens Google sign-in first).
+
+### 19.2 Fixed (commits on master)
+- **Chime cut off / leaked**: `LockOverlay.playChime` created a MediaPlayer it didn't keep, so it could
+  be garbage-collected mid-chime ("MediaPlayer finalized without being released"). Now held in a field
+  until completion.
+- **App names in the old language** after the in-app language switch (English screen, Arabic names):
+  the Apps tab and the "allowed during lock" dialog view models are activity-scoped and load the list
+  once; they're now keyed by language. `InstalledAppsRepository` also reads labels in Nour Time's
+  language explicitly (`AppLocales.locale`) and its label cache is keyed by language (it's used by the
+  lock screen's allowed apps).
+- **Sleep screen**: the moon (English) and a star dot (Arabic) sat under "For parents"; moved below the
+  top row.
+- **Flaky test** `PinRecoveryControllerTest` (waited on one flow while the condition read another; timed
+  out once on a busy machine). Now combines both flows.
+
+### 19.3 Drafts for the owner (Task 4 / Task 6)
+- Feature graphic 1024×500: `tools/store/feature-graphic.png` (source `feature-graphic.html`, render with
+  `tools/store/render-feature-graphic.sh`; Cairo + Nunito, both OFL, from the app).
+- Phone screenshots (1080×2340, clean status bar via demo mode) in `dist/store-screenshots/ar` and
+  `/en`: Home, Apps, Schedule, Time's up (sleep in Arabic, daytime in English), Learning Hub, a math
+  level, and (English only) Settings in dark mode.
+  The parent's-phone screenshots still need a paired setup.
+- Voice-message texts for ages 3–6 (Egyptian/Fusha × m/f, English) and lullaby options:
+  [`audio-texts-draft.md`](audio-texts-draft.md). Nothing generated (credits; needs approval).
+- Not done: the Accessibility demo video (better recorded on a real phone; steps in `store-listing.md`).
+
+### 19.4 Small things for the owner to decide
+- Arabic screens mix digit styles: fixed texts use Arabic-Indic digits ("آخر ٧ أيام", "٣–٦ سنوات")
+  while numbers the app fills in use Western digits ("0 دقيقة", "15:00"). Pick one style?
+- The schedule timeline runs left-to-right in Arabic too (12 ص … 12 ص); fine for a time axis, but it
+  could be mirrored.
+- Still open from before: break ring fill vs budget (`breakMs`).
