@@ -46,7 +46,7 @@ object AppLocales {
     /** Older phones: call when the app starts and after any configuration change. */
     fun applyToApp(appContext: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) return
-        val locale = targetLocale(appContext)
+        val locale = locale(appContext)
         Locale.setDefault(locale)
         updateResources(appContext.resources, locale)
     }
@@ -55,11 +55,12 @@ object AppLocales {
     fun wrap(base: Context): Context {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) return base
         val config = Configuration(base.resources.configuration)
-        config.setLocale(targetLocale(base))
+        config.setLocale(locale(base))
         return base.createConfigurationContext(config)
     }
 
-    private fun targetLocale(context: Context): Locale {
+    /** The language Nour Time shows: the choice, or the phone's own when it follows the phone. */
+    fun locale(context: Context): Locale {
         val phone = phoneLocale ?: Resources.getSystem().configuration.locales[0].also { phoneLocale = it }
         return current(context).localeOr(phone)
     }

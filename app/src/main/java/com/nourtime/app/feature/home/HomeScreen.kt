@@ -36,6 +36,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -179,8 +180,12 @@ internal fun PermissionsSection(viewModel: PermissionsViewModel) {
 }
 
 // Keyed: view models are activity-scoped here, and the onboarding apps step's search text shouldn't carry over.
+// The language is part of the key so switching it reloads the app names (the list is loaded once per view model).
 @Composable
-private fun AppsTab(padding: PaddingValues, viewModel: AppsViewModel = hiltViewModel(key = "apps-tab")) {
+private fun AppsTab(
+    padding: PaddingValues,
+    viewModel: AppsViewModel = hiltViewModel(key = "apps-tab-${LocalConfiguration.current.locales[0].toLanguageTag()}"),
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     AppList(
         state = state,

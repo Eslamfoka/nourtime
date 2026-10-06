@@ -2,18 +2,24 @@ package com.nourtime.app.data.apps
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
+import android.content.pm.ComponentInfo
+import android.content.pm.PackageItemInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.content.res.Configuration
 import android.os.Build
 import android.util.LruCache
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.graphics.drawable.toBitmap
+import com.nourtime.app.core.locale.AppLocales
 import com.nourtime.app.core.security.AnswerNormalizer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.text.Collator
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -38,25 +44,47 @@ class InstalledAppsRepository @Inject constructor(
             @Suppress("DEPRECATION")
             pm.queryIntentActivities(intent, 0)
         }
-        val collator = Collator.getInstance()
+        val collator = Collator.getInstance(appLocale())
         infos
             .distinctBy { it.activityInfo.packageName }
             .filter { it.activityInfo.packageName != context.packageName }
-            .map { InstalledApp(it.activityInfo.packageName, it.loadLabel(pm).toString()) }
+            .map { InstalledApp(it.activityInfo.packageName, localizedLabel(it.activityInfo) { it.loadLabel(pm) }) }
             .sortedWith { a, b -> collator.compare(a.label, b.label) }
     }
 
+    /** Keyed by language too, so switching Nour Time's language shows the new names. */
     private val labels = LruCache<String, String>(ICON_CACHE_SIZE)
 
     /** Display name for [packageName], or the package name itself if it isn't visible. */
     suspend fun label(packageName: String): String {
-        labels.get(packageName)?.let { return it }
+        val key = "${appLocale().toLanguageTag()}|$packageName"
+        labels.get(key)?.let { return it }
         return withContext(Dispatchers.IO) {
-            runCatching { pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0)).toString() }
+            runCatching {
+                val info = pm.getApplicationInfo(packageName, 0)
+                localizedLabel(info) { pm.getApplicationLabel(info) }
+            }
                 .getOrDefault(packageName)
-                .also { labels.put(packageName, it) }
+                .also { labels.put(key, it) }
         }
     }
+
+    /** Nour Time's own language: the in-app choice, or the phone's when it follows the phone. */
+    private fun appLocale(): Locale = AppLocales.locale(context)
+
+    /**
+     * The label in Nour Time's own language (which can differ from the phone's), read from the label
+     * resource with that locale so it doesn't depend on which configuration PackageManager uses;
+     * [fallback] covers apps without a label resource.
+     */
+    private fun localizedLabel(item: PackageItemInfo, fallback: () -> CharSequence): String = runCatching {
+        item.nonLocalizedLabel?.let { return@runCatching it.toString() }
+        val appInfo = (item as? ComponentInfo)?.applicationInfo ?: item as ApplicationInfo
+        val labelRes = item.labelRes.takeIf { it != 0 } ?: appInfo.labelRes.takeIf { it != 0 }
+            ?: return@runCatching fallback().toString()
+        val config = Configuration(context.resources.configuration).apply { setLocale(appLocale()) }
+        context.createPackageContext(appInfo.packageName, 0).createConfigurationContext(config).getString(labelRes)
+    }.getOrElse { fallback().toString() }
 
     suspend fun icon(packageName: String): ImageBitmap? {
         icons.get(packageName)?.let { return it }
