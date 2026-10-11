@@ -116,7 +116,6 @@ fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
                             }
                         },
                         onContinue = viewModel::next,
-                        onSkip = if (permission == NourPermission.NOTIFICATIONS) viewModel::next else null,
                         onOpenAppInfo = if (permission == NourPermission.ACCESSIBILITY) {
                             {
                                 open(listOf(viewModel.appDetailsIntent()))

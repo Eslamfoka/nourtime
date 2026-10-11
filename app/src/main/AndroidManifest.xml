@@ -6,7 +6,6 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -38,6 +37,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NourTime"
         tools:targetApi="35">
+
+        <!-- Play's stalkerware policy: declares Nour Time as a child-monitoring (parental control) app. -->
+        <meta-data
+            android:name="com.google.android.gms.isMonitoringTool"
+            android:value="child_monitoring" />
 
         <activity
             android:name=".MainActivity"

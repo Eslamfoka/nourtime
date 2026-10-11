@@ -66,9 +66,11 @@ class PermissionChecker @Inject constructor(
             Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName),
             appDetailsIntent(),
         )
+        // The battery list, not the direct "Allow" prompt: that one needs REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+        // which Play restricts to other kinds of apps.
         NourPermission.BATTERY -> listOf(
-            Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, packageUri),
             Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS),
+            appDetailsIntent(),
         )
     }
 

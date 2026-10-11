@@ -39,7 +39,6 @@ fun PermissionStep(
     granted: Boolean,
     onGrant: () -> Unit,
     onContinue: () -> Unit,
-    onSkip: (() -> Unit)?,
     onOpenAppInfo: (() -> Unit)?,
 ) {
     val ui = permission.ui
@@ -51,7 +50,6 @@ fun PermissionStep(
                 NourPrimaryButton(stringResource(R.string.action_continue), onContinue)
             } else {
                 NourPrimaryButton(stringResource(R.string.action_open_settings), onGrant)
-                if (onSkip != null) NourTextButton(stringResource(R.string.action_skip_for_now), onSkip)
             }
         },
     ) {

@@ -13,14 +13,18 @@ stays on the device. Nour Time never sells data, shows ads or uses analytics.**
 
 - **Which apps are on the screen.** Through Android's Accessibility service (and, as a backup, Usage
   access), Nour Time sees the package name of the apps that are open, including picture-in-picture
-  and split-screen windows. This is used only to count time on the apps the parent selected and to
-  show the "Time's up" screen. Nour Time never reads the text or content of any screen, or anything
-  typed.
+  and split-screen windows. This is used only to count time on the apps the parent selected, to
+  show the "Time's up" screen, to show the parent-PIN screen over the phone's Settings, the app
+  installer and security apps (so the child can't switch Nour Time off or uninstall it), and to go back
+  to the home screen when the time is up. Nour Time never reads the text or content of any screen, or
+  anything typed.
 - **Time used per app per day.** Stored on the device to show the parent today's usage.
 - **Settings.** The selected apps, time budget, lock period, schedule, bedtime, the child's age group
   and whether messages should address a boy or a girl.
 - **Parent PIN and security question.** The PIN and the answer are stored only as salted one-way
   hashes. The question text is stored as written.
+- **Learning Hub.** Game progress (stars per level) and the minutes the child earned, stored on the
+  device.
 
 ## If a parent connects their own phone (optional)
 
@@ -37,7 +41,9 @@ account can read it:
 - the names and package names of the apps that can be opened from the launcher (so the parent can
   choose limited and allowed apps);
 - the Nour Time settings the parent can change remotely (time budget, lock period, lock type, bedtime,
-  daily reset, limited apps and apps allowed during the lock).
+  daily reset, limited apps and apps allowed during the lock, Learning Hub and voice settings);
+- the Learning Hub minutes: the child's banked minutes, the minutes earned today, and a lock that is
+  paused during a learning break.
 - "Ask for more time" requests the child sends from the "Time's up" screen: only when the request
   was made and the parent's answer (approved with how many minutes, or not now), no message text.
 
@@ -89,8 +95,18 @@ Firebase; ask for its deletion as above.
 
 ## Children
 
-Nour Time is meant to be installed and set up by a parent or guardian. The child only sees the
-"Time's up" screens. No personal information about the child is collected.
+Nour Time is meant to be installed and set up by a parent or guardian. The child sees the "Time's up"
+screens and can play the Learning Hub games on them. The child's name, age, photos, location,
+contacts and messages are never collected.
+
+Some information about the child's use of the phone is collected only if the parent connects their own
+phone: the usage, timer, app list, settings and Learning Hub minutes listed above. Under children's
+privacy laws (such as COPPA in the US and the GDPR in Europe) this counts as personal information about
+the child. It is collected only with the parent's consent: the parent connects the phones themselves and
+confirms the connection on the child's phone behind the parent PIN. The parent can stop it at any time
+by disconnecting the phone, and can have it deleted as described in "Deleting data". It is used only to
+show the parent their child's screen time and to let the parent change the settings, never for ads,
+analytics or any other purpose, and it is never sold or shared with anyone else.
 
 ## Changes
 
@@ -115,9 +131,16 @@ version is released, and the app will ask for consent where required.
 - **رمز الأهل وإجابة سؤال الأمان:** يُحفظان بصيغة مشفرة أحادية الاتجاه فقط.
 - **عند ربط هاتف ولي الأمر (اختياري):** بعد موافقة ولي الأمر على هاتف الطفل، يرسل هاتف الطفل إلى Google
   Firebase ما يلي فقط، ولا يراه إلا حساب ولي الأمر: طراز الهاتف، وحالة المؤقت (الوقت المتبقي والقفل وحالة
-  الحماية)، ودقائق اليوم لكل تطبيق محدد، وأسماء التطبيقات القابلة للفتح، وإعدادات وقت نور، وطلبات "أريد وقتًا
-  إضافيًا" التي يرسلها الطفل من شاشة "خلص الوقت" (وقت الطلب ورد ولي الأمر فقط، دون أي نص). يحفظ هاتف ولي الأمر
-  اسم حساب Google وبريده. لا يُرسل أبدًا اسم الطفل ولا عمره ولا الرمز ولا محتوى الشاشة ولا الموقع.
+  الحماية)، ودقائق اليوم لكل تطبيق محدد، وأسماء التطبيقات القابلة للفتح، وإعدادات وقت نور، ودقائق ركن التعلّم
+  (الرصيد المدّخر ودقائق اليوم المكتسبة)، وطلبات "أريد وقتًا إضافيًا" التي يرسلها الطفل من شاشة "خلص الوقت" (وقت
+  الطلب ورد ولي الأمر فقط، دون أي نص). يحفظ هاتف ولي الأمر اسم حساب Google وبريده. لا يُرسل أبدًا اسم الطفل ولا
+  عمره ولا الرمز ولا محتوى الشاشة ولا الموقع.
+- **الأطفال:** تُعدّ هذه المعلومات عن استخدام الطفل للهاتف معلومات شخصية عنه وفق قوانين خصوصية الأطفال، ولذلك لا
+  تُجمع إلا بموافقة ولي الأمر: هو من يربط الهاتفين ويؤكد الربط على هاتف الطفل بعد إدخال رمز الأهل، ويستطيع إيقافها
+  في أي وقت بإلغاء الربط، وطلب حذفها. لا تُستخدم إلا لعرض وقت الشاشة لولي الأمر وتغيير الإعدادات، ولا تُباع ولا
+  تُشارك مع أي جهة أخرى.
+- **خدمة إمكانية الوصول** تُستخدم أيضًا لعرض شاشة الرمز فوق إعدادات الهاتف ومثبّت التطبيقات حتى لا يستطيع الطفل
+  إيقاف وقت نور أو حذفه، وللرجوع إلى الشاشة الرئيسية عند انتهاء الوقت.
 - لا إعلانات، ولا تتبع، ولا نسخ احتياطي سحابي. إلغاء الربط يوقف كل الإرسال.
 - حذف التطبيق يحذف كل بياناته.
 

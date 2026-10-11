@@ -21,15 +21,21 @@ HOW IT WORKS
 • When time runs out, a lock period starts (for example 6 hours), then the budget refills.
 • Choose "selected apps" or "the whole phone" for the lock. Emergency calls always stay available.
 
-MADE FOR CHILDREN, DESIGNED WITH CARE
+KIND TO CHILDREN, DESIGNED WITH CARE
 • A friendly star and short, positive messages, with designs for ages 3–6, 7–9 and 10–12.
 • A daily schedule (study, play, meals, sleep) shapes the "Time's up" screen: "time to study", "time to sleep".
 • Bedtime: limited apps rest at night, even if time is left.
 • Educational apps you allow (Quran, stories, languages) stay open during the lock, and their time is free.
 
+LEARNING HUB: EARN TIME BY LEARNING
+When the time is up, your child can play 12 learning games right on the "Time's up" screen: math,
+Arabic and English letters and words, tracing, telling the time, memory, sorting, a little shop and more,
+with friendly recorded voices. Each won level can earn a few extra minutes, up to the daily limit you set
+(or turn rewards off).
+
 PROTECTION PARENTS CAN TRUST
 • A 4-digit parent PIN and your own security question protect the settings.
-• Nour Time can't be switched off or uninstalled without you.
+• Nour Time can't be switched off or uninstalled without your PIN.
 • If protection is weakened (for example Accessibility turned off), the limited apps stay blocked and you're told.
 
 FOLLOW FROM YOUR OWN PHONE (OPTIONAL)
@@ -45,9 +51,10 @@ PRIVACY FIRST
 
 Arabic and English, light and dark mode for parents.
 
-Nour Time uses the Accessibility service only to know which app is on the screen, so the time limit
-counts only in the apps you chose and the "Time's up" screen can appear over them. It reads no text or
-content from the screen.
+Nour Time uses the Accessibility service to know which apps are on the screen, so the time limit counts
+only in the apps you chose and the "Time's up" screen can appear over them; to cover the phone's Settings
+and the app installer with the PIN screen, so your child can't switch it off or uninstall it; and to go
+back to the home screen when the time is up. It reads no text or content from the screen.
 
 ## العربية (ar)
 
@@ -67,15 +74,21 @@ content from the screen.
 • عند انتهاء الرصيد تبدأ فترة قفل (مثلًا 6 ساعات)، ثم يتجدّد الرصيد.
 • اختر قفل «التطبيقات المحددة» أو «الهاتف كله». تبقى مكالمات الطوارئ متاحة دائمًا.
 
-مصمَّم للأطفال بعناية
+لطيف مع الأطفال ومصمَّم بعناية
 • نجمة ودودة ورسائل قصيرة إيجابية، بتصاميم للأعمار 3–6 و7–9 و10–12.
 • جدول يومي (مذاكرة، لعب، طعام، نوم) يحدّد رسالة شاشة «انتهى الوقت»: «وقت المذاكرة»، «وقت النوم».
 • وقت النوم: ترتاح التطبيقات المحددة ليلًا حتى لو بقي وقت.
 • التطبيقات التعليمية التي تسمح بها (القرآن، القصص، اللغات) تبقى مفتوحة أثناء القفل ووقتها مجاني.
 
+ركن التعلّم: وقت إضافي بالتعلّم
+عند انتهاء الوقت يستطيع طفلك أن يلعب 12 لعبة تعليمية على شاشة «انتهى الوقت» نفسها: الحساب، والحروف
+والكلمات بالعربية والإنجليزية، والكتابة بتتبّع الحروف، وقراءة الساعة، والذاكرة، والتصنيف، والمتجر الصغير
+وغيرها، بأصوات مسجّلة ودودة. كل مستوى يفوز به قد يمنحه دقائق إضافية، حتى الحد اليومي الذي تختاره (أو
+أوقف المكافآت).
+
 حماية يثق بها الأهل
 • رقم سري من 4 أرقام وسؤال أمان من اختيارك يحميان الإعدادات.
-• لا يمكن إيقاف وقت نور أو إلغاء تثبيته دونك.
+• لا يمكن إيقاف وقت نور أو إلغاء تثبيته دون رمزك.
 • إذا ضعفت الحماية (مثل إيقاف إمكانية الوصول) تبقى التطبيقات المحددة مقفلة ويصلك تنبيه.
 
 تابع من هاتفك (اختياري)
@@ -91,22 +104,25 @@ content from the screen.
 
 بالعربية والإنجليزية، مع الوضع الفاتح والداكن للأهل.
 
-يستخدم وقت نور خدمة إمكانية الوصول فقط لمعرفة التطبيق الظاهر على الشاشة، حتى يُحسب الوقت في
-التطبيقات التي اخترتها فقط وتظهر شاشة «انتهى الوقت» فوقها. لا يقرأ أي نص أو محتوى من الشاشة.
+يستخدم وقت نور خدمة إمكانية الوصول لمعرفة التطبيقات الظاهرة على الشاشة، حتى يُحسب الوقت في التطبيقات
+التي اخترتها فقط وتظهر شاشة «انتهى الوقت» فوقها؛ ولتغطية إعدادات الهاتف ومثبّت التطبيقات بشاشة الرمز حتى
+لا يستطيع طفلك إيقافه أو حذفه؛ وللرجوع إلى الشاشة الرئيسية عند انتهاء الوقت. لا يقرأ أي نص أو محتوى من الشاشة.
 
 ## Listing details
 
 - **Category:** Parenting. **Tags:** parental control, screen time.
 - **Contact:** [support email], [website with the privacy policy and `account-deletion.md`].
-- **Target audience / content:** adults (parents); the app is not listed as designed for children
-  (see `play-compliance.md`, Families notes). Content rating questionnaire: no violence, no user
-  content, no purchases, shares data only with the parent's own account.
+- **Target audience / content:** mixed audience: parents (18+) set the app up, and children (under 13)
+  see the "Time's up" screen and the Learning Hub games, so declare both age groups (see
+  `play-compliance.md`, Families notes). Content rating questionnaire: no violence, no user content, no
+  purchases (the Little Shop game uses pretend coins), shares data only with the parent's own account.
 - **Screenshots** (phone, both languages, light mode unless noted): Home with the budget ring;
-  Apps list; Schedule timeline; "Time's up" screen (7–9 design); parent's phone with a child's card;
-  child's phone detail with extra time; Settings in dark mode.
+  Apps list; Schedule timeline; "Time's up" screen (7–9 design); the Learning Hub and one game level;
+  parent's phone with a child's card; child's phone detail with extra time; Settings in dark mode.
 - **Feature graphic** (1024×500): the star on navy with "وقت نور · Nour Time".
 - **Accessibility demo video:** required with the Accessibility declaration; show the disclosure, turning
-  the service on, a limited app counting down, and the "Time's up" screen appearing over it.
+  the service on, a limited app counting down, the "Time's up" screen appearing over it, and the
+  Settings app being covered by the PIN screen.
 
 ## Character counts
 
@@ -116,4 +132,4 @@ Checked with Python (`len()` on each field) when this file was written:
 |---|---|---|---|
 | App name | 29 | 24 | 30 |
 | Short description | 79 | 62 | 80 |
-| Full description | 2,278 | 1,898 | 4,000 |
+| Full description | 2,828 | 2,397 | 4,000 |
