@@ -2,13 +2,13 @@ package com.nourtime.app.service.blocking
 
 import android.content.Context
 import android.media.AudioManager
-import android.os.Build
 import android.telecom.TelecomManager
 import android.util.Log
 import com.nourtime.app.core.blocking.BlockDecision
 import com.nourtime.app.core.blocking.BlockInput
 import com.nourtime.app.core.blocking.BlockPolicy
 import com.nourtime.app.core.blocking.BlockReason
+import com.nourtime.app.core.blocking.ChildDismissal
 import com.nourtime.app.core.blocking.ParentPass
 import com.nourtime.app.core.blocking.ScreenOffTimer
 import com.nourtime.app.core.detection.ForegroundAppTracker
@@ -70,7 +70,7 @@ class BlockCoordinator @Inject constructor(
     )
 
     /** What the child dismissed with "OK"; the screen stays hidden until what's on screen changes. */
-    @Volatile private var dismissedFor: Pair<String?, Set<String>>? = null
+    private val dismissal = ChildDismissal()
     @Volatile private var lastInputs: Inputs? = null
 
     suspend fun run() {
@@ -100,6 +100,7 @@ class BlockCoordinator @Inject constructor(
         val bedtime = activeBedtime != null
         val timeUp = status?.phase == TimerPhase.LOCKED
 
+        val audioMode = audioMode()
         val decision = BlockPolicy.decide(
             BlockInput(
                 foreground = fg,
@@ -112,14 +113,14 @@ class BlockCoordinator @Inject constructor(
                 ownPackage = context.packageName,
                 devicePass = pass.deviceActive(),
                 fullPass = pass.fullActive(),
-                phoneCallActive = phoneInUse(fg.foreground),
+                phoneRinging = audioMode == AudioManager.MODE_RINGTONE || audioMode == MODE_CALL_SCREENING,
+                inCall = audioMode == AudioManager.MODE_IN_CALL,
+                dialerPackage = runCatching { telecom.defaultDialerPackage }.getOrNull(),
                 allowedDuringLock = s.allowedDuringLock,
             ),
         )
 
-        val key = fg.foreground to fg.visible
-        if (decision == null) dismissedFor = null
-        val hidden = decision != null && !decision.wholeDevice && dismissedFor == key
+        val hidden = dismissal.isHidden(decision, fg, s.limitedApps, clock.elapsedRealtime())
 
         val screen = if (decision == null || hidden) null else LockScreenState(
             decision = decision,
@@ -170,14 +171,8 @@ class BlockCoordinator @Inject constructor(
     private val audioManager by lazy { context.getSystemService(AudioManager::class.java) }
     private val telecom by lazy { context.getSystemService(TelecomManager::class.java) }
 
-    /** Ringing, in a call, or the phone app (possibly a third-party default dialer) is open. No permission needed. */
-    private fun phoneInUse(foreground: String?): Boolean {
-        val mode = runCatching { audioManager.mode }.getOrDefault(AudioManager.MODE_NORMAL)
-        if (mode == AudioManager.MODE_RINGTONE || mode == AudioManager.MODE_IN_CALL) return true
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && mode == AudioManager.MODE_CALL_SCREENING) return true
-        val dialer = runCatching { telecom.defaultDialerPackage }.getOrNull()
-        return foreground != null && foreground == dialer
-    }
+    /** Ringing, call screening or in a call. No permission needed. */
+    private fun audioMode(): Int = runCatching { audioManager.mode }.getOrDefault(AudioManager.MODE_NORMAL)
 
     /** Launchable allowed apps, by name. Labels and icons are cached by [InstalledAppsRepository]. */
     private suspend fun allowedApps(packages: Set<String>): List<AllowedApp> = packages
@@ -188,7 +183,7 @@ class BlockCoordinator @Inject constructor(
     /** The child tapped "OK": go home and keep the screen hidden while nothing changes. */
     private fun onChildDismiss() {
         val fg = lastInputs?.fg ?: return
-        dismissedFor = fg.foreground to fg.visible
+        dismissal.dismiss(fg, clock.elapsedRealtime())
         overlay.goHome()
     }
 
@@ -210,5 +205,7 @@ class BlockCoordinator @Inject constructor(
     private companion object {
         const val TAG = "BlockCoordinator"
         const val TICK_MS = 1_000L
+        /** `AudioManager.MODE_CALL_SCREENING` (API 30); older phones never report it. */
+        const val MODE_CALL_SCREENING = 4
     }
 }

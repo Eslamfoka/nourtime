@@ -91,10 +91,55 @@ class BlockPolicyTest {
 
     @Test
     fun `phone calls are never covered`() {
-        val ringing = input(on(youtube), lockType = LockType.WHOLE_DEVICE, timeUp = true).copy(phoneCallActive = true)
+        val ringing = input(on(youtube), lockType = LockType.WHOLE_DEVICE, timeUp = true).copy(phoneRinging = true)
         assertNull(BlockPolicy.decide(ringing))
         assertNull(BlockPolicy.decide(input(on("com.google.android.dialer"), lockType = LockType.WHOLE_DEVICE, timeUp = true)))
         assertNull(BlockPolicy.decide(input(on("com.samsung.android.incallui"), lockType = LockType.WHOLE_DEVICE, bedtime = true)))
+    }
+
+    // Bypasses found in the 2026-10-11 review: a limited app kept playing in picture in picture
+    // while Nour Time or the phone app was in front, and a call unlocked every app.
+
+    private val dialer = "com.google.android.dialer"
+    private val timeUpBlock = BlockDecision(BlockReason.TIME_UP, wholeDevice = false, needsSecurityAnswer = true)
+
+    @Test
+    fun `a limited app in picture in picture over Nour Time is blocked`() {
+        assertEquals(timeUpBlock, BlockPolicy.decide(input(on("com.nourtime.app", youtube), timeUp = true)))
+    }
+
+    @Test
+    fun `a limited app in picture in picture over the phone app is blocked`() {
+        assertEquals(timeUpBlock, BlockPolicy.decide(input(on(dialer, youtube), timeUp = true)))
+    }
+
+    @Test
+    fun `a limited app over the default third-party dialer is blocked`() {
+        val custom = "com.example.dialer"
+        val alone = input(on(custom), LockType.WHOLE_DEVICE, timeUp = true).copy(dialerPackage = custom)
+        assertNull(BlockPolicy.decide(alone))
+        val withVideo = input(on(custom, youtube), timeUp = true).copy(dialerPackage = custom)
+        assertEquals(timeUpBlock, BlockPolicy.decide(withVideo))
+    }
+
+    @Test
+    fun `during a call the call screen stays usable`() {
+        assertNull(BlockPolicy.decide(input(on("com.samsung.android.incallui", youtube), timeUp = true).copy(inCall = true)))
+    }
+
+    @Test
+    fun `during a call a limited app is still blocked`() {
+        assertEquals(timeUpBlock, BlockPolicy.decide(input(on(youtube), timeUp = true).copy(inCall = true)))
+    }
+
+    @Test
+    fun `during a call the phone's settings stay protected`() {
+        assertEquals(BlockReason.SYSTEM_SETTINGS, BlockPolicy.decide(input(on("com.android.settings")).copy(inCall = true))?.reason)
+    }
+
+    @Test
+    fun `during a call the whole phone lock lets the child get back to the call`() {
+        assertNull(BlockPolicy.decide(input(on(launcher), LockType.WHOLE_DEVICE, timeUp = true).copy(inCall = true)))
     }
 
     @Test

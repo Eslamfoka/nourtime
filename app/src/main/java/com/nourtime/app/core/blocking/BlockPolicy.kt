@@ -35,8 +35,12 @@ data class BlockInput(
     val ownPackage: String,
     val devicePass: Boolean,
     val fullPass: Boolean,
-    /** The phone is ringing or in a call: nothing is covered, so the child can answer. */
-    val phoneCallActive: Boolean = false,
+    /** The phone is ringing: nothing is covered, so the child can answer. */
+    val phoneRinging: Boolean = false,
+    /** A call is in progress: the call screen stays usable. */
+    val inCall: Boolean = false,
+    /** The default phone app, which may be a third-party dialer. */
+    val dialerPackage: String? = null,
     /** Educational apps the parent allows during lock periods and bedtime (never limited). */
     val allowedDuringLock: Set<String> = emptySet(),
 )
@@ -78,20 +82,27 @@ object BlockPolicy {
         val fg = input.foreground
         // Never draw over the lock screen: emergency calls must stay reachable.
         if (!fg.screen.usable) return null
-        // Nor over a ringing phone or a call in progress.
-        if (input.phoneCallActive || fg.foreground in PHONE_PACKAGES) return null
-        // Nour Time's own screens are the parent's, behind the PIN.
-        if (fg.foreground == input.ownPackage) return null
+        // Nor over a ringing phone, so the child can answer.
+        if (input.phoneRinging) return null
 
         val lockPeriod = input.timeUp || input.bedtime
         val lockReason = if (input.bedtime) BlockReason.BEDTIME else BlockReason.TIME_UP
+        val onScreen = fg.visible + listOfNotNull(fg.foreground)
 
         if (input.protectSystemSettings && fg.foreground in SYSTEM_SETTINGS_PACKAGES) {
             val allowed = input.fullPass || (input.devicePass && !lockPeriod)
             if (!allowed) return BlockDecision(BlockReason.SYSTEM_SETTINGS, wholeDevice = false, needsSecurityAnswer = lockPeriod)
         }
 
-        val onScreen = fg.visible + listOfNotNull(fg.foreground)
+        val phoneInFront = fg.foreground in PHONE_PACKAGES || (fg.foreground != null && fg.foreground == input.dialerPackage)
+        // The call screen stays usable during a call; the whole-phone lock waits until it ends, so the
+        // child can always get back to the call.
+        if (input.inCall && phoneInFront) return null
+        // Nour Time's own screens (the parent's, behind the PIN) and the phone app are never covered for
+        // themselves, only for a limited app still on screen next to them (picture in picture, split screen).
+        if (input.inCall || phoneInFront || fg.foreground == input.ownPackage) {
+            return limitedAppBlock(input, onScreen, lockPeriod, lockReason)
+        }
 
         // Whole-phone lock: only allowed apps stay usable, and only while nothing else shares the
         // screen (split screen or picture-in-picture with another app would be a way around it).
@@ -100,12 +111,15 @@ object BlockPolicy {
             return BlockDecision(lockReason, wholeDevice = true, needsSecurityAnswer = false)
         }
 
+        return limitedAppBlock(input, onScreen, lockPeriod, lockReason)
+    }
+
+    /** A limited app anywhere on screen, during a lock period or while detection is degraded. */
+    private fun limitedAppBlock(input: BlockInput, onScreen: Set<String>, lockPeriod: Boolean, lockReason: BlockReason): BlockDecision? {
         val limitedOnScreen = onScreen.any { it in input.limitedApps }
-        if (limitedOnScreen && (lockPeriod || input.protectionDegraded) && !input.fullPass) {
-            val reason = if (lockPeriod) lockReason else BlockReason.PROTECTION
-            return BlockDecision(reason, wholeDevice = false, needsSecurityAnswer = lockPeriod)
-        }
-        return null
+        if (!limitedOnScreen || !(lockPeriod || input.protectionDegraded) || input.fullPass) return null
+        val reason = if (lockPeriod) lockReason else BlockReason.PROTECTION
+        return BlockDecision(reason, wholeDevice = false, needsSecurityAnswer = lockPeriod)
     }
 }
 
