@@ -42,6 +42,16 @@ class ChildDismissalTest {
     }
 
     @Test
+    fun `focus moving between the apps already on screen keeps the screen hidden`() {
+        // Seen on the emulator: focus jumped between the PiP window and the home screen about twice a
+        // second, and the lock flickered with it during the grace period.
+        val d = ChildDismissal(graceMs = 15_000)
+        d.dismiss(on(youtube, launcher), nowElapsed = 0)
+        assertTrue(d.isHidden(timeUp, on(launcher, youtube), limited, nowElapsed = 500))
+        assertTrue(d.isHidden(timeUp, on(youtube, launcher), limited, nowElapsed = 1_000))
+    }
+
+    @Test
     fun `a whole phone lock is never hidden`() {
         val d = ChildDismissal(graceMs = 15_000)
         d.dismiss(on(launcher), nowElapsed = 0)
