@@ -5,8 +5,10 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceTimeBy
@@ -47,7 +49,8 @@ class SettingsBackupTest {
         val first = SettingsBackup.mainStore(backup, firstScope) { mainFile }
         first.edit { it[pin] = "hash" }
         backup.save(first.data.first())
-        firstScope.cancel()
+        // DataStore frees the file only once its scope has finished, not when cancel() returns.
+        firstScope.coroutineContext[Job]!!.cancelAndJoin()
 
         mainFile.writeBytes(byteArrayOf(1, 2, 3, 4, 5, 6, 7))
         assertEquals("hash", mainStore().data.first()[pin])

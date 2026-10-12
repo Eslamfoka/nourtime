@@ -43,6 +43,11 @@
             android:name="com.google.android.gms.isMonitoringTool"
             android:value="child_monitoring" />
 
+        <!-- Crash reports only from connected phones (CrashReporting); off until then. -->
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -6,6 +6,7 @@ import com.nourtime.app.core.locale.AppLocales
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.nourtime.app.core.crash.CrashReportingController
 import com.nourtime.app.data.backup.SettingsBackup
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CancellationException
@@ -20,6 +21,7 @@ class NourTimeApp : Application() {
 
     @Inject lateinit var settingsStore: DataStore<Preferences>
     @Inject lateinit var settingsBackup: SettingsBackup
+    @Inject lateinit var crashReporting: CrashReportingController
 
     override fun onCreate() {
         super.onCreate()
@@ -29,6 +31,10 @@ class NourTimeApp : Application() {
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
             runCatching { settingsBackup.mirror(settingsStore) }
                 .onFailure { if (it !is CancellationException) Log.w("NourTimeApp", "settings backup stopped", it) }
+        }
+        CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
+            runCatching { crashReporting.run() }
+                .onFailure { if (it !is CancellationException) Log.w("NourTimeApp", "crash reporting setup stopped", it) }
         }
     }
 
