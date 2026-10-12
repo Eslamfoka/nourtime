@@ -37,15 +37,23 @@ object SettingsScreens {
                 context.packageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName
             }.getOrNull()
         }
-        // Never the home screen or System UI (a launcher that also opens app info would lock the home
-        // screen), nor the system chooser ("android"), the phone app or Nour Time itself.
-        val homes = runCatching {
+        val defaultHome = runCatching {
             @Suppress("DEPRECATION")
-            context.packageManager.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME), 0)
-                .map { it.activityInfo.packageName }
-        }.getOrDefault(emptyList())
-        val screens = found.toSet() - own - "android" - "com.android.systemui" - BlockPolicy.PHONE_PACKAGES - homes.toSet()
+            context.packageManager.resolveActivity(
+                Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME),
+                PackageManager.MATCH_DEFAULT_ONLY,
+            )?.activityInfo?.packageName
+        }.getOrNull()
+        val screens = filter(found, own, defaultHome)
         Log.i("SettingsScreens", "covered on this phone: $screens")
         return screens
     }
+
+    /**
+     * Never the default home screen or System UI (a launcher that also opens app info would lock the
+     * home screen), nor the system chooser ("android"), the phone app or Nour Time itself. Only the
+     * default home: Android's Settings declares a fallback home screen of its own.
+     */
+    fun filter(found: Collection<String>, own: String, defaultHome: String?): Set<String> =
+        found.toSet() - own - "android" - "com.android.systemui" - BlockPolicy.PHONE_PACKAGES - setOfNotNull(defaultHome)
 }
