@@ -1,5 +1,6 @@
 package com.nourtime.app.service.timer
 
+import com.nourtime.app.data.protection.ProtectionAlert
 import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
@@ -24,6 +25,7 @@ object ProtectionNotifications {
     private const val ALERT_ID = 2
     private const val ADMIN_ALERT_ID = 3
     private const val NEW_APPS_ID = 4
+    private const val PROTECTION_ALERT_ID = 5
     private const val CHANNEL_STATUS = "protection_status"
     private const val CHANNEL_ALERTS = "protection_alerts"
 
@@ -96,6 +98,19 @@ object ProtectionNotifications {
         notify(context, NEW_APPS_ID, n)
     }
 
+    /** Protection was off (a restart without Nour Time, another user) or can be turned off (USB debugging). */
+    fun showProtectionAlert(context: Context, alert: ProtectionAlert) {
+        val text = context.getString(alert.message)
+        val n = NotificationCompat.Builder(context, CHANNEL_ALERTS)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(context.getString(R.string.status_degraded_title))
+            .setContentText(text)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(text))
+            .setContentIntent(openApp(context))
+            .build()
+        notify(context, PROTECTION_ALERT_ID + alert.ordinal, n)
+    }
+
     fun clearDegraded(context: Context) {
         NotificationManagerCompat.from(context).cancel(ALERT_ID)
     }
@@ -116,3 +131,11 @@ object ProtectionNotifications {
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
     )
 }
+
+/** What the parent reads about [ProtectionAlert], on both phones. */
+val ProtectionAlert.message: Int
+    get() = when (this) {
+        ProtectionAlert.USB_DEBUGGING -> R.string.alert_usb_debugging
+        ProtectionAlert.MISSED_RESTART -> R.string.alert_missed_restart
+        ProtectionAlert.OTHER_USER -> R.string.alert_other_user
+    }

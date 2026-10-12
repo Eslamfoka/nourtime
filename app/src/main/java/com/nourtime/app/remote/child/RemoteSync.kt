@@ -21,6 +21,7 @@ import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
 import com.nourtime.app.core.timer.TimerStatus
 import com.nourtime.app.data.apps.InstalledAppsRepository
+import com.nourtime.app.data.protection.ProtectionAlertsRepository
 import com.nourtime.app.data.learning.LearningRepository
 import com.nourtime.app.data.settings.ParentSettingsRepository
 import com.nourtime.app.data.usage.UsageRepository
@@ -70,6 +71,7 @@ class RemoteSync @Inject constructor(
     private val engine: TimeEngine,
     private val settings: ParentSettingsRepository,
     private val learning: LearningRepository,
+    private val protectionAlerts: ProtectionAlertsRepository,
     private val usage: UsageRepository,
     private val apps: InstalledAppsRepository,
     private val trustedClock: TrustedClock,
@@ -96,6 +98,7 @@ class RemoteSync @Inject constructor(
                         launch { uploadUsage(device) }
                         launch { uploadApps(device) }
                         launch { uploadLearning(device) }
+                        launch { uploadAlerts(device) }
                         launch { followRequests(device) }
                     }
                 }
@@ -282,6 +285,11 @@ class RemoteSync @Inject constructor(
     /** The Learning Hub's minutes box and today's earned minutes, whenever they change. */
     private suspend fun uploadLearning(device: DocumentReference) {
         learning.state.map(RemoteLearning::of).distinctUntilChanged().collect { device.update("learning", it.toMap()) }
+    }
+
+    /** Ways protection was off or can be turned off, so the parent hears about them. */
+    private suspend fun uploadAlerts(device: DocumentReference) {
+        protectionAlerts.alerts.collect { device.update("alerts", it.toMap()) }
     }
 
     /** The launchable apps, so the parent can choose limited and allowed apps remotely. */

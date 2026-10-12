@@ -14,6 +14,9 @@ import com.nourtime.app.data.apps.InstalledAppsRepository
 import com.nourtime.app.data.apps.NewApps
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.onStart
+import android.provider.Settings
+import com.nourtime.app.data.protection.ProtectionAlert
+import com.nourtime.app.data.protection.ProtectionAlertsRepository
 import android.util.Log
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
@@ -71,6 +74,7 @@ class TimerService : Service() {
     @Inject lateinit var remoteSync: Lazy<RemoteSync>
     @Inject lateinit var deviceIdentity: DeviceIdentity
     @Inject lateinit var apps: InstalledAppsRepository
+    @Inject lateinit var alerts: ProtectionAlertsRepository
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -89,6 +93,15 @@ class TimerService : Service() {
     private val packageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             appsChanged.tryEmit(Unit)
+        }
+    }
+
+    // Sent to this user's running apps when the phone switches to another user (guest, second account).
+    private val userReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            Log.w(TAG, "switched to another user")
+            scope.launch { alerts.recordOtherUser(System.currentTimeMillis()) }
+            ProtectionNotifications.showProtectionAlert(this@TimerService, ProtectionAlert.OTHER_USER)
         }
     }
 
@@ -120,6 +133,12 @@ class TimerService : Service() {
             IntentFilter(Intent.ACTION_PACKAGE_ADDED).apply { addDataScheme("package") },
             ContextCompat.RECEIVER_EXPORTED,
         )
+        ContextCompat.registerReceiver(
+            this,
+            userReceiver,
+            IntentFilter(Intent.ACTION_USER_BACKGROUND),
+            ContextCompat.RECEIVER_EXPORTED,
+        )
         tracker.refreshScreen()
         if (!tracker.accessibilityConnected) tracker.onAccessibilityDisconnected(usageStats.available)
 
@@ -130,6 +149,7 @@ class TimerService : Service() {
         scope.launch { resilient("blocking") { blocking.run() } }
         scope.launch { resilient("stats cleanup") { runStatsCleanup() } }
         scope.launch { resilient("new apps") { runNewApps() } }
+        scope.launch { resilient("protection alerts") { runProtectionAlerts() } }
         // Phase 2: only starts once this phone is paired with a parent's phone.
         scope.launch {
             deviceIdentity.pairedOwner.filterNotNull().first()
@@ -161,6 +181,7 @@ class TimerService : Service() {
     override fun onDestroy() {
         unregisterReceiver(screenReceiver)
         unregisterReceiver(packageReceiver)
+        unregisterReceiver(userReceiver)
         runBlocking { withContext(NonCancellable) { engine.flush() } }
         scope.cancel()
         super.onDestroy()
@@ -258,6 +279,28 @@ class TimerService : Service() {
             launchers + listOfNotNull(dialer)
     }
 
+    /**
+     * A restart Nour Time didn't run in (safe mode: it can't be blocked, but it can be noticed) and
+     * USB debugging, which lets a computer switch Nour Time off.
+     */
+    private suspend fun runProtectionAlerts() {
+        val boot = Settings.Global.getInt(contentResolver, Settings.Global.BOOT_COUNT, -1)
+        if (boot >= 0 && alerts.recordBoot(boot, System.currentTimeMillis())) {
+            Log.w(TAG, "a restart without Nour Time (boot $boot)")
+            ProtectionNotifications.showProtectionAlert(this, ProtectionAlert.MISSED_RESTART)
+        }
+        var usbBefore = alerts.alerts.first().usbDebugging
+        while (true) {
+            val usb = Settings.Global.getInt(contentResolver, Settings.Global.ADB_ENABLED, 0) == 1
+            if (usb != usbBefore) {
+                alerts.setUsbDebugging(usb)
+                if (usb) ProtectionNotifications.showProtectionAlert(this, ProtectionAlert.USB_DEBUGGING)
+                usbBefore = usb
+            }
+            delay(USB_CHECK_MS)
+        }
+    }
+
     /** Keeps the stats database small: only recent days are shown. */
     private suspend fun runStatsCleanup() {
         while (true) {
@@ -295,6 +338,7 @@ class TimerService : Service() {
         private const val RESTART_DELAY_MS = 5_000L
         private const val STATS_KEEP_DAYS = 30L
         private const val CLEANUP_EVERY_MS = 12 * 60 * 60_000L
+        private const val USB_CHECK_MS = 60_000L
 
         /** Safe to call from the foreground activity, the Accessibility service and boot. */
         fun start(context: Context) {

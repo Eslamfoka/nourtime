@@ -17,6 +17,7 @@ import com.nourtime.app.remote.RemotePaths
 import com.nourtime.app.remote.child.CommandQueue
 import com.nourtime.app.remote.child.toRequest
 import com.nourtime.app.remote.model.AskPolicy
+import com.nourtime.app.data.protection.ProtectionAlerts
 import com.nourtime.app.remote.model.RemoteLearning
 import com.nourtime.app.remote.model.RemoteSettings
 import com.nourtime.app.remote.model.RemoteStatus
@@ -46,6 +47,8 @@ data class ChildDevice(
     val askingAtMs: Long? = null,
     /** The Learning Hub's minutes box and today's earned minutes; null until the child's phone uploads them. */
     val learning: RemoteLearning? = null,
+    /** Ways protection was off or can be turned off on the child's phone. */
+    val alerts: ProtectionAlerts = ProtectionAlerts(),
 )
 
 /**
@@ -307,6 +310,8 @@ class ParentDevices @Inject constructor(
         val statusTime = (statusMap?.get("updatedAt") as? Timestamp)?.toDate()?.time
         @Suppress("UNCHECKED_CAST")
         val learningMap = doc.get("learning") as? Map<String, Any?>
+        @Suppress("UNCHECKED_CAST")
+        val alertsMap = doc.get("alerts") as? Map<String, Any?>
         return ChildDevice(
             id = doc.id,
             name = doc.getString("name").orEmpty(),
@@ -315,6 +320,7 @@ class ParentDevices @Inject constructor(
             settingsRev = (settingsMap?.get("rev") as? Number)?.toLong() ?: 0,
             askingAtMs = doc.getTimestamp("askingAt")?.toDate()?.time,
             learning = RemoteLearning.fromMap(learningMap),
+            alerts = ProtectionAlerts.fromMap(alertsMap),
         )
     }
 

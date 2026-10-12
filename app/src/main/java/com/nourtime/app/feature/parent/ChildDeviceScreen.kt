@@ -40,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
+import com.nourtime.app.service.timer.message
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.FullScreenDialog
 import com.nourtime.app.core.designsystem.component.NourCard
@@ -216,6 +217,12 @@ fun ChildDeviceScreen(
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     Icon(Icons.Rounded.WarningAmber, contentDescription = null, tint = NourTheme.colors.danger, modifier = Modifier.size(18.dp))
                     Text(stringResource(R.string.parent_protection_warning), style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+            d.alerts.visible(now).forEach { alert ->
+                Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Icon(Icons.Rounded.WarningAmber, contentDescription = null, tint = NourTheme.colors.danger, modifier = Modifier.size(18.dp))
+                    Text(stringResource(alert.message), style = MaterialTheme.typography.bodyMedium)
                 }
             }
         }
