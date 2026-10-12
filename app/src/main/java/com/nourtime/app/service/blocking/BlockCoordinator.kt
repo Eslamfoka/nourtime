@@ -144,6 +144,7 @@ class BlockCoordinator @Inject constructor(
             } else {
                 emptyList()
             },
+            inCall = audioMode == AudioManager.MODE_IN_CALL,
         )
         val turnScreenOff = screenOff.update(
             nowElapsed = clock.elapsedRealtime(),

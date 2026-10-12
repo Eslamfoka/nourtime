@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Apps
+import androidx.compose.material.icons.rounded.Call
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.MoreTime
@@ -79,6 +80,7 @@ fun TimeUpScreen(
     ask: AskState? = null,
     onAsk: () -> Unit = {},
     onLearn: (() -> Unit)? = null,
+    onBackToCall: (() -> Unit)? = null,
 ) {
     val style = styleFor(state.template).forAge(state.ageGroup)
     val text = if (style.dark) NourPalette.Cream else NourPalette.Navy
@@ -109,6 +111,7 @@ fun TimeUpScreen(
                         AgeGroup.AGES_10_12 -> OlderLayout(state, style, text)
                     }
                 }
+                if (onBackToCall != null) BackToCallButton(onBackToCall)
                 if (onLearn != null) LearnButton(state, onLearn)
                 if (ask != null) AskRow(ask, state, text, onAsk)
                 if (state.allowedApps.isNotEmpty()) AllowedAppsRow(state, text, onOpenApp)
@@ -323,6 +326,28 @@ private fun LearnButton(state: LockScreenState, onClick: () -> Unit) {
 @Composable
 private fun AskMessage(message: String, text: Color) {
     Text(message, style = MaterialTheme.typography.titleMedium, color = text, textAlign = TextAlign.Center)
+}
+
+/** During a call the lock screen covers the call's notification, so it offers the way back itself. */
+@Composable
+private fun BackToCallButton(onClick: () -> Unit) {
+    Surface(
+        onClick = onClick,
+        shape = CircleShape,
+        color = NourTheme.colors.success,
+        contentColor = NourPalette.Navy,
+        modifier = Modifier.fillMaxWidth().widthIn(max = 480.dp).heightIn(min = 64.dp).padding(bottom = 12.dp),
+    ) {
+        Row(
+            Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Icon(Icons.Rounded.Call, contentDescription = null)
+            Spacer(Modifier.size(8.dp))
+            Text(stringResource(R.string.tu_back_to_call), style = MaterialTheme.typography.titleLarge)
+        }
+    }
 }
 
 @Composable

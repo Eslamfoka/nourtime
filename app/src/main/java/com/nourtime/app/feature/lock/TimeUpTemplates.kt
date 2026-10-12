@@ -40,6 +40,8 @@ data class LockScreenState(
     val soundEnabled: Boolean,
     /** Apps the parent allows during lock periods and bedtime, offered as buttons on the screen. */
     val allowedApps: List<AllowedApp> = emptyList(),
+    /** A call is in progress: the screen offers "Back to the call", since it covers the call's notification. */
+    val inCall: Boolean = false,
 )
 
 data class AllowedApp(val packageName: String, val label: String, val icon: ImageBitmap?)

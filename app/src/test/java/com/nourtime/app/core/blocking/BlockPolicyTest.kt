@@ -91,10 +91,28 @@ class BlockPolicyTest {
 
     @Test
     fun `phone calls are never covered`() {
+        // Nour Time's lock screen is drawn above the notifications, so it steps aside while the phone
+        // rings: the incoming call can only be answered from its notification.
         val ringing = input(on(youtube), lockType = LockType.WHOLE_DEVICE, timeUp = true).copy(phoneRinging = true)
         assertNull(BlockPolicy.decide(ringing))
         assertNull(BlockPolicy.decide(input(on("com.google.android.dialer"), lockType = LockType.WHOLE_DEVICE, timeUp = true)))
         assertNull(BlockPolicy.decide(input(on("com.samsung.android.incallui"), lockType = LockType.WHOLE_DEVICE, bedtime = true)))
+    }
+
+    // Bypasses found in the 2026-10-12 audit: a ringing phone uncovered Settings too (a call from
+    // another phone gave the child ~30 s to force-stop Nour Time), and a call turned a whole-phone lock
+    // into a limited-apps lock (calling voicemail was enough).
+
+    @Test
+    fun `a ringing phone doesn't uncover the phone's settings`() {
+        val ringing = input(on("com.android.settings")).copy(phoneRinging = true)
+        assertEquals(BlockReason.SYSTEM_SETTINGS, BlockPolicy.decide(ringing)?.reason)
+    }
+
+    @Test
+    fun `a ringing phone doesn't uncover the app installer`() {
+        val ringing = input(on("com.google.android.packageinstaller"), timeUp = true).copy(phoneRinging = true)
+        assertEquals(BlockReason.SYSTEM_SETTINGS, BlockPolicy.decide(ringing)?.reason)
     }
 
     // Bypasses found in the 2026-10-11 review: a limited app kept playing in picture in picture
@@ -138,8 +156,17 @@ class BlockPolicyTest {
     }
 
     @Test
-    fun `during a call the whole phone lock lets the child get back to the call`() {
-        assertNull(BlockPolicy.decide(input(on(launcher), LockType.WHOLE_DEVICE, timeUp = true).copy(inCall = true)))
+    fun `during a call the whole phone lock still covers other apps`() {
+        // The lock screen offers "Back to the call" instead (LockScreenState.inCall).
+        val chrome = input(on("com.android.chrome"), LockType.WHOLE_DEVICE, timeUp = true).copy(inCall = true)
+        assertEquals(true, BlockPolicy.decide(chrome)?.wholeDevice)
+        val home = input(on(launcher), LockType.WHOLE_DEVICE, bedtime = true).copy(inCall = true)
+        assertEquals(true, BlockPolicy.decide(home)?.wholeDevice)
+    }
+
+    @Test
+    fun `during a call the dialer stays usable under a whole phone lock`() {
+        assertNull(BlockPolicy.decide(input(on(dialer), LockType.WHOLE_DEVICE, timeUp = true).copy(inCall = true)))
     }
 
     @Test

@@ -9,6 +9,7 @@ import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Build
+import android.telecom.TelecomManager
 import android.util.Log
 import android.view.KeyEvent
 import android.window.OnBackInvokedCallback
@@ -162,6 +163,15 @@ class LockOverlay @Inject constructor(
         val intent = context.packageManager.getLaunchIntentForPackage(packageName) ?: return
         runCatching { context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
             .onFailure { Log.w(TAG, "Couldn't open $packageName", it) }
+    }
+
+    /** Opens the phone app, which shows the call in progress (the phone's screens are never covered). */
+    fun openCall() {
+        val context: Context = accessibility ?: appContext
+        val dialer = runCatching { context.getSystemService(TelecomManager::class.java).defaultDialerPackage }.getOrNull()
+        val intent = dialer?.let { context.packageManager.getLaunchIntentForPackage(it) } ?: Intent(Intent.ACTION_DIAL)
+        runCatching { context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+            .onFailure { Log.w(TAG, "Couldn't open the phone app", it) }
     }
 
     /** Sends the child to the home screen, away from the limited app. */
@@ -338,6 +348,7 @@ class LockOverlay @Inject constructor(
                                         ask = ask,
                                         onAsk = { scope.launch { runCatching { timeRequests.ask() } } },
                                         onLearn = if (canLearn) ({ openHub(current, language) }) else null,
+                                        onBackToCall = if (current.inCall) ::openCall else null,
                                     )
                                 }
                             }

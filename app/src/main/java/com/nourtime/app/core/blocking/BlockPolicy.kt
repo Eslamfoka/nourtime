@@ -35,7 +35,7 @@ data class BlockInput(
     val ownPackage: String,
     val devicePass: Boolean,
     val fullPass: Boolean,
-    /** The phone is ringing: nothing is covered, so the child can answer. */
+    /** The phone is ringing: nothing but Settings is covered, so the child can answer. */
     val phoneRinging: Boolean = false,
     /** A call is in progress: the call screen stays usable. */
     val inCall: Boolean = false,
@@ -82,8 +82,6 @@ object BlockPolicy {
         val fg = input.foreground
         // Never draw over the lock screen: emergency calls must stay reachable.
         if (!fg.screen.usable) return null
-        // Nor over a ringing phone, so the child can answer.
-        if (input.phoneRinging) return null
 
         val lockPeriod = input.timeUp || input.bedtime
         val lockReason = if (input.bedtime) BlockReason.BEDTIME else BlockReason.TIME_UP
@@ -95,12 +93,16 @@ object BlockPolicy {
         }
 
         val phoneInFront = fg.foreground in PHONE_PACKAGES || (fg.foreground != null && fg.foreground == input.dialerPackage)
-        // The call screen stays usable during a call; the whole-phone lock waits until it ends, so the
-        // child can always get back to the call.
+        // Nour Time's screen is drawn above the notifications, so it steps aside while the phone rings
+        // (the call can only be answered from its notification). Settings stay covered (above): a call
+        // from another phone mustn't give the child time to switch Nour Time off.
+        if (input.phoneRinging) return null
+        // During a call only the phone's own screens are exempt; elsewhere the lock screen offers
+        // "Back to the call" (LockScreenState.inCall).
         if (input.inCall && phoneInFront) return null
         // Nour Time's own screens (the parent's, behind the PIN) and the phone app are never covered for
         // themselves, only for a limited app still on screen next to them (picture in picture, split screen).
-        if (input.inCall || phoneInFront || fg.foreground == input.ownPackage) {
+        if (phoneInFront || fg.foreground == input.ownPackage) {
             return limitedAppBlock(input, onScreen, lockPeriod, lockReason)
         }
 
