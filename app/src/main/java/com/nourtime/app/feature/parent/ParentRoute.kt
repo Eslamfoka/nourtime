@@ -5,6 +5,7 @@ import android.text.format.DateUtils
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,11 +16,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.MoreTime
 import androidx.compose.material.icons.rounded.PhoneAndroid
 import androidx.compose.material.icons.rounded.WarningAmber
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -141,7 +144,7 @@ class ParentViewModel @Inject constructor(
 enum class DeletionState { IDLE, DELETING, FAILED }
 
 @Composable
-fun ParentRoute(viewModel: ParentViewModel = hiltViewModel()) {
+fun ParentRoute(onBackToModeChoice: () -> Unit, viewModel: ParentViewModel = hiltViewModel()) {
     val user by viewModel.user.collectAsStateWithLifecycle()
     val selected by viewModel.selected.collectAsStateWithLifecycle()
     val devices by viewModel.devices.collectAsStateWithLifecycle()
@@ -152,7 +155,10 @@ fun ParentRoute(viewModel: ParentViewModel = hiltViewModel()) {
     }
     val current = user
     when {
-        current == null -> SignInScreen(viewModel)
+        current == null -> {
+            BackHandler(onBack = onBackToModeChoice)
+            SignInScreen(viewModel, onBackToModeChoice)
+        }
         selected != null -> {
             BackHandler { viewModel.open(null) }
             ChildDeviceScreen(deviceId = selected!!, user = current, onBack = { viewModel.open(null) })
@@ -162,35 +168,40 @@ fun ParentRoute(viewModel: ParentViewModel = hiltViewModel()) {
 }
 
 @Composable
-private fun SignInScreen(viewModel: ParentViewModel) {
+private fun SignInScreen(viewModel: ParentViewModel, onBack: () -> Unit) {
     val context = LocalContext.current
     val error by viewModel.signInError.collectAsStateWithLifecycle()
-    CenteredScrollColumn(Modifier.fillMaxSize().safeDrawingPadding().padding(24.dp)) {
-        Column(
-            Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            NourStar(Modifier.size(160.dp))
-            Text(stringResource(R.string.parent_signin_title), style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center)
-            Text(
-                stringResource(R.string.parent_signin_body),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-            )
-            NourPrimaryButton(stringResource(R.string.parent_signin_google), { viewModel.signIn(context) })
-            if (viewModel.testAccountAvailable) {
-                NourTextButton(stringResource(R.string.parent_signin_test), viewModel::signInTestAccount)
-            }
-            error?.let { failure ->
-                val message = when (failure) {
-                    SignInFailure.NO_ACCOUNT -> R.string.parent_signin_no_account
-                    SignInFailure.OFFLINE -> R.string.parent_signin_error
-                    SignInFailure.OTHER -> R.string.parent_signin_failed
+    Box(Modifier.fillMaxSize()) {
+        CenteredScrollColumn(Modifier.fillMaxSize().safeDrawingPadding().padding(24.dp)) {
+            Column(
+                Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                NourStar(Modifier.size(160.dp))
+                Text(stringResource(R.string.parent_signin_title), style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center)
+                Text(
+                    stringResource(R.string.parent_signin_body),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                )
+                NourPrimaryButton(stringResource(R.string.parent_signin_google), { viewModel.signIn(context) })
+                if (viewModel.testAccountAvailable) {
+                    NourTextButton(stringResource(R.string.parent_signin_test), viewModel::signInTestAccount)
                 }
-                Text(stringResource(message), color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
+                error?.let { failure ->
+                    val message = when (failure) {
+                        SignInFailure.NO_ACCOUNT -> R.string.parent_signin_no_account
+                        SignInFailure.OFFLINE -> R.string.parent_signin_error
+                        SignInFailure.OTHER -> R.string.parent_signin_failed
+                    }
+                    Text(stringResource(message), color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
+                }
             }
+        }
+        IconButton(onClick = onBack, modifier = Modifier.safeDrawingPadding().padding(8.dp)) {
+            Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.action_back))
         }
     }
 }

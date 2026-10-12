@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,7 +36,7 @@ enum class AppDestination {
 /** Top-level routing: nothing opens without the parent PIN once one exists. */
 @HiltViewModel
 class AppViewModel @Inject constructor(
-    security: SecurityRepository,
+    private val security: SecurityRepository,
     onboarding: OnboardingRepository,
     private val modes: AppModeRepository,
     private val session: ParentSession,
@@ -51,8 +52,17 @@ class AppViewModel @Inject constructor(
         AppDestination.of(mode, hasPin, complete, unlocked)
     }.stateIn(viewModelScope, SharingStarted.Eagerly, AppDestination.LOADING)
 
+    init {
+        viewModelScope.launch { onboarding.isComplete.collect { session.setInSetup(!it) } }
+    }
+
     fun chooseMode(mode: AppMode) {
         viewModelScope.launch { modes.setMode(mode) }
+    }
+
+    /** Undoes a wrong tap on the mode choice. Never once a PIN exists: the child could use it to start over. */
+    fun backToModeChoice() {
+        viewModelScope.launch { if (!security.hasPin.first()) modes.clearMode() }
     }
 
     fun onBackground() = session.onBackground(clock.elapsedRealtime())

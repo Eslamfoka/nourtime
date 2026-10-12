@@ -27,6 +27,13 @@ enum class NourPermission {
     DEVICE_ADMIN,
     NOTIFICATIONS,
     BATTERY,
+    ;
+
+    /**
+     * Setup can go on without it (Home keeps warning until it's on): some phones hide these screens,
+     * and Nour Time still detects and locks without them.
+     */
+    val skippable: Boolean get() = this == DEVICE_ADMIN || this == BATTERY
 }
 
 @Singleton

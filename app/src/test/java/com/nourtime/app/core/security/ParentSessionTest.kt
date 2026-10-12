@@ -55,4 +55,45 @@ class ParentSessionTest {
         session.onForeground(1_000_000)
         assertTrue(session.isUnlocked.value)
     }
+
+    @Test
+    fun `during setup a long trip to settings keeps the session`() {
+        // Allowing Accessibility's "restricted settings" can take the parent several minutes.
+        session.setInSetup(true)
+        session.unlock()
+        session.onBackground(1_000)
+        session.onForeground(20 * 60_000)
+        assertTrue(session.isUnlocked.value)
+    }
+
+    @Test
+    fun `during setup the screen turning off doesn't lock`() {
+        // The screen times out while the parent reads the steps in Settings.
+        session.setInSetup(true)
+        session.unlock()
+        session.onBackground(1_000)
+        session.onScreenOff()
+        session.onForeground(5_000)
+        assertTrue(session.isUnlocked.value)
+    }
+
+    @Test
+    fun `a setup left alone for long locks again`() {
+        session.setInSetup(true)
+        session.unlock()
+        session.onBackground(1_000)
+        session.onForeground(1_000 + ParentSession.SETUP_GRACE_MS + 1)
+        assertFalse(session.isUnlocked.value)
+    }
+
+    @Test
+    fun `after setup the normal rules are back`() {
+        session.setInSetup(true)
+        session.setInSetup(false)
+        session.unlock()
+        session.onBackground(1_000)
+        session.onScreenOff()
+        session.onForeground(5_000)
+        assertFalse(session.isUnlocked.value)
+    }
 }

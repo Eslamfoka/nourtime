@@ -29,7 +29,10 @@ import com.nourtime.app.core.designsystem.component.StatusPill
 import com.nourtime.app.core.permissions.NourPermission
 import com.nourtime.app.core.permissions.OemBrand
 
-/** One permission: why it's needed, how to grant it, live status. Continue unlocks once granted. */
+/**
+ * One permission: why it's needed, how to grant it, live status. Continue unlocks once granted;
+ * [onSkip] (non-essential permissions only) lets setup go on when a phone hides the screen.
+ */
 @Composable
 fun PermissionStep(
     progress: Pair<Int, Int>?,
@@ -39,6 +42,7 @@ fun PermissionStep(
     granted: Boolean,
     onGrant: () -> Unit,
     onContinue: () -> Unit,
+    onSkip: (() -> Unit)?,
     onOpenAppInfo: (() -> Unit)?,
 ) {
     val ui = permission.ui
@@ -50,6 +54,7 @@ fun PermissionStep(
                 NourPrimaryButton(stringResource(R.string.action_continue), onContinue)
             } else {
                 NourPrimaryButton(stringResource(R.string.action_open_settings), onGrant)
+                if (onSkip != null) NourTextButton(stringResource(R.string.action_skip_for_now), onSkip)
             }
         },
     ) {
@@ -61,6 +66,13 @@ fun PermissionStep(
         )
         Text(stringResource(ui.why), style = MaterialTheme.typography.bodyLarge)
         HowToCard(stringResource(permission.how(brand)))
+        if (onSkip != null && !granted) {
+            Text(
+                stringResource(R.string.perm_skip_note),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         // Sideloaded apps on Android 13+ can't enable accessibility until "restricted settings" are allowed.
         if (onOpenAppInfo != null && !granted && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             NourCard(containerColor = MaterialTheme.colorScheme.surfaceVariant) {

@@ -30,7 +30,7 @@ import com.nourtime.app.core.ui.startFirstAvailable
 import com.nourtime.app.data.onboarding.OnboardingStep
 
 @Composable
-fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
+fun OnboardingRoute(onBackToModeChoice: () -> Unit, viewModel: OnboardingViewModel = hiltViewModel()) {
     val step by viewModel.step.collectAsStateWithLifecycle()
     val permissionStatus by viewModel.permissionStatus.collectAsStateWithLifecycle()
     val pin by viewModel.pin.collectAsStateWithLifecycle()
@@ -42,6 +42,7 @@ fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
     val current = step ?: return
     val canGoBack = viewModel.canGoBack(current)
     BackHandler(enabled = canGoBack) { viewModel.back() }
+    BackHandler(enabled = current == OnboardingStep.WELCOME, onBack = onBackToModeChoice)
     val onBack = if (canGoBack) viewModel::back else null
 
     fun open(intents: List<android.content.Intent>) {
@@ -64,7 +65,7 @@ fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
         val progress = viewModel.progressOf(s)
         Box(Modifier.fillMaxSize()) {
             when (s) {
-                OnboardingStep.WELCOME -> WelcomeStep(onStart = viewModel::next)
+                OnboardingStep.WELCOME -> WelcomeStep(onBack = onBackToModeChoice, onStart = viewModel::next)
 
                 OnboardingStep.DISCLOSURE -> DisclosureStep(
                     progress = progress,
@@ -116,6 +117,7 @@ fun OnboardingRoute(viewModel: OnboardingViewModel = hiltViewModel()) {
                             }
                         },
                         onContinue = viewModel::next,
+                        onSkip = if (permission.skippable) viewModel::next else null,
                         onOpenAppInfo = if (permission == NourPermission.ACCESSIBILITY) {
                             {
                                 open(listOf(viewModel.appDetailsIntent()))

@@ -9,13 +9,17 @@ import javax.inject.Singleton
 /**
  * Whether the parent has entered the PIN in this app session. Leaving the app briefly (for example to
  * grant a permission in Settings) keeps the session; staying away longer than [graceMs] locks it again.
- * Times are elapsedRealtime values.
+ * During first setup the parent goes back and forth to Settings for minutes, so the session survives the
+ * screen turning off and only locks after [setupGraceMs] away. Times are elapsedRealtime values.
  */
 @Singleton
-class ParentSession(private val graceMs: Long) {
+class ParentSession(private val graceMs: Long, private val setupGraceMs: Long = SETUP_GRACE_MS) {
 
     @Inject
     constructor() : this(DEFAULT_GRACE_MS)
+
+    @Volatile
+    private var inSetup = false
 
     private val _isUnlocked = MutableStateFlow(false)
     val isUnlocked: StateFlow<Boolean> = _isUnlocked.asStateFlow()
@@ -33,7 +37,13 @@ class ParentSession(private val graceMs: Long) {
     }
 
     /** Like the parent pass, the session ends when the screen turns off: the phone may be handed to the child. */
-    fun onScreenOff() = lock()
+    fun onScreenOff() {
+        if (!inSetup) lock()
+    }
+
+    fun setInSetup(value: Boolean) {
+        inSetup = value
+    }
 
     fun onBackground(nowElapsed: Long) {
         if (_isUnlocked.value) backgroundedAt = nowElapsed
@@ -42,10 +52,11 @@ class ParentSession(private val graceMs: Long) {
     fun onForeground(nowElapsed: Long) {
         val since = backgroundedAt ?: return
         backgroundedAt = null
-        if (nowElapsed - since > graceMs) _isUnlocked.value = false
+        if (nowElapsed - since > if (inSetup) setupGraceMs else graceMs) _isUnlocked.value = false
     }
 
     companion object {
         const val DEFAULT_GRACE_MS = 2 * 60_000L
+        const val SETUP_GRACE_MS = 30 * 60_000L
     }
 }

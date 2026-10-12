@@ -95,8 +95,8 @@ private fun NourApp(viewModel: AppViewModel = hiltViewModel(), pickers: TimePick
                 when (target) {
                     AppDestination.LOADING -> Box(Modifier.fillMaxSize())
                     AppDestination.MODE_CHOICE -> ModeChooserScreen(onChoose = viewModel::chooseMode)
-                    AppDestination.PARENT -> ParentRoute()
-                    AppDestination.ONBOARDING -> OnboardingRoute()
+                    AppDestination.PARENT -> ParentRoute(onBackToModeChoice = viewModel::backToModeChoice)
+                    AppDestination.ONBOARDING -> OnboardingRoute(onBackToModeChoice = viewModel::backToModeChoice)
                     AppDestination.UNLOCK -> UnlockRoute()
                     AppDestination.HOME -> MainRoute()
                 }

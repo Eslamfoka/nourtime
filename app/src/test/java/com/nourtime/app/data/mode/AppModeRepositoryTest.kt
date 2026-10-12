@@ -57,4 +57,19 @@ class AppModeRepositoryTest {
         store.edit { it[stringPreferencesKey("onboarding_step")] = "WELCOME" }
         assertNull(repo.mode.first())
     }
+
+    @Test
+    fun `going back to the choice asks again`() = runTest {
+        repo.setMode(AppMode.PARENT)
+        repo.clearMode()
+        assertNull(repo.mode.first())
+    }
+
+    @Test
+    fun `a child phone on the welcome screen can go back to the choice`() = runTest {
+        repo.setMode(AppMode.CHILD)
+        store.edit { it[stringPreferencesKey("onboarding_step")] = "WELCOME" }
+        repo.clearMode()
+        assertNull(repo.mode.first())
+    }
 }

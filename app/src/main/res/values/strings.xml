@@ -218,6 +218,7 @@
 
     <!-- Parent check on lock screens -->
     <string name="action_cancel">Cancel</string>
+    <string name="perm_skip_note">Some phones hide this screen. You can skip it and turn it on later: Nour Time keeps a reminder on its home screen until it\'s on.</string>
     <string name="action_back">Back</string>
     <string name="pin_digits_entered">%1$d of %2$d digits entered</string>
     <string name="answer_title">Security question</string>

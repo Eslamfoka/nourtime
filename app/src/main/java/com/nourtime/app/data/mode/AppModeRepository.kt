@@ -28,6 +28,11 @@ class AppModeRepository @Inject constructor(
         store.edit { it[MODE] = mode.name }
     }
 
+    /** Back to the choice, for a wrong tap. Only before setup has started (no PIN, still on Welcome). */
+    suspend fun clearMode() {
+        store.edit { it.remove(MODE) }
+    }
+
     private companion object {
         val MODE = stringPreferencesKey("app_mode")
 

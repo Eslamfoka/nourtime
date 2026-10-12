@@ -29,10 +29,10 @@ import com.nourtime.app.core.designsystem.component.NourStar
 import com.nourtime.app.core.permissions.NourPermission
 
 @Composable
-fun WelcomeStep(onStart: () -> Unit) {
+fun WelcomeStep(onBack: () -> Unit, onStart: () -> Unit) {
     StepLayout(
         progress = null,
-        onBack = null,
+        onBack = onBack,
         actions = { NourPrimaryButton(stringResource(R.string.welcome_cta), onStart) },
     ) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
