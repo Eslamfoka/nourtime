@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -40,7 +41,8 @@ class PinRecoveryControllerTest {
         val store = PreferenceDataStoreFactory.create(scope = io) { tmp.newFile("r.preferences_pb") }
         SecurityRepository(store, SecretHasher(iterations = 1_000), clock)
     }
-    private var done = false
+    // Set on the controller's thread, just after the stage turns DONE.
+    @Volatile private var done = false
     private val recovery by lazy { PinRecoveryController(io, security, clock) { done = true } }
 
     @Before
@@ -84,7 +86,10 @@ class PinRecoveryControllerTest {
         assertEquals(PinRecoveryStage.NEW_PIN, recovery.stage.value)
         type("2580")
         type("2580")
-        realTime { recovery.stage.first { it == PinRecoveryStage.DONE } }
+        realTime {
+            recovery.stage.first { it == PinRecoveryStage.DONE }
+            while (!done) delay(10)
+        }
         assertTrue(done)
         assertEquals(PinCheckResult.Success, security.verifyPin("2580"))
         assertTrue(security.verifyPin("4827") is PinCheckResult.Wrong)
