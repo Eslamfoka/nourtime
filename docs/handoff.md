@@ -3,7 +3,14 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (written 2026-10-06 ~03:00, overnight while the owner slept):** everything is on
+> **Resume here (written 2026-10-12 ~22:30; the owner stopped for the day):** everything is on
+> `master` and pushed (`a9a20502`). About 490 unit tests pass, lint clean, GitHub Actions CI green.
+> What was done on 2026-10-11/12 and the exact next steps are in
+> [§20](#20-2026-10-11--10-12-committee-audits-lock-bypasses-play-compliance-ci-recovery). **Next:**
+> fresh-audit #2 (loading/error states on the parent's phone), then the owner's decision on Firebase
+> Blaze + push notifications (§20.6). The older block below is kept for history.
+
+> **Older resume block (2026-10-06 ~03:00, overnight while the owner slept):** everything is on
 > `master` and pushed. 415 unit tests + 50 Firestore rules tests pass, lint clean.
 >
 > **Done tonight ([§19](#19-night-of-2026-10-06-android-16-emulator-test-owner-asleep)):** Android 16
@@ -1339,3 +1346,90 @@ Passed on Android 16:
 - The schedule timeline runs left-to-right in Arabic too (12 ص … 12 ص); fine for a time axis, but it
   could be mirrored.
 - Still open from before: break ring fill vs budget (`breakMs`).
+
+## 20. 2026-10-11 → 10-12: committee audits, lock bypasses, Play compliance, CI, recovery
+
+Two days of work driven by the global `/advise` (Advisory Committee) and `/uiux` (UI/UX Committee)
+skills in `~/.claude/skills/`. Run with no argument they do a fresh audit of the whole project with
+background agents (code, risk, product, UX, and a live market-research agent for the Investor).
+
+### 20.1 What changed (all on `master`, pushed)
+
+| Commit | What |
+|---|---|
+| `fb1f8457` | Three no-PIN bypasses closed: a limited app in picture in picture over Nour Time/the dialer, "OK" hiding the lock forever (15 s grace, `ChildDismissal`), calls unlocking every app. |
+| `ceab949b` | No lock flicker after OK when focus moves between on-screen apps. |
+| `53ebab36` | Play compliance: `isMonitoringTool=child_monitoring`, full 3-use Accessibility disclosure (EN/AR), `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` removed (battery step opens the system list), notification step required, release builds strip Log.v/d/i. |
+| `52794fd6` | Setup can't get stuck: device admin and battery can be skipped (Home keeps warning), back from Welcome/Sign-in to the mode choice (only before a PIN exists), no PIN prompt mid-setup (`ParentSession` setup mode, 30-min grace). |
+| `09a2388d` | Calls: Settings stay covered while ringing; a whole-phone lock stays during a call, with a "Back to the call" button (the lock overlay is drawn above the notification shade, so nothing can be answered under it). |
+| `10032903` | Crash paths: timer service started with plain `startService` first (`ServiceStart`), `startForeground` before Hilt; lock overlay falls back to a regular overlay when the accessibility one is refused (`OverlayKind`). |
+| `6495332e` | New apps limited by default ("Limit new apps", `NewApps`, `known_apps`); the Play Store needs the PIN while device admin is off. |
+| `f129155d` | Protection alerts to the parent (`ProtectionAlerts`, uploaded as `devices/{id}.alerts`): a restart without Nour Time (boot count skipped: safe mode), another user, USB debugging. |
+| `1fd0e525` | `SettingsBackup`: a damaged settings file is restored from `nour_prefs_backup` (mirrored at once, then at most every 30 s). Room schema exported to `app/schemas`, `NourDatabase.MIGRATIONS` + `DatabaseMigrationsTest`. |
+| `2470e527` | Docs: privacy policy, disclosure and Accessibility declaration match the app; GitHub Actions CI (`.github/workflows/android.yml`: tests, lint, debug build). |
+| `4e50c88c` | Crashlytics **only on connected phones** (owner's decision): off in the manifest, `CrashReportingController` turns it on for a paired child's phone or a signed-in parent's phone, deletes reports saved while off. |
+| `9b042a8b` | Race fixed in `PinRecoveryControllerTest` (failed on the first CI run). |
+| `b459906e` | Restore logging; clearer missed-restart alert. |
+| `ed0fc584` | `WatchdogJobService` (job 4801, every 15 min, persisted): restarts the timer service if Android killed it, else posts "protection stopped". App-start work moved off the main thread (`AppStartEntryPoint`). |
+| `4d17f154` | Fresh-audit #1: Settings covered anywhere on screen (split screen, floating window), runtime `SettingsScreens`, work-profile and Secure Folder setup covered, a missing PIN no longer opens anything, only default/system launchers exempt from "Limit new apps", `PIN_RESET` and `NOTIFICATIONS_OFF` alerts. |
+| `a9a20502` | `SettingsScreens` kept Settings out (it has a FallbackHome); only the default home is excluded now. |
+
+### 20.2 Checked on the emulator (`nourdm-api36`)
+Setup skip/back/no-PIN-prompt; ringing and "Back to the call"; overlay fallback and service restart;
+new-app limiting (via `pm uninstall -k --user 0` then `pm install-existing`); USB alert; real safe
+mode (`adb root`, `adb shell setprop persist.sys.safemode 1`, `adb reboot`) then the missed-restart
+alert; other-user alert; settings restore after damaging the file (twice, 39 keys); watchdog
+(`am stopservice`, then `cmd jobscheduler run -f -u 0 com.nourtime.app 4801`); runtime Settings
+list; notifications-off alert (`pm revoke/grant --user 10 ... POST_NOTIFICATIONS`).
+
+**Found on the emulator:** safe mode removed Nour Time from the enabled Accessibility services for
+good (the alerts report it). Once, at a cold boot, the debug build was killed ("failed to complete
+startup") and nothing restarted it; that's why the watchdog exists. An Accessibility service left
+enabled but unbound can't be rebound by the app itself.
+
+**Needs a real phone:** Settings in split screen or a floating window (adb can't set up split screen
+on API 36), the runtime Settings list on Samsung/Xiaomi/Honor (log tag `SettingsScreens`), the
+alerts on the parent's phone, the PIN-reset alert end to end.
+
+### 20.3 Emulator notes
+- Users: user 0 = child phone (PIN 4827, answer "blue", **whole-phone lock**, Clock, Chrome and
+  Calendar limited); user 10 "uxtest" = child phone set up with device admin skipped (selected-apps
+  lock, same PIN). Switch with `adb shell am switch-user 0` or `10`.
+- Start with `-no-snapshot-load -no-snapshot-save -gpu swiftshader_indirect -memory 2048`, after
+  `gradlew --stop`: the PC has 16 GB and the emulator was killed for memory twice.
+- Git Bash needs `MSYS_NO_PATHCONV=1` for `/data/...` paths; `adb root` works but is lost on reboot.
+
+### 20.4 CI
+GitHub Actions on every push (about 7 min). `gh` isn't installed; the run status was read through the
+GitHub REST API with the git credential-manager token.
+
+### 20.5 Latest fresh audit (2026-10-12 evening): NOT READY, the Investor refused
+- Market (live research): no Arabic-first parental-control app exists in Egypt or the Gulf; the real
+  competitor is free Family Link. Proposed model, **not decided by the owner**: freemium "Nour Plus"
+  (parent's phone with push, several children, extra packs and voices), about $2.99/mo or $24.99/yr in
+  the Gulf, about EGP 49/mo in Egypt, 30-day trial, never a paywall in front of the child.
+- Its #1 (bypasses) is done (`4d17f154`, `a9a20502`).
+
+### 20.6 Next steps, in order
+1. **Fresh-audit #2 (S-M):** loading, error and success states on the parent's phone:
+   `ParentRoute.kt` turns an error into "No phones yet"; `ChildDeviceScreen.kt` stays blank on an
+   error and swallows edit/command/remove failures; the QR scan and the pairing wait have no error or
+   cancel; a show/hide toggle for the security answer when unlocking.
+2. **Owner decision, then build (M):** Firebase Blaze + FCM push to the parent's phone ("ask for more
+   time", protection alerts, a device that stopped checking in), and a remote PIN reset or parent
+   approval of a PIN reset. This changes the earlier "Spark plan only" decision.
+3. **Owner launch tasks:** upload key + Play App Signing; Accessibility and `specialUse` demo videos;
+   reviewer test account, PIN and pairing video; contact email and public URLs for the privacy policy
+   and account deletion (placeholders still in `privacy-policy.md`, `account-deletion.md`,
+   `store-listing.md`); check `play-services-code-scanner` and `firebase-crashlytics` against the
+   Families self-certified SDK list; open Crashlytics once in the Firebase console.
+4. **Closed test:** 14 days, 12+ testers, Samsung/Xiaomi/Transsion phones; check the §20.2 items that
+   need a real phone.
+5. **Before the public launch:** decide and build monetization (Play Billing, regional prices).
+
+Smaller items still open from the audits: apps already inside a work profile or Secure Folder aren't
+seen; notifications switched off only raise an alert (no lock); timer state shares the settings
+DataStore file (written every 5 s); `TimeEngine`, `BlockCoordinator` and `RemoteSync` have no tests;
+CI doesn't build a release or run the Firestore rules tests; the toolchain is about two years old;
+`progress.md`, `README.md` and `status-2026-10-05.md` are out of date (battery permission, test
+counts, bottom bar).
