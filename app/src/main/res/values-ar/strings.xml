@@ -392,6 +392,7 @@
     <string name="alert_missed_restart">أُعيد تشغيل الهاتف دون أن يعمل وقت نور، مثلًا في الوضع الآمن، وقد يوقف ذلك خدمة إمكانية الوصول لوقت نور. تأكد من أن أذوناته ما زالت مفعّلة.</string>
     <string name="alert_other_user">انتقل الهاتف إلى مستخدم آخر (ضيف أو حساب ثانٍ)، ووقت نور لا يعمل هناك.</string>
     <string name="alert_usb_debugging">تصحيح USB مفعّل، لذلك يستطيع جهاز كمبيوتر إيقاف وقت نور. أوقفه من خيارات المطوّرين.</string>
+    <string name="notif_protection_stopped">توقفت حماية وقت نور ولم تستطع العودة وحدها. افتح وقت نور لتشغيلها من جديد.</string>
     <string name="parent_protection_warning">الحماية تحتاج إلى انتباه على هذا الهاتف</string>
     <string name="add_child_body">على هاتف طفلك: وقت نور ← الإعدادات ← هاتف ولي الأمر ← ربط هاتف ولي الأمر. ثم امسح رمز QR الظاهر.</string>
     <string name="add_child_scan">امسح رمز QR</string>

@@ -382,6 +382,7 @@
     <string name="alert_missed_restart">The phone restarted without Nour Time running, for example in safe mode, which can switch Nour Time\'s Accessibility off. Check that its permissions are still on.</string>
     <string name="alert_other_user">The phone switched to another user (a guest or second account), where Nour Time doesn\'t run.</string>
     <string name="alert_usb_debugging">USB debugging is on, so a computer could switch Nour Time off. Turn it off in Developer options.</string>
+    <string name="notif_protection_stopped">Nour Time\'s protection stopped and couldn\'t restart by itself. Open Nour Time to turn it back on.</string>
     <string name="parent_protection_warning">Protection needs attention on this phone</string>
     <string name="add_child_body">On your child\'s phone: Nour Time → Settings → Parent\'s phone → Connect a parent\'s phone. Then scan the QR code it shows.</string>
     <string name="add_child_scan">Scan the QR code</string>

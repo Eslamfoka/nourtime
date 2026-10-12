@@ -102,5 +102,11 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
+        <!-- Restarts protection if Android killed it (every 15 minutes, and after a reboot). -->
+        <service
+            android:name=".service.watchdog.WatchdogJobService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
     </application>
 </manifest>

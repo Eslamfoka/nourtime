@@ -14,26 +14,27 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
 
 @HiltAndroidApp
 class NourTimeApp : Application() {
-
-    @Inject lateinit var settingsStore: DataStore<Preferences>
-    @Inject lateinit var settingsBackup: SettingsBackup
-    @Inject lateinit var crashReporting: CrashReportingController
 
     override fun onCreate() {
         super.onCreate()
         // The parent's language choice (older phones; Android 13+ does this itself).
         AppLocales.applyToApp(this)
+        // Off the main thread: a slow start at boot got Nour Time killed ("failed to complete startup").
         // The app, Accessibility service and timer share this one process, so the copy follows every change.
-        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-            runCatching { settingsBackup.mirror(settingsStore) }
-                .onFailure { if (it !is CancellationException) Log.w("NourTimeApp", "settings backup stopped", it) }
-        }
         CoroutineScope(SupervisorJob() + Dispatchers.Default).launch {
-            runCatching { crashReporting.run() }
+            val start = EntryPointAccessors.fromApplication(this@NourTimeApp, AppStartEntryPoint::class.java)
+            launch(Dispatchers.IO) {
+                runCatching { start.settingsBackup().mirror(start.settingsStore()) }
+                    .onFailure { if (it !is CancellationException) Log.w("NourTimeApp", "settings backup stopped", it) }
+            }
+            runCatching { start.crashReporting().run() }
                 .onFailure { if (it !is CancellationException) Log.w("NourTimeApp", "crash reporting setup stopped", it) }
         }
     }
@@ -43,4 +44,13 @@ class NourTimeApp : Application() {
         // A system change (rotation, dark mode) resets the shared resources to the phone's language.
         AppLocales.applyToApp(this)
     }
+}
+
+/** What the app start needs, fetched on a background thread instead of injected on the main one. */
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface AppStartEntryPoint {
+    fun settingsStore(): DataStore<Preferences>
+    fun settingsBackup(): SettingsBackup
+    fun crashReporting(): CrashReportingController
 }

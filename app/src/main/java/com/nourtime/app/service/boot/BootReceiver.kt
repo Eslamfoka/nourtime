@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.nourtime.app.data.onboarding.OnboardingRepository
 import com.nourtime.app.service.timer.TimerService
+import com.nourtime.app.service.watchdog.WatchdogJobService
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +24,10 @@ class BootReceiver : BroadcastReceiver() {
         val pending = goAsync()
         CoroutineScope(Dispatchers.Default).launch {
             try {
-                if (onboarding.isComplete.first()) TimerService.start(context)
+                if (onboarding.isComplete.first()) {
+                    WatchdogJobService.schedule(context)
+                    TimerService.start(context)
+                }
             } finally {
                 pending.finish()
             }

@@ -18,6 +18,7 @@ import android.provider.Settings
 import com.nourtime.app.data.protection.ProtectionAlert
 import com.nourtime.app.data.protection.ProtectionAlertsRepository
 import android.util.Log
+import com.nourtime.app.service.watchdog.WatchdogJobService
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import com.nourtime.app.core.blocking.ParentPass
@@ -113,6 +114,8 @@ class TimerService : Service() {
         // engine runs).
         goForeground(status = null)
         super.onCreate()
+        running = true
+        WatchdogJobService.schedule(this)
         ContextCompat.registerReceiver(
             this,
             screenReceiver,
@@ -179,6 +182,7 @@ class TimerService : Service() {
     }
 
     override fun onDestroy() {
+        running = false
         unregisterReceiver(screenReceiver)
         unregisterReceiver(packageReceiver)
         unregisterReceiver(userReceiver)
@@ -340,13 +344,18 @@ class TimerService : Service() {
         private const val CLEANUP_EVERY_MS = 12 * 60 * 60_000L
         private const val USB_CHECK_MS = 60_000L
 
-        /** Safe to call from the foreground activity, the Accessibility service and boot. */
-        fun start(context: Context) {
+        /** True while the service runs in this process (the watchdog checks it). */
+        @Volatile
+        var running: Boolean = false
+            private set
+
+        /** Safe to call from the foreground activity, the Accessibility service, boot and the watchdog. */
+        fun start(context: Context): Boolean {
             val intent = Intent(context, TimerService::class.java)
-            ServiceStart.start(
+            return ServiceStart.start(
                 plain = { context.startService(intent) },
                 foreground = { ContextCompat.startForegroundService(context, intent) },
-            ).onFailure { Log.w(TAG, "Couldn't start timer service", it) }
+            ).onFailure { Log.w(TAG, "Couldn't start timer service", it) }.isSuccess
         }
     }
 }

@@ -26,6 +26,7 @@ object ProtectionNotifications {
     private const val ADMIN_ALERT_ID = 3
     private const val NEW_APPS_ID = 4
     private const val PROTECTION_ALERT_ID = 5
+    private const val STOPPED_ID = 9
     private const val CHANNEL_STATUS = "protection_status"
     private const val CHANNEL_ALERTS = "protection_alerts"
 
@@ -109,6 +110,20 @@ object ProtectionNotifications {
             .setContentIntent(openApp(context))
             .build()
         notify(context, PROTECTION_ALERT_ID + alert.ordinal, n)
+    }
+
+    /** The watchdog couldn't restart protection from the background: opening Nour Time restarts it. */
+    fun showProtectionStopped(context: Context) {
+        val text = context.getString(R.string.notif_protection_stopped)
+        val n = NotificationCompat.Builder(context, CHANNEL_ALERTS)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(context.getString(R.string.status_degraded_title))
+            .setContentText(text)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(text))
+            .setContentIntent(openApp(context))
+            .setAutoCancel(true)
+            .build()
+        notify(context, STOPPED_ID, n)
     }
 
     fun clearDegraded(context: Context) {
