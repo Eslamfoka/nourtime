@@ -200,17 +200,21 @@ class LockOverlay @Inject constructor(
         val failedAt = lastFailedOpen
         if (failedAt != null && now - failedAt < RETRY_AFTER_FAILURE_MS) return
         val host = accessibility
-        val context: Context = host ?: appContext
-        val type = if (host != null) {
-            WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY
-        } else {
-            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+        val w = OverlayKind.attempts(accessibilityAvailable = host != null).firstNotNullOfOrNull { kind ->
+            val w = when (kind) {
+                OverlayKind.ACCESSIBILITY -> OverlayWindow(host!!, WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY)
+                OverlayKind.APP -> OverlayWindow(appContext, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
+            }
+            Log.i(TAG, "open overlay, kind=$kind")
+            if (w.show()) {
+                w
+            } else {
+                // Release the window's lifecycle and coroutines; otherwise each retry would leak them.
+                w.dismiss()
+                null
+            }
         }
-        val w = OverlayWindow(context, type)
-        Log.i(TAG, "open overlay, accessibility=${host != null}")
-        if (!w.show()) {
-            // Release the window's lifecycle and coroutines; otherwise each retry would leak them.
-            w.dismiss()
+        if (w == null) {
             lastFailedOpen = now
             return
         }

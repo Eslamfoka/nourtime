@@ -19,6 +19,7 @@ import com.nourtime.app.core.security.ParentSession
 import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
 import com.nourtime.app.core.timer.TimerPhase
+import com.nourtime.app.core.timer.TimerStatus
 import com.nourtime.app.data.settings.ParentSettingsRepository
 import com.nourtime.app.data.usage.UsageRepository
 import com.nourtime.app.remote.child.DeviceIdentity
@@ -79,14 +80,11 @@ class TimerService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
+        // Foreground first, before Hilt builds the dependencies in super.onCreate(): a foreground start
+        // has only a few seconds, and a slow phone missed them (the status text follows once the
+        // engine runs).
+        goForeground(status = null)
         super.onCreate()
-        ProtectionNotifications.ensureChannels(this)
-        ServiceCompat.startForeground(
-            this,
-            ProtectionNotifications.STATUS_ID,
-            ProtectionNotifications.status(this, engine.status.value),
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE else 0,
-        )
         ContextCompat.registerReceiver(
             this,
             screenReceiver,
@@ -116,7 +114,26 @@ class TimerService : Service() {
         }
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_STICKY
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // Every foreground start needs startForeground(), also when the service was already running
+        // (it may not have been allowed in the foreground the first time).
+        goForeground(engine.status.value)
+        return START_STICKY
+    }
+
+    private fun goForeground(status: TimerStatus?) {
+        ProtectionNotifications.ensureChannels(this)
+        // Android 12+ can refuse this when the service was started from the background; it then keeps
+        // running as a plain service rather than crashing the app.
+        runCatching {
+            ServiceCompat.startForeground(
+                this,
+                ProtectionNotifications.STATUS_ID,
+                ProtectionNotifications.status(this, status),
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE else 0,
+            )
+        }.onFailure { Log.w(TAG, "Couldn't go foreground", it) }
+    }
 
     override fun onDestroy() {
         unregisterReceiver(screenReceiver)
@@ -231,8 +248,11 @@ class TimerService : Service() {
 
         /** Safe to call from the foreground activity, the Accessibility service and boot. */
         fun start(context: Context) {
-            runCatching { ContextCompat.startForegroundService(context, Intent(context, TimerService::class.java)) }
-                .onFailure { Log.w(TAG, "Couldn't start timer service", it) }
+            val intent = Intent(context, TimerService::class.java)
+            ServiceStart.start(
+                plain = { context.startService(intent) },
+                foreground = { ContextCompat.startForegroundService(context, intent) },
+            ).onFailure { Log.w(TAG, "Couldn't start timer service", it) }
         }
     }
 }
