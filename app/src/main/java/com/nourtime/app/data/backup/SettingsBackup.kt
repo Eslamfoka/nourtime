@@ -27,10 +27,11 @@ class SettingsBackup(private val backup: DataStore<Preferences>) {
 
     /** The last copy, or nothing if it is missing or damaged too. */
     suspend fun restore(): Preferences = try {
-        backup.data.first()
+        backup.data.first().also { runCatching { Log.w(TAG, "restored ${it.asMap().size} settings from the backup") } }
     } catch (e: CancellationException) {
         throw e
     } catch (e: Exception) {
+        runCatching { Log.e(TAG, "couldn't read the settings backup", e) }
         emptyPreferences()
     }
 

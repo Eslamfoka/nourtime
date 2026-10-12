@@ -379,7 +379,7 @@
     <string name="parent_summary_locked">Locked · back in %1$s</string>
     <string name="parent_summary_break">Learning break · %1$s left, then the lock resumes (%2$s)</string>
     <string name="parent_summary_not_seen">Not seen since %1$s</string>
-    <string name="alert_missed_restart">The phone restarted once without Nour Time, for example in safe mode. Check that Nour Time\'s permissions are still on.</string>
+    <string name="alert_missed_restart">The phone restarted without Nour Time running, for example in safe mode, which can switch Nour Time\'s Accessibility off. Check that its permissions are still on.</string>
     <string name="alert_other_user">The phone switched to another user (a guest or second account), where Nour Time doesn\'t run.</string>
     <string name="alert_usb_debugging">USB debugging is on, so a computer could switch Nour Time off. Turn it off in Developer options.</string>
     <string name="parent_protection_warning">Protection needs attention on this phone</string>

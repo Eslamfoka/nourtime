@@ -389,7 +389,7 @@
     <string name="parent_summary_locked">مقفل · يعود بعد %1$s</string>
     <string name="parent_summary_break">استراحة التعلم · متبقٍ %1$s، ثم يعود القفل (%2$s)</string>
     <string name="parent_summary_not_seen">لم يظهر منذ %1$s</string>
-    <string name="alert_missed_restart">أُعيد تشغيل الهاتف مرة دون وقت نور، مثلًا في الوضع الآمن. تأكد من أن أذونات وقت نور ما زالت مفعّلة.</string>
+    <string name="alert_missed_restart">أُعيد تشغيل الهاتف دون أن يعمل وقت نور، مثلًا في الوضع الآمن، وقد يوقف ذلك خدمة إمكانية الوصول لوقت نور. تأكد من أن أذوناته ما زالت مفعّلة.</string>
     <string name="alert_other_user">انتقل الهاتف إلى مستخدم آخر (ضيف أو حساب ثانٍ)، ووقت نور لا يعمل هناك.</string>
     <string name="alert_usb_debugging">تصحيح USB مفعّل، لذلك يستطيع جهاز كمبيوتر إيقاف وقت نور. أوقفه من خيارات المطوّرين.</string>
     <string name="parent_protection_warning">الحماية تحتاج إلى انتباه على هذا الهاتف</string>
