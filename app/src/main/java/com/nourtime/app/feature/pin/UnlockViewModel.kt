@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
+import com.nourtime.app.data.protection.ProtectionAlertsRepository
 import javax.inject.Inject
 
 /**
@@ -28,6 +29,7 @@ class UnlockViewModel @Inject constructor(
     private val pass: ParentPass,
     private val lockPeriod: LockPeriodState,
     private val trustedClock: TrustedClock,
+    private val alerts: ProtectionAlertsRepository,
 ) : ViewModel() {
 
     private val _askAnswer = MutableStateFlow(false)
@@ -53,7 +55,12 @@ class UnlockViewModel @Inject constructor(
     fun startRecovery() {
         _askAnswer.value = false
         // The security answer was just checked, so this also covers the lock period's second step.
-        _recovery.value = PinRecoveryController(viewModelScope, security, clock) { unlock() }
+        _recovery.value = PinRecoveryController(
+            viewModelScope,
+            security,
+            clock,
+            onPinReset = { alerts.recordPinReset(System.currentTimeMillis()) },
+        ) { unlock() }
     }
 
     fun cancelRecovery() {

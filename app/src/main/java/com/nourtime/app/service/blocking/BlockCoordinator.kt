@@ -119,6 +119,7 @@ class BlockCoordinator @Inject constructor(
                 phoneRinging = audioMode == AudioManager.MODE_RINGTONE || audioMode == MODE_CALL_SCREENING,
                 inCall = audioMode == AudioManager.MODE_IN_CALL,
                 dialerPackage = runCatching { telecom.defaultDialerPackage }.getOrNull(),
+                extraSettingsPackages = settingsScreens,
                 // Asked only while an app store is in front, not on every tick.
                 deviceAdminActive = fg.foreground !in BlockPolicy.APP_STORE_PACKAGES ||
                     permissions.isGranted(NourPermission.DEVICE_ADMIN),
@@ -176,6 +177,8 @@ class BlockCoordinator @Inject constructor(
     private var lastWhy: String? = null
 
     private val audioManager by lazy { context.getSystemService(AudioManager::class.java) }
+    private val settingsScreens: Set<String> by lazy { SettingsScreens.resolve(context) }
+
     private val telecom by lazy { context.getSystemService(TelecomManager::class.java) }
 
     /** Ringing, call screening or in a call. No permission needed. */

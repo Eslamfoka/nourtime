@@ -47,8 +47,16 @@ class ProtectionAlertsTest {
     }
 
     @Test
+    fun `a PIN reset and notifications turned off are shown`() {
+        // A child who knows the security answer could set a new PIN; switching off Nour Time's
+        // notifications from the shade silenced every alert on the phone.
+        val a = ProtectionAlerts(pinResetAtMs = 11 * day, notificationsOff = true)
+        assertEquals(listOf(ProtectionAlert.NOTIFICATIONS_OFF, ProtectionAlert.PIN_RESET), a.visible(nowMs = 12 * day))
+    }
+
+    @Test
     fun `alerts survive the trip to the parent's phone`() {
-        val a = ProtectionAlerts(missedRestartAtMs = 123, otherUserAtMs = null, usbDebugging = true)
+        val a = ProtectionAlerts(missedRestartAtMs = 123, otherUserAtMs = null, usbDebugging = true, pinResetAtMs = 456, notificationsOff = true)
         assertEquals(a, ProtectionAlerts.fromMap(a.toMap()))
     }
 

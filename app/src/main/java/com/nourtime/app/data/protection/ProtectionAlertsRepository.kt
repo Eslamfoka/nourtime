@@ -22,6 +22,8 @@ class ProtectionAlertsRepository @Inject constructor(
             missedRestartAtMs = prefs[MISSED_RESTART_AT],
             otherUserAtMs = prefs[OTHER_USER_AT],
             usbDebugging = prefs[USB_DEBUGGING] ?: false,
+            pinResetAtMs = prefs[PIN_RESET_AT],
+            notificationsOff = prefs[NOTIFICATIONS_OFF] ?: false,
         )
     }.distinctUntilChanged()
 
@@ -40,6 +42,14 @@ class ProtectionAlertsRepository @Inject constructor(
         store.edit { it[OTHER_USER_AT] = nowMs }
     }
 
+    suspend fun recordPinReset(nowMs: Long) {
+        store.edit { it[PIN_RESET_AT] = nowMs }
+    }
+
+    suspend fun setNotificationsOff(off: Boolean) {
+        store.edit { it[NOTIFICATIONS_OFF] = off }
+    }
+
     suspend fun setUsbDebugging(on: Boolean) {
         store.edit { it[USB_DEBUGGING] = on }
     }
@@ -49,5 +59,7 @@ class ProtectionAlertsRepository @Inject constructor(
         val MISSED_RESTART_AT = longPreferencesKey("protection_missed_restart_at")
         val OTHER_USER_AT = longPreferencesKey("protection_other_user_at")
         val USB_DEBUGGING = booleanPreferencesKey("protection_usb_debugging")
+        val PIN_RESET_AT = longPreferencesKey("protection_pin_reset_at")
+        val NOTIFICATIONS_OFF = booleanPreferencesKey("protection_notifications_off")
     }
 }

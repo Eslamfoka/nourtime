@@ -43,7 +43,8 @@ class PinRecoveryControllerTest {
     }
     // Set on the controller's thread, just after the stage turns DONE.
     @Volatile private var done = false
-    private val recovery by lazy { PinRecoveryController(io, security, clock) { done = true } }
+    @Volatile private var resets = 0
+    private val recovery by lazy { PinRecoveryController(io, security, clock, onPinReset = { resets++ }) { done = true } }
 
     @Before
     fun setUp() = runTest {
@@ -91,6 +92,8 @@ class PinRecoveryControllerTest {
             while (!done) delay(10)
         }
         assertTrue(done)
+        // The parent hears about it (2026-10-12 audit: a child who knows the answer could take over).
+        assertEquals(1, resets)
         assertEquals(PinCheckResult.Success, security.verifyPin("2580"))
         assertTrue(security.verifyPin("4827") is PinCheckResult.Wrong)
     }

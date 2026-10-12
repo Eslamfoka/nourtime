@@ -1,7 +1,7 @@
 package com.nourtime.app.data.protection
 
 /** Ways protection was switched off that the parent should hear about (2026-10-12 audit). */
-enum class ProtectionAlert { USB_DEBUGGING, MISSED_RESTART, OTHER_USER }
+enum class ProtectionAlert { USB_DEBUGGING, MISSED_RESTART, OTHER_USER, NOTIFICATIONS_OFF, PIN_RESET }
 
 /**
  * Uploaded to the parent's phone as `devices/{id}.alerts`. Times are wall-clock ms when the child's
@@ -14,18 +14,26 @@ data class ProtectionAlerts(
     val otherUserAtMs: Long? = null,
     /** While it's on, a computer can turn Nour Time's permissions off. */
     val usbDebugging: Boolean = false,
+    /** The PIN was replaced through the security question ("Forgot PIN?"). */
+    val pinResetAtMs: Long? = null,
+    /** Nour Time's notifications are off (they can be switched off from the notification shade). */
+    val notificationsOff: Boolean = false,
 ) {
     /** What to show now: USB debugging while it's on, events for a week. */
     fun visible(nowMs: Long): List<ProtectionAlert> = buildList {
         if (usbDebugging) add(ProtectionAlert.USB_DEBUGGING)
+        if (notificationsOff) add(ProtectionAlert.NOTIFICATIONS_OFF)
         if (missedRestartAtMs.isRecent(nowMs)) add(ProtectionAlert.MISSED_RESTART)
         if (otherUserAtMs.isRecent(nowMs)) add(ProtectionAlert.OTHER_USER)
+        if (pinResetAtMs.isRecent(nowMs)) add(ProtectionAlert.PIN_RESET)
     }
 
     fun toMap(): Map<String, Any?> = mapOf(
         "missedRestartAt" to missedRestartAtMs,
         "otherUserAt" to otherUserAtMs,
         "usbDebugging" to usbDebugging,
+        "pinResetAt" to pinResetAtMs,
+        "notificationsOff" to notificationsOff,
     )
 
     companion object {
@@ -37,6 +45,8 @@ data class ProtectionAlerts(
                 missedRestartAtMs = (m["missedRestartAt"] as? Number)?.toLong(),
                 otherUserAtMs = (m["otherUserAt"] as? Number)?.toLong(),
                 usbDebugging = m["usbDebugging"] as? Boolean ?: false,
+                pinResetAtMs = (m["pinResetAt"] as? Number)?.toLong(),
+                notificationsOff = m["notificationsOff"] as? Boolean ?: false,
             )
         }
 

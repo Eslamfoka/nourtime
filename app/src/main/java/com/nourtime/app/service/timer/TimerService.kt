@@ -17,6 +17,8 @@ import kotlinx.coroutines.flow.onStart
 import android.provider.Settings
 import com.nourtime.app.data.protection.ProtectionAlert
 import com.nourtime.app.data.protection.ProtectionAlertsRepository
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.util.Log
 import com.nourtime.app.service.watchdog.WatchdogJobService
 import androidx.core.app.ServiceCompat
@@ -276,8 +278,16 @@ class TimerService : Service() {
     private fun neverLimited(): Set<String> {
         val home = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
         @Suppress("DEPRECATION")
-        val launchers = runCatching { packageManager.queryIntentActivities(home, 0).map { it.activityInfo.packageName } }
-            .getOrDefault(emptyList())
+        val homes = runCatching {
+            packageManager.queryIntentActivities(home, 0).associate { info ->
+                info.activityInfo.packageName to ((info.activityInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0)
+            }
+        }.getOrDefault(emptyMap())
+        @Suppress("DEPRECATION")
+        val defaultHome = runCatching {
+            packageManager.resolveActivity(home, PackageManager.MATCH_DEFAULT_ONLY)?.activityInfo?.packageName
+        }.getOrNull()?.takeIf { it != "android" }
+        val launchers = NewApps.launchersToExempt(defaultHome, homes)
         val dialer = runCatching { getSystemService(TelecomManager::class.java).defaultDialerPackage }.getOrNull()
         return BlockPolicy.SYSTEM_SETTINGS_PACKAGES + BlockPolicy.PHONE_PACKAGES + BlockPolicy.APP_STORE_PACKAGES +
             launchers + listOfNotNull(dialer)
@@ -294,7 +304,15 @@ class TimerService : Service() {
             ProtectionNotifications.showProtectionAlert(this, ProtectionAlert.MISSED_RESTART)
         }
         var usbBefore = alerts.alerts.first().usbDebugging
+        var notificationsOffBefore = alerts.alerts.first().notificationsOff
         while (true) {
+            // Switched off from the shade, they silence every alert on this phone: the parent's phone is told.
+            val notificationsOff = !ProtectionNotifications.visible(this)
+            if (notificationsOff != notificationsOffBefore) {
+                alerts.setNotificationsOff(notificationsOff)
+                if (notificationsOff) Log.w(TAG, "Nour Time's notifications were turned off")
+                notificationsOffBefore = notificationsOff
+            }
             val usb = Settings.Global.getInt(contentResolver, Settings.Global.ADB_ENABLED, 0) == 1
             if (usb != usbBefore) {
                 alerts.setUsbDebugging(usb)

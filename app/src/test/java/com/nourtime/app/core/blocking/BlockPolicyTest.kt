@@ -109,6 +109,28 @@ class BlockPolicyTest {
         assertEquals(BlockReason.SYSTEM_SETTINGS, BlockPolicy.decide(ringing)?.reason)
     }
 
+    // Found in the 2026-10-12 fresh audit: Settings was covered only while it was the focused window, the
+    // package list missed phone makers' screens, and work-profile / Secure Folder setup weren't covered.
+
+    @Test
+    fun `Settings in split screen beside another app is covered`() {
+        val split = input(on("com.android.chrome", "com.android.settings"))
+        assertEquals(BlockReason.SYSTEM_SETTINGS, BlockPolicy.decide(split)?.reason)
+    }
+
+    @Test
+    fun `a phone maker's settings screen found at runtime is covered`() {
+        val miui = input(on("com.miui.powerkeeper")).copy(extraSettingsPackages = setOf("com.miui.powerkeeper"))
+        assertEquals(BlockReason.SYSTEM_SETTINGS, BlockPolicy.decide(miui)?.reason)
+    }
+
+    @Test
+    fun `work profile and Secure Folder setup are covered`() {
+        // Apps in a new profile run without Nour Time.
+        assertEquals(BlockReason.SYSTEM_SETTINGS, BlockPolicy.decide(input(on("com.android.managedprovisioning")))?.reason)
+        assertEquals(BlockReason.SYSTEM_SETTINGS, BlockPolicy.decide(input(on("com.samsung.knox.securefolder")))?.reason)
+    }
+
     // Found in the 2026-10-12 audit: without device admin (it can be skipped during setup), the Play
     // Store's "Uninstall" button removes Nour Time without the package installer's screen.
 

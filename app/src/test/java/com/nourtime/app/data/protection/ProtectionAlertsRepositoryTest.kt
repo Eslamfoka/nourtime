@@ -41,6 +41,13 @@ class ProtectionAlertsRepositoryTest {
     }
 
     @Test
+    fun `a PIN reset and notifications turned off are recorded`() = runTest {
+        repo.recordPinReset(nowMs = 7_000)
+        repo.setNotificationsOff(true)
+        assertEquals(ProtectionAlerts(pinResetAtMs = 7_000, notificationsOff = true), repo.alerts.first())
+    }
+
+    @Test
     fun `another user and USB debugging are recorded`() = runTest {
         repo.recordOtherUser(nowMs = 4_000)
         repo.setUsbDebugging(true)

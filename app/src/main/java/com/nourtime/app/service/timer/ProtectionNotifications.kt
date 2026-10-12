@@ -1,6 +1,5 @@
 package com.nourtime.app.service.timer
 
-import com.nourtime.app.data.protection.ProtectionAlert
 import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
@@ -18,6 +17,7 @@ import com.nourtime.app.R
 import com.nourtime.app.core.timer.TimerPhase
 import com.nourtime.app.core.timer.TimerStatus
 import com.nourtime.app.core.ui.formatDuration
+import com.nourtime.app.data.protection.ProtectionAlert
 
 /** The silent "protection is on" notification required for the foreground service, plus alerts. */
 object ProtectionNotifications {
@@ -126,6 +126,14 @@ object ProtectionNotifications {
         notify(context, STOPPED_ID, n)
     }
 
+    /** Whether the parent and child can see Nour Time's notifications (the app's and the status channel). */
+    fun visible(context: Context): Boolean {
+        if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return false
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return true
+        val channel = context.getSystemService(NotificationManager::class.java)?.getNotificationChannel(CHANNEL_STATUS)
+        return channel == null || channel.importance != NotificationManager.IMPORTANCE_NONE
+    }
+
     fun clearDegraded(context: Context) {
         NotificationManagerCompat.from(context).cancel(ALERT_ID)
     }
@@ -153,4 +161,6 @@ val ProtectionAlert.message: Int
         ProtectionAlert.USB_DEBUGGING -> R.string.alert_usb_debugging
         ProtectionAlert.MISSED_RESTART -> R.string.alert_missed_restart
         ProtectionAlert.OTHER_USER -> R.string.alert_other_user
+        ProtectionAlert.NOTIFICATIONS_OFF -> R.string.alert_notifications_off
+        ProtectionAlert.PIN_RESET -> R.string.alert_pin_reset
     }

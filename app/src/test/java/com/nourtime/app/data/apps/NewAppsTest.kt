@@ -55,6 +55,16 @@ class NewAppsTest {
     }
 
     @Test
+    fun `only the default and built-in home screens are exempt`() {
+        // Any app can declare itself a home screen; a child could install one to escape the limit.
+        val homes = mapOf("com.google.android.apps.nexuslauncher" to true, "com.example.fakehome" to false, "com.nova" to false)
+        assertEquals(
+            setOf("com.google.android.apps.nexuslauncher", "com.nova"),
+            NewApps.launchersToExempt(defaultHome = "com.nova", homes = homes),
+        )
+    }
+
+    @Test
     fun `an app removed and installed again counts as new`() {
         val removed = check(setOf(youtube, game), setOf(youtube))
         assertEquals(setOf(game), check(removed.known, setOf(youtube, game)).toLimit)

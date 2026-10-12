@@ -54,7 +54,9 @@ reason.
   "adults only" declaration would itself be a policy violation. With a mixed audience the full
   Families policy applies: no ads, no advertising ID, only Families-approved SDKs, data from children
   only with parental consent. Checked: no ads, no ad ID in the merged release manifest, no
-  analytics or Crashlytics SDKs.
+  analytics SDK. Firebase Crashlytics is included but off until a phone is connected (paired child's
+  phone or signed-in parent's phone), so it only runs with the parent's consent; confirm it is on
+  Google's Families self-certified SDK list (see Data safety below).
 - Network access only for the optional parent's-phone connection.
 - Parents sign in with Google on their own phone; the child's phone uses an anonymous account. The
   child's name, age, photos and location are never collected. Per-app usage of the child's phone

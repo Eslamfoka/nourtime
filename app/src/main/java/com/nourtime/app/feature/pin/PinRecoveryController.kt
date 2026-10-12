@@ -20,6 +20,8 @@ class PinRecoveryController(
     private val scope: CoroutineScope,
     private val security: SecurityRepository,
     clock: DeviceClock,
+    /** Tells the parent: a child who knows the answer could otherwise take over unnoticed. */
+    private val onPinReset: suspend () -> Unit = {},
     private val onDone: () -> Unit,
 ) {
     private val _stage = MutableStateFlow(PinRecoveryStage.ANSWER)
@@ -40,6 +42,7 @@ class PinRecoveryController(
         val newPin = updated.completedPin ?: return
         scope.launch {
             security.setPin(newPin)
+            runCatching { onPinReset() }
             _stage.value = PinRecoveryStage.DONE
             onDone()
         }

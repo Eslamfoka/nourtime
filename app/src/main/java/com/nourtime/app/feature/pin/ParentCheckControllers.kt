@@ -65,9 +65,14 @@ class PinCheckController(
             val result = security.verifyPin(pin)
             input = ""
             when (result) {
-                PinCheckResult.Success, PinCheckResult.NoPin -> {
+                PinCheckResult.Success -> {
                     _state.value = PinUiState()
                     onSuccess()
+                }
+                // These screens only run after setup, where a PIN always exists: a missing one means
+                // the settings were lost, not that anything should open (2026-10-12 audit).
+                PinCheckResult.NoPin -> _state.update {
+                    it.copy(entered = 0, checking = false, rejections = it.rejections + 1)
                 }
                 is PinCheckResult.Wrong -> _state.update {
                     it.copy(entered = 0, checking = false, attemptsLeft = result.attemptsBeforeLockout, rejections = it.rejections + 1)

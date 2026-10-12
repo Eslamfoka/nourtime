@@ -41,6 +41,11 @@ data class BlockInput(
     val inCall: Boolean = false,
     /** Without device admin the Play Store can uninstall Nour Time, so it is covered like Settings. */
     val deviceAdminActive: Boolean = true,
+    /**
+     * Settings screens found on this phone at runtime (whichever app opens Android's settings, battery
+     * and app-info screens), on top of [BlockPolicy.SYSTEM_SETTINGS_PACKAGES].
+     */
+    val extraSettingsPackages: Set<String> = emptySet(),
     /** The default phone app, which may be a third-party dialer. */
     val dialerPackage: String? = null,
     /** Educational apps the parent allows during lock periods and bedtime (never limited). */
@@ -66,6 +71,13 @@ object BlockPolicy {
         "com.oneplus.security",
         "com.samsung.android.lool",
         "com.samsung.android.sm_cn",
+        "com.samsung.accessibility",
+        "com.google.android.apps.wellbeing",
+        "com.miui.powerkeeper",
+        "com.oplus.battery",
+        // Apps in a new work profile or Secure Folder run without Nour Time.
+        "com.android.managedprovisioning",
+        "com.samsung.knox.securefolder",
     )
 
     /** App stores that can uninstall apps themselves, without the package installer's screen. */
@@ -92,8 +104,10 @@ object BlockPolicy {
         val lockReason = if (input.bedtime) BlockReason.BEDTIME else BlockReason.TIME_UP
         val onScreen = fg.visible + listOfNotNull(fg.foreground)
 
-        val storeUnguarded = !input.deviceAdminActive && fg.foreground in APP_STORE_PACKAGES
-        if (input.protectSystemSettings && (fg.foreground in SYSTEM_SETTINGS_PACKAGES || storeUnguarded)) {
+        // Anywhere on screen, not only in front: split screen and floating windows left Settings usable.
+        val settingsOnScreen = onScreen.any { it in SYSTEM_SETTINGS_PACKAGES || it in input.extraSettingsPackages }
+        val storeUnguarded = !input.deviceAdminActive && onScreen.any { it in APP_STORE_PACKAGES }
+        if (input.protectSystemSettings && (settingsOnScreen || storeUnguarded)) {
             val allowed = input.fullPass || (input.devicePass && !lockPeriod)
             if (!allowed) return BlockDecision(BlockReason.SYSTEM_SETTINGS, wholeDevice = false, needsSecurityAnswer = lockPeriod)
         }
