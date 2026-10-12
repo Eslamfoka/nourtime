@@ -27,7 +27,7 @@
 
     <!-- Prominent disclosure -->
     <string name="disclosure_title">What Nour Time needs, and why</string>
-    <string name="disclosure_intro">Nour Time is a parental control app. To limit your child\'s time on the apps you choose, it needs the permissions below. Nour Time never reads what\'s on the screen and has no ads or tracking. Nothing leaves this phone unless you connect your own phone as a parent. Then the time left, the minutes used on each app, the list of apps, the minutes earned in the Learning Hub and Nour Time\'s settings are shared with your Google account.</string>
+    <string name="disclosure_intro">Nour Time is a parental control app. To limit your child\'s time on the apps you choose, it needs the permissions below. Nour Time never reads what\'s on the screen and has no ads or tracking. Nothing leaves this phone unless you connect your own phone as a parent. Then the time left, the minutes used on each app, the list of apps, the minutes earned in the Learning Hub, Nour Time\'s settings and protection alerts are shared with your Google account.</string>
     <string name="disclosure_footer">You\'ll grant each permission yourself, one at a time, and you can turn any of them off later from the phone\'s settings.</string>
     <string name="disclosure_accept">I agree, continue</string>
     <string name="disclosure_decline">Not now</string>

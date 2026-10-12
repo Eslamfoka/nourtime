@@ -19,6 +19,8 @@ stays on the device. Nour Time never sells data, shows ads or uses analytics.**
   to the home screen when the time is up. Nour Time never reads the text or content of any screen, or
   anything typed.
 - **Time used per app per day.** Stored on the device to show the parent today's usage.
+- **Apps installed later.** The list of apps already on the phone, so that a newly installed app can
+  be added to the limited apps (the parent can turn this off).
 - **Settings.** The selected apps, time budget, lock period, schedule, bedtime, the child's age group
   and whether messages should address a boy or a girl.
 - **Parent PIN and security question.** The PIN and the answer are stored only as salted one-way
@@ -40,6 +42,8 @@ account can read it:
 - the minutes used today on each limited app;
 - the names and package names of the apps that can be opened from the launcher (so the parent can
   choose limited and allowed apps);
+- protection alerts: when the phone restarted without Nour Time (for example in safe mode), when it
+  switched to another user, and whether USB debugging is on (the time of the event, no other details);
 - the Nour Time settings the parent can change remotely (time budget, lock period, lock type, bedtime,
   daily reset, limited apps and apps allowed during the lock, Learning Hub and voice settings);
 - the Learning Hub minutes: the child's banked minutes, the minutes earned today, and a lock that is
@@ -68,9 +72,10 @@ phone, per-day usage is kept for 30 days.
 ## Permissions
 
 The app explains each permission before asking for it: Accessibility service, Usage access, Display
-over other apps, Device admin, Notifications, and running without battery restrictions. All of them
-serve the time limit and protecting it from being turned off. Each can be revoked in the phone's
-settings.
+over other apps, Device admin and Notifications. All of them serve the time limit and protecting it
+from being turned off. Each can be revoked in the phone's settings. Setup also asks the parent to take
+Nour Time off the phone's battery optimization list, in the phone's own settings (no permission is
+requested for this).
 
 ## Deleting data
 
@@ -132,7 +137,8 @@ version is released, and the app will ask for consent where required.
 - **عند ربط هاتف ولي الأمر (اختياري):** بعد موافقة ولي الأمر على هاتف الطفل، يرسل هاتف الطفل إلى Google
   Firebase ما يلي فقط، ولا يراه إلا حساب ولي الأمر: طراز الهاتف، وحالة المؤقت (الوقت المتبقي والقفل وحالة
   الحماية)، ودقائق اليوم لكل تطبيق محدد، وأسماء التطبيقات القابلة للفتح، وإعدادات وقت نور، ودقائق ركن التعلّم
-  (الرصيد المدّخر ودقائق اليوم المكتسبة)، وطلبات "أريد وقتًا إضافيًا" التي يرسلها الطفل من شاشة "خلص الوقت" (وقت
+  (الرصيد المدّخر ودقائق اليوم المكتسبة)، وتنبيهات الحماية (إعادة تشغيل الهاتف دون وقت نور، أو الانتقال إلى مستخدم
+  آخر، أو تفعيل تصحيح USB: وقت الحدث فقط)، وطلبات "أريد وقتًا إضافيًا" التي يرسلها الطفل من شاشة "خلص الوقت" (وقت
   الطلب ورد ولي الأمر فقط، دون أي نص). يحفظ هاتف ولي الأمر اسم حساب Google وبريده. لا يُرسل أبدًا اسم الطفل ولا
   عمره ولا الرمز ولا محتوى الشاشة ولا الموقع.
 - **الأطفال:** تُعدّ هذه المعلومات عن استخدام الطفل للهاتف معلومات شخصية عنه وفق قوانين خصوصية الأطفال، ولذلك لا
@@ -141,6 +147,8 @@ version is released, and the app will ask for consent where required.
   تُشارك مع أي جهة أخرى.
 - **خدمة إمكانية الوصول** تُستخدم أيضًا لعرض شاشة الرمز فوق إعدادات الهاتف ومثبّت التطبيقات حتى لا يستطيع الطفل
   إيقاف وقت نور أو حذفه، وللرجوع إلى الشاشة الرئيسية عند انتهاء الوقت.
+- **الأذونات:** خدمة إمكانية الوصول، والوصول إلى بيانات الاستخدام، والظهور فوق التطبيقات، ومشرف الجهاز، والإشعارات.
+  ويطلب الإعداد من ولي الأمر استثناء وقت نور من تحسين البطارية في إعدادات الهاتف نفسها (دون طلب أي إذن).
 - لا إعلانات، ولا تتبع، ولا نسخ احتياطي سحابي. إلغاء الربط يوقف كل الإرسال.
 - حذف التطبيق يحذف كل بياناته.
 

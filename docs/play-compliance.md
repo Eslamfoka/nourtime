@@ -8,7 +8,7 @@ notes collect what the Play Console declarations will need.
 
 | Permission / API | Why Nour Time needs it | Where it's disclosed |
 |---|---|---|
-| **AccessibilityService** (`isAccessibilityTool` not set) | Three uses, all declared: (1) knows which apps are on screen, including picture-in-picture and split screen, so the time budget only runs while a parent-selected app is in use, and shows the "Time's up" screen over it; (2) covers the phone's Settings, the package installer and OEM security apps with the PIN screen (`BlockPolicy.SYSTEM_SETTINGS_PACKAGES`), so the child can't disable or uninstall Nour Time; (3) performs `GLOBAL_ACTION_HOME` when the child leaves a blocked app (`LockOverlay.goHome`). From each window it reads **only the owner package name and window type**; it never reads text, view content or what the child types. | Prominent disclosure screen, the Accessibility step, and the service description in system Settings (all three uses, EN + AR, since 2026-10-12). |
+| **AccessibilityService** (`isAccessibilityTool` not set) | Three uses, all declared: (1) knows which apps are on screen, including picture-in-picture and split screen, so the time budget only runs while a parent-selected app is in use, and shows the "Time's up" screen over it; (2) covers the phone's Settings, the package installer and OEM security apps with the PIN screen (`BlockPolicy.SYSTEM_SETTINGS_PACKAGES`), and the Play Store while device admin is off (`APP_STORE_PACKAGES`), so the child can't disable or uninstall Nour Time; (3) performs `GLOBAL_ACTION_HOME` when the child leaves a blocked app (`LockOverlay.goHome`). From each window it reads **only the owner package name and window type**; it never reads text, view content or what the child types. | Prominent disclosure screen, the Accessibility step, and the service description in system Settings (all three uses, EN + AR, since 2026-10-12). |
 | `canRetrieveWindowContent="true"` + `flagRetrieveInteractiveWindows` | Required by Android to list visible windows and read the owning package (`AccessibilityWindowInfo.getRoot().getPackageName()`). No node text is read anywhere in the code. | Same as above. |
 | `PACKAGE_USAGE_STATS` (Usage access) | Fallback foreground-app detection while Accessibility is off (fail-closed protection), and the per-app stats. | Disclosure + Usage step. |
 | `SYSTEM_ALERT_WINDOW` | Shows the "Time's up" screen over limited apps when the accessibility overlay isn't available. | Disclosure + Overlay step. |
@@ -19,6 +19,8 @@ notes collect what the Play Console declarations will need.
 | `FOREGROUND_SERVICE_SPECIAL_USE` | The timer runs as a foreground service with type `specialUse`; subtype declared in the manifest: *"Parental control: tracks the child's active screen time on parent-selected apps and enforces the time budget and lock period."* | Status notification. |
 | `RECEIVE_BOOT_COMPLETED` | Restarts protection after a reboot. | — |
 | `REQUEST_DELETE_PACKAGES` | Settings → *Uninstall Nour Time* opens the system uninstall dialog for Nour Time itself (after the parent's security answer). | Settings screen. |
+| `ACTION_PACKAGE_ADDED` (runtime receiver, no permission) | Limits newly installed apps by default ("Limit new apps", the parent can turn it off), so a newly installed game or browser isn't unlimited. | Settings toggle; "New app limited" notification. |
+| `Settings.Global.BOOT_COUNT` / `ADB_ENABLED`, `ACTION_USER_BACKGROUND` (no permission) | Protection alerts: a restart without Nour Time (safe mode), a switch to another user, USB debugging on. Shown on the child's phone and, when connected, on the parent's phone. | Notification; privacy policy. |
 | `INTERNET` | Phase 2 remote control (Firebase Auth + Firestore): only used on a parent's phone, or on a child's phone after the parent connected it. | Privacy policy; the pairing screens. |
 | `<queries>` for launcher apps | Lists apps with a launcher icon for the app picker. **No `QUERY_ALL_PACKAGES`.** | — |
 
@@ -29,14 +31,16 @@ notes collect what the Play Console declarations will need.
 > (including picture-in-picture and split-screen windows), so that the time limit counts only while a
 > parent-selected app is in use, and to show a full-screen "Time's up" screen over those apps when the
 > time runs out; (2) to protect the parental controls from being disabled by the child: when the
-> phone's Settings app, the package installer or the phone maker's security app is opened, Nour Time
+> phone's Settings app, the package installer or the phone maker's security app is opened (and the
+> Play Store while Nour Time's device admin is off, since it can uninstall apps itself), Nour Time
 > shows its parent-PIN screen over it, so only the parent can turn off Nour Time's permissions or
 > uninstall it; (3) to return to the home screen (global action Home) when the child dismisses the
 > "Time's up" screen. For each visible window the app reads only the package name of the app that owns
 > it. It does not read, collect, store or share any text or content shown on the screen, or anything
-> the user types. Nothing it learns from the Accessibility service leaves the device; only if the parent
-> connects their own phone are the time left, the minutes used on each app and the list of installed
-> apps shared with the parent's account.
+> the user types. What it learns from the Accessibility service stays on the device unless the parent
+> connects their own phone. Then the minutes used today on each limited app (measured with this
+> detection), the time left and the list of installed apps are sent to Google Cloud Firestore, where
+> only that parent's own account can read them.
 
 The prominent disclosure is shown before any permission is requested and requires an explicit
 "I agree" tap. It's in onboarding step 1 (`DisclosureStep`) and each permission step repeats the
@@ -73,6 +77,8 @@ progress. Backups and device transfer are disabled (`allowBackup=false`, `data_e
     today, a paused lock waiting after a learning break), and the settings the parent changes
     remotely (time budget, lock, bedtime, limited/allowed apps, Learning Hub and voice settings).
   - **App activity → Installed apps:** list of launchable apps (names, package names).
+  - **App info and performance → Other app performance data:** protection alerts (time of a restart
+    without Nour Time or of a switch to another user, whether USB debugging is on).
   - **Device or other IDs:** a random device id generated by Nour Time; phone make/model.
   - **Personal info → Name, Email:** the parent's Google account (parent's phone only).
 - Purpose: app functionality (parental control). Not used for ads or analytics; not sold.
