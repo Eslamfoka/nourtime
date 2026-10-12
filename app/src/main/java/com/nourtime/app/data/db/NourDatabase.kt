@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
@@ -66,8 +67,18 @@ interface UsageDao {
     suspend fun deleteBefore(beforeEpochDay: Long)
 }
 
-@Database(entities = [SchedulePeriod::class, DailyUsage::class], version = 1, exportSchema = false)
+@Database(entities = [SchedulePeriod::class, DailyUsage::class], version = NourDatabase.VERSION, exportSchema = true)
 abstract class NourDatabase : RoomDatabase() {
     abstract fun schedule(): ScheduleDao
     abstract fun usage(): UsageDao
+
+    companion object {
+        /**
+         * Raising it needs a Migration in [MIGRATIONS] and the new schema in app/schemas, committed
+         * (DatabaseMigrationsTest): a missing migration would crash every start on existing phones.
+         */
+        const val VERSION = 1
+
+        val MIGRATIONS: Array<Migration> = emptyArray()
+    }
 }

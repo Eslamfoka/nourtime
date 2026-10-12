@@ -126,3 +126,8 @@ dependencies {
 tasks.withType<Test>().configureEach {
     inputs.dir("src/main/assets/audio").withPropertyName("recordedAudio")
 }
+
+// Exported database schemas, committed so every migration can be checked (DatabaseMigrationsTest).
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
