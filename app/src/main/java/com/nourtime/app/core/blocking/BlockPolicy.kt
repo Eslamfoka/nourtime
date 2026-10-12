@@ -39,6 +39,8 @@ data class BlockInput(
     val phoneRinging: Boolean = false,
     /** A call is in progress: the call screen stays usable. */
     val inCall: Boolean = false,
+    /** Without device admin the Play Store can uninstall Nour Time, so it is covered like Settings. */
+    val deviceAdminActive: Boolean = true,
     /** The default phone app, which may be a third-party dialer. */
     val dialerPackage: String? = null,
     /** Educational apps the parent allows during lock periods and bedtime (never limited). */
@@ -66,6 +68,9 @@ object BlockPolicy {
         "com.samsung.android.sm_cn",
     )
 
+    /** App stores that can uninstall apps themselves, without the package installer's screen. */
+    val APP_STORE_PACKAGES = setOf("com.android.vending")
+
     /** Phone and in-call screens; never covered, so the child can call a parent or answer. */
     val PHONE_PACKAGES = setOf(
         "com.android.dialer",
@@ -87,7 +92,8 @@ object BlockPolicy {
         val lockReason = if (input.bedtime) BlockReason.BEDTIME else BlockReason.TIME_UP
         val onScreen = fg.visible + listOfNotNull(fg.foreground)
 
-        if (input.protectSystemSettings && fg.foreground in SYSTEM_SETTINGS_PACKAGES) {
+        val storeUnguarded = !input.deviceAdminActive && fg.foreground in APP_STORE_PACKAGES
+        if (input.protectSystemSettings && (fg.foreground in SYSTEM_SETTINGS_PACKAGES || storeUnguarded)) {
             val allowed = input.fullPass || (input.devicePass && !lockPeriod)
             if (!allowed) return BlockDecision(BlockReason.SYSTEM_SETTINGS, wholeDevice = false, needsSecurityAnswer = lockPeriod)
         }

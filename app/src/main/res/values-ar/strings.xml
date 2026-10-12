@@ -282,6 +282,10 @@
     <string name="settings_protection_section">الحماية</string>
     <string name="protect_settings_title">حماية إعدادات الهاتف</string>
     <string name="protect_settings_hint">تحتاج إعدادات الهاتف وشاشات إلغاء التثبيت والأمان إلى رمز الأهل، حتى لا يمكن إيقاف وقت نور أو حذفه.</string>
+    <string name="limit_new_apps_title">تحديد التطبيقات الجديدة</string>
+    <string name="limit_new_apps_hint">التطبيقات التي تُثبَّت لاحقًا تشارك رصيد الوقت أيضًا. يمكنك إلغاء تحديدها من التطبيقات.</string>
+    <string name="notif_new_apps_title">تم تحديد تطبيق جديد</string>
+    <string name="notif_new_apps_limited">أصبح يشارك رصيد الوقت: %1$s. لتغيير ذلك، افتح وقت نور ثم التطبيقات.</string>
     <string name="sound_title">الصوت في شاشة \"خلص الوقت\"</string>
     <string name="sound_hint">نغمة هادئة للأطفال الأصغر سنًا.</string>
     <string name="bedtime_title">وقت النوم</string>

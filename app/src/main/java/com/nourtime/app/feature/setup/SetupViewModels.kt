@@ -46,6 +46,8 @@ class ParentSettingsViewModel @Inject constructor(
 
     fun setProtectSystemSettings(on: Boolean) = launch { repository.setProtectSystemSettings(on) }
 
+    fun setLimitNewApps(on: Boolean) = launch { repository.setLimitNewApps(on) }
+
     fun setSoundEnabled(on: Boolean) = launch { repository.setSoundEnabled(on) }
 
     fun setBedtime(bedtime: Bedtime) = launch { repository.setBedtime(bedtime) }

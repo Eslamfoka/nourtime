@@ -8,6 +8,12 @@ import android.content.IntentFilter
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
+import android.telecom.TelecomManager
+import com.nourtime.app.core.blocking.BlockPolicy
+import com.nourtime.app.data.apps.InstalledAppsRepository
+import com.nourtime.app.data.apps.NewApps
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.onStart
 import android.util.Log
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
@@ -64,6 +70,7 @@ class TimerService : Service() {
     // Lazy: Firebase is only started once this phone pairs with a parent's phone.
     @Inject lateinit var remoteSync: Lazy<RemoteSync>
     @Inject lateinit var deviceIdentity: DeviceIdentity
+    @Inject lateinit var apps: InstalledAppsRepository
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -74,6 +81,14 @@ class TimerService : Service() {
                 session.onScreenOff()
             }
             tracker.refreshScreen()
+        }
+    }
+
+    private val appsChanged = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+
+    private val packageReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            appsChanged.tryEmit(Unit)
         }
     }
 
@@ -98,6 +113,13 @@ class TimerService : Service() {
             // no counting). Only the system can send these protected broadcasts.
             ContextCompat.RECEIVER_EXPORTED,
         )
+        // Only the system sends package broadcasts.
+        ContextCompat.registerReceiver(
+            this,
+            packageReceiver,
+            IntentFilter(Intent.ACTION_PACKAGE_ADDED).apply { addDataScheme("package") },
+            ContextCompat.RECEIVER_EXPORTED,
+        )
         tracker.refreshScreen()
         if (!tracker.accessibilityConnected) tracker.onAccessibilityDisconnected(usageStats.available)
 
@@ -107,6 +129,7 @@ class TimerService : Service() {
         scope.launch { resilient("degraded alert") { runDegradedAlert() } }
         scope.launch { resilient("blocking") { blocking.run() } }
         scope.launch { resilient("stats cleanup") { runStatsCleanup() } }
+        scope.launch { resilient("new apps") { runNewApps() } }
         // Phase 2: only starts once this phone is paired with a parent's phone.
         scope.launch {
             deviceIdentity.pairedOwner.filterNotNull().first()
@@ -137,6 +160,7 @@ class TimerService : Service() {
 
     override fun onDestroy() {
         unregisterReceiver(screenReceiver)
+        unregisterReceiver(packageReceiver)
         runBlocking { withContext(NonCancellable) { engine.flush() } }
         scope.cancel()
         super.onDestroy()
@@ -206,6 +230,32 @@ class TimerService : Service() {
                     ProtectionNotifications.showDegraded(this@TimerService)
                 }
             }
+    }
+
+    /** Limits apps installed after protection started (also those installed while it wasn't running). */
+    private suspend fun runNewApps() {
+        appsChanged.onStart { emit(Unit) }.collectLatest {
+            val s = settings.settings.first()
+            val known = settings.knownApps.first()
+            val launchable = apps.launchableApps().mapTo(HashSet()) { it.packageName }
+            val r = NewApps.check(known, launchable, s.limitNewApps, s.limitedApps, s.allowedDuringLock, neverLimited())
+            if (r.known != known || r.toLimit.isNotEmpty()) settings.recordApps(r.known, r.toLimit)
+            if (r.toLimit.isNotEmpty()) {
+                Log.i(TAG, "limited new apps: ${r.toLimit}")
+                ProtectionNotifications.showNewAppsLimited(this@TimerService, r.toLimit.map { apps.label(it) })
+            }
+        }
+    }
+
+    /** The phone, Settings, app stores and home screens: limiting them could cut the child off from calls. */
+    private fun neverLimited(): Set<String> {
+        val home = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
+        @Suppress("DEPRECATION")
+        val launchers = runCatching { packageManager.queryIntentActivities(home, 0).map { it.activityInfo.packageName } }
+            .getOrDefault(emptyList())
+        val dialer = runCatching { getSystemService(TelecomManager::class.java).defaultDialerPackage }.getOrNull()
+        return BlockPolicy.SYSTEM_SETTINGS_PACKAGES + BlockPolicy.PHONE_PACKAGES + BlockPolicy.APP_STORE_PACKAGES +
+            launchers + listOfNotNull(dialer)
     }
 
     /** Keeps the stats database small: only recent days are shown. */

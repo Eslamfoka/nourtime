@@ -4,6 +4,8 @@ import android.content.Context
 import android.media.AudioManager
 import android.telecom.TelecomManager
 import android.util.Log
+import com.nourtime.app.core.permissions.NourPermission
+import com.nourtime.app.core.permissions.PermissionChecker
 import com.nourtime.app.core.blocking.BlockDecision
 import com.nourtime.app.core.blocking.BlockInput
 import com.nourtime.app.core.blocking.BlockPolicy
@@ -59,6 +61,7 @@ class BlockCoordinator @Inject constructor(
     private val clock: DeviceClock,
     private val screenLocker: ScreenLocker,
     private val apps: InstalledAppsRepository,
+    private val permissions: PermissionChecker,
 ) {
     private val screenOff = ScreenOffTimer()
 
@@ -116,6 +119,9 @@ class BlockCoordinator @Inject constructor(
                 phoneRinging = audioMode == AudioManager.MODE_RINGTONE || audioMode == MODE_CALL_SCREENING,
                 inCall = audioMode == AudioManager.MODE_IN_CALL,
                 dialerPackage = runCatching { telecom.defaultDialerPackage }.getOrNull(),
+                // Asked only while an app store is in front, not on every tick.
+                deviceAdminActive = fg.foreground !in BlockPolicy.APP_STORE_PACKAGES ||
+                    permissions.isGranted(NourPermission.DEVICE_ADMIN),
                 allowedDuringLock = s.allowedDuringLock,
             ),
         )

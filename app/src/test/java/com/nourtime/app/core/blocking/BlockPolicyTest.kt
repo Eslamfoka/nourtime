@@ -109,6 +109,27 @@ class BlockPolicyTest {
         assertEquals(BlockReason.SYSTEM_SETTINGS, BlockPolicy.decide(ringing)?.reason)
     }
 
+    // Found in the 2026-10-12 audit: without device admin (it can be skipped during setup), the Play
+    // Store's "Uninstall" button removes Nour Time without the package installer's screen.
+
+    private val playStore = "com.android.vending"
+
+    @Test
+    fun `without device admin the Play Store needs the parent PIN`() {
+        val noAdmin = input(on(playStore)).copy(deviceAdminActive = false)
+        assertEquals(BlockReason.SYSTEM_SETTINGS, BlockPolicy.decide(noAdmin)?.reason)
+    }
+
+    @Test
+    fun `with device admin the Play Store stays usable`() {
+        assertNull(BlockPolicy.decide(input(on(playStore)).copy(deviceAdminActive = true)))
+    }
+
+    @Test
+    fun `the parent PIN opens the Play Store without device admin`() {
+        assertNull(BlockPolicy.decide(input(on(playStore), devicePass = true).copy(deviceAdminActive = false)))
+    }
+
     @Test
     fun `a ringing phone doesn't uncover the app installer`() {
         val ringing = input(on("com.google.android.packageinstaller"), timeUp = true).copy(phoneRinging = true)

@@ -37,6 +37,24 @@ class ParentSettingsRepositoryTest {
     }
 
     @Test
+    fun `new apps are limited by default, and the parent can turn it off`() = runTest {
+        assertEquals(true, repo.settings.first().limitNewApps)
+        repo.setLimitNewApps(false)
+        assertEquals(false, repo.settings.first().limitNewApps)
+    }
+
+    @Test
+    fun `recording new apps limits them and takes them off the allowed list`() = runTest {
+        assertEquals(null, repo.knownApps.first())
+        repo.setAppAllowedDuringLock("com.example.quran", allowed = true)
+        repo.recordApps(known = setOf("a", "com.example.quran"), toLimit = setOf("com.example.quran"))
+        val s = repo.settings.first()
+        assertEquals(setOf("com.example.quran"), s.limitedApps)
+        assertEquals(emptySet<String>(), s.allowedDuringLock)
+        assertEquals(setOf("a", "com.example.quran"), repo.knownApps.first())
+    }
+
+    @Test
     fun `stores profile and time settings`() = runTest {
         repo.setGender(ChildGender.GIRL)
         repo.setAgeGroup(AgeGroup.AGES_3_6)

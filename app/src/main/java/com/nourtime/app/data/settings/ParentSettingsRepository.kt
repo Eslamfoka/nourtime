@@ -45,6 +45,8 @@ data class ParentSettings(
     val protectSystemSettings: Boolean = true,
     /** Sound on the child's "Time's up" screen (brief §12). */
     val soundEnabled: Boolean = true,
+    /** Apps installed later are limited too, unless the parent unticks them (2026-10-12 audit). */
+    val limitNewApps: Boolean = true,
     val bedtime: Bedtime = Bedtime(),
     val weekend: WeekendRules = WeekendRules(),
 )
@@ -92,6 +94,7 @@ class ParentSettingsRepository @Inject constructor(
             lockType = prefs[LOCK_TYPE]?.let { name -> LockType.entries.firstOrNull { it.name == name } } ?: LockType.SELECTED_APPS,
             protectSystemSettings = prefs[PROTECT_SETTINGS] ?: true,
             soundEnabled = prefs[SOUND] ?: true,
+            limitNewApps = prefs[LIMIT_NEW_APPS] ?: true,
             bedtime = bedtime,
             // Weekend values never set start as a copy of the normal ones.
             weekend = WeekendRules(
@@ -125,6 +128,20 @@ class ParentSettingsRepository @Inject constructor(
     suspend fun setProtectSystemSettings(on: Boolean) = store.edit { it[PROTECT_SETTINGS] = on }
 
     suspend fun setSoundEnabled(on: Boolean) = store.edit { it[SOUND] = on }
+
+    suspend fun setLimitNewApps(on: Boolean) = store.edit { it[LIMIT_NEW_APPS] = on }
+
+    /** Apps seen so far, for [com.nourtime.app.data.apps.NewApps]; null before the first look. */
+    val knownApps: Flow<Set<String>?> = store.data.map { it[KNOWN_APPS] }.distinctUntilChanged()
+
+    /** Limits [toLimit] (taking them off the allowed list) and remembers [known], in one write. */
+    suspend fun recordApps(known: Set<String>, toLimit: Set<String>) = store.edit { prefs ->
+        prefs[KNOWN_APPS] = known
+        if (toLimit.isNotEmpty()) {
+            prefs[LIMITED_APPS] = prefs[LIMITED_APPS].orEmpty() + toLimit
+            prefs[ALLOWED_DURING_LOCK] = prefs[ALLOWED_DURING_LOCK].orEmpty() - toLimit
+        }
+    }
 
     suspend fun setBedtime(bedtime: Bedtime) = store.edit {
         it[BEDTIME_ON] = bedtime.enabled
@@ -187,6 +204,8 @@ class ParentSettingsRepository @Inject constructor(
         val LOCK_TYPE = stringPreferencesKey("lock_type")
         val PROTECT_SETTINGS = booleanPreferencesKey("protect_system_settings")
         val SOUND = booleanPreferencesKey("child_sound")
+        val LIMIT_NEW_APPS = booleanPreferencesKey("limit_new_apps")
+        val KNOWN_APPS = stringSetPreferencesKey("known_apps")
         val BEDTIME_ON = booleanPreferencesKey("bedtime_on")
         val BEDTIME_START = intPreferencesKey("bedtime_start")
         val BEDTIME_END = intPreferencesKey("bedtime_end")

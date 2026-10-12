@@ -245,6 +245,7 @@ private fun SettingsTab(
             LearningSettingsCard(s.ageGroup, s.gender)
             Text(stringResource(R.string.settings_protection_section), style = MaterialTheme.typography.titleLarge)
             ToggleCard(stringResource(R.string.protect_settings_title), stringResource(R.string.protect_settings_hint), s.protectSystemSettings, viewModel::setProtectSystemSettings)
+            ToggleCard(stringResource(R.string.limit_new_apps_title), stringResource(R.string.limit_new_apps_hint), s.limitNewApps, viewModel::setLimitNewApps)
             ToggleCard(stringResource(R.string.sound_title), stringResource(R.string.sound_hint), s.soundEnabled, viewModel::setSoundEnabled)
             Text(stringResource(R.string.settings_security_section), style = MaterialTheme.typography.titleLarge)
             var securityEdit by remember { mutableStateOf<SecurityEdit?>(null) }

@@ -23,6 +23,7 @@ object ProtectionNotifications {
     const val STATUS_ID = 1
     private const val ALERT_ID = 2
     private const val ADMIN_ALERT_ID = 3
+    private const val NEW_APPS_ID = 4
     private const val CHANNEL_STATUS = "protection_status"
     private const val CHANNEL_ALERTS = "protection_alerts"
 
@@ -79,6 +80,20 @@ object ProtectionNotifications {
             .setContentIntent(openApp(context))
             .build()
         notify(context, ADMIN_ALERT_ID, n)
+    }
+
+    /** Newly installed apps now share the time budget; the parent can untick them in Apps. */
+    fun showNewAppsLimited(context: Context, labels: List<String>) {
+        val text = context.getString(R.string.notif_new_apps_limited, labels.joinToString(", "))
+        val n = NotificationCompat.Builder(context, CHANNEL_ALERTS)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(context.getString(R.string.notif_new_apps_title))
+            .setContentText(text)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(text))
+            .setContentIntent(openApp(context))
+            .setAutoCancel(true)
+            .build()
+        notify(context, NEW_APPS_ID, n)
     }
 
     fun clearDegraded(context: Context) {
