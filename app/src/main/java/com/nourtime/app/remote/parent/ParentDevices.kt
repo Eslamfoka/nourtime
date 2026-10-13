@@ -328,6 +328,10 @@ class ParentDevices @Inject constructor(
      * (the phones keep working with their current settings). Needs the network; safe to repeat.
      */
     suspend fun forgetParent(uid: String) {
+        // The parent's phones stop getting pushes.
+        val tokens = firestore.collection(FirestoreTokenStore.PARENTS).document(uid).collection(FirestoreTokenStore.TOKENS)
+            .get(Source.SERVER).await().documents
+        tokens.forEach { it.reference.delete().await() }
         val owned = devices.whereEqualTo("ownerUid", uid).get(Source.SERVER).await().documents
         for (device in owned) {
             val sent = device.reference.collection(RemotePaths.COMMANDS).whereEqualTo("by", uid).get(Source.SERVER).await().documents

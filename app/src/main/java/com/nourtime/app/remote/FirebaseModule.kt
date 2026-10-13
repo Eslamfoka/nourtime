@@ -1,5 +1,8 @@
 package com.nourtime.app.remote
 
+import com.nourtime.app.remote.parent.FirebasePushTokenSource
+import com.nourtime.app.remote.parent.FirestoreTokenStore
+import com.nourtime.app.remote.parent.PushTokens
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nourtime.app.BuildConfig
@@ -28,6 +31,11 @@ object FirebaseModule {
     fun auth(): FirebaseAuth = FirebaseAuth.getInstance().also {
         if (usesEmulator) it.useEmulator(BuildConfig.FIREBASE_EMULATOR_HOST, AUTH_EMULATOR_PORT)
     }
+
+    /** The parent's phone's push registration (Phase 2 push, 2026-10-13). */
+    @Provides
+    @Singleton
+    fun pushTokens(firestore: FirebaseFirestore): PushTokens = PushTokens(FirebasePushTokenSource(), FirestoreTokenStore(firestore))
 
     @Provides
     @Singleton

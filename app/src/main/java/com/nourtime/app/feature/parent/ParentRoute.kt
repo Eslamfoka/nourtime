@@ -61,6 +61,7 @@ import com.nourtime.app.remote.parent.Load
 import com.nourtime.app.remote.parent.ParentAuth
 import com.nourtime.app.remote.parent.ParentDevices
 import com.nourtime.app.remote.parent.ParentUser
+import com.nourtime.app.remote.parent.PushTokens
 import com.nourtime.app.remote.parent.SignInFailure
 import com.nourtime.app.remote.parent.loadWithRetry
 import com.nourtime.app.remote.parent.valueOrNull
@@ -71,6 +72,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
@@ -83,7 +86,15 @@ import javax.inject.Inject
 class ParentViewModel @Inject constructor(
     private val auth: ParentAuth,
     private val remote: ParentDevices,
+    private val pushTokens: PushTokens,
 ) : ViewModel() {
+
+    init {
+        // This phone gets the signed-in parent's pushes (asks, alerts, a PIN waiting for approval).
+        viewModelScope.launch {
+            auth.user.filterNotNull().distinctUntilChangedBy { it.uid }.collect { pushTokens.register(it.uid) }
+        }
+    }
 
     val user: StateFlow<ParentUser?> = auth.user
 
@@ -123,7 +134,12 @@ class ParentViewModel @Inject constructor(
 
     fun signOut() {
         _selected.value = null
-        auth.signOut()
+        val uid = user.value?.uid
+        viewModelScope.launch {
+            // While still signed in: the token document can only be deleted by its parent.
+            if (uid != null) pushTokens.unregister(uid)
+            auth.signOut()
+        }
     }
 
     private val _deletion = MutableStateFlow(DeletionState.IDLE)
@@ -136,6 +152,7 @@ class ParentViewModel @Inject constructor(
         viewModelScope.launch {
             _deletion.value = DeletionState.DELETING
             val ok = runCatching {
+                pushTokens.unregister(uid)
                 remote.forgetParent(uid)
                 auth.deleteAccount(activityContext)
             }.isSuccess
