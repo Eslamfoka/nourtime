@@ -350,7 +350,7 @@ class LockOverlay @Inject constructor(
                                         onChildOk = { onChildDismiss() },
                                         onOpenApp = ::openApp,
                                         ask = ask,
-                                        onAsk = { scope.launch { runCatching { timeRequests.ask() } } },
+                                        onAsk = { scope.launch { runCatching { timeRequests.ask() }.onFailure { Log.w(TAG, "couldn't ask for more time", it) } } },
                                         onLearn = if (canLearn) ({ openHub(current, language) }) else null,
                                         onBackToCall = if (current.inCall) ::openCall else null,
                                     )

@@ -9,10 +9,10 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.nourtime.app.core.detection.DetectionSource
 import com.nourtime.app.core.time.DeviceClock
-import com.nourtime.app.core.time.TrustedClock
+import com.nourtime.app.core.time.WallClock
 import com.nourtime.app.data.settings.DayRules
 import com.nourtime.app.data.settings.ParentSettings
-import com.nourtime.app.data.usage.UsageRepository
+import com.nourtime.app.data.usage.UsageSink
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -57,8 +57,8 @@ data class TimerStatus(
 class TimeEngine @Inject constructor(
     @TimekeepingStore private val store: DataStore<Preferences>,
     private val clock: DeviceClock,
-    private val trustedClock: TrustedClock,
-    private val usage: UsageRepository,
+    private val trustedClock: WallClock,
+    private val usage: UsageSink,
 ) {
     private val mutex = Mutex()
     private var state: TimerState? = null

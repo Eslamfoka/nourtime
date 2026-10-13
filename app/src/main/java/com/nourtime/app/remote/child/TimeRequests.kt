@@ -1,5 +1,6 @@
 package com.nourtime.app.remote.child
 
+import com.nourtime.app.remote.logIfFailed
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -54,7 +55,8 @@ class TimeRequests @Inject constructor(
         // Not awaited: offline, both writes are queued and the local snapshot already shows "waiting".
         val device = deviceRef()
         device.collection(RemotePaths.REQUESTS).add(mapOf("status" to AskPolicy.PENDING, "createdAt" to FieldValue.serverTimestamp()))
-        device.update("askingAt", FieldValue.serverTimestamp())
+            .logIfFailed(TAG, "time request")
+        device.update("askingAt", FieldValue.serverTimestamp()).logIfFailed(TAG, "askingAt")
     }
 
     /** The newest request, as it changes. */
@@ -78,6 +80,7 @@ class TimeRequests @Inject constructor(
     private suspend fun deviceRef() = firestore.get().collection(RemotePaths.DEVICES).document(identity.deviceId())
 
     private companion object {
+        const val TAG = "TimeRequests"
         const val TICK_MS = 15_000L
     }
 }

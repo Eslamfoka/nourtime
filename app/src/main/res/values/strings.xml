@@ -435,6 +435,9 @@
     <string name="device_removing">Removing…</string>
     <string name="add_child_scan_failed">The QR scanner couldn\'t open on this phone. Type the 6-digit code instead.</string>
     <string name="action_dismiss">OK</string>
+    <string name="device_details_failed">Some of this phone\'s details couldn\'t load. Check the internet connection and try again.</string>
+    <string name="device_details_unavailable">Not available right now.</string>
+    <string name="device_apps_failed">Couldn\'t load your child\'s app list. Check the internet connection and try again.</string>
     <string name="device_settings_waiting">The settings appear once your child\'s phone is online.</string>
     <string name="device_limited_apps">Limited apps</string>
     <string name="device_no_app_list">The list of apps appears once your child\'s phone is online.</string>

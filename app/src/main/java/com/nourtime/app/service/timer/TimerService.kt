@@ -42,7 +42,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -54,7 +53,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 
 /**
@@ -189,7 +188,10 @@ class TimerService : Service() {
         unregisterReceiver(screenReceiver)
         unregisterReceiver(packageReceiver)
         unregisterReceiver(userReceiver)
-        runBlocking { withContext(NonCancellable) { engine.flush() } }
+        // The last save runs on its own scope, which outlives this service: the main thread waits for it
+        // at most FLUSH_WAIT_MS (slow storage froze the main thread here), and the save still finishes.
+        val flush = FLUSH_SCOPE.launch { engine.flush() }
+        runBlocking { withTimeoutOrNull(FLUSH_WAIT_MS) { flush.join() } ?: Log.w(TAG, "last save still running") }
         scope.cancel()
         super.onDestroy()
     }
@@ -361,6 +363,9 @@ class TimerService : Service() {
     companion object {
         private const val TAG = "TimerService"
         private const val TICK_MS = 1_000L
+        private const val FLUSH_WAIT_MS = 2_000L
+        /** For the last save when the service stops; never cancelled. */
+        private val FLUSH_SCOPE = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         private const val IDLE_TICK_MS = 30_000L
         // Also while "locked": a missed unlock is exactly the case this catches. Two binder reads, no wake lock.
         private const val SCREEN_SYNC_MS = 1_000L

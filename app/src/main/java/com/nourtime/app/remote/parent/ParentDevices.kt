@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.MetadataChanges
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 import com.nourtime.app.core.timer.TimerCommand
 import com.nourtime.app.data.apps.InstalledApp
@@ -74,7 +75,7 @@ class ParentDevices @Inject constructor(
         val registration = devices.whereEqualTo("ownerUid", uid).addSnapshotListener(MetadataChanges.INCLUDE) { snap, error ->
             if (error != null) {
                 close(error)
-            } else if (snap != null && !(snap.isEmpty && snap.metadata.isFromCache)) {
+            } else if (snap != null && !snap.cacheOnlyEmpty()) {
                 trySend(snap.documents.map(::toDevice).sortedBy { it.name })
             }
         }
@@ -89,7 +90,7 @@ class ParentDevices @Inject constructor(
         val registration = devices.document(id).addSnapshotListener(MetadataChanges.INCLUDE) { snap, error ->
             when {
                 error != null -> close(error)
-                snap == null || (!snap.exists() && snap.metadata.isFromCache) -> Unit
+                snap == null || snap.cacheOnlyMissing() -> Unit
                 else -> trySend(snap.takeIf { it.exists() }?.let(::toDevice))
             }
         }
@@ -144,7 +145,8 @@ class ParentDevices @Inject constructor(
 
     private suspend fun waitForChild(ref: DocumentReference, user: ParentUser, deviceId: String?): ClaimResult {
         val pairingGone = callbackFlow {
-            val registration = ref.addSnapshotListener { s, _ -> trySend(s?.exists() == false) }
+            // Gone only by the server's word: offline, a pairing missing from the cache isn't a refusal.
+            val registration = ref.addSnapshotListener { s, _ -> trySend(s != null && !s.exists() && !s.metadata.isFromCache) }
             awaitClose { registration.remove() }
         }
         val outcome = withTimeoutOrNull(WAIT_FOR_CHILD_MS) {
@@ -170,8 +172,8 @@ class ParentDevices @Inject constructor(
         val registration = devices.document(deviceId).collection(RemotePaths.REQUESTS)
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .limit(1)
-            .addSnapshotListener { snap, error ->
-                if (error != null) close(error) else if (snap != null) trySend(snap.documents.firstOrNull()?.let(::toRequest))
+            .addSnapshotListener(MetadataChanges.INCLUDE) { snap, error ->
+                if (error != null) close(error) else if (snap != null && !snap.cacheOnlyEmpty()) trySend(snap.documents.firstOrNull()?.let(::toRequest))
             }
         awaitClose { registration.remove() }
     }
@@ -204,10 +206,10 @@ class ParentDevices @Inject constructor(
         val registration = devices.document(deviceId).collection(RemotePaths.COMMANDS)
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .limit(RECENT_COMMANDS.toLong())
-            .addSnapshotListener { snap, error ->
+            .addSnapshotListener(MetadataChanges.INCLUDE) { snap, error ->
                 if (error != null) {
                     close(error)
-                } else if (snap != null) {
+                } else if (snap != null && !snap.cacheOnlyEmpty()) {
                     trySend(
                         snap.documents.map {
                             val created = it.getTimestamp("createdAt")?.toDate()?.time
@@ -244,12 +246,12 @@ class ParentDevices @Inject constructor(
     fun usage(deviceId: String, day: LocalDate): Flow<Map<String, Long>> = callbackFlow {
         val registration = devices.document(deviceId).collection(RemotePaths.USAGE)
             .document(day.format(DateTimeFormatter.ISO_LOCAL_DATE))
-            .addSnapshotListener { snap, error ->
+            .addSnapshotListener(MetadataChanges.INCLUDE) { snap, error ->
                 if (error != null) {
                     close(error)
-                } else {
+                } else if (snap != null && !snap.cacheOnlyMissing()) {
                     @Suppress("UNCHECKED_CAST")
-                    val ms = snap?.get("ms") as? Map<String, Any?>
+                    val ms = snap.get("ms") as? Map<String, Any?>
                     trySend(ms.orEmpty().mapNotNull { (k, v) -> (v as? Number)?.toLong()?.let { k to it } }.toMap())
                 }
             }
@@ -262,10 +264,10 @@ class ParentDevices @Inject constructor(
             .orderBy(FieldPath.documentId())
             .startAt(from.format(DateTimeFormatter.ISO_LOCAL_DATE))
             .endAt(to.format(DateTimeFormatter.ISO_LOCAL_DATE))
-            .addSnapshotListener { snap, error ->
+            .addSnapshotListener(MetadataChanges.INCLUDE) { snap, error ->
                 if (error != null) {
                     close(error)
-                } else if (snap != null) {
+                } else if (snap != null && !snap.cacheOnlyEmpty()) {
                     trySend(
                         snap.documents.flatMap { doc ->
                             val date = runCatching { LocalDate.parse(doc.id) }.getOrNull() ?: return@flatMap emptyList()
@@ -281,11 +283,11 @@ class ParentDevices @Inject constructor(
 
     fun apps(deviceId: String): Flow<List<InstalledApp>> = callbackFlow {
         val registration = devices.document(deviceId).collection(RemotePaths.META).document(RemotePaths.APPS_DOC)
-            .addSnapshotListener { snap, error ->
+            .addSnapshotListener(MetadataChanges.INCLUDE) { snap, error ->
                 if (error != null) {
                     close(error)
-                } else {
-                    val list = (snap?.get("apps") as? List<*>).orEmpty().mapNotNull { item ->
+                } else if (snap != null && !snap.cacheOnlyMissing()) {
+                    val list = (snap.get("apps") as? List<*>).orEmpty().mapNotNull { item ->
                         val m = item as? Map<*, *> ?: return@mapNotNull null
                         val p = m["p"] as? String ?: return@mapNotNull null
                         InstalledApp(p, m["l"] as? String ?: p)
@@ -315,6 +317,15 @@ class ParentDevices @Inject constructor(
             device.reference.update(mapOf("ownerUid" to null, "ownerEmail" to null, "ownerName" to null)).await()
         }
     }
+
+    /**
+     * Offline, the local cache answers at once with whatever it has. "Nothing there" from the cache
+     * alone isn't sent, so the parent sees "loading" instead of "no use today" or an empty list until
+     * the server answers. Listeners include metadata changes, or the server agreeing would never arrive.
+     */
+    private fun QuerySnapshot.cacheOnlyEmpty(): Boolean = isEmpty && metadata.isFromCache
+
+    private fun DocumentSnapshot.cacheOnlyMissing(): Boolean = !exists() && metadata.isFromCache
 
     private fun toDevice(doc: DocumentSnapshot): ChildDevice {
         @Suppress("UNCHECKED_CAST")

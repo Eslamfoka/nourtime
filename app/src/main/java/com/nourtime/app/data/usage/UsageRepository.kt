@@ -9,9 +9,14 @@ import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/** Where the timer adds each app's used time (the stats database; a fake in tests). */
+fun interface UsageSink {
+    suspend fun add(day: LocalDate, packageName: String, ms: Long)
+}
+
 /** Active use per limited app per day, kept on the device for the stats screen (brief §6). */
 @Singleton
-class UsageRepository @Inject constructor(private val db: NourDatabase) {
+class UsageRepository @Inject constructor(private val db: NourDatabase) : UsageSink {
     private val dao = db.usage()
 
     fun observeDay(day: LocalDate): Flow<List<DailyUsage>> = dao.observeDay(day.toEpochDay())
@@ -22,7 +27,7 @@ class UsageRepository @Inject constructor(private val db: NourDatabase) {
             rows.map { UsageEntry(LocalDate.ofEpochDay(it.epochDay), it.packageName, it.usedMs) }
         }
 
-    suspend fun add(day: LocalDate, packageName: String, ms: Long) {
+    override suspend fun add(day: LocalDate, packageName: String, ms: Long) {
         if (ms <= 0) return
         db.withTransaction {
             dao.ensureRow(day.toEpochDay(), packageName)

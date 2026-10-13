@@ -445,6 +445,9 @@
     <string name="device_removing">جارٍ الإزالة…</string>
     <string name="add_child_scan_failed">تعذّر فتح ماسح رمز QR على هذا الهاتف. اكتب الرمز المكوّن من 6 أرقام بدلًا منه.</string>
     <string name="action_dismiss">حسنًا</string>
+    <string name="device_details_failed">تعذّر تحميل بعض تفاصيل هذا الهاتف. تحقّق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
+    <string name="device_details_unavailable">غير متاح الآن.</string>
+    <string name="device_apps_failed">تعذّر تحميل قائمة تطبيقات طفلك. تحقّق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
     <string name="device_settings_waiting">ستظهر الإعدادات عندما يتصل هاتف طفلك بالإنترنت.</string>
     <string name="device_limited_apps">التطبيقات المحددة</string>
     <string name="device_no_app_list">ستظهر قائمة التطبيقات عندما يتصل هاتف طفلك بالإنترنت.</string>

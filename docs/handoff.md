@@ -1512,8 +1512,29 @@ prices, Play audience, warnings before time is up) on hold and asked for these f
 
 515 unit tests pass, lint clean. The emulator (`nourdm-api36`, user 0) has `adb root` on until reboot.
 
-**Next from the audit (not started):** honest error states for the rest of `ChildDeviceScreen`
-(usage, week, apps, commands, request still turn errors into empty data); log failed Firestore writes
-in `RemoteSync`; `runBlocking` flush on the main thread in `TimerService.onDestroy`; Firestore rules
-tests in CI; `TimeEngine` tests (needs seams for `TrustedClock`/`UsageRepository`). Owner decisions on
-hold: Blaze + push + remote PIN reset, prices, Play audience, warnings before time is up.
+### 22.1 The audit's next technical items (done, same day)
+- **One phone's screen on the parent's phone:** today's use, the week, the app list, the sent
+  commands and the child's request are `Load` states too (`ChildDeviceViewModel.load`). Any failure
+  shows "Some of this phone's details couldn't load" with **Try again** (restarts everything);
+  "Today" says loading / "Not available right now" instead of "No limited apps used yet today"; the
+  app-list dialog has its own loading and failed states.
+- **Offline cache in `ParentDevices`:** every listener now skips "nothing there" when it comes only
+  from the cache (`cacheOnlyEmpty`, `cacheOnlyMissing`, with `MetadataChanges.INCLUDE`). The pairing
+  wait no longer reads a pairing missing from the cache as "the child refused".
+- **Failed uploads are logged** (`remote/WriteLog.kt`, `logIfFailed`): status, usage, commands
+  applied, `askingAt`, learning, alerts, app list, old-data deletes, and the child's "ask for more time"
+  (also the lock screen's ask button).
+- **Last save off the main thread:** `TimerService.onDestroy` launches the flush on a scope that
+  outlives the service and waits at most 2 s.
+- **CI:** a second job, `firestore-rules` (Node 22, Java 21, `npm ci && npm test` in `firebase/`);
+  50 rules tests pass locally.
+- **`TimeEngineTest`** (6 tests): counting only while in use, write counts (none idle, 4 per counted
+  minute), usage charged per app, lock written at once, restart loses at most 15 s, commands written
+  at once. Seams: `WallClock` (TrustedClock) and `UsageSink` (UsageRepository), bound in
+  `di/BindingsModule.kt`.
+
+521 unit tests, lint clean. **Not device-checked:** the new states on one phone's screen (needs a
+paired child phone with the Firebase emulators). Emulator user 0 is now **in a lock period** (Chrome
+used the budget during the flash test); end it from Home with the PIN or wait.
+
+Owner decisions on hold: Blaze + push + remote PIN reset, prices, Play audience, warnings before time is up.

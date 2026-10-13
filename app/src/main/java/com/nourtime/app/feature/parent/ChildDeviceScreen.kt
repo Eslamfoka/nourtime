@@ -90,7 +90,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -116,21 +116,23 @@ class ChildDeviceViewModel @Inject constructor(
     /** Ready(null) when the phone is gone (removed, or the child disconnected it). */
     val device: StateFlow<Load<ChildDevice?>> = ids.flatMapLatest { id -> loadWithRetry(retries) { remote.device(id) } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), Load.Loading)
-    val usage: StateFlow<Map<String, Long>> = ids.flatMapLatest { remote.usage(it, LocalDate.now()).catch { emit(emptyMap()) } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyMap())
+    // The details below fail on their own (an error used to read as "no use today" or an empty app
+    // list); "Try again" restarts all of them with the phone itself.
+    val usage: StateFlow<Load<Map<String, Long>>> = load { remote.usage(it, LocalDate.now()) }
     /** The last 7 days (Phase 4b), by the parent's own date like "today" above. */
-    val week: StateFlow<WeekReport?> = ids.flatMapLatest { id ->
+    val week: StateFlow<Load<WeekReport>> = load { id ->
         val today = LocalDate.now()
-        remote.usageRange(id, WeekReport.firstDayNeeded(today), today).map { WeekReport.of(it, today) }.catch { emit(WeekReport.of(emptyList(), today)) }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
-    val apps: StateFlow<List<InstalledApp>> = ids.flatMapLatest { remote.apps(it).catch { emit(emptyList()) } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
-    val commands: StateFlow<List<SentCommand>> = ids.flatMapLatest { remote.recentCommands(it).catch { emit(emptyList()) } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+        remote.usageRange(id, WeekReport.firstDayNeeded(today), today).map { WeekReport.of(it, today) }
+    }
+    val apps: StateFlow<Load<List<InstalledApp>>> = load { remote.apps(it) }
+    val commands: StateFlow<Load<List<SentCommand>>> = load { remote.recentCommands(it) }
 
     /** The child's newest request for more time (Phase 4c). */
-    val request: StateFlow<TimeRequest?> = ids.flatMapLatest { remote.latestRequest(it).catch { emit(null) } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+    val request: StateFlow<Load<TimeRequest?>> = load { remote.latestRequest(it) }
+
+    private fun <T> load(source: (String) -> Flow<T>): StateFlow<Load<T>> =
+        ids.flatMapLatest { id -> loadWithRetry(retries) { source(id) } }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), Load.Loading)
     private val _answerFailed = MutableStateFlow(false)
     val answerFailed: StateFlow<Boolean> = _answerFailed
 
@@ -248,7 +250,10 @@ fun ChildDeviceScreen(
             }
             val d = device ?: return@Column
             val summary = DeviceSummary.of(d.status, now)
-            request?.takeIf { AskPolicy.state(it, now) == AskState.Waiting }?.let { r ->
+            if (listOf(usage, week, apps, commands, request).any { it == Load.Failed }) {
+                LoadFailedCard(stringResource(R.string.device_details_failed), viewModel::retry)
+            }
+            request.valueOrNull()?.takeIf { AskPolicy.state(it, now) == AskState.Waiting }?.let { r ->
                 AskCard(d.name, r, now, answerFailed, onAnswer = { minutes -> viewModel.answer(r.id, minutes, user) })
             }
 
@@ -280,9 +285,10 @@ fun ChildDeviceScreen(
                 }
             }
 
-            ActionsCard(summary, commands, onCommand = { confirm = it })
-            UsageCard(usage, apps)
-            week?.let { report -> WeekCard(report, apps.firstOrNull { it.packageName == report.topApp }?.label) }
+            val appList = apps.valueOrNull().orEmpty()
+            ActionsCard(summary, commands.valueOrNull().orEmpty(), onCommand = { confirm = it })
+            UsageCard(usage, appList)
+            week.valueOrNull()?.let { report -> WeekCard(report, appList.firstOrNull { it.packageName == report.topApp }?.label) }
 
             val settings = d.settings
             Text(stringResource(R.string.device_settings), style = MaterialTheme.typography.titleLarge)
@@ -358,7 +364,7 @@ fun ChildDeviceScreen(
     val settings = device?.settings
     val kind = picking
     if (kind != null && settings != null) {
-        RemoteAppsDialog(kind, settings, apps, viewModel::icon, failure?.let { stringResource(it.message) }, onToggle = { pkg, on ->
+        RemoteAppsDialog(kind, settings, apps, viewModel::retry, viewModel::icon, failure?.let { stringResource(it.message) }, onToggle = { pkg, on ->
             viewModel.edit { if (kind == AppListKind.LIMITED) it.withLimited(pkg, on) else it.withAllowed(pkg, on) }
         }, onClose = { picking = null })
     }
@@ -458,13 +464,21 @@ private fun AskCard(name: String, request: TimeRequest, now: Long, failed: Boole
 private val ASK_CHOICES = listOf(15, 30)
 
 @Composable
-private fun UsageCard(usage: Map<String, Long>, apps: List<InstalledApp>) {
+private fun UsageCard(load: Load<Map<String, Long>>, apps: List<InstalledApp>) {
     val labels = apps.associate { it.packageName to it.label }
+    val usage = load.valueOrNull()
     NourCard {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(stringResource(R.string.device_today), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
-            Text(durationText(minutesRoundedUp(usage.values.sum())), style = MaterialTheme.typography.titleMedium)
+            if (usage != null) Text(durationText(minutesRoundedUp(usage.values.sum())), style = MaterialTheme.typography.titleMedium)
         }
+        when (load) {
+            Load.Loading -> LoadingRow(stringResource(R.string.device_loading))
+            // The card at the top says why and offers "Try again".
+            Load.Failed -> Text(stringResource(R.string.device_details_unavailable), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            is Load.Ready -> Unit
+        }
+        if (usage == null) return@NourCard
         if (usage.values.sum() == 0L) {
             Text(stringResource(R.string.device_today_none), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
@@ -492,7 +506,8 @@ private enum class AppListKind { LIMITED, ALLOWED }
 private fun RemoteAppsDialog(
     kind: AppListKind,
     settings: RemoteSettings,
-    apps: List<InstalledApp>,
+    appsLoad: Load<List<InstalledApp>>,
+    onRetry: () -> Unit,
     loadIcon: suspend (String) -> ImageBitmap?,
     failure: String?,
     onToggle: (String, Boolean) -> Unit,
@@ -501,6 +516,7 @@ private fun RemoteAppsDialog(
     var query by remember { mutableStateOf("") }
     val chosen = if (kind == AppListKind.LIMITED) settings.limitedApps else settings.allowedDuringLock
     val pinned = remember { chosen }
+    val apps = appsLoad.valueOrNull().orEmpty()
     val candidates = if (kind == AppListKind.ALLOWED) apps.filter { it.packageName !in settings.limitedApps } else apps
     val state = AppsUiState(
         loading = false,
@@ -515,8 +531,12 @@ private fun RemoteAppsDialog(
                     stringResource(if (kind == AppListKind.LIMITED) R.string.device_limited_apps else R.string.allowed_section),
                     style = MaterialTheme.typography.headlineSmall,
                 )
-                if (apps.isEmpty()) {
-                    Text(stringResource(R.string.device_no_app_list), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                when (appsLoad) {
+                    Load.Loading -> LoadingRow(stringResource(R.string.device_loading))
+                    Load.Failed -> LoadFailedCard(stringResource(R.string.device_apps_failed), onRetry)
+                    is Load.Ready -> if (apps.isEmpty()) {
+                        Text(stringResource(R.string.device_no_app_list), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
                 }
                 AppSearchField(query, { query = it })
                 AppList(state = state, onCheckedChange = onToggle, loadIcon = loadIcon, modifier = Modifier.weight(1f))

@@ -43,19 +43,24 @@ object TrustedTime {
     }
 }
 
+/** Local wall time the timer uses (the [TrustedClock]; a fake in tests). */
+fun interface WallClock {
+    suspend fun now(): ZonedDateTime
+}
+
 /** Trusted local time for bedtime, the daily schedule and the daily reset. */
 @Singleton
 class TrustedClock @Inject constructor(
     @ApplicationContext private val context: Context,
     @TimekeepingStore private val store: DataStore<Preferences>,
     private val clock: DeviceClock,
-) {
+) : WallClock {
     private val mutex = Mutex()
     private var anchor: TimeAnchor? = null
     private var loaded = false
     private var lastSavedElapsed = Long.MIN_VALUE
 
-    suspend fun now(): ZonedDateTime = mutex.withLock {
+    override suspend fun now(): ZonedDateTime = mutex.withLock {
         if (!loaded) {
             anchor = load()
             loaded = true

@@ -1,5 +1,6 @@
 package com.nourtime.app.remote.child
 
+import com.nourtime.app.remote.logIfFailed
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -211,6 +212,7 @@ class RemoteSync @Inject constructor(
             for (c in due) {
                 Log.i(TAG, "command ${c.id}: ${c.command ?: "ignored"}")
                 device.collection(RemotePaths.COMMANDS).document(c.id).update("appliedAt", FieldValue.serverTimestamp())
+                    .logIfFailed(TAG, "command ${c.id} applied")
             }
         }
     }
@@ -221,7 +223,7 @@ class RemoteSync @Inject constructor(
         engine.status.filterNotNull().collect { status ->
             val now = clock.elapsedRealtime()
             if (StatusThrottle.shouldUpload(last, status, now - lastAt)) {
-                device.update("status", statusMap(status) + ("updatedAt" to FieldValue.serverTimestamp()))
+                device.update("status", statusMap(status) + ("updatedAt" to FieldValue.serverTimestamp())).logIfFailed(TAG, "status")
                 last = status
                 lastAt = now
             }
@@ -252,7 +254,7 @@ class RemoteSync @Inject constructor(
         if (rows.isEmpty() && day != trustedClock.now().toLocalDate()) return
         device.collection(RemotePaths.USAGE).document(day.format(DateTimeFormatter.ISO_LOCAL_DATE)).set(
             mapOf("ms" to rows.associate { it.packageName to it.usedMs }, "updatedAt" to FieldValue.serverTimestamp()),
-        )
+        ).logIfFailed(TAG, "usage $day")
     }
 
     private suspend fun pruneUsage(device: DocumentReference, before: LocalDate) {
@@ -261,8 +263,8 @@ class RemoteSync @Inject constructor(
                 .orderBy(FieldPath.documentId())
                 .endBefore(before.format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .get().await()
-                .documents.forEach { it.reference.delete() }
-        }
+                .documents.forEach { it.reference.delete().logIfFailed(TAG, "old usage") }
+        }.onFailure { Log.w(TAG, "couldn't list old usage", it) }
     }
 
     /**
@@ -274,22 +276,22 @@ class RemoteSync @Inject constructor(
         runCatching {
             val cutoff = Timestamp(Date(trustedClock.now().toInstant().toEpochMilli() - REQUESTS_KEEP_MS))
             device.collection(RemotePaths.REQUESTS).whereLessThan("createdAt", cutoff).get().await()
-                .documents.forEach { it.reference.delete() }
-        }
+                .documents.forEach { it.reference.delete().logIfFailed(TAG, "old request") }
+        }.onFailure { Log.w(TAG, "couldn't list old requests", it) }
         timeRequests.latest()
             .map { it?.status == AskPolicy.PENDING }
             .distinctUntilChanged()
-            .collect { pending -> if (!pending) device.update("askingAt", null) }
+            .collect { pending -> if (!pending) device.update("askingAt", null).logIfFailed(TAG, "askingAt") }
     }
 
     /** The Learning Hub's minutes box and today's earned minutes, whenever they change. */
     private suspend fun uploadLearning(device: DocumentReference) {
-        learning.state.map(RemoteLearning::of).distinctUntilChanged().collect { device.update("learning", it.toMap()) }
+        learning.state.map(RemoteLearning::of).distinctUntilChanged().collect { device.update("learning", it.toMap()).logIfFailed(TAG, "learning") }
     }
 
     /** Ways protection was off or can be turned off, so the parent hears about them. */
     private suspend fun uploadAlerts(device: DocumentReference) {
-        protectionAlerts.alerts.collect { device.update("alerts", it.toMap()) }
+        protectionAlerts.alerts.collect { device.update("alerts", it.toMap()).logIfFailed(TAG, "alerts") }
     }
 
     /** The launchable apps, so the parent can choose limited and allowed apps remotely. */
@@ -301,7 +303,7 @@ class RemoteSync @Inject constructor(
             if (hash != lastHash) {
                 device.collection(RemotePaths.META).document(RemotePaths.APPS_DOC).set(
                     mapOf("apps" to list.map { mapOf("p" to it.packageName, "l" to it.label) }, "updatedAt" to FieldValue.serverTimestamp()),
-                )
+                ).logIfFailed(TAG, "app list")
                 lastHash = hash
             }
             delay(APPS_EVERY_MS)
