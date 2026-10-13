@@ -413,3 +413,24 @@ describe("requests for more time", () => {
     await assertSucceeds(deleteDoc(doc(child(), "devices", DEVICE, "requests", "r3")));
   });
 });
+
+describe("parent push tokens", () => {
+  const tokenDoc = (db: Firestore, uid: string, token: string) => doc(db, "parents", uid, "tokens", token);
+
+  it("a parent registers and removes their own token", async () => {
+    await assertSucceeds(setDoc(tokenDoc(parent(), PARENT, "tok1"), { createdAt: serverTimestamp(), platform: "android" }));
+    await assertSucceeds(getDoc(tokenDoc(parent(), PARENT, "tok1")));
+    await assertSucceeds(deleteDoc(tokenDoc(parent(), PARENT, "tok1")));
+  });
+
+  it("nobody else can read or write them, and only the two fields are allowed", async () => {
+    await assertFails(setDoc(tokenDoc(parent(OTHER_PARENT), PARENT, "tok1"), { createdAt: serverTimestamp(), platform: "android" }));
+    await assertFails(getDoc(tokenDoc(child(), PARENT, "tok1")));
+    await assertFails(setDoc(tokenDoc(parent(), PARENT, "tok2"), { createdAt: serverTimestamp(), platform: "android", extra: 1 }));
+  });
+
+  it("the push state is server-only", async () => {
+    await assertFails(getDoc(doc(parent(), "pushState", DEVICE)));
+    await assertFails(setDoc(doc(child(), "pushState", DEVICE), { ASK: 1 }));
+  });
+});

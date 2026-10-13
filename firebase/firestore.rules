@@ -171,5 +171,19 @@ service cloud.firestore {
         allow delete: if isChildOf(id) || (isOwnerOf(id) && resource.data.by == request.auth.uid);
       }
     }
+
+    // FCM tokens of a parent's phones (one document per token, id = token).
+    match /parents/{uid}/tokens/{token} {
+      allow read, delete: if signedIn() && request.auth.uid == uid;
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['createdAt', 'platform'])
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.platform == 'android';
+    }
+
+    // When each push type was last sent for a device: Cloud Functions only.
+    match /pushState/{deviceId} {
+      allow read, write: if false;
+    }
   }
 }
