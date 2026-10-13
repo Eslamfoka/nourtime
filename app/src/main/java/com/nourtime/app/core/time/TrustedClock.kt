@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
+import com.nourtime.app.core.timer.TimekeepingStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
@@ -46,7 +47,7 @@ object TrustedTime {
 @Singleton
 class TrustedClock @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val store: DataStore<Preferences>,
+    @TimekeepingStore private val store: DataStore<Preferences>,
     private val clock: DeviceClock,
 ) {
     private val mutex = Mutex()

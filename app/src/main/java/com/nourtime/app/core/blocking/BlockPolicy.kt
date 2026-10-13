@@ -117,11 +117,10 @@ object BlockPolicy {
         // (the call can only be answered from its notification). Settings stay covered (above): a call
         // from another phone mustn't give the child time to switch Nour Time off.
         if (input.phoneRinging) return null
-        // During a call only the phone's own screens are exempt; elsewhere the lock screen offers
-        // "Back to the call" (LockScreenState.inCall).
-        if (input.inCall && phoneInFront) return null
         // Nour Time's own screens (the parent's, behind the PIN) and the phone app are never covered for
-        // themselves, only for a limited app still on screen next to them (picture in picture, split screen).
+        // themselves, only for a limited app still on screen next to them (picture in picture, split screen),
+        // also during a call: a call kept going mustn't leave a floating video uncovered. Away from the
+        // phone app during a call, the lock screen offers "Back to the call" (LockScreenState.inCall).
         if (phoneInFront || fg.foreground == input.ownPackage) {
             return limitedAppBlock(input, onScreen, lockPeriod, lockReason)
         }

@@ -11,6 +11,8 @@ import androidx.room.Room
 import com.nourtime.app.core.security.SecretHasher
 import com.nourtime.app.core.time.AndroidDeviceClock
 import com.nourtime.app.core.time.DeviceClock
+import com.nourtime.app.core.timer.TimekeepingMigration
+import com.nourtime.app.core.timer.TimekeepingStore
 import com.nourtime.app.data.db.NourDatabase
 import com.nourtime.app.data.backup.SettingsBackup
 import kotlinx.coroutines.CoroutineScope
@@ -45,6 +47,17 @@ object AppModule {
         SettingsBackup.mainStore(backup, CoroutineScope(Dispatchers.IO + SupervisorJob())) {
             context.preferencesDataStoreFile("nour_prefs")
         }
+
+    /** The timer's and trusted clock's state, written while the child uses the phone; see [TimekeepingStore]. */
+    @Provides
+    @Singleton
+    @TimekeepingStore
+    fun provideTimekeepingStore(@ApplicationContext context: Context, main: DataStore<Preferences>): DataStore<Preferences> =
+        PreferenceDataStoreFactory.create(
+            corruptionHandler = ReplaceFileCorruptionHandler { TimekeepingMigration.onCorruption() },
+            migrations = listOf(TimekeepingMigration(main)),
+            produceFile = { context.preferencesDataStoreFile("nour_timer") },
+        )
 
     @Provides
     @Singleton

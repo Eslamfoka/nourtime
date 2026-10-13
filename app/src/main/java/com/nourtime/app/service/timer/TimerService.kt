@@ -148,6 +148,7 @@ class TimerService : Service() {
         if (!tracker.accessibilityConnected) tracker.onAccessibilityDisconnected(usageStats.available)
 
         scope.launch { resilient("timer") { runTimer() } }
+        scope.launch { resilient("screen sync") { runScreenSync() } }
         scope.launch { resilient("usage-stats fallback") { runUsageStatsFallback() } }
         scope.launch { resilient("notifications") { runNotifications() } }
         scope.launch { resilient("degraded alert") { runDegradedAlert() } }
@@ -201,6 +202,14 @@ class TimerService : Service() {
                 engine.update(inUse, fg.source, s)
                 delay(if (fg.screen.usable) TICK_MS else IDLE_TICK_MS)
             }
+        }
+    }
+
+    /** Re-reads the lock-screen state each second; the broadcasts alone can be missed. */
+    private suspend fun runScreenSync() {
+        while (true) {
+            tracker.syncScreen()
+            delay(SCREEN_SYNC_MS)
         }
     }
 
@@ -353,6 +362,8 @@ class TimerService : Service() {
         private const val TAG = "TimerService"
         private const val TICK_MS = 1_000L
         private const val IDLE_TICK_MS = 30_000L
+        // Also while "locked": a missed unlock is exactly the case this catches. Two binder reads, no wake lock.
+        private const val SCREEN_SYNC_MS = 1_000L
         private const val POLL_MS = 2_000L
         private const val FIRST_LOOKBACK_MS = 60 * 60_000L
         private const val POLL_LOOKBACK_MS = 15_000L

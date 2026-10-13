@@ -3,6 +3,7 @@ package com.nourtime.app.service.detection
 import android.accessibilityservice.AccessibilityService
 import android.content.Intent
 import android.os.Build
+import android.os.SystemClock
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityWindowInfo
@@ -10,9 +11,12 @@ import com.nourtime.app.core.detection.AppWindow
 import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.ForegroundRules
 import com.nourtime.app.core.detection.UsageStatsSource
+import com.nourtime.app.data.mode.AppMode
+import com.nourtime.app.data.mode.AppModeRepository
 import com.nourtime.app.data.onboarding.OnboardingRepository
 import com.nourtime.app.service.blocking.LockOverlay
 import com.nourtime.app.service.timer.TimerService
+import com.nourtime.app.service.watchdog.TimerServiceKeeper
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +43,7 @@ class NourAccessibilityService : AccessibilityService() {
     @Inject lateinit var onboarding: OnboardingRepository
     @Inject lateinit var usageStats: UsageStatsSource
     @Inject lateinit var overlay: LockOverlay
+    @Inject lateinit var modes: AppModeRepository
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -48,6 +53,21 @@ class NourAccessibilityService : AccessibilityService() {
      * one background worker, and bursts of events collapse into a single refresh.
      */
     private val refreshRequests = Channel<Unit>(Channel.CONFLATED)
+
+    // Cached so that events never wait for the settings store; until read, nothing is restarted here.
+    @Volatile private var mode: AppMode? = null
+    @Volatile private var setupComplete = false
+
+    private val keeper = TimerServiceKeeper(
+        nowMs = SystemClock::elapsedRealtime,
+        mode = { mode },
+        setupComplete = { setupComplete },
+        timerRunning = { TimerService.running },
+        start = {
+            Log.w(TAG, "timer service wasn't running; starting it")
+            TimerService.start(this)
+        },
+    )
 
     override fun onServiceConnected() {
         super.onServiceConnected()
@@ -61,6 +81,8 @@ class NourAccessibilityService : AccessibilityService() {
         scope.launch {
             if (onboarding.isComplete.first()) TimerService.start(this@NourAccessibilityService)
         }
+        scope.launch { modes.mode.collect { mode = it } }
+        scope.launch { onboarding.isComplete.collect { setupComplete = it } }
     }
 
     /** Owner package of each window, from event metadata: used when a window's root can't be read. */
@@ -74,6 +96,7 @@ class NourAccessibilityService : AccessibilityService() {
                 val pkg = event.packageName?.toString()
                 if (pkg != null && event.windowId != AppWindow.NO_WINDOW_ID) eventPackages[event.windowId] = pkg
                 refreshRequests.trySend(Unit)
+                keeper.onEvent()
             }
         }
     }

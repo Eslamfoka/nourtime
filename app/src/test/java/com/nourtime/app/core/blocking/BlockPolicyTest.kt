@@ -185,7 +185,30 @@ class BlockPolicyTest {
 
     @Test
     fun `during a call the call screen stays usable`() {
-        assertNull(BlockPolicy.decide(input(on("com.samsung.android.incallui", youtube), timeUp = true).copy(inCall = true)))
+        assertNull(BlockPolicy.decide(input(on("com.samsung.android.incallui"), timeUp = true).copy(inCall = true)))
+    }
+
+    @Test
+    fun `during a call a limited app in picture in picture beside the call screen is blocked`() {
+        // A call kept going (voicemail, a free number) mustn't leave a floating video uncovered.
+        val inCallUi = input(on("com.samsung.android.incallui", youtube), timeUp = true).copy(inCall = true)
+        assertEquals(timeUpBlock, BlockPolicy.decide(inCallUi))
+        val dialerPip = input(on(dialer, youtube), timeUp = true).copy(inCall = true)
+        assertEquals(timeUpBlock, BlockPolicy.decide(dialerPip))
+        val custom = "com.example.dialer"
+        val customPip = input(on(custom, youtube), timeUp = true).copy(inCall = true, dialerPackage = custom)
+        assertEquals(timeUpBlock, BlockPolicy.decide(customPip))
+    }
+
+    @Test
+    fun `during a call under a whole phone lock a limited app beside the call screen is blocked`() {
+        val pip = input(on(dialer, youtube), LockType.WHOLE_DEVICE, timeUp = true).copy(inCall = true)
+        assertEquals(timeUpBlock, BlockPolicy.decide(pip))
+    }
+
+    @Test
+    fun `during a call an unlimited app beside the call screen stays usable`() {
+        assertNull(BlockPolicy.decide(input(on(dialer, "com.google.android.apps.maps"), timeUp = true).copy(inCall = true)))
     }
 
     @Test

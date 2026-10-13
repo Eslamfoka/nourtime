@@ -36,8 +36,8 @@ class SettingsBackup(private val backup: DataStore<Preferences>) {
     }
 
     /**
-     * Keeps the copy current: at once, then at most every [MIRROR_EVERY_MS] (the timer saves every few
-     * seconds, and copying each of those would double the writes).
+     * Keeps the copy current: at once, then at most every [MIRROR_EVERY_MS] (a burst of setting changes
+     * is copied once). The timer's frequent saves go to their own file and aren't copied.
      */
     suspend fun mirror(main: DataStore<Preferences>) {
         main.data.conflate().collect { prefs ->

@@ -55,7 +55,7 @@ data class TimerStatus(
  */
 @Singleton
 class TimeEngine @Inject constructor(
-    private val store: DataStore<Preferences>,
+    @TimekeepingStore private val store: DataStore<Preferences>,
     private val clock: DeviceClock,
     private val trustedClock: TrustedClock,
     private val usage: UsageRepository,
@@ -93,8 +93,7 @@ class TimeEngine @Inject constructor(
         next = TimeRules.applyDailyReset(next, wall.toLocalDate(), wall.toLocalTime(), resetAt)
 
         val inUse = appsInUse.isNotEmpty() && next.phase == TimerPhase.AVAILABLE
-        val mustSave = state == null || next.phase != previous.phase || inUse != lastInUse ||
-            next.lastResetDay != previous.lastResetDay || now - lastSavedElapsed >= SAVE_EVERY_MS
+        val mustSave = TimerSaves.needed(state == null, previous, next, lastInUse, inUse, now - lastSavedElapsed)
         state = next
         lastInUse = inUse
         lastAppsInUse = appsInUse
@@ -190,8 +189,6 @@ class TimeEngine @Inject constructor(
     private companion object {
         const val MINUTE = 60_000L
         const val HOUR = 60 * MINUTE
-        /** At most this much use can be lost if the process dies. */
-        const val SAVE_EVERY_MS = 5_000L
 
         val PHASE = stringPreferencesKey("timer_phase")
         val REMAINING = longPreferencesKey("timer_remaining")

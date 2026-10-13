@@ -18,9 +18,15 @@ import javax.inject.Singleton
  * lists; while Accessibility is off, the timer service feeds it usage-stats results instead.
  */
 @Singleton
-class ForegroundAppTracker @Inject constructor(
-    @ApplicationContext private val context: Context,
+class ForegroundAppTracker internal constructor(
+    private val readScreen: () -> ScreenState,
+    private val readIgnored: () -> Set<String>,
 ) {
+    @Inject constructor(@ApplicationContext context: Context) : this(
+        readScreen = { readScreen(context) },
+        readIgnored = { computeIgnored(context) },
+    )
+
     private val _state = MutableStateFlow(ForegroundState(screen = readScreen()))
     val state: StateFlow<ForegroundState> = _state.asStateFlow()
 
@@ -33,7 +39,7 @@ class ForegroundAppTracker @Inject constructor(
      * shown on behalf of the current app (permission prompts, the share/open-with chooser).
      */
     @Volatile
-    var ignoredPackages: Set<String> = computeIgnored()
+    var ignoredPackages: Set<String> = readIgnored()
         private set
 
     /**
@@ -70,27 +76,42 @@ class ForegroundAppTracker @Inject constructor(
         }
     }
 
+    /** From the screen and unlock broadcasts: also re-reads the keyboards (one may have been added). */
     fun refreshScreen() {
         val screen = readScreen()
-        Log.i(TAG, "screen interactive=${screen.interactive} keyguard=${screen.keyguardLocked}")
+        runCatching { Log.i(TAG, "screen interactive=${screen.interactive} keyguard=${screen.keyguardLocked}") }
         _state.update { it.copy(screen = screen) }
-        ignoredPackages = computeIgnored()
+        ignoredPackages = readIgnored()
     }
 
-    private fun readScreen() = ScreenState(
-        interactive = context.getSystemService(PowerManager::class.java).isInteractive,
-        keyguardLocked = context.getSystemService(KeyguardManager::class.java).isKeyguardLocked,
-    )
-
-    private fun computeIgnored(): Set<String> {
-        val imes = runCatching {
-            context.getSystemService(InputMethodManager::class.java).enabledInputMethodList.map { it.packageName }
-        }.getOrDefault(emptyList())
-        return TRANSPARENT_PACKAGES + imes
+    /**
+     * Called every second: a missed broadcast (seen on Honor) left the phone "locked" after an unlock,
+     * with no blocking and no counting until the next screen change. Cheap when nothing changed;
+     * returns whether the screen state changed.
+     */
+    fun syncScreen(): Boolean {
+        val screen = readScreen()
+        if (screen == _state.value.screen) return false
+        runCatching { Log.i(TAG, "screen change without a broadcast: interactive=${screen.interactive} keyguard=${screen.keyguardLocked}") }
+        _state.update { it.copy(screen = screen) }
+        return true
     }
 
     private companion object {
         const val TAG = "ForegroundTracker"
+
+        fun readScreen(context: Context) = ScreenState(
+            interactive = context.getSystemService(PowerManager::class.java).isInteractive,
+            keyguardLocked = context.getSystemService(KeyguardManager::class.java).isKeyguardLocked,
+        )
+
+        fun computeIgnored(context: Context): Set<String> {
+            val imes = runCatching {
+                context.getSystemService(InputMethodManager::class.java).enabledInputMethodList.map { it.packageName }
+            }.getOrDefault(emptyList())
+            return TRANSPARENT_PACKAGES + imes
+        }
+
         val TRANSPARENT_PACKAGES = setOf(
             "com.android.systemui",
             "com.android.permissioncontroller",

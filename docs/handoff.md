@@ -3,9 +3,11 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (2026-10-13):** fresh-audit #2 (loading/error states on the parent's phone) is done,
-> see [§21](#21-2026-10-13-loading-and-error-states-on-the-parents-phone-fresh-audit-2). **Next:** the
-> owner's decision on Firebase Blaze + push notifications and a remote PIN reset (§20.6 step 2).
+> **Resume here (2026-10-13, evening):** the audit's lock fixes (picture in picture during calls, missed
+> screen broadcasts, timer service restart) and the flash-wear fix (timer state in its own file) are
+> done, see [§22](#22-2026-10-13-later-fresh-audit-lock-fixes-and-flash-wear-action-1). Loading/error
+> states on the parent's phone: [§21](#21-2026-10-13-loading-and-error-states-on-the-parents-phone-fresh-audit-2).
+> The owner put the business decisions on hold; next technical items are listed at the end of §22.
 
 > **Previous resume block (written 2026-10-12 ~22:30; the owner stopped for the day):** everything is on
 > `master` and pushed (`a9a20502`). About 490 unit tests pass, lint clean, GitHub Actions CI green.
@@ -1473,3 +1475,45 @@ the app to test offline.
 emulators wouldn't start); `npm ci` repaired it.
 
 **Next:** §20.6 step 2, the owner's decision on Firebase Blaze + push (FCM) and a remote PIN reset.
+
+## 22. 2026-10-13 (later): fresh-audit lock fixes and flash wear (Action #1)
+
+From the fresh `/advise` audit of 2026-10-13 (verdict SHIP AFTER FIXES; the Investor refused until
+monetization, launch tasks and a closed test are done). The owner put the business decisions (Blaze,
+prices, Play audience, warnings before time is up) on hold and asked for these four fixes first.
+
+- **H3, picture in picture during a call** (`BlockPolicy.kt`): with the phone app in front during a
+  call, the policy returned "no block" before checking for a limited app on screen, so a call kept
+  going (voicemail, a free number) left a floating video uncovered. The early return is gone; the
+  existing "phone app in front → only a limited app beside it is covered" branch handles calls too.
+  The old test `during a call the call screen stays usable` had encoded the hole (call screen *with*
+  YouTube beside it → no block); it now checks the call screen alone, plus three new tests.
+  **Unit-tested only** (a call with picture in picture can't be set up on the emulator).
+- **M1, missed screen broadcasts** (`ForegroundAppTracker.syncScreen`, `TimerService.runScreenSync`):
+  the screen/keyguard state is re-read every second; it only updates (and logs "screen change
+  without a broadcast") when it changed. Emulator: it caught an unlock 1.3 s before USER_PRESENT.
+  `ForegroundAppTracker` has an internal constructor taking the readers, for `ForegroundAppTrackerScreenTest`.
+- **M2, timer service stopped alone** (`TimerServiceKeeper`, used by `NourAccessibilityService`):
+  window events check, at most every 10 s, that the timer service runs (same rule as the watchdog:
+  child mode, setup done). Emulator (`adb root`, `am stopservice`): restarted on the next window
+  event, "Background started FGS: Allowed".
+- **Flash wear** (`Timekeeping.kt`, `AppModule.provideTimekeepingStore`):
+  - Timer and trusted-clock state moved to their own file **`nour_timer`** (`@TimekeepingStore`), with
+    a one-time `TimekeepingMigration` from `nour_prefs` (keys `timer_*`, `trusted_*`). The settings file
+    with the PIN, and its backup copy, are now written only when a setting changes.
+  - `TimerSaves.needed`: the timer state is written on a phase change, start/stop of a limited app, a
+    daily reset, a command, at stop, and **every 15 s only while time is being counted** (was every 5 s
+    whenever the screen was on, even with nothing counted). At most 15 s of use is lost if the process
+    dies (in the child's favour).
+  - Emulator: migration moved all 14 keys, PIN kept in `nour_prefs`. 90 s on the home screen:
+    `nour_prefs` and its backup not written at all; `nour_timer` once (the trusted clock's
+    once-a-minute save). With Chrome counting: `nour_timer` every 15 s exactly, `nour_prefs` untouched.
+  - A damaged `nour_timer` starts over with a fresh budget (no backup copy for it).
+
+515 unit tests pass, lint clean. The emulator (`nourdm-api36`, user 0) has `adb root` on until reboot.
+
+**Next from the audit (not started):** honest error states for the rest of `ChildDeviceScreen`
+(usage, week, apps, commands, request still turn errors into empty data); log failed Firestore writes
+in `RemoteSync`; `runBlocking` flush on the main thread in `TimerService.onDestroy`; Firestore rules
+tests in CI; `TimeEngine` tests (needs seams for `TrustedClock`/`UsageRepository`). Owner decisions on
+hold: Blaze + push + remote PIN reset, prices, Play audience, warnings before time is up.
