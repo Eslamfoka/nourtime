@@ -3,7 +3,11 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (2026-10-13, night):** the second fresh audit's items 1–4 are done (PIN reset waits 24 h
+> **Resume here (2026-10-14):** push notifications to the parent's phone are built and tested on the
+> emulators ([§24](#24-2026-10-14-push-notifications-to-the-parents-phone-fcm-on-blaze)); the owner
+> upgrades to Blaze and deploys with the runbook in §24.1. Firestore rules were deployed 2026-10-13.
+
+> **Earlier (2026-10-13, night):** the second fresh audit's items 1–4 are done (PIN reset waits 24 h
 > or the parent's approval, answer guesses limited, uninterruptible/fail-closed timer saves, small fixes,
 > docs), see [§23](#23-2026-10-13-night-second-fresh-audit-action-14). **Owner:** deploy the changed
 > `firebase/firestore.rules`; decide on the Phone permission for call state. Business decisions on hold.
@@ -1592,3 +1596,42 @@ decisions on hold and asked for items 1–4 of the plan:
    `status-2026-10-05.md` marked as snapshots; this file's §1.
 
 539 unit tests, 50 Firestore rules tests, lint clean.
+
+
+## 24. 2026-10-14: push notifications to the parent's phone (FCM on Blaze)
+
+Plan: [`docs/superpowers/plans/2026-10-13-parent-push-notifications.md`](superpowers/plans/2026-10-13-parent-push-notifications.md)
+(approved by the owner, built inline). The owner is moving the project to Blaze.
+
+- **Child's phone:** unchanged permissions, no FCM. Alerts now go to their own document
+  `devices/{id}/meta/alerts` (plus `protectionDegraded`), so the functions run only when an alert changes.
+  The parent's phone reads it and falls back to the old `alerts` field for child phones not yet updated.
+- **Functions** (`firebase/functions`, Node 22, TypeScript, region **me-central2** = the Firestore
+  location): `onTimeRequest` (new `requests/{rid}`) and `onAlertsChanged` (`meta/alerts` written) →
+  `pushToOwner`: owner from `devices/{id}.ownerUid`, throttle in `pushState/{deviceId}` (server-only):
+  asks 5 min, alerts 30 min per type, a waiting PIN never; data-only high-priority FCM to every
+  `parents/{uid}/tokens/{token}`; tokens FCM rejects as dead are deleted.
+- **Parent's phone:** `PushTokens` registers the token on sign-in, removes it (and rotates it) on sign-out
+  and account deletion; `ParentMessagingService` → `pushMessageOf` → `ParentNotifications` (channel
+  `parent_updates`, text in the app's language, tap opens that child's screen via `OpenDeviceRequest`).
+  The parent's home shows "Notifications are off" with a button (Android 13+ permission, else settings).
+- **Rules:** `parents/{uid}/tokens/{token}` (owner only, `createdAt` + `platform`), `pushState` (no client).
+- **Tests:** 549 unit tests; 53 rules tests; functions 9 unit + 5 emulator tests; CI runs all of them.
+  Emulator: both triggers fire and record `pushState`; pushes simulated with a rooted
+  `am broadcast` to Firebase's receiver show all three kinds and open the right screen.
+  **Not yet seen:** a real FCM delivery (needs the deploy below).
+
+### 24.1 Deploy runbook (owner)
+1. Firebase console → project `nourtime-8d4ce` → upgrade to **Blaze**; add a budget alert (e.g. $5/month).
+   Expected cost at small scale: functions run only on asks and alert changes; FCM itself is free.
+2. In `firebase/`: `npx firebase login` (done 2026-10-13 as eslamfoka24@gmail.com), then
+   `npm --prefix functions ci`.
+3. Deploy (this PC needs the longer discovery timeout: loading the functions took over 10 s):
+   `FUNCTIONS_DISCOVERY_TIMEOUT=90 npx firebase deploy --only firestore:rules,functions --project nourtime-8d4ce`
+   (PowerShell: `$env:FUNCTIONS_DISCOVERY_TIMEOUT=90; npx firebase deploy ...`). If `me-central2` is
+   refused for Cloud Functions, change `REGION` in `firebase/functions/src/config.ts` to the nearest
+   region it offers and deploy again.
+4. Build a release APK and install it on both phones; on the parent's phone allow notifications.
+5. Check: on the child's phone tap "Ask for more time" with the parent's app closed → a notification
+   on the parent's phone within seconds. Logs: Firebase console → Functions → `onTimeRequest`
+   ("ask push … sent").

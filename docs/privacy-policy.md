@@ -61,6 +61,13 @@ The parent's phone stores the parent's Google account name and email (to show th
 wants to connect) and the commands the parent sends (extra time, lock now, end the lock, approving a new PIN). The child's
 phone uses an anonymous Firebase account that contains no personal information.
 
+**Notifications on the parent's phone.** While the parent is signed in, the parent's phone registers a
+Firebase Cloud Messaging token (a random identifier for that app installation) so Nour Time's server can
+tell it when the child asks for more time, when a protection alert appears, and when a new PIN waits for
+approval. A notification carries only the kind of event and the name of the child's phone; the text is
+written on the parent's phone. The token is deleted when the parent signs out or deletes the account. The
+child's phone receives no notifications from the server and registers no token.
+
 Not sent, ever: the child's name, age group or gender, the PIN or the security answer, what is shown on
 the screen or typed, location, contacts, photos or messages.
 
@@ -149,7 +156,10 @@ version is released, and the app will ask for consent where required.
   الجديد: وقت الحدث فقط)، وتقارير الأعطال إن توقف وقت نور فجأة (موضع الخطأ في كود وقت نور، وإصدار
   Android وطراز الهاتف، إلى Google Firebase Crashlytics لإصلاحه، دون ربطها بحساب ولي الأمر أو بالطفل؛ ويرسلها هاتف
   ولي الأمر أيضًا بعد تسجيل الدخول، ولا يُرسل شيء منها قبل الربط)، وطلبات "أريد وقتًا إضافيًا" التي يرسلها الطفل من شاشة "خلص الوقت" (وقت
-  الطلب ورد ولي الأمر فقط، دون أي نص). يحفظ هاتف ولي الأمر اسم حساب Google وبريده. لا يُرسل أبدًا اسم الطفل ولا
+  الطلب ورد ولي الأمر فقط، دون أي نص). يحفظ هاتف ولي الأمر اسم حساب Google وبريده، ومعرّف إشعارات (Firebase Cloud Messaging) ما دام مسجّلًا
+  للدخول، ليُخبره خادم وقت نور عندما يطلب الطفل وقتًا إضافيًا أو يظهر تنبيه حماية أو ينتظر رمز جديد موافقته؛ لا يحمل
+  الإشعار إلا نوع الحدث واسم هاتف الطفل، ويُحذف المعرّف عند تسجيل الخروج أو حذف الحساب. لا يتلقى هاتف الطفل أي
+  إشعارات من الخادم. لا يُرسل أبدًا اسم الطفل ولا
   عمره ولا الرمز ولا محتوى الشاشة ولا الموقع.
 - **الأطفال:** تُعدّ هذه المعلومات عن استخدام الطفل للهاتف معلومات شخصية عنه وفق قوانين خصوصية الأطفال، ولذلك لا
   تُجمع إلا بموافقة ولي الأمر: هو من يربط الهاتفين ويؤكد الربط على هاتف الطفل بعد إدخال رمز الأهل، ويستطيع إيقافها

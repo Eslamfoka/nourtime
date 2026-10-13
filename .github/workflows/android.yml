@@ -1,4 +1,4 @@
-# Unit tests, lint and a debug build on every push and pull request; the Firestore rules tests too.
+# Unit tests, lint and a debug build on every push and pull request; the Firestore rules and push functions tests too.
 # Debug builds use the committed demo Firebase config (app/src/debug/google-services.json), so no
 # secrets are needed. The release build needs the real config and the upload key, kept off GitHub.
 name: Android
@@ -65,3 +65,11 @@ jobs:
 
       - name: Rules tests
         run: npm test
+
+      # Push functions: the pure logic, a type-checked build, then sending against the Firestore emulator.
+      - name: Functions tests
+        run: |
+          npm --prefix functions ci
+          npm --prefix functions test
+          npm --prefix functions run build
+          npm run test:functions

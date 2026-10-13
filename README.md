@@ -80,8 +80,9 @@ On the parent's phone, "Use a test account (emulator)" signs in without a real G
 8. Release builds now build and use it. To run a **debug** build against the real project, delete
    `app/src/debug/google-services.json` and build with `./gradlew assembleDebug -Pnourtime.firebaseEmulator=false`.
 
-The free Spark plan is enough today (no Cloud Functions are used). Push notifications to the parent's
-phone would need the Blaze plan; that decision is on hold (see `docs/handoff.md`).
+Push notifications to the parent's phone use two Cloud Functions (`firebase/functions`), which need
+the **Blaze** plan. Deploy steps: `docs/handoff.md` §24. Tests: `npm --prefix firebase/functions test`
+(pure logic) and, in `firebase/`, `npm run test:functions` (sending, against the Firestore emulator).
 
 ## How it works
 
