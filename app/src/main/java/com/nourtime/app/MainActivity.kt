@@ -1,5 +1,7 @@
 package com.nourtime.app
 
+import com.nourtime.app.feature.parent.OpenDeviceRequest
+import android.content.Intent
 import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
@@ -58,6 +60,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        if (savedInstanceState == null) openRequestedDevice(intent)
         // Protection runs once setup is complete; starting from the foreground is always allowed.
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -75,6 +78,16 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        openRequestedDevice(intent)
+    }
+
+    /** A tapped push on the parent's phone names the child's phone to open. */
+    private fun openRequestedDevice(intent: Intent?) {
+        intent?.getStringExtra(OpenDeviceRequest.EXTRA_DEVICE_ID)?.let(OpenDeviceRequest::request)
     }
 }
 

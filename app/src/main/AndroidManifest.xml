@@ -116,6 +116,15 @@
             </intent-filter>
         </receiver>
         <!-- Restarts protection if Android killed it (every 15 minutes, and after a reboot). -->
+        <!-- Pushes for the parent's phone (asks, alerts, a PIN waiting for approval); data-only. -->
+        <service
+            android:name=".remote.parent.ParentMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <service
             android:name=".service.watchdog.WatchdogJobService"
             android:exported="false"

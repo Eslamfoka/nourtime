@@ -447,6 +447,14 @@
     <string name="device_details_failed">Some of this phone\'s details couldn\'t load. Check the internet connection and try again.</string>
     <string name="device_details_unavailable">Not available right now.</string>
     <string name="device_apps_failed">Couldn\'t load your child\'s app list. Check the internet connection and try again.</string>
+    <string name="parent_push_channel">Your children\'s phones</string>
+    <string name="parent_push_ask_title">Asking for more time</string>
+    <string name="parent_push_ask_body">%1$s is asking for more time.</string>
+    <string name="parent_push_alert_title">Protection on %1$s</string>
+    <string name="parent_push_pin_body">A new PIN was chosen on %1$s with the security question. It starts working on %2$s. Tap to approve it, or unlock that phone with the current PIN to cancel it.</string>
+    <string name="parent_push_off_title">Notifications are off</string>
+    <string name="parent_push_off_body">You won\'t hear when your child asks for more time or when protection needs attention.</string>
+    <string name="parent_push_off_action">Turn on notifications</string>
     <string name="device_settings_waiting">The settings appear once your child\'s phone is online.</string>
     <string name="device_limited_apps">Limited apps</string>
     <string name="device_no_app_list">The list of apps appears once your child\'s phone is online.</string>

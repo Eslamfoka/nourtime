@@ -457,6 +457,14 @@
     <string name="device_details_failed">تعذّر تحميل بعض تفاصيل هذا الهاتف. تحقّق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
     <string name="device_details_unavailable">غير متاح الآن.</string>
     <string name="device_apps_failed">تعذّر تحميل قائمة تطبيقات طفلك. تحقّق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
+    <string name="parent_push_channel">هواتف أطفالك</string>
+    <string name="parent_push_ask_title">طلب وقت إضافي</string>
+    <string name="parent_push_ask_body">وصل طلب وقت إضافي من %1$s.</string>
+    <string name="parent_push_alert_title">الحماية على %1$s</string>
+    <string name="parent_push_pin_body">اختير رمز جديد على %1$s باستخدام سؤال الأمان، ويبدأ العمل في %2$s. اضغط للموافقة عليه، أو افتح ذلك الهاتف بالرمز الحالي لإلغائه.</string>
+    <string name="parent_push_off_title">الإشعارات متوقفة</string>
+    <string name="parent_push_off_body">لن تعرف عندما يطلب طفلك وقتًا إضافيًا أو عندما تحتاج الحماية إلى انتباه.</string>
+    <string name="parent_push_off_action">تشغيل الإشعارات</string>
     <string name="device_settings_waiting">ستظهر الإعدادات عندما يتصل هاتف طفلك بالإنترنت.</string>
     <string name="device_limited_apps">التطبيقات المحددة</string>
     <string name="device_no_app_list">ستظهر قائمة التطبيقات عندما يتصل هاتف طفلك بالإنترنت.</string>

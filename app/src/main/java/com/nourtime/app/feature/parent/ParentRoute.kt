@@ -1,5 +1,16 @@
 package com.nourtime.app.feature.parent
 
+import com.nourtime.app.core.designsystem.component.NourSecondaryButton
+import com.nourtime.app.core.designsystem.component.NourCard
+import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.Lifecycle
+import androidx.core.app.NotificationManagerCompat
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.compose.rememberLauncherForActivityResult
+import android.provider.Settings
+import android.os.Build
+import android.content.Intent
+import android.Manifest
 import android.content.Context
 import android.text.format.DateUtils
 import android.util.Log
@@ -178,6 +189,10 @@ fun ParentRoute(onBackToModeChoice: () -> Unit, viewModel: ParentViewModel = hil
         val list = devices.valueOrNull() ?: return@LaunchedEffect
         if (selected != null && list.none { it.id == selected }) viewModel.open(null)
     }
+    // A tapped push names a child's phone: open it once signed in.
+    LaunchedEffect(user != null) {
+        if (user != null) OpenDeviceRequest.deviceId.filterNotNull().collect { OpenDeviceRequest.consume()?.let(viewModel::open) }
+    }
     val current = user
     when {
         current == null -> {
@@ -248,6 +263,7 @@ private fun ParentHomeScreen(user: ParentUser, viewModel: ParentViewModel) {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(stringResource(R.string.parent_home_title), style = MaterialTheme.typography.headlineMedium)
+        NotificationsOffCard()
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 user.email ?: user.name.orEmpty(),
@@ -294,6 +310,41 @@ private fun ParentHomeScreen(user: ParentUser, viewModel: ParentViewModel) {
             },
             dismissButton = { NourDialogButton(stringResource(R.string.action_cancel), { confirmDelete = false }) },
         )
+    }
+}
+
+/**
+ * Pushes need notifications on (Android 13+: the permission). Without them the parent never hears that
+ * the child asked for more time, so the home screen says so, with a way to fix it.
+ */
+@Composable
+private fun NotificationsOffCard() {
+    val context = LocalContext.current
+    var enabled by remember { mutableStateOf(NotificationManagerCompat.from(context).areNotificationsEnabled()) }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { enabled = NotificationManagerCompat.from(context).areNotificationsEnabled() }
+    val openSettings = {
+        runCatching {
+            context.startActivity(
+                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            )
+        }
+    }
+    val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        // Refused before: Android doesn't ask again, so the settings screen is the way.
+        if (!granted) openSettings()
+        enabled = NotificationManagerCompat.from(context).areNotificationsEnabled()
+    }
+    if (enabled) return
+    NourCard {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Icon(Icons.Rounded.WarningAmber, contentDescription = null, tint = NourTheme.colors.danger)
+            Text(stringResource(R.string.parent_push_off_title), style = MaterialTheme.typography.titleMedium)
+        }
+        Text(stringResource(R.string.parent_push_off_body), style = MaterialTheme.typography.bodyMedium)
+        NourSecondaryButton(stringResource(R.string.parent_push_off_action), {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) ask.launch(Manifest.permission.POST_NOTIFICATIONS) else openSettings()
+        })
     }
 }
 
