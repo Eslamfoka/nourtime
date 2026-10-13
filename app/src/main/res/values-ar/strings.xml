@@ -434,6 +434,17 @@
     <string name="device_today">اليوم</string>
     <string name="device_today_none">لم تُستخدم التطبيقات المحددة اليوم بعد.</string>
     <string name="device_settings">الإعدادات</string>
+    <string name="parent_loading_phones">جارٍ تحميل هواتف أطفالك…</string>
+    <string name="parent_loading_slow">يستغرق الأمر وقتًا أطول من المعتاد. تحقّق من الاتصال بالإنترنت.</string>
+    <string name="parent_load_failed">تعذّر تحميل هواتف أطفالك. تحقّق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
+    <string name="device_loading">جارٍ التحميل…</string>
+    <string name="device_load_failed">تعذّر تحميل هذا الهاتف. تحقّق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
+    <string name="device_send_failed">تعذّر الإرسال إلى هاتف طفلك. حاول مرة أخرى.</string>
+    <string name="device_save_failed">تعذّر حفظ التغيير. تحقّق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
+    <string name="device_remove_failed">تعذّرت إزالة هذا الهاتف. تحقّق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
+    <string name="device_removing">جارٍ الإزالة…</string>
+    <string name="add_child_scan_failed">تعذّر فتح ماسح رمز QR على هذا الهاتف. اكتب الرمز المكوّن من 6 أرقام بدلًا منه.</string>
+    <string name="action_dismiss">حسنًا</string>
     <string name="device_settings_waiting">ستظهر الإعدادات عندما يتصل هاتف طفلك بالإنترنت.</string>
     <string name="device_limited_apps">التطبيقات المحددة</string>
     <string name="device_no_app_list">ستظهر قائمة التطبيقات عندما يتصل هاتف طفلك بالإنترنت.</string>

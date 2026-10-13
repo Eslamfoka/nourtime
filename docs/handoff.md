@@ -3,7 +3,11 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (written 2026-10-12 ~22:30; the owner stopped for the day):** everything is on
+> **Resume here (2026-10-13):** fresh-audit #2 (loading/error states on the parent's phone) is done,
+> see [§21](#21-2026-10-13-loading-and-error-states-on-the-parents-phone-fresh-audit-2). **Next:** the
+> owner's decision on Firebase Blaze + push notifications and a remote PIN reset (§20.6 step 2).
+
+> **Previous resume block (written 2026-10-12 ~22:30; the owner stopped for the day):** everything is on
 > `master` and pushed (`a9a20502`). About 490 unit tests pass, lint clean, GitHub Actions CI green.
 > What was done on 2026-10-11/12 and the exact next steps are in
 > [§20](#20-2026-10-11--10-12-committee-audits-lock-bypasses-play-compliance-ci-recovery). **Next:**
@@ -1433,3 +1437,39 @@ DataStore file (written every 5 s); `TimeEngine`, `BlockCoordinator` and `Remote
 CI doesn't build a release or run the Firestore rules tests; the toolchain is about two years old;
 `progress.md`, `README.md` and `status-2026-10-05.md` are out of date (battery permission, test
 counts, bottom bar).
+
+## 21. 2026-10-13: loading and error states on the parent's phone (fresh-audit #2)
+
+§20.6 step 1 is done.
+
+- **`Load` (`remote/parent/Load.kt`, `LoadTest`)**: `Loading` / `Failed` / `Ready(value)` and
+  `loadWithRetry(retries) { flow }`. The phones list (`ParentViewModel.devices`) and one phone
+  (`ChildDeviceViewModel.device`) use it, so an error shows "Couldn't load…" with **Try again** instead
+  of "No phones yet" or a blank screen. Shared UI in `feature/parent/LoadStates.kt` (`LoadingRow`,
+  `LoadFailedCard`, `ActionErrorText`).
+- **Offline isn't an error in Firestore**: the cache answers at once. `ParentDevices.devices()` no
+  longer sends an empty list that comes only from the cache, and `device()` doesn't send "gone" from
+  the cache, so "No phones yet" is said only once the server agrees. Both listen with
+  `MetadataChanges.INCLUDE`: without it the server confirming "still empty" is never delivered and the
+  screen stayed on Loading forever (found on the emulator, fixed). After 10 s of loading the screen also
+  says "Taking longer than usual. Check the internet connection."
+- **One phone's screen**: send, settings edits and remove report failures (`DeviceActionFailure`) in a
+  bar pinned to the bottom (the failed control may be far down the screen) and inside the app-list
+  dialog. Remove leaves the screen only once the server has it, and shows "Removing…".
+- **Add a child**: QR scanner failure → "The QR scanner couldn't open on this phone. Type the 6-digit
+  code instead." (before, nothing happened). Cancel while "Connecting…" / "Tap Allow on your child's
+  phone".
+- **Unlock with the security answer**: show/hide toggle, same as in setup.
+
+**Checked on the emulator** (`nourdm-api36`, new user **11 "parent"** signed in with the test account,
+Firebase emulators): online empty list → "No phones yet"; started offline (adb reverse removed, app
+restarted) → Loading, then the 10-s hint; reconnected → "No phones yet" by itself; scanner failure
+message (the emulator can't download the ML Kit scanner module); offline claim → "Connecting…" →
+Cancel closes. **Not device-checked:** the failure bar on one phone's screen (needs a paired child)
+and the answer toggle. The emulator exited by itself at the end of the session (likely memory). Note: removing `adb reverse` doesn't cut an open Firestore connection; restart
+the app to test offline.
+
+**Also fixed:** `firebase/node_modules` was damaged (`lodash/_apply.js` was binary garbage, the
+emulators wouldn't start); `npm ci` repaired it.
+
+**Next:** §20.6 step 2, the owner's decision on Firebase Blaze + push (FCM) and a remote PIN reset.

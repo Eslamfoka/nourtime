@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.MetadataChanges
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.Source
 import com.nourtime.app.core.timer.TimerCommand
@@ -64,20 +65,33 @@ class ParentDevices @Inject constructor(
 ) {
     private val devices get() = firestore.collection(RemotePaths.DEVICES)
 
+    /**
+     * Offline, the local cache answers at once with what it has; an empty answer from it isn't sent,
+     * so "no phones yet" is only said once the server agrees. Metadata changes are listened to because
+     * the server agreeing with the cache changes nothing else, and wouldn't be sent otherwise.
+     */
     fun devices(uid: String): Flow<List<ChildDevice>> = callbackFlow {
-        val registration = devices.whereEqualTo("ownerUid", uid).addSnapshotListener { snap, error ->
+        val registration = devices.whereEqualTo("ownerUid", uid).addSnapshotListener(MetadataChanges.INCLUDE) { snap, error ->
             if (error != null) {
                 close(error)
-            } else if (snap != null) {
+            } else if (snap != null && !(snap.isEmpty && snap.metadata.isFromCache)) {
                 trySend(snap.documents.map(::toDevice).sortedBy { it.name })
             }
         }
         awaitClose { registration.remove() }
     }
 
+    /**
+     * Null once the server says the phone is gone; a phone missing only from the offline cache isn't
+     * sent (metadata changes included, as in [devices]).
+     */
     fun device(id: String): Flow<ChildDevice?> = callbackFlow {
-        val registration = devices.document(id).addSnapshotListener { snap, error ->
-            if (error != null) close(error) else trySend(snap?.takeIf { it.exists() }?.let(::toDevice))
+        val registration = devices.document(id).addSnapshotListener(MetadataChanges.INCLUDE) { snap, error ->
+            when {
+                error != null -> close(error)
+                snap == null || (!snap.exists() && snap.metadata.isFromCache) -> Unit
+                else -> trySend(snap.takeIf { it.exists() }?.let(::toDevice))
+            }
         }
         awaitClose { registration.remove() }
     }

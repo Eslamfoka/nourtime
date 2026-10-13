@@ -1,5 +1,6 @@
 package com.nourtime.app.feature.parent
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -62,6 +63,8 @@ sealed interface AddChildState {
     data object WaitingForChild : AddChildState
     data class Done(val result: ClaimResult) : AddChildState
     data object BadCode : AddChildState
+    /** The QR scanner couldn't open (no camera, or Google Play services can't load it); typing still works. */
+    data object ScanFailed : AddChildState
 }
 
 @HiltViewModel
@@ -86,6 +89,10 @@ class AddChildViewModel @Inject constructor(
         }
     }
 
+    fun scanFailed() {
+        _state.value = AddChildState.ScanFailed
+    }
+
     /** View models live as long as the activity here, so the dialog starts over each time it opens. */
     fun reset() {
         job?.cancel()
@@ -105,6 +112,10 @@ fun AddChildDialog(user: ParentUser, onClose: () -> Unit, viewModel: AddChildVie
         val options = GmsBarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build()
         GmsBarcodeScanning.getClient(context, options).startScan()
             .addOnSuccessListener { barcode -> barcode.rawValue?.let { viewModel.claim(it, user) } }
+            .addOnFailureListener {
+                Log.w("AddChild", "QR scanner failed", it)
+                viewModel.scanFailed()
+            }
     }
 
     FullScreenDialog(onDismissRequest = onClose) {
@@ -117,13 +128,14 @@ fun AddChildDialog(user: ParentUser, onClose: () -> Unit, viewModel: AddChildVie
                 ) {
                     Text(stringResource(R.string.parent_add_child), style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
                     when (val s = state) {
-                        AddChildState.Idle, AddChildState.BadCode -> {
+                        AddChildState.Idle, AddChildState.BadCode, AddChildState.ScanFailed -> {
                             Text(
                                 stringResource(R.string.add_child_body),
                                 style = MaterialTheme.typography.bodyLarge,
                                 textAlign = TextAlign.Center,
                             )
                             NourPrimaryButton(stringResource(R.string.add_child_scan), ::scan)
+                            if (s == AddChildState.ScanFailed) ActionErrorText(stringResource(R.string.add_child_scan_failed))
                             Text(stringResource(R.string.add_child_or_type), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             OutlinedTextField(
                                 colors = nourTextFieldColors(),
@@ -145,6 +157,8 @@ fun AddChildDialog(user: ParentUser, onClose: () -> Unit, viewModel: AddChildVie
                             CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
                             val message = if (s == AddChildState.Sending) R.string.add_child_sending else R.string.add_child_confirm_on_child
                             Text(stringResource(message), style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)
+                            // Closing stops waiting; if the child taps "Allow" later, the phone still appears in the list.
+                            NourTextButton(stringResource(R.string.action_cancel), onClose)
                         }
                         is AddChildState.Done -> {
                             Text(stringResource(messageFor(s.result)), style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center)

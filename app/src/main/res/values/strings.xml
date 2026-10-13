@@ -424,6 +424,17 @@
     <string name="device_today">Today</string>
     <string name="device_today_none">No limited apps used yet today.</string>
     <string name="device_settings">Settings</string>
+    <string name="parent_loading_phones">Loading your children\'s phones…</string>
+    <string name="parent_loading_slow">Taking longer than usual. Check the internet connection.</string>
+    <string name="parent_load_failed">Couldn\'t load your children\'s phones. Check the internet connection and try again.</string>
+    <string name="device_loading">Loading…</string>
+    <string name="device_load_failed">Couldn\'t load this phone. Check the internet connection and try again.</string>
+    <string name="device_send_failed">Couldn\'t send that to your child\'s phone. Try again.</string>
+    <string name="device_save_failed">Couldn\'t save the change. Check the internet connection and try again.</string>
+    <string name="device_remove_failed">Couldn\'t remove this phone. Check the internet connection and try again.</string>
+    <string name="device_removing">Removing…</string>
+    <string name="add_child_scan_failed">The QR scanner couldn\'t open on this phone. Type the 6-digit code instead.</string>
+    <string name="action_dismiss">OK</string>
     <string name="device_settings_waiting">The settings appear once your child\'s phone is online.</string>
     <string name="device_limited_apps">Limited apps</string>
     <string name="device_no_app_list">The list of apps appears once your child\'s phone is online.</string>

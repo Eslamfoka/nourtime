@@ -1,7 +1,11 @@
 package com.nourtime.app.feature.parent
 
 import android.text.format.DateUtils
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -74,20 +78,25 @@ import com.nourtime.app.remote.model.RemoteSettings
 import com.nourtime.app.remote.model.TimeRequest
 import com.nourtime.app.remote.parent.ChildDevice
 import com.nourtime.app.remote.parent.DeviceSummary
+import com.nourtime.app.remote.parent.Load
 import com.nourtime.app.remote.parent.ParentDevices
 import com.nourtime.app.remote.parent.ParentUser
 import com.nourtime.app.remote.parent.SentCommand
+import com.nourtime.app.remote.parent.loadWithRetry
+import com.nourtime.app.remote.parent.valueOrNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -102,8 +111,11 @@ class ChildDeviceViewModel @Inject constructor(
     private val deviceId = MutableStateFlow<String?>(null)
     private val ids = deviceId.filterNotNull()
 
-    val device: StateFlow<ChildDevice?> = ids.flatMapLatest { remote.device(it).catch { emit(null) } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+    private val retries = MutableStateFlow(0)
+
+    /** Ready(null) when the phone is gone (removed, or the child disconnected it). */
+    val device: StateFlow<Load<ChildDevice?>> = ids.flatMapLatest { id -> loadWithRetry(retries) { remote.device(id) } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), Load.Loading)
     val usage: StateFlow<Map<String, Long>> = ids.flatMapLatest { remote.usage(it, LocalDate.now()).catch { emit(emptyMap()) } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyMap())
     /** The last 7 days (Phase 4b), by the parent's own date like "today" above. */
@@ -122,13 +134,29 @@ class ChildDeviceViewModel @Inject constructor(
     private val _answerFailed = MutableStateFlow(false)
     val answerFailed: StateFlow<Boolean> = _answerFailed
 
+    /** The last change the server refused or that couldn't reach it; cleared by the next one that works. */
+    private val _failure = MutableStateFlow<DeviceActionFailure?>(null)
+    val failure: StateFlow<DeviceActionFailure?> = _failure.asStateFlow()
+
+    private val _removing = MutableStateFlow(false)
+    val removing: StateFlow<Boolean> = _removing.asStateFlow()
+
     fun bind(id: String) {
         deviceId.value = id
     }
 
+    fun retry() {
+        retries.value++
+    }
+
+    fun dismissFailure() {
+        _failure.value = null
+    }
+
+    /** Offline, the command waits in the local queue ("waiting for the child's phone"); only a refusal fails. */
     fun send(command: TimerCommand, user: ParentUser) {
         val id = deviceId.value ?: return
-        viewModelScope.launch { runCatching { remote.send(id, command, user.uid) } }
+        viewModelScope.launch { track(DeviceActionFailure.SEND) { remote.send(id, command, user.uid) } }
     }
 
     /** [minutes] approves the request with that bonus; null declines it. Needs the network. */
@@ -143,20 +171,36 @@ class ChildDeviceViewModel @Inject constructor(
     /** Applies [change] to the settings on the server and writes the next revision. */
     fun edit(change: (RemoteSettings) -> RemoteSettings) {
         val id = deviceId.value ?: return
-        viewModelScope.launch { runCatching { remote.writeSettings(id, change) } }
+        viewModelScope.launch { track(DeviceActionFailure.SAVE) { remote.writeSettings(id, change) } }
     }
 
+    /** Leaves the screen only once the server has it; on a failure the phone stays and says why. */
     fun remove(onDone: () -> Unit) {
         val id = deviceId.value ?: return
+        if (_removing.value) return
         viewModelScope.launch {
-            runCatching { remote.remove(id) }
-            onDone()
+            _removing.value = true
+            val ok = track(DeviceActionFailure.REMOVE) { remote.remove(id) }
+            _removing.value = false
+            if (ok) onDone()
         }
     }
+
+    private suspend fun track(kind: DeviceActionFailure, action: suspend () -> Unit): Boolean =
+        runCatching { action() }
+            .onSuccess { if (_failure.value == kind) _failure.value = null }
+            .onFailure {
+                if (it is CancellationException) throw it
+                Log.w("ChildDevice", "$kind failed", it)
+                _failure.value = kind
+            }
+            .isSuccess
 
     /** The child's app icons aren't uploaded; the parent's phone shows its own copy when it has the app. */
     suspend fun icon(packageName: String): ImageBitmap? = localApps.icon(packageName)
 }
+
+enum class DeviceActionFailure { SEND, SAVE, REMOVE }
 
 private val BONUS_CHOICES = listOf(15, 30, 60)
 
@@ -169,7 +213,10 @@ fun ChildDeviceScreen(
     viewModel: ChildDeviceViewModel = hiltViewModel(key = deviceId),
 ) {
     LaunchedEffect(deviceId) { viewModel.bind(deviceId) }
-    val device by viewModel.device.collectAsStateWithLifecycle()
+    val load by viewModel.device.collectAsStateWithLifecycle()
+    val device = load.valueOrNull()
+    val failure by viewModel.failure.collectAsStateWithLifecycle()
+    val removingNow by viewModel.removing.collectAsStateWithLifecycle()
     val usage by viewModel.usage.collectAsStateWithLifecycle()
     val apps by viewModel.apps.collectAsStateWithLifecycle()
     val week by viewModel.week.collectAsStateWithLifecycle()
@@ -181,90 +228,107 @@ fun ChildDeviceScreen(
     var removing by remember { mutableStateOf(false) }
     var picking by remember { mutableStateOf<AppListKind?>(null) }
 
-    Column(
-        Modifier
-            .fillMaxSize()
-            .safeDrawingPadding()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.action_back)) }
-            Text(device?.name.orEmpty(), style = MaterialTheme.typography.headlineSmall)
-        }
-        val d = device ?: return@Column
-        val summary = DeviceSummary.of(d.status, now)
-        request?.takeIf { AskPolicy.state(it, now) == AskState.Waiting }?.let { r ->
-            AskCard(d.name, r, now, answerFailed, onAnswer = { minutes -> viewModel.answer(r.id, minutes, user) })
-        }
-
-        NourCard {
-            Text(summaryText(summary), style = MaterialTheme.typography.titleLarge)
-            d.status?.updatedAtMs?.let { at ->
-                val minutes = DeviceSummary.minutesAgo(at, now)
-                Text(
-                    if (minutes == null) {
-                        stringResource(R.string.device_updated_now)
-                    } else {
-                        stringResource(R.string.device_updated, DateUtils.getRelativeTimeSpanString(at, now, DateUtils.MINUTE_IN_MILLIS).toString())
-                    },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+    Box(Modifier.fillMaxSize()) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .safeDrawingPadding()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = stringResource(R.string.action_back)) }
+                Text(device?.name.orEmpty(), style = MaterialTheme.typography.headlineSmall)
             }
-            if (summary.degraded()) {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Icon(Icons.Rounded.WarningAmber, contentDescription = null, tint = NourTheme.colors.danger, modifier = Modifier.size(18.dp))
-                    Text(stringResource(R.string.parent_protection_warning), style = MaterialTheme.typography.bodyMedium)
-                }
+            when (load) {
+                Load.Loading -> LoadingRow(stringResource(R.string.device_loading))
+                Load.Failed -> LoadFailedCard(stringResource(R.string.device_load_failed), viewModel::retry)
+                is Load.Ready -> Unit
             }
-            d.alerts.visible(now).forEach { alert ->
-                Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Icon(Icons.Rounded.WarningAmber, contentDescription = null, tint = NourTheme.colors.danger, modifier = Modifier.size(18.dp))
-                    Text(stringResource(alert.message), style = MaterialTheme.typography.bodyMedium)
-                }
+            val d = device ?: return@Column
+            val summary = DeviceSummary.of(d.status, now)
+            request?.takeIf { AskPolicy.state(it, now) == AskState.Waiting }?.let { r ->
+                AskCard(d.name, r, now, answerFailed, onAnswer = { minutes -> viewModel.answer(r.id, minutes, user) })
             }
-        }
 
-        ActionsCard(summary, commands, onCommand = { confirm = it })
-        UsageCard(usage, apps)
-        week?.let { report -> WeekCard(report, apps.firstOrNull { it.packageName == report.topApp }?.label) }
-
-        val settings = d.settings
-        Text(stringResource(R.string.device_settings), style = MaterialTheme.typography.titleLarge)
-        if (settings == null) {
-            Text(stringResource(R.string.device_settings_waiting), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        } else {
-            TimeBudgetEditor(
-                settings.budgetMinutes,
-                settings.lockPeriodHours,
-                onBudgetMinutes = { v -> viewModel.edit { it.copy(budgetMinutes = v) } },
-                onLockPeriodHours = { v -> viewModel.edit { it.copy(lockPeriodHours = v) } },
-            )
-            TimePickerStyleSetting()
-            DailyResetCard(settings.dailyResetMinute) { v -> viewModel.edit { it.copy(dailyResetMinute = v) } }
-            LockTypeEditor(settings.lockType) { v -> viewModel.edit { it.copy(lockType = v) } }
-            BedtimeCard(settings.bedtime) { v -> viewModel.edit { it.copy(bedtime = v) } }
-            WeekendSection(settings.weekend) { v -> viewModel.edit { it.copy(weekend = v) } }
-            AppListButton(stringResource(R.string.device_limited_apps), settings.limitedApps.size) { picking = AppListKind.LIMITED }
-            AppListButton(stringResource(R.string.allowed_section), settings.allowedDuringLock.size) { picking = AppListKind.ALLOWED }
-            Text(stringResource(R.string.device_learning), style = MaterialTheme.typography.titleLarge)
             NourCard {
-                // "Today" by the parent's date, like the usage above.
-                LearningSettingsEditor(
-                    settings = settings.learning,
-                    voices = settings.voices,
-                    earnedToday = d.learning?.earnedOn(LocalDate.now()),
-                    bankMinutes = d.learning?.bankMinutes,
-                    onEnabled = { v -> viewModel.edit { it.copy(learning = it.learning.copy(enabled = v)) } },
-                    onMinutesPerLevel = { v -> viewModel.edit { it.copy(learning = it.learning.copy(minutesPerLevel = v)) } },
-                    onDailyMax = { v -> viewModel.edit { it.copy(learning = it.learning.copy(dailyMaxMinutes = v)) } },
-                    onVoice = { pack -> viewModel.edit { it.copy(voices = it.voices + (pack.language to pack)) } },
-                )
+                Text(summaryText(summary), style = MaterialTheme.typography.titleLarge)
+                d.status?.updatedAtMs?.let { at ->
+                    val minutes = DeviceSummary.minutesAgo(at, now)
+                    Text(
+                        if (minutes == null) {
+                            stringResource(R.string.device_updated_now)
+                        } else {
+                            stringResource(R.string.device_updated, DateUtils.getRelativeTimeSpanString(at, now, DateUtils.MINUTE_IN_MILLIS).toString())
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                if (summary.degraded()) {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Icon(Icons.Rounded.WarningAmber, contentDescription = null, tint = NourTheme.colors.danger, modifier = Modifier.size(18.dp))
+                        Text(stringResource(R.string.parent_protection_warning), style = MaterialTheme.typography.bodyMedium)
+                    }
+                }
+                d.alerts.visible(now).forEach { alert ->
+                    Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Icon(Icons.Rounded.WarningAmber, contentDescription = null, tint = NourTheme.colors.danger, modifier = Modifier.size(18.dp))
+                        Text(stringResource(alert.message), style = MaterialTheme.typography.bodyMedium)
+                    }
+                }
             }
+
+            ActionsCard(summary, commands, onCommand = { confirm = it })
+            UsageCard(usage, apps)
+            week?.let { report -> WeekCard(report, apps.firstOrNull { it.packageName == report.topApp }?.label) }
+
+            val settings = d.settings
+            Text(stringResource(R.string.device_settings), style = MaterialTheme.typography.titleLarge)
+            if (settings == null) {
+                Text(stringResource(R.string.device_settings_waiting), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            } else {
+                TimeBudgetEditor(
+                    settings.budgetMinutes,
+                    settings.lockPeriodHours,
+                    onBudgetMinutes = { v -> viewModel.edit { it.copy(budgetMinutes = v) } },
+                    onLockPeriodHours = { v -> viewModel.edit { it.copy(lockPeriodHours = v) } },
+                )
+                TimePickerStyleSetting()
+                DailyResetCard(settings.dailyResetMinute) { v -> viewModel.edit { it.copy(dailyResetMinute = v) } }
+                LockTypeEditor(settings.lockType) { v -> viewModel.edit { it.copy(lockType = v) } }
+                BedtimeCard(settings.bedtime) { v -> viewModel.edit { it.copy(bedtime = v) } }
+                WeekendSection(settings.weekend) { v -> viewModel.edit { it.copy(weekend = v) } }
+                AppListButton(stringResource(R.string.device_limited_apps), settings.limitedApps.size) { picking = AppListKind.LIMITED }
+                AppListButton(stringResource(R.string.allowed_section), settings.allowedDuringLock.size) { picking = AppListKind.ALLOWED }
+                Text(stringResource(R.string.device_learning), style = MaterialTheme.typography.titleLarge)
+                NourCard {
+                    // "Today" by the parent's date, like the usage above.
+                    LearningSettingsEditor(
+                        settings = settings.learning,
+                        voices = settings.voices,
+                        earnedToday = d.learning?.earnedOn(LocalDate.now()),
+                        bankMinutes = d.learning?.bankMinutes,
+                        onEnabled = { v -> viewModel.edit { it.copy(learning = it.learning.copy(enabled = v)) } },
+                        onMinutesPerLevel = { v -> viewModel.edit { it.copy(learning = it.learning.copy(minutesPerLevel = v)) } },
+                        onDailyMax = { v -> viewModel.edit { it.copy(learning = it.learning.copy(dailyMaxMinutes = v)) } },
+                        onVoice = { pack -> viewModel.edit { it.copy(voices = it.voices + (pack.language to pack)) } },
+                    )
+                }
+            }
+            if (removingNow) {
+                LoadingRow(stringResource(R.string.device_removing))
+            } else {
+                NourDangerButton(stringResource(R.string.device_remove), { removing = true })
+            }
+            // Room to scroll the last button above the failure bar.
+            if (failure != null) Spacer(Modifier.height(96.dp))
         }
-        NourDangerButton(stringResource(R.string.device_remove), { removing = true })
+        // Pinned to the bottom: the change that failed may be anywhere on this long screen.
+        failure?.let { f ->
+            FailureBar(stringResource(f.message), viewModel::dismissFailure, Modifier.align(Alignment.BottomCenter))
+        }
     }
 
     confirm?.let { command ->
@@ -294,11 +358,34 @@ fun ChildDeviceScreen(
     val settings = device?.settings
     val kind = picking
     if (kind != null && settings != null) {
-        RemoteAppsDialog(kind, settings, apps, viewModel::icon, onToggle = { pkg, on ->
+        RemoteAppsDialog(kind, settings, apps, viewModel::icon, failure?.let { stringResource(it.message) }, onToggle = { pkg, on ->
             viewModel.edit { if (kind == AppListKind.LIMITED) it.withLimited(pkg, on) else it.withAllowed(pkg, on) }
         }, onClose = { picking = null })
     }
 }
+
+@Composable
+private fun FailureBar(text: String, onDismiss: () -> Unit, modifier: Modifier = Modifier) {
+    Surface(
+        modifier.safeDrawingPadding().padding(16.dp).fillMaxWidth(),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        shadowElevation = 6.dp,
+    ) {
+        Row(Modifier.padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Icon(Icons.Rounded.WarningAmber, contentDescription = null, tint = NourTheme.colors.danger, modifier = Modifier.size(20.dp))
+            Box(Modifier.weight(1f).padding(horizontal = 12.dp)) { ActionErrorText(text) }
+            NourTextButton(stringResource(R.string.action_dismiss), onDismiss)
+        }
+    }
+}
+
+private val DeviceActionFailure.message: Int
+    get() = when (this) {
+        DeviceActionFailure.SEND -> R.string.device_send_failed
+        DeviceActionFailure.SAVE -> R.string.device_save_failed
+        DeviceActionFailure.REMOVE -> R.string.device_remove_failed
+    }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -407,6 +494,7 @@ private fun RemoteAppsDialog(
     settings: RemoteSettings,
     apps: List<InstalledApp>,
     loadIcon: suspend (String) -> ImageBitmap?,
+    failure: String?,
     onToggle: (String, Boolean) -> Unit,
     onClose: () -> Unit,
 ) {
@@ -432,6 +520,7 @@ private fun RemoteAppsDialog(
                 }
                 AppSearchField(query, { query = it })
                 AppList(state = state, onCheckedChange = onToggle, loadIcon = loadIcon, modifier = Modifier.weight(1f))
+                failure?.let { ActionErrorText(it) }
                 NourPrimaryButton(stringResource(R.string.action_done), onClose)
             }
         }

@@ -57,10 +57,13 @@ import com.nourtime.app.feature.setup.durationText
 import com.nourtime.app.remote.model.AskPolicy
 import com.nourtime.app.remote.parent.ChildDevice
 import com.nourtime.app.remote.parent.DeviceSummary
+import com.nourtime.app.remote.parent.Load
 import com.nourtime.app.remote.parent.ParentAuth
 import com.nourtime.app.remote.parent.ParentDevices
 import com.nourtime.app.remote.parent.ParentUser
 import com.nourtime.app.remote.parent.SignInFailure
+import com.nourtime.app.remote.parent.loadWithRetry
+import com.nourtime.app.remote.parent.valueOrNull
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -68,7 +71,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
@@ -85,10 +87,16 @@ class ParentViewModel @Inject constructor(
 
     val user: StateFlow<ParentUser?> = auth.user
 
-    /** Null while loading or signed out. */
-    val devices: StateFlow<List<ChildDevice>?> = auth.user
-        .flatMapLatest { u -> if (u == null) flowOf(null) else remote.devices(u.uid).catch { emit(emptyList()) } }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+    private val retries = MutableStateFlow(0)
+
+    /** Loading while signed out; an error shows "couldn't load" with a retry, never "no phones yet". */
+    val devices: StateFlow<Load<List<ChildDevice>>> = auth.user
+        .flatMapLatest { u -> if (u == null) flowOf(Load.Loading) else loadWithRetry(retries) { remote.devices(u.uid) } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), Load.Loading)
+
+    fun retryDevices() {
+        retries.value++
+    }
 
     private val _selected = MutableStateFlow<String?>(null)
     val selected: StateFlow<String?> = _selected.asStateFlow()
@@ -150,7 +158,7 @@ fun ParentRoute(onBackToModeChoice: () -> Unit, viewModel: ParentViewModel = hil
     val devices by viewModel.devices.collectAsStateWithLifecycle()
     // The open phone left the list: the child disconnected it (or deleted its data), or it was removed.
     LaunchedEffect(selected, devices) {
-        val list = devices ?: return@LaunchedEffect
+        val list = devices.valueOrNull() ?: return@LaunchedEffect
         if (selected != null && list.none { it.id == selected }) viewModel.open(null)
     }
     val current = user
@@ -232,12 +240,17 @@ private fun ParentHomeScreen(user: ParentUser, viewModel: ParentViewModel) {
             )
             NourTextButton(stringResource(R.string.parent_sign_out), viewModel::signOut)
         }
-        val list = devices
-        if (list != null && list.isEmpty()) {
-            Text(stringResource(R.string.parent_no_children), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-        list.orEmpty().forEach { device ->
-            DeviceCard(device, now) { viewModel.open(device.id) }
+        when (val list = devices) {
+            Load.Loading -> LoadingRow(stringResource(R.string.parent_loading_phones))
+            Load.Failed -> LoadFailedCard(stringResource(R.string.parent_load_failed), viewModel::retryDevices)
+            is Load.Ready -> {
+                if (list.value.isEmpty()) {
+                    Text(stringResource(R.string.parent_no_children), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                list.value.forEach { device ->
+                    DeviceCard(device, now) { viewModel.open(device.id) }
+                }
+            }
         }
         NourPrimaryButton(stringResource(R.string.parent_add_child), { adding = true })
         LanguageCard()
