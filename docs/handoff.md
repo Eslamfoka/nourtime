@@ -1537,4 +1537,10 @@ prices, Play audience, warnings before time is up) on hold and asked for these f
 paired child phone with the Firebase emulators). Emulator user 0 is now **in a lock period** (Chrome
 used the budget during the flash test); end it from Home with the PIN or wait.
 
+**APK for the owner's phone:** `dist/NourTime-2026-10-13-security-fixes-release.apk` (13.8 MB, minified,
+real Firebase project, signed with the same debug key SHA-1 `cad6d508…` as the earlier APKs, so
+`adb install -r` keeps the data). Smoke-tested on the emulator (no crash, protection running, timer state
+kept). Built with `assembleRelease`, then `zipalign -p 4` and `apksigner sign` with
+`~/.android/debug.keystore` (alias `androiddebugkey`, password `android`).
+
 Owner decisions on hold: Blaze + push + remote PIN reset, prices, Play audience, warnings before time is up.
