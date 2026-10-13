@@ -73,6 +73,7 @@ import com.nourtime.app.feature.setup.AppsUiState
 import com.nourtime.app.feature.setup.TimeBudgetEditor
 import com.nourtime.app.feature.setup.durationText
 import com.nourtime.app.feature.setup.timepicker.TimePickerStyleSetting
+import com.nourtime.app.data.protection.ProtectionAlert
 import com.nourtime.app.remote.model.AskPolicy
 import com.nourtime.app.remote.model.AskState
 import com.nourtime.app.remote.model.RemoteSettings
@@ -278,7 +279,8 @@ fun ChildDeviceScreen(
                         Text(stringResource(R.string.parent_protection_warning), style = MaterialTheme.typography.bodyMedium)
                     }
                 }
-                d.alerts.visible(now).forEach { alert ->
+                // Degraded protection already has its line above (from the status).
+                d.alerts.visible(now).filter { it != ProtectionAlert.PROTECTION_DEGRADED }.forEach { alert ->
                     Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         Icon(Icons.Rounded.WarningAmber, contentDescription = null, tint = NourTheme.colors.danger, modifier = Modifier.size(18.dp))
                         Text(stringResource(alert.message), style = MaterialTheme.typography.bodyMedium)

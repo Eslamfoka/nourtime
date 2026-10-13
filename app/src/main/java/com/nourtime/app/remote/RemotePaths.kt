@@ -7,6 +7,8 @@ object RemotePaths {
     const val USAGE = "usage"
     const val META = "meta"
     const val APPS_DOC = "apps"
+    /** The protection alerts, apart from the device document so the push functions run only on alert changes. */
+    const val ALERTS_DOC = "alerts"
     const val COMMANDS = "commands"
     const val REQUESTS = "requests"
 }

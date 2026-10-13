@@ -163,4 +163,5 @@ val ProtectionAlert.message: Int
         ProtectionAlert.OTHER_USER -> R.string.alert_other_user
         ProtectionAlert.NOTIFICATIONS_OFF -> R.string.alert_notifications_off
         ProtectionAlert.PIN_RESET -> R.string.alert_pin_reset
+        ProtectionAlert.PROTECTION_DEGRADED -> R.string.alert_protection_degraded
     }

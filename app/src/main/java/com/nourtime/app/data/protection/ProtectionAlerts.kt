@@ -1,7 +1,7 @@
 package com.nourtime.app.data.protection
 
 /** Ways protection was switched off that the parent should hear about (2026-10-12 audit). */
-enum class ProtectionAlert { USB_DEBUGGING, MISSED_RESTART, OTHER_USER, NOTIFICATIONS_OFF, PIN_RESET }
+enum class ProtectionAlert { USB_DEBUGGING, MISSED_RESTART, OTHER_USER, NOTIFICATIONS_OFF, PIN_RESET, PROTECTION_DEGRADED }
 
 /**
  * Uploaded to the parent's phone as `devices/{id}.alerts`. Times are wall-clock ms when the child's
@@ -20,12 +20,15 @@ data class ProtectionAlerts(
     val notificationsOff: Boolean = false,
     /** When the PIN from "Forgot PIN?" starts working (the parent can approve it sooner), or null. */
     val pinResetPendingUntilMs: Long? = null,
+    /** Detection is degraded (Accessibility off): limited apps are blocked, Settings may not be covered. */
+    val protectionDegraded: Boolean = false,
 ) {
     /** The waiting PIN's start time while it still waits, for the parent's "approve" card. */
     fun pendingPinReset(nowMs: Long): Long? = pinResetPendingUntilMs?.takeIf { it > nowMs }
 
     /** What to show now: USB debugging while it's on, events for a week. */
     fun visible(nowMs: Long): List<ProtectionAlert> = buildList {
+        if (protectionDegraded) add(ProtectionAlert.PROTECTION_DEGRADED)
         if (usbDebugging) add(ProtectionAlert.USB_DEBUGGING)
         if (notificationsOff) add(ProtectionAlert.NOTIFICATIONS_OFF)
         if (missedRestartAtMs.isRecent(nowMs)) add(ProtectionAlert.MISSED_RESTART)
@@ -40,6 +43,7 @@ data class ProtectionAlerts(
         "pinResetAt" to pinResetAtMs,
         "notificationsOff" to notificationsOff,
         "pinResetPendingUntil" to pinResetPendingUntilMs,
+        "protectionDegraded" to protectionDegraded,
     )
 
     companion object {
@@ -54,6 +58,7 @@ data class ProtectionAlerts(
                 pinResetAtMs = (m["pinResetAt"] as? Number)?.toLong(),
                 notificationsOff = m["notificationsOff"] as? Boolean ?: false,
                 pinResetPendingUntilMs = (m["pinResetPendingUntil"] as? Number)?.toLong(),
+                protectionDegraded = m["protectionDegraded"] as? Boolean ?: false,
             )
         }
 

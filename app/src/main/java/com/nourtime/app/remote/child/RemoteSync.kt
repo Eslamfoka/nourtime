@@ -293,10 +293,23 @@ class RemoteSync @Inject constructor(
     }
 
     /** Ways protection was off or can be turned off, so the parent hears about them. */
+    /**
+     * In their own small document (`meta/alerts`): the push functions run only when an alert changes, not
+     * on every status upload. With the waiting PIN reset (the parent's phone can approve it) and degraded
+     * protection.
+     */
     private suspend fun uploadAlerts(device: DocumentReference) {
-        // With the waiting PIN reset, so the parent's phone can approve it.
-        combine(protectionAlerts.alerts, security.pendingPinActiveAt) { alerts, pending -> alerts.copy(pinResetPendingUntilMs = pending) }
-            .collect { device.update("alerts", it.toMap()).logIfFailed(TAG, "alerts") }
+        combine(
+            protectionAlerts.alerts,
+            security.pendingPinActiveAt,
+            engine.status.filterNotNull().map { it.protectionDegraded }.distinctUntilChanged(),
+        ) { alerts, pending, degraded -> alerts.copy(pinResetPendingUntilMs = pending, protectionDegraded = degraded) }
+            .distinctUntilChanged()
+            .collect {
+                device.collection(RemotePaths.META).document(RemotePaths.ALERTS_DOC)
+                    .set(it.toMap() + ("updatedAt" to FieldValue.serverTimestamp()))
+                    .logIfFailed(TAG, "alerts")
+            }
     }
 
     /** The launchable apps, so the parent can choose limited and allowed apps remotely. */

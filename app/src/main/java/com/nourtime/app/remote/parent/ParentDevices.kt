@@ -29,7 +29,9 @@ import com.nourtime.app.remote.model.remoteCommandOf
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withTimeoutOrNull
@@ -86,7 +88,12 @@ class ParentDevices @Inject constructor(
      * Null once the server says the phone is gone; a phone missing only from the offline cache isn't
      * sent (metadata changes included, as in [devices]).
      */
-    fun device(id: String): Flow<ChildDevice?> = callbackFlow {
+    fun device(id: String): Flow<ChildDevice?> = combine(deviceDoc(id), alertsDoc(id)) { device, alerts ->
+        // Child phones from before meta/alerts still keep their alerts in the device document.
+        if (device != null && alerts != null) device.copy(alerts = alerts) else device
+    }
+
+    private fun deviceDoc(id: String): Flow<ChildDevice?> = callbackFlow {
         val registration = devices.document(id).addSnapshotListener(MetadataChanges.INCLUDE) { snap, error ->
             when {
                 error != null -> close(error)
@@ -96,6 +103,19 @@ class ParentDevices @Inject constructor(
         }
         awaitClose { registration.remove() }
     }
+
+    /** `meta/alerts`, or null while unknown, missing, or unreadable (the device document's alerts are used then). */
+    private fun alertsDoc(id: String): Flow<ProtectionAlerts?> = callbackFlow {
+        val registration = devices.document(id).collection(RemotePaths.META).document(RemotePaths.ALERTS_DOC)
+            .addSnapshotListener(MetadataChanges.INCLUDE) { snap, error ->
+                when {
+                    error != null -> close(error)
+                    snap == null || snap.cacheOnlyMissing() -> Unit
+                    else -> trySend(snap.takeIf { it.exists() }?.data?.let(ProtectionAlerts::fromMap))
+                }
+            }
+        awaitClose { registration.remove() }
+    }.onStart { emit(null) }.catch { emit(null) }
 
     /**
      * Claims [code], calls [onClaimed] once the server has the claim, then waits (up to

@@ -70,6 +70,13 @@ class ProtectionAlertsTest {
     }
 
     @Test
+    fun `degraded protection reaches the parent's phone and is shown`() {
+        val a = ProtectionAlerts(protectionDegraded = true)
+        assertEquals(a, ProtectionAlerts.fromMap(a.toMap()))
+        assertEquals(listOf(ProtectionAlert.PROTECTION_DEGRADED), a.visible(nowMs = 0))
+    }
+
+    @Test
     fun `a phone that never uploaded alerts has none`() {
         assertEquals(ProtectionAlerts(), ProtectionAlerts.fromMap(null))
     }
