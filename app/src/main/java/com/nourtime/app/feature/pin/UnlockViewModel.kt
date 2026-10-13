@@ -54,13 +54,13 @@ class UnlockViewModel @Inject constructor(
 
     fun startRecovery() {
         _askAnswer.value = false
-        // The security answer was just checked, so this also covers the lock period's second step.
+        // Ends on "your new PIN works from …" (the Done button cancels the flow): nothing opens now.
         _recovery.value = PinRecoveryController(
             viewModelScope,
             security,
             clock,
             onPinReset = { alerts.recordPinReset(System.currentTimeMillis()) },
-        ) { unlock() }
+        )
     }
 
     fun cancelRecovery() {

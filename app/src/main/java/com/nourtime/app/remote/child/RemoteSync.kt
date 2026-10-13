@@ -44,6 +44,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import com.nourtime.app.core.timer.TimerCommand
+import com.nourtime.app.data.security.SecurityRepository
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -79,6 +81,7 @@ class RemoteSync @Inject constructor(
     private val clock: DeviceClock,
     private val pairing: ChildPairing,
     private val timeRequests: TimeRequests,
+    private val security: SecurityRepository,
 ) {
     suspend fun run() {
         identity.pairedOwner.collectLatest { owner ->
@@ -207,7 +210,7 @@ class RemoteSync @Inject constructor(
                     applied = CommandQueue.remember(applied, listOf(id))
                     store.edit { it[APPLIED_COMMANDS] = applied.joinToString(",") }
                 },
-                apply = { engine.apply(it) },
+                apply = { if (it == TimerCommand.ApprovePinReset) security.approvePendingPin() else engine.apply(it) },
             )
             for (c in due) {
                 Log.i(TAG, "command ${c.id}: ${c.command ?: "ignored"}")
@@ -291,7 +294,9 @@ class RemoteSync @Inject constructor(
 
     /** Ways protection was off or can be turned off, so the parent hears about them. */
     private suspend fun uploadAlerts(device: DocumentReference) {
-        protectionAlerts.alerts.collect { device.update("alerts", it.toMap()).logIfFailed(TAG, "alerts") }
+        // With the waiting PIN reset, so the parent's phone can approve it.
+        combine(protectionAlerts.alerts, security.pendingPinActiveAt) { alerts, pending -> alerts.copy(pinResetPendingUntilMs = pending) }
+            .collect { device.update("alerts", it.toMap()).logIfFailed(TAG, "alerts") }
     }
 
     /** The launchable apps, so the parent can choose limited and allowed apps remotely. */

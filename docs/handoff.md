@@ -3,7 +3,12 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (2026-10-13, evening):** the audit's lock fixes (picture in picture during calls, missed
+> **Resume here (2026-10-13, night):** the second fresh audit's items 1–4 are done (PIN reset waits 24 h
+> or the parent's approval, answer guesses limited, uninterruptible/fail-closed timer saves, small fixes,
+> docs), see [§23](#23-2026-10-13-night-second-fresh-audit-action-14). **Owner:** deploy the changed
+> `firebase/firestore.rules`; decide on the Phone permission for call state. Business decisions on hold.
+
+> **Earlier (2026-10-13, evening):** the audit's lock fixes (picture in picture during calls, missed
 > screen broadcasts, timer service restart) and the flash-wear fix (timer state in its own file) are
 > done, see [§22](#22-2026-10-13-later-fresh-audit-lock-fixes-and-flash-wear-action-1). Loading/error
 > states on the parent's phone: [§21](#21-2026-10-13-loading-and-error-states-on-the-parents-phone-fresh-audit-2).
@@ -38,7 +43,8 @@ and the file map are in the [`README`](../README.md).
 ## 1. Architecture at a glance
 
 Single `:app` module · Kotlin · Jetpack Compose + Material 3 · Hilt · MVVM · DataStore + Room ·
-minSdk 26, targetSdk 35 · Arabic (RTL) + English · no network access.
+minSdk 26, targetSdk 36 · Arabic (RTL) + English · network only for the optional parent's phone
+(Firebase Auth + Firestore, started only once paired) and Crashlytics on connected phones.
 
 ```
              ┌────────────────────────── one app process ───────────────────────────┐
@@ -72,11 +78,11 @@ minSdk 26, targetSdk 35 · Arabic (RTL) + English · no network access.
 | Blocking | `core/blocking/BlockPolicy.kt` (pure), `ParentPass.kt`, `ScreenOffTimer.kt` (pure), `service/blocking/BlockCoordinator.kt`, `LockOverlay.kt` | What to cover, when, and the overlay window. |
 | Trusted time | `core/time/TrustedClock.kt` (`TrustedTime` is pure) | Wall time that manual clock changes can't move. |
 | Security | `core/security/*`, `data/security/SecurityRepository.kt` | PIN/answer hashing, lockout, PIN creation state machine, parent session. |
-| Storage | `data/*`, `di/AppModule.kt` | DataStore `nour_prefs` (settings, hashes, timer state, trusted-time anchor); Room `nour.db` (schedule, daily usage). |
+| Storage | `data/*`, `di/AppModule.kt` | DataStore `nour_prefs` (settings, hashes; backed up to `nour_prefs_backup`), `nour_timer` (timer state, trusted-time anchor; §22); Room `nour.db` (schedule, daily usage). |
 | Child UI | `feature/lock/*` | Templates, "Time's up" screen, parent PIN/answer panels inside the overlay. |
 | Parent UI | `feature/onboarding`, `home`, `setup`, `schedule`, `pin` | Onboarding, tabs, settings, unlock. |
 
-Pure logic has unit tests (`app/src/test`, 107+ tests): `TimeRules`, `ForegroundRules`,
+Pure logic has unit tests (`app/src/test`, 530+ tests as of 2026-10-13): `TimeRules`, `ForegroundRules`,
 `BlockPolicy`, `ScreenOffTimer`, `TrustedTime`, `PinAttemptPolicy`, `PinCreation`, answer
 normalization, schedule, templates, and the repositories (DataStore in a temp folder).
 
@@ -1544,3 +1550,45 @@ kept). Built with `assembleRelease`, then `zipalign -p 4` and `apksigner sign` w
 `~/.android/debug.keystore` (alias `androiddebugkey`, password `android`).
 
 Owner decisions on hold: Blaze + push + remote PIN reset, prices, Play audience, warnings before time is up.
+
+## 23. 2026-10-13 (night): second fresh audit, Action #1–4
+
+Second `/advise` fresh audit: **SHIP AFTER FIXES** (to a closed test); the Investor refused again
+(Saudi parenting apps peak at about $1K/week each, MEA trial-to-paid about 20–23%: consumer sales alone
+won't pay back; partners — e&, NTRA "اطمن", schools — are the route). The owner kept the business
+decisions on hold and asked for items 1–4 of the plan:
+
+1. **H1, the security answer was a master key** (`SecurityRepository`, `AnswerAttemptPolicy`,
+   `PinRecoveryController`):
+   - Answers: 3 free wrong tries, then **24 h per further wrong answer** (separate from the PIN's
+     4 free / 30 s → 1 h). This also applies to the answer asked during lock periods.
+   - "Forgot PIN?" no longer opens anything: the new PIN is **pending for 24 h** (trusted wall clock,
+     `pin_pending_hash` / `pin_pending_active_at`). Typing it early says when it starts working (not
+     counted as a wrong PIN). The current PIN keeps working, and using it, or changing the PIN
+     normally, cancels the reset.
+   - **Approval from the parent's phone:** new command `APPROVE_PIN_RESET` (`TimerCommand.ApprovePinReset`,
+     applied by `RemoteSync` through `security.approvePendingPin()`); the child's phone uploads
+     `alerts.pinResetPendingUntil`; the parent's screen shows a "A new PIN is waiting" card with
+     "Approve the new PIN". **`firestore.rules` changed: deploy to `nourtime-8d4ce` (owner) before the
+     approval can work on the real project**; until then sending it fails with the "Couldn't send" bar.
+   - Emulator (user 0): Forgot PIN → answer → new PIN twice → "New PIN saved, starts working on Wed,
+     Oct 14, 9:18 PM" (nothing opened) → the new PIN refused with that time → the current PIN accepted
+     and the pending reset gone from the file. The approval path is unit- and rules-tested only (no
+     paired phones on the emulator).
+2. **Timer save** (`TimeEngine`): `save` and `flushUsage` run `NonCancellable`; usage leaves the
+   pending list only once written. A damaged `nour_timer` now leaves `timer_damaged`, and with no saved
+   state the engine **starts a full lock period** (fail closed) instead of a fresh budget.
+3. **Small fixes:** error text uses `colorScheme.error` (deep coral on light screens; light coral on
+   dark); remote-sync startup inside `resilient`; **ringing** bounded by `RingingGrace` (a ring uncovers
+   the screen for at most 60 s, rings at most 3 min per 30 min); **Transsion** (Tecno, Infinix, itel —
+   matched by prefix, e.g. "INFINIX MOBILITY LIMITED") in `OemAutostart` with Phone Master's auto-start
+   screen and written steps.
+   - **Not done, needs the owner:** ringing from the real call state needs the Phone permission
+     (`READ_PHONE_STATE`, runtime) on Android 12+, a new setup step and Data-safety entry; VoIP calls
+     (WhatsApp) don't appear in it anyway. The time bound above is the permission-free mitigation.
+4. **Docs:** store listing (no "can't be switched off" overpromise; the 24 h PIN reset); privacy policy
+   (EN/AR), Play declarations and account deletion (EN/AR) list every alert and what is deleted;
+   README (Spark/Blaze, docs list); `progress.md` contradictions; `brief-with-status.md` and
+   `status-2026-10-05.md` marked as snapshots; this file's §1.
+
+539 unit tests, 50 Firestore rules tests, lint clean.

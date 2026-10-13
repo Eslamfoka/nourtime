@@ -13,12 +13,15 @@ import com.nourtime.app.core.time.WallClock
 import com.nourtime.app.data.settings.DayRules
 import com.nourtime.app.data.settings.ParentSettings
 import com.nourtime.app.data.usage.UsageSink
+import android.util.Log
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.LocalTime
 import javax.inject.Inject
@@ -84,7 +87,7 @@ class TimeEngine @Inject constructor(
         val limits = DayRules.limitsOn(settings, wall.toLocalDate())
         val budgetMs = limits.budgetMinutes * MINUTE
         val lockMs = limits.lockPeriodHours * HOUR
-        val previous = state ?: load() ?: TimerState.fresh(budgetMs, lockMs, now, boot)
+        val previous = state ?: load() ?: startState(budgetMs, lockMs, now, boot)
 
         val resetAt = settings.dailyResetMinute?.let { LocalTime.of(it / 60, it % 60) }
         var next = TimeRules.advance(previous, now, boot, lastInUse)
@@ -106,7 +109,20 @@ class TimeEngine @Inject constructor(
     }
 
     /** True while the lock period runs; falls back to the saved state before the first update. */
-    suspend fun isLocked(): Boolean = mutex.withLock { (state ?: load())?.phase == TimerPhase.LOCKED }
+    suspend fun isLocked(): Boolean = mutex.withLock {
+        val current = state ?: load()
+        if (current == null) damaged() else current.phase == TimerPhase.LOCKED
+    }
+
+    /** No saved state: a fresh budget, or a lock period if the timekeeping file was damaged (fail closed). */
+    private suspend fun startState(budgetMs: Long, lockMs: Long, now: Long, boot: Int): TimerState {
+        val fresh = TimerState.fresh(budgetMs, lockMs, now, boot)
+        if (!damaged()) return fresh
+        runCatching { Log.w(TAG, "timekeeping file was damaged; starting a lock period") }
+        return TimeRules.apply(fresh, TimerCommand.LockNow)
+    }
+
+    private suspend fun damaged(): Boolean = store.data.first()[TimekeepingMigration.DAMAGED] == true
 
     /** Applies a command from the parent's phone (or the debug tools on Home) and saves it at once. */
     suspend fun apply(command: TimerCommand) = change { TimeRules.apply(it, command) }
@@ -143,11 +159,12 @@ class TimeEngine @Inject constructor(
         if (used > 0) pendingUsage[app] = (pendingUsage[app] ?: 0) + used
     }
 
-    private suspend fun flushUsage(day: LocalDate) {
-        if (pendingUsage.isEmpty()) return
-        val batch = pendingUsage.toMap()
-        pendingUsage.clear()
-        batch.forEach { (pkg, ms) -> usage.add(day, pkg, ms) }
+    /** Each app's time leaves the pending list only once it is written; a failed write is retried next save. */
+    private suspend fun flushUsage(day: LocalDate) = withContext(NonCancellable) {
+        for ((pkg, ms) in pendingUsage.toMap()) {
+            usage.add(day, pkg, ms)
+            pendingUsage.remove(pkg)
+        }
     }
 
     private suspend fun load(): TimerState? {
@@ -168,7 +185,11 @@ class TimeEngine @Inject constructor(
         )
     }
 
-    private suspend fun save(s: TimerState) {
+    /**
+     * Not cancellable: the timer service restarts [update] on every screen change, and a save cut short
+     * after the new state was already taken over in memory (a lock that just began) was never retried.
+     */
+    private suspend fun save(s: TimerState) = withContext(NonCancellable) {
         store.edit { it.write(s) }
     }
 
@@ -184,9 +205,11 @@ class TimeEngine @Inject constructor(
         this[SINCE_RESET] = s.sinceResetMs
         this[BONUS] = s.bonusMs
         this[LOCK_PENDING] = s.lockPendingMs
+        remove(TimekeepingMigration.DAMAGED)
     }
 
     private companion object {
+        const val TAG = "TimeEngine"
         const val MINUTE = 60_000L
         const val HOUR = 60 * MINUTE
 

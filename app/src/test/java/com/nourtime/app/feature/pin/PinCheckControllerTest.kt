@@ -3,6 +3,10 @@ package com.nourtime.app.feature.pin
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import com.nourtime.app.core.security.SecretHasher
 import com.nourtime.app.core.time.DeviceClock
+import com.nourtime.app.core.time.WallClock
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import com.nourtime.app.data.security.SecurityRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +36,8 @@ class PinCheckControllerTest {
     private val io = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val security by lazy {
         val store = PreferenceDataStoreFactory.create(scope = io) { tmp.newFile("c.preferences_pb") }
-        SecurityRepository(store, SecretHasher(iterations = 1_000), FakeClock())
+        val wall = WallClock { ZonedDateTime.ofInstant(Instant.ofEpochMilli(1_800_000_000_000L), ZoneOffset.UTC) }
+        SecurityRepository(store, SecretHasher(iterations = 1_000), FakeClock(), wall)
     }
 
     @Volatile private var opened = false

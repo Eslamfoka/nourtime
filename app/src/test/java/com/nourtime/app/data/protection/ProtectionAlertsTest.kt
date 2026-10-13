@@ -61,6 +61,15 @@ class ProtectionAlertsTest {
     }
 
     @Test
+    fun `a waiting PIN reset reaches the parent's phone and counts until it starts working`() {
+        val a = ProtectionAlerts(pinResetAtMs = 10 * day, pinResetPendingUntilMs = 11 * day)
+        assertEquals(a, ProtectionAlerts.fromMap(a.toMap()))
+        assertEquals(11 * day, a.pendingPinReset(nowMs = 10 * day + 1))
+        assertEquals(null, a.pendingPinReset(nowMs = 11 * day))
+        assertEquals(null, ProtectionAlerts().pendingPinReset(nowMs = 0))
+    }
+
+    @Test
     fun `a phone that never uploaded alerts has none`() {
         assertEquals(ProtectionAlerts(), ProtectionAlerts.fromMap(null))
     }

@@ -17,7 +17,10 @@ from our servers. Uninstalling from Settings → *Uninstall Nour Time* does the 
 confirm by email.
 
 What is deleted: the parent's account (name, email), commands, and for each connected phone its
-status, usage minutes, app list, settings and anonymous account. Nothing is kept afterwards. Data that
+status, usage minutes, app list, settings, protection alerts, Learning Hub minutes, "ask for more
+time" requests and anonymous account. Nothing is kept afterwards. Crash reports are not linked to the
+account or the child, so they can't be looked up by account; Firebase Crashlytics deletes them on its
+own. Data that
 never left the phone (PIN, security answer, the child's details) is removed by uninstalling the app.
 
 ## العربية
@@ -33,5 +36,7 @@ never left the phone (PIN, security answer, the child's details) is removed by u
 في وقت نور». نحذف الحساب وكل الهواتف المرتبطة به خلال 30 يومًا ونؤكد ذلك بالبريد.
 
 ما يُحذف: حساب ولي الأمر (الاسم والبريد) والأوامر، ولكل هاتف مرتبط: حالته ودقائق الاستخدام وقائمة
-التطبيقات والإعدادات وحسابه المجهول. لا يبقى شيء بعد ذلك. أما ما لم يغادر الهاتف أصلًا (الرقم السري
+التطبيقات والإعدادات وتنبيهات الحماية ودقائق ركن التعلّم وطلبات «أريد وقتًا إضافيًا» وحسابه المجهول. لا يبقى
+شيء بعد ذلك. تقارير الأعطال غير مرتبطة بالحساب ولا بالطفل، فلا يمكن البحث عنها بالحساب، ويحذفها Firebase
+Crashlytics تلقائيًا. أما ما لم يغادر الهاتف أصلًا (الرقم السري
 وإجابة سؤال الأمان وبيانات الطفل) فيُحذف بإزالة التطبيق.

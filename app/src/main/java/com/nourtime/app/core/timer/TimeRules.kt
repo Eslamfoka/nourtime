@@ -146,6 +146,7 @@ object TimeRules {
         }
         TimerCommand.LockNow -> if (state.phase == TimerPhase.AVAILABLE) startLock(state.copy(lockPendingMs = 0)) else state
         TimerCommand.EndLock -> if (state.phase == TimerPhase.LOCKED || state.lockPendingMs > 0) refill(state) else state
+        TimerCommand.ApprovePinReset -> state
     }
 
     /**

@@ -34,4 +34,11 @@ class OemAutostartTest {
         assertEquals(OemBrand.ONEPLUS, OemAutostart.brand("OnePlus"))
         assertNull(OemAutostart.brand("Google"))
     }
+
+    @Test
+    fun `Transsion phones (Tecno, Infinix, itel) get Phone Master's instructions, however the maker is written`() {
+        listOf("TECNO", "TECNO MOBILE LIMITED", "Infinix", "INFINIX MOBILITY LIMITED", "itel", "ITEL").forEach {
+            assertEquals(it, OemBrand.TRANSSION, OemAutostart.brand(it))
+        }
+    }
 }

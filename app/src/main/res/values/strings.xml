@@ -42,10 +42,17 @@
     <string name="pin_unlock_title">Enter parent PIN</string>
     <string name="pin_unlock_body">Settings are for parents only.</string>
     <string name="pin_forgot">Forgot PIN?</string>
-    <string name="pin_recovery_body">Answer your security question to choose a new PIN.</string>
+    <string name="pin_recovery_body">Answer your security question to choose a new PIN. It starts working after 24 hours, or sooner if approved on the parent\'s phone.</string>
     <string name="pin_recovery_new_title">Choose a new PIN</string>
     <string name="pin_wrong">Wrong PIN</string>
     <string name="pin_wrong_attempts_left">Wrong PIN. Attempts left before a wait: %1$d</string>
+    <string name="pin_pending_not_yet">That\'s the new PIN. It starts working on %1$s. Until then, use the current PIN.</string>
+    <string name="pin_reset_saved_title">New PIN saved</string>
+    <string name="pin_reset_saved_body">It starts working on %1$s, or as soon as it\'s approved on the parent\'s phone. Until then the current PIN still works, and using it cancels this change.</string>
+    <string name="device_pin_reset_title">A new PIN is waiting</string>
+    <string name="device_pin_reset_body">Someone chose a new PIN on your child\'s phone using the security question. It starts working on %1$s. If it wasn\'t you, do nothing: unlocking your child\'s phone with the current PIN cancels it.</string>
+    <string name="device_pin_reset_approve">Approve the new PIN</string>
+    <string name="device_pin_reset_approve_body">The new PIN will work on your child\'s phone straight away.</string>
     <string name="pin_locked_out">Too many attempts. Try again in %1$s</string>
     <string name="pin_delete">Delete</string>
 
@@ -112,6 +119,7 @@
     <string name="autostart_title_samsung">Keep Nour Time awake</string>
     <string name="autostart_why_samsung">Samsung phones put apps they think are unused to sleep. Keep Nour Time awake so protection keeps running.</string>
     <string name="autostart_how_samsung">In Battery → Background usage limits, make sure Nour Time isn\'t in \"Sleeping apps\" or \"Deep sleeping apps\", and add it to \"Never sleeping apps\".</string>
+    <string name="autostart_how_transsion">In Phone Master (or Settings → Apps → Auto-start management), turn on Auto-start for Nour Time. Then in Settings → Battery → App battery management (or Power saving), set Nour Time to \"No restrictions\".</string>
     <string name="autostart_done">I\'ve turned it on</string>
     <string name="test_title">Let’s check it works</string>
     <string name="test_body">Open one of the apps you limited. When Nour Time sees it, it brings you back here by itself.</string>

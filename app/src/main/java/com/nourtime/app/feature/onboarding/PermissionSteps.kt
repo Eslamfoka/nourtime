@@ -116,6 +116,7 @@ fun AutostartStep(
                     OemBrand.HONOR_HUAWEI -> R.string.autostart_how_honor_huawei
                     OemBrand.ONEPLUS -> R.string.autostart_how_oneplus
                     OemBrand.SAMSUNG -> R.string.autostart_how_samsung
+                    OemBrand.TRANSSION -> R.string.autostart_how_transsion
                     null -> R.string.autostart_how
                 },
             ),

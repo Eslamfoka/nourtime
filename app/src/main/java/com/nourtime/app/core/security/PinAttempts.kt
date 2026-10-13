@@ -12,22 +12,34 @@ data class PinAttemptState(
 )
 
 /** Escalating delay after repeated wrong PINs. */
-object PinAttemptPolicy {
-    const val FREE_ATTEMPTS = 4
-
-    private val delaysMs = longArrayOf(
+object PinAttemptPolicy : AttemptPolicy(
+    freeAttempts = 4,
+    delaysMs = longArrayOf(
         30_000L,        // 5th wrong PIN
         60_000L,        // 6th
         5 * 60_000L,    // 7th
         15 * 60_000L,   // 8th
         30 * 60_000L,   // 9th
         60 * 60_000L,   // 10th and after
-    )
+    ),
+)
+
+/**
+ * The security answer sets a new PIN ("Forgot PIN?"), and the child may know the family well enough
+ * to guess it: three wrong answers, then a whole day for each further one (2026-10-13 audit, H1).
+ */
+object AnswerAttemptPolicy : AttemptPolicy(
+    freeAttempts = 3,
+    delaysMs = longArrayOf(24 * 60 * 60_000L),
+)
+
+/** A number of free wrong attempts, then a delay per further one (the last delay repeats). */
+open class AttemptPolicy(private val freeAttempts: Int, private val delaysMs: LongArray) {
 
     fun lockoutFor(failures: Int): Long =
-        if (failures <= FREE_ATTEMPTS) 0 else delaysMs[minOf(failures - FREE_ATTEMPTS - 1, delaysMs.lastIndex)]
+        if (failures <= freeAttempts) 0 else delaysMs[minOf(failures - freeAttempts - 1, delaysMs.lastIndex)]
 
-    fun attemptsBeforeLockout(failures: Int): Int = maxOf(FREE_ATTEMPTS - failures, 0)
+    fun attemptsBeforeLockout(failures: Int): Int = maxOf(freeAttempts - failures, 0)
 
     /**
      * After a reboot the stored elapsed deadline is meaningless, so an active lockout restarts in full.

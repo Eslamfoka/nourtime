@@ -1,5 +1,6 @@
 package com.nourtime.app.feature.pin
 
+import android.text.format.DateUtils
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -79,7 +81,18 @@ fun UnlockRoute(viewModel: UnlockViewModel = hiltViewModel()) {
     }
 }
 
-/** "Forgot PIN?": the security question, then a new PIN twice. */
+/** When a new PIN from "Forgot PIN?" starts working, e.g. "Tue 14 Oct, 18:05". */
+@Composable
+internal fun pinResetTime(atMs: Long): String = DateUtils.formatDateTime(
+    LocalContext.current,
+    atMs,
+    DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_ABBREV_ALL,
+)
+
+/**
+ * "Forgot PIN?": the security question, then a new PIN twice. The new PIN waits a day (or the parent's
+ * phone's approval), so the flow ends on that message instead of opening the settings.
+ */
 @Composable
 private fun PinRecoveryPanel(flow: PinRecoveryController, onCancel: () -> Unit) {
     val stage by flow.stage.collectAsStateWithLifecycle()
@@ -96,7 +109,25 @@ private fun PinRecoveryPanel(flow: PinRecoveryController, onCancel: () -> Unit) 
                 body = stringResource(R.string.pin_recovery_body),
             )
         }
-        PinRecoveryStage.NEW_PIN, PinRecoveryStage.DONE -> {
+        PinRecoveryStage.DONE -> {
+            val activeAt by flow.activeAt.collectAsStateWithLifecycle()
+            Column(
+                Modifier.fillMaxWidth().padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                NourStar(Modifier.size(72.dp), pose = NourPose.CLOCK, animated = false)
+                Text(stringResource(R.string.pin_reset_saved_title), style = MaterialTheme.typography.headlineSmall, textAlign = TextAlign.Center)
+                Text(
+                    stringResource(R.string.pin_reset_saved_body, activeAt?.let { pinResetTime(it) }.orEmpty()),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                )
+                NourPrimaryButton(stringResource(R.string.action_done), onCancel)
+            }
+        }
+        PinRecoveryStage.NEW_PIN -> {
             val pin by flow.pin.collectAsStateWithLifecycle()
             val confirming = pin.stage == PinCreationState.Stage.CONFIRM
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -131,8 +162,10 @@ fun PinPanel(
     onForgot: (() -> Unit)? = null,
 ) {
     val attemptsLeft = state.attemptsLeft
+    val pendingAt = state.notYetActiveAtMs
     val message = when {
         state.lockoutRemainingMs > 0 -> stringResource(R.string.pin_locked_out, formatCountdown(state.lockoutRemainingMs))
+        pendingAt != null -> stringResource(R.string.pin_pending_not_yet, pinResetTime(pendingAt))
         attemptsLeft == null -> null
         attemptsLeft > 0 -> stringResource(R.string.pin_wrong_attempts_left, attemptsLeft)
         else -> stringResource(R.string.pin_wrong)

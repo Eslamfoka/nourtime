@@ -80,7 +80,8 @@ On the parent's phone, "Use a test account (emulator)" signs in without a real G
 8. Release builds now build and use it. To run a **debug** build against the real project, delete
    `app/src/debug/google-services.json` and build with `./gradlew assembleDebug -Pnourtime.firebaseEmulator=false`.
 
-The free Spark plan is enough to start (no Cloud Functions are used).
+The free Spark plan is enough today (no Cloud Functions are used). Push notifications to the parent's
+phone would need the Blaze plan; that decision is on hold (see `docs/handoff.md`).
 
 ## How it works
 
@@ -106,3 +107,7 @@ and English. Fonts (Cairo, Nunito) are bundled; licences in `licenses/`.
 - [`docs/testing-checklist.md`](docs/testing-checklist.md): device and tampering tests (implementation step 8)
 - [`docs/play-compliance.md`](docs/play-compliance.md): permission justifications and Play declarations (draft)
 - [`docs/privacy-policy.md`](docs/privacy-policy.md): privacy policy (draft)
+- [`docs/account-deletion.md`](docs/account-deletion.md): account-deletion page (draft)
+- [`docs/store-listing.md`](docs/store-listing.md): Play store listing (draft)
+- [`docs/content-packs.md`](docs/content-packs.md): Learning Hub content packs and voices
+- [`docs/brief-with-status.md`](docs/brief-with-status.md): the brief with status (snapshot of 2026-09-27)

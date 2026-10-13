@@ -1,5 +1,9 @@
 # Nour Time: progress against the brief
 
+> **2026-10-13:** this file was last fully updated on 2026-10-06. Everything since (committee audits,
+> lock fixes, the parent's phone's loading/error states, the PIN-reset wait, flash wear) is in
+> [`handoff.md`](handoff.md) §20–23, which is the current status.
+
 Status as of 2026-10-06 (resume point: the "Resume here" block at the top of [`handoff.md`](handoff.md); next: the
 [roadmap](#roadmap-next-sessions-in-order) and [`handoff.md` §18](handoff.md#18-roadmap-for-the-next-sessions-in-order)). A copy of the brief with the status of every requirement, plus Phase 4, is in
 [`brief-with-status.md`](brief-with-status.md). Legend: ✅ done · 🟡 done with a noted difference · ⏳ pending.
@@ -30,7 +34,7 @@ tests. Next session starts from the "Resume here" block at the top of `handoff.m
 Phase 1 is feature-complete on the emulator (Android 12 and 15). What's left is testing on real
 phones, recorded audio, release plumbing, Phase 1.5 (below) and Phase 2.
 
-**2026-09-30:** the **Learning Hub** is built on branch `learning-hub` (not merged): four games
+**2026-09-30:** the **Learning Hub** was built on branch `learning-hub` (since merged into `master`): four games
 (Smart Math, Letters & Words, Number Connect, Coloring Match), earned minutes as a break inside the
 lock, parent limits, and all content as data (JSON packs checked by the tests). Nine more games are on
 the roadmap. See [Learning Hub](#learning-hub-gamification--education-planned-and-built-2026-09-30).
@@ -85,8 +89,8 @@ emulator-tested, waiting for the owner's test on the Honor.
 | Security question, answer normalized + hashed; required during lock periods | ✅ Also rate-limited like the PIN |
 | Device admin against uninstall | ✅ |
 | Block Accessibility / App info / Device admin / Force stop screens without the PIN | 🟡 The whole Settings app (and OEM security apps, package installer) is covered by package name, because reading screen content is ruled out (approved). Can be switched off. |
-| Battery optimization exemption, OEM autostart guidance, restart on boot | ✅ |
-| Escalating delay after wrong PINs | ✅ 4 free attempts, then 30 s → 1 h |
+| Battery optimization exemption, OEM autostart guidance, restart on boot | 🟡 The battery step opens the system list instead of asking for the exemption permission (Play policy, 2026-10-11); OEM autostart guidance (now also Tecno/Infinix/itel) and restart on boot ✅ |
+| Escalating delay after wrong PINs | ✅ 4 free attempts, then 30 s → 1 h. Security answer: 3 free, then 24 h each; a PIN reset through it waits 24 h unless the parent's phone approves (2026-10-13) |
 
 ### §4 "Time's up" templates
 | Requirement | Status |
@@ -126,7 +130,7 @@ reason · PIN + security question · apps, time and lock type, child's gender an
 (Firebase, after pairing); backups disabled. ⏳ Release signing, store listing, Accessibility demo video.
 
 ### §12 Design and UX
-✅ Palette, bundled Cairo/Nunito, 16 dp cards, bottom bar (Home / Apps / Schedule / Settings), gold
+✅ Palette, bundled Cairo/Nunito, 16 dp cards, a single dashboard (it replaced the bottom bar), gold
 budget ring, status card, per-app bars, Apps list with switches and search, colour timeline (tap to
 edit, drag to move; resize through the edit dialog), gold / outline / coral buttons ≥ 48 dp, large
 PIN pad with dots and a light vibration, parent dark mode, RTL with mirrored icons, fade + scale

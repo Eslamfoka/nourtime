@@ -1,5 +1,9 @@
 # Nour Time – وقت نور: the brief, with implementation status
 
+> **Snapshot of 2026-09-27, not kept up to date.** Since then: Phase 4 and the Learning Hub were merged,
+> targetSdk is 36, the battery-exemption permission was removed, a single dashboard replaced the bottom
+> bar, and the real Firebase project `nourtime-8d4ce` is in use. Current status: [`handoff.md`](handoff.md).
+
 A copy of [`nour-time-brief-en.md`](../nour-time-brief-en.md), section by section, with the status of every
 requirement as of **2026-09-27**. It is written so that someone who hasn't seen the code (a person or
 another AI) can check what was built.

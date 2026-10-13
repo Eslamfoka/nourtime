@@ -156,9 +156,13 @@ class TimerService : Service() {
         scope.launch { resilient("new apps") { runNewApps() } }
         scope.launch { resilient("protection alerts") { runProtectionAlerts() } }
         // Phase 2: only starts once this phone is paired with a parent's phone.
+        // The wait is inside resilient too: a settings-read error there crashed the process (and with
+        // it the Accessibility service) instead of being retried.
         scope.launch {
-            deviceIdentity.pairedOwner.filterNotNull().first()
-            resilient("remote sync") { remoteSync.get().run() }
+            resilient("remote sync") {
+                deviceIdentity.pairedOwner.filterNotNull().first()
+                remoteSync.get().run()
+            }
         }
     }
 

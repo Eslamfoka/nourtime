@@ -157,7 +157,7 @@ service cloud.firestore {
               && request.resource.data.minutes is int
               && request.resource.data.minutes >= 1
               && request.resource.data.minutes <= 240)
-            || (request.resource.data.type in ['LOCK_NOW', 'END_LOCK']
+            || (request.resource.data.type in ['LOCK_NOW', 'END_LOCK', 'APPROVE_PIN_RESET']
               && request.resource.data.keys().hasOnly(['type', 'createdAt', 'by', 'appliedAt']))
           );
 

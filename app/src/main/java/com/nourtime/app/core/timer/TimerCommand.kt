@@ -10,4 +10,10 @@ sealed interface TimerCommand {
 
     /** Ends the lock period now and refills the budget. */
     data object EndLock : TimerCommand
+
+    /**
+     * Not a timer change: the parent approves the PIN chosen through "Forgot PIN?", which then works at
+     * once instead of after a day. Applied by RemoteSync; [TimeRules.apply] leaves the timer alone.
+     */
+    data object ApprovePinReset : TimerCommand
 }

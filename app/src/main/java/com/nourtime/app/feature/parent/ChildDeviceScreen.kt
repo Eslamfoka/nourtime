@@ -37,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -285,6 +286,7 @@ fun ChildDeviceScreen(
                 }
             }
 
+            d.alerts.pendingPinReset(now)?.let { until -> PinResetCard(until, onApprove = { confirm = TimerCommand.ApprovePinReset }) }
             val appList = apps.valueOrNull().orEmpty()
             ActionsCard(summary, commands.valueOrNull().orEmpty(), onCommand = { confirm = it })
             UsageCard(usage, appList)
@@ -386,6 +388,28 @@ private fun FailureBar(text: String, onDismiss: () -> Unit, modifier: Modifier =
     }
 }
 
+/**
+ * A new PIN chosen on the child's phone through the security question waits a day. If the parent did
+ * it, they approve it here; if not, unlocking the child's phone with the current PIN cancels it.
+ */
+@Composable
+private fun PinResetCard(activeAtMs: Long, onApprove: () -> Unit) {
+    val context = LocalContext.current
+    val at = DateUtils.formatDateTime(
+        context,
+        activeAtMs,
+        DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_ABBREV_ALL,
+    )
+    NourCard {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Icon(Icons.Rounded.WarningAmber, contentDescription = null, tint = NourTheme.colors.danger)
+            Text(stringResource(R.string.device_pin_reset_title), style = MaterialTheme.typography.titleMedium)
+        }
+        Text(stringResource(R.string.device_pin_reset_body, at), style = MaterialTheme.typography.bodyMedium)
+        NourPrimaryButton(stringResource(R.string.device_pin_reset_approve), onApprove)
+    }
+}
+
 private val DeviceActionFailure.message: Int
     get() = when (this) {
         DeviceActionFailure.SEND -> R.string.device_send_failed
@@ -456,7 +480,7 @@ private fun AskCard(name: String, request: TimeRequest, now: Long, failed: Boole
         }
         NourTextButton(stringResource(R.string.ask_parent_decline), { onAnswer(null) })
         if (failed) {
-            Text(stringResource(R.string.ask_parent_failed), style = MaterialTheme.typography.bodySmall, color = NourTheme.colors.danger)
+            ActionErrorText(stringResource(R.string.ask_parent_failed))
         }
     }
 }
@@ -553,6 +577,7 @@ private fun ConfirmCommandDialog(command: TimerCommand, onConfirm: () -> Unit, o
         is TimerCommand.Bonus -> stringResource(R.string.device_bonus_confirm_title, durationText(command.minutes)) to stringResource(R.string.device_bonus_confirm_body)
         TimerCommand.LockNow -> stringResource(R.string.device_lock_now) to stringResource(R.string.device_lock_now_body)
         TimerCommand.EndLock -> stringResource(R.string.device_end_lock) to stringResource(R.string.device_end_lock_body)
+        TimerCommand.ApprovePinReset -> stringResource(R.string.device_pin_reset_approve) to stringResource(R.string.device_pin_reset_approve_body)
     }
     AlertDialog(
         onDismissRequest = onDismiss,

@@ -20,7 +20,7 @@ notes collect what the Play Console declarations will need.
 | `RECEIVE_BOOT_COMPLETED` | Restarts protection after a reboot. | — |
 | `REQUEST_DELETE_PACKAGES` | Settings → *Uninstall Nour Time* opens the system uninstall dialog for Nour Time itself (after the parent's security answer). | Settings screen. |
 | `ACTION_PACKAGE_ADDED` (runtime receiver, no permission) | Limits newly installed apps by default ("Limit new apps", the parent can turn it off), so a newly installed game or browser isn't unlimited. | Settings toggle; "New app limited" notification. |
-| `Settings.Global.BOOT_COUNT` / `ADB_ENABLED`, `ACTION_USER_BACKGROUND` (no permission) | Protection alerts: a restart without Nour Time (safe mode), a switch to another user, USB debugging on. Shown on the child's phone and, when connected, on the parent's phone. | Notification; privacy policy. |
+| `Settings.Global.BOOT_COUNT` / `ADB_ENABLED`, `ACTION_USER_BACKGROUND` (no permission) | Protection alerts: a restart without Nour Time (safe mode), a switch to another user, USB debugging on, Nour Time's notifications off, a PIN reset through the security question (and when the new PIN starts working). Shown on the child's phone and, when connected, on the parent's phone. | Notification; privacy policy. |
 | `INTERNET` | Phase 2 remote control (Firebase Auth + Firestore): only used on a parent's phone, or on a child's phone after the parent connected it. | Privacy policy; the pairing screens. |
 | `<queries>` for launcher apps | Lists apps with a launcher icon for the app picker. **No `QUERY_ALL_PACKAGES`.** | — |
 
@@ -80,7 +80,9 @@ progress. Backups and device transfer are disabled (`allowBackup=false`, `data_e
     remotely (time budget, lock, bedtime, limited/allowed apps, Learning Hub and voice settings).
   - **App activity → Installed apps:** list of launchable apps (names, package names).
   - **App info and performance → Other app performance data:** protection alerts (time of a restart
-    without Nour Time or of a switch to another user, whether USB debugging is on).
+    without Nour Time or of a switch to another user, whether USB debugging is on, whether Nour Time's
+    notifications are off, time of a PIN reset through the security question and when the new PIN
+    starts working).
   - **App info and performance → Crash logs and Diagnostics:** Firebase Crashlytics crash reports
     (stack trace, Android version, phone model, a Crashlytics installation id). Collected only on a
     paired child's phone or a signed-in parent's phone (`CrashReporting`); off in the manifest

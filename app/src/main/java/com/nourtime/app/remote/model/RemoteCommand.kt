@@ -10,6 +10,7 @@ fun remoteCommandOf(m: Map<String, Any?>): TimerCommand? = when (m["type"]) {
     "BONUS" -> (m["minutes"] as? Number)?.toInt()?.takeIf { it in BONUS_MINUTES }?.let(TimerCommand::Bonus)
     "LOCK_NOW" -> TimerCommand.LockNow
     "END_LOCK" -> TimerCommand.EndLock
+    "APPROVE_PIN_RESET" -> TimerCommand.ApprovePinReset
     else -> null
 }
 
@@ -18,4 +19,5 @@ fun commandMap(command: TimerCommand): Map<String, Any> = when (command) {
     is TimerCommand.Bonus -> mapOf("type" to "BONUS", "minutes" to command.minutes)
     TimerCommand.LockNow -> mapOf("type" to "LOCK_NOW")
     TimerCommand.EndLock -> mapOf("type" to "END_LOCK")
+    TimerCommand.ApprovePinReset -> mapOf("type" to "APPROVE_PIN_RESET")
 }

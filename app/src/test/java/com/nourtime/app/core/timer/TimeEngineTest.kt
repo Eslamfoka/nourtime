@@ -8,7 +8,11 @@ import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.time.WallClock
 import com.nourtime.app.data.settings.ParentSettings
 import com.nourtime.app.data.usage.UsageSink
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -39,7 +43,11 @@ class TimeEngineTest {
     }
     private val wall = WallClock { ZonedDateTime.of(today.atTime(16, 0), ZoneOffset.UTC) }
     private val charged = mutableListOf<Triple<LocalDate, String, Long>>()
-    private val usage = UsageSink { day, pkg, ms -> charged += Triple(day, pkg, ms) }
+    private var usageFails = false
+    private val usage = UsageSink { day, pkg, ms ->
+        if (usageFails) throw IllegalStateException("database busy")
+        charged += Triple(day, pkg, ms)
+    }
 
     /** Counts the writes that reach the file. */
     private class CountingStore(private val inner: DataStore<Preferences>) : DataStore<Preferences> {
@@ -48,6 +56,16 @@ class TimeEngineTest {
         override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences): Preferences {
             writes++
             return inner.updateData(transform)
+        }
+    }
+
+    /** Each write takes a while, so a cancellation can land in the middle of it. */
+    private class SlowStore(private val inner: DataStore<Preferences>) : DataStore<Preferences> {
+        var completed = 0
+        override val data: Flow<Preferences> get() = inner.data
+        override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences): Preferences {
+            delay(1_000)
+            return inner.updateData(transform).also { completed++ }
         }
     }
 
@@ -145,6 +163,43 @@ class TimeEngineTest {
         engine.apply(TimerCommand.LockNow)
         assertEquals(before + 1, store.writes)
         assertEquals(TimerPhase.LOCKED, engine.status.value!!.phase)
+    }
+
+    @Test
+    fun `a save already started finishes even if the update is cancelled`() = runTest {
+        val slow = SlowStore(newStore())
+        val engine = engine(slow)
+        // The first update always saves; the timer service's collectLatest can cancel it at any point.
+        val job = launch { engine.update(setOf(youtube), DetectionSource.ACCESSIBILITY, settings) }
+        runCurrent()
+        job.cancel()
+        advanceUntilIdle()
+        assertEquals(1, slow.completed)
+    }
+
+    @Test
+    fun `use that couldn't be written to the stats is kept and written later`() = runTest {
+        val engine = engine(newStore())
+        engine.update(setOf(youtube), DetectionSource.ACCESSIBILITY, settings)
+        engine.run(20, setOf(youtube))
+        // The periodic save at 15 s already wrote that much; the last 5 s are still pending.
+        val written = charged.sumOf { it.third }
+        usageFails = true
+        runCatching { engine.flush() }
+        assertEquals(written, charged.sumOf { it.third })
+        usageFails = false
+        engine.flush()
+        assertEquals(20_000L, charged.sumOf { it.third })
+    }
+
+    @Test
+    fun `a damaged timer file starts a lock, not a fresh budget`() = runTest {
+        val store = newStore()
+        store.updateData { TimekeepingMigration.onCorruption() }
+        val engine = engine(store)
+        engine.update(setOf(youtube), DetectionSource.ACCESSIBILITY, settings)
+        assertEquals(TimerPhase.LOCKED, engine.status.value!!.phase)
+        assertEquals(60 * 60_000L, engine.status.value!!.lockRemainingMs)
     }
 
     // A second DataStore on the same file needs the first one's scope gone; reading the file directly

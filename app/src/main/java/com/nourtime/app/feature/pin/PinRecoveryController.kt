@@ -13,8 +13,9 @@ import kotlinx.coroutines.launch
 enum class PinRecoveryStage { ANSWER, NEW_PIN, DONE }
 
 /**
- * "Forgot PIN?": the parent answers their security question (same escalating lockout as always), then
- * chooses a new PIN twice. The PIN can only change after a correct answer.
+ * "Forgot PIN?": the parent answers their security question (three tries, then one a day), then
+ * chooses a new PIN twice. The new PIN starts working a day later, or once the parent's phone approves
+ * it; nothing opens now, so a child who guessed the answer gains nothing (2026-10-13 audit, H1).
  */
 class PinRecoveryController(
     private val scope: CoroutineScope,
@@ -22,13 +23,16 @@ class PinRecoveryController(
     clock: DeviceClock,
     /** Tells the parent: a child who knows the answer could otherwise take over unnoticed. */
     private val onPinReset: suspend () -> Unit = {},
-    private val onDone: () -> Unit,
 ) {
     private val _stage = MutableStateFlow(PinRecoveryStage.ANSWER)
     val stage: StateFlow<PinRecoveryStage> = _stage.asStateFlow()
 
     private val _pin = MutableStateFlow(PinCreationState())
     val pin: StateFlow<PinCreationState> = _pin.asStateFlow()
+
+    /** When the new PIN starts working (wall-clock ms), once it is saved. */
+    private val _activeAt = MutableStateFlow<Long?>(null)
+    val activeAt: StateFlow<Long?> = _activeAt.asStateFlow()
 
     val answer = AnswerCheckController(scope, security, clock) {
         _pin.value = PinCreationState()
@@ -41,10 +45,9 @@ class PinRecoveryController(
         _pin.value = updated
         val newPin = updated.completedPin ?: return
         scope.launch {
-            security.setPin(newPin)
+            _activeAt.value = security.setPinAfterRecovery(newPin)
             runCatching { onPinReset() }
             _stage.value = PinRecoveryStage.DONE
-            onDone()
         }
     }
 

@@ -26,6 +26,12 @@ class RemoteCommandTest {
     }
 
     @Test
+    fun `reads and writes the approval of a PIN reset`() {
+        assertEquals(TimerCommand.ApprovePinReset, remoteCommandOf(mapOf("type" to "APPROVE_PIN_RESET")))
+        assertEquals(mapOf("type" to "APPROVE_PIN_RESET"), commandMap(TimerCommand.ApprovePinReset))
+    }
+
+    @Test
     fun `ignores unknown types`() {
         assertNull(remoteCommandOf(mapOf("type" to "FACTORY_RESET")))
         assertNull(remoteCommandOf(emptyMap()))

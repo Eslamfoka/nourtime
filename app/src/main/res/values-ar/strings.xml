@@ -42,10 +42,17 @@
     <string name="pin_unlock_title">أدخل رمز الأهل</string>
     <string name="pin_unlock_body">الإعدادات للأهل فقط.</string>
     <string name="pin_forgot">نسيت الرمز؟</string>
-    <string name="pin_recovery_body">أجب عن سؤال الأمان لتختار رمزًا جديدًا.</string>
+    <string name="pin_recovery_body">أجب عن سؤال الأمان لتختار رمزًا جديدًا. يبدأ العمل بعد 24 ساعة، أو أسرع إذا تمت الموافقة عليه من هاتف ولي الأمر.</string>
     <string name="pin_recovery_new_title">اختر رمزًا جديدًا</string>
     <string name="pin_wrong">رمز غير صحيح</string>
     <string name="pin_wrong_attempts_left">رمز غير صحيح. المحاولات المتبقية قبل الانتظار: %1$d</string>
+    <string name="pin_pending_not_yet">هذا هو الرمز الجديد، ويبدأ العمل في %1$s. حتى ذلك الحين استخدم الرمز الحالي.</string>
+    <string name="pin_reset_saved_title">تم حفظ الرمز الجديد</string>
+    <string name="pin_reset_saved_body">يبدأ العمل في %1$s، أو فور الموافقة عليه من هاتف ولي الأمر. حتى ذلك الحين يبقى الرمز الحالي صالحًا، واستخدامه يلغي هذا التغيير.</string>
+    <string name="device_pin_reset_title">رمز جديد في الانتظار</string>
+    <string name="device_pin_reset_body">اختار أحدهم رمزًا جديدًا على هاتف طفلك باستخدام سؤال الأمان. يبدأ العمل في %1$s. إن لم تكن أنت، فلا تفعل شيئًا: فتح هاتف طفلك بالرمز الحالي يلغيه.</string>
+    <string name="device_pin_reset_approve">الموافقة على الرمز الجديد</string>
+    <string name="device_pin_reset_approve_body">سيعمل الرمز الجديد على هاتف طفلك فورًا.</string>
     <string name="pin_locked_out">محاولات كثيرة. حاول مرة أخرى بعد %1$s</string>
     <string name="pin_delete">حذف</string>
 
@@ -112,6 +119,7 @@
     <string name="autostart_title_samsung">أبقِ وقت نور مستيقظًا</string>
     <string name="autostart_why_samsung">تضع هواتف سامسونج التطبيقات التي تظنها غير مستخدمة في وضع السكون. أبقِ وقت نور مستيقظًا حتى تستمر الحماية.</string>
     <string name="autostart_how_samsung">في البطارية ← حدود الاستخدام في الخلفية، تأكد أن وقت نور ليس ضمن \"التطبيقات النائمة\" أو \"التطبيقات في سبات عميق\"، وأضفه إلى \"التطبيقات التي لا تنام أبدًا\".</string>
+    <string name="autostart_how_transsion">في مدير الهاتف (أو الإعدادات ← التطبيقات ← إدارة التشغيل التلقائي)، فعّل التشغيل التلقائي لوقت نور. ثم في الإعدادات ← البطارية ← إدارة بطارية التطبيقات (أو توفير الطاقة)، اجعل وقت نور \"بلا قيود\".</string>
     <string name="autostart_done">قمت بتفعيله</string>
     <string name="test_title">لنتأكد أنه يعمل</string>
     <string name="test_body">افتح أحد التطبيقات المحددة. عندما يراه وقت نور سيعيدك إلى هنا تلقائيًا.</string>

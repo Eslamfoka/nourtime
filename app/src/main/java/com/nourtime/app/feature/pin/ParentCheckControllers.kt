@@ -21,6 +21,8 @@ data class PinUiState(
     val attemptsLeft: Int? = null,
     val lockoutRemainingMs: Long = 0,
     val rejections: Int = 0,
+    /** The PIN typed is the one from "Forgot PIN?", which starts working then (wall-clock ms). */
+    val notYetActiveAtMs: Long? = null,
 )
 
 /** PIN entry with lockout countdown. Shared by the app's unlock screen and the lock overlay. */
@@ -49,7 +51,7 @@ class PinCheckController(
         val s = _state.value
         if (s.checking || s.lockoutRemainingMs > 0 || input.length >= PinRules.LENGTH) return
         input += digit
-        _state.update { it.copy(entered = input.length) }
+        _state.update { it.copy(entered = input.length, notYetActiveAtMs = null) }
         if (input.length == PinRules.LENGTH) verify(input)
     }
 
@@ -77,6 +79,9 @@ class PinCheckController(
                 is PinCheckResult.Wrong -> _state.update {
                     it.copy(entered = 0, checking = false, attemptsLeft = result.attemptsBeforeLockout, rejections = it.rejections + 1)
                 }
+                is PinCheckResult.NotYetActive -> _state.update {
+                    it.copy(entered = 0, checking = false, attemptsLeft = null, rejections = it.rejections + 1, notYetActiveAtMs = result.activeAtMs)
+                }
                 is PinCheckResult.LockedOut -> {
                     _state.update { it.copy(entered = 0, checking = false, attemptsLeft = null, rejections = it.rejections + 1) }
                     startCountdown(result.remainingMs)
@@ -101,7 +106,7 @@ data class AnswerUiState(
     val lockoutRemainingMs: Long = 0,
 )
 
-/** Security-question check (brief §3 layer 2), with the same escalating lockout as the PIN. */
+/** Security-question check (brief §3 layer 2): three wrong answers, then a day per further one. */
 class AnswerCheckController(
     private val scope: CoroutineScope,
     private val security: SecurityRepository,

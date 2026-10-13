@@ -3,6 +3,7 @@ package com.nourtime.app.data.security
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import com.nourtime.app.core.security.SecretHasher
 import com.nourtime.app.core.time.DeviceClock
+import com.nourtime.app.core.time.WallClock
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -12,10 +13,14 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 class SecurityRepositoryTest {
 
@@ -29,9 +34,12 @@ class SecurityRepositoryTest {
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val clock = FakeClock()
+    private var wallMs = 1_800_000_000_000L
+    private val wall = WallClock { ZonedDateTime.ofInstant(Instant.ofEpochMilli(wallMs), ZoneOffset.UTC) }
+    private val day = 24 * 60 * 60_000L
     private val repo by lazy {
         val store = PreferenceDataStoreFactory.create(scope = scope) { tmp.newFile("test.preferences_pb") }
-        SecurityRepository(store, SecretHasher(iterations = 1_000), clock)
+        SecurityRepository(store, SecretHasher(iterations = 1_000), clock, wall)
     }
 
     @After
@@ -88,15 +96,63 @@ class SecurityRepositoryTest {
     }
 
     @Test
-    fun `wrong answers lock out like the PIN, independently of it`() = runTest {
+    fun `three wrong answers, then answers are locked for a day, independently of the PIN`() = runTest {
         repo.setPin("4827")
         repo.setSecurityQuestion("Question?", "blue")
-        repeat(4) { assertEquals(AnswerCheckResult.Wrong, repo.checkAnswer("red")) }
-        assertEquals(AnswerCheckResult.LockedOut(30_000), repo.checkAnswer("red"))
-        assertEquals(AnswerCheckResult.LockedOut(30_000), repo.checkAnswer("blue"))
+        repeat(3) { assertEquals(AnswerCheckResult.Wrong, repo.checkAnswer("red")) }
+        assertEquals(AnswerCheckResult.LockedOut(day), repo.checkAnswer("red"))
+        assertEquals(AnswerCheckResult.LockedOut(day), repo.checkAnswer("blue"))
         // The PIN has its own counter.
         assertEquals(PinCheckResult.Success, repo.verifyPin("4827"))
-        clock.now += 30_000
+        clock.now += day
         assertEquals(AnswerCheckResult.Correct, repo.checkAnswer("BLUE"))
+    }
+
+    @Test
+    fun `a PIN reset through the answer waits a day, while the current PIN keeps working`() = runTest {
+        repo.setPin("4827")
+        val activeAt = repo.setPinAfterRecovery("1593")
+        assertEquals(wallMs + day, activeAt)
+        assertEquals(activeAt, repo.pendingPinActiveAt.first())
+        // Not yet: the new PIN isn't accepted (and isn't counted as a wrong PIN).
+        assertEquals(PinCheckResult.NotYetActive(activeAt), repo.verifyPin("1593"))
+        assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("0000"))
+
+        wallMs += day
+        assertEquals(PinCheckResult.Success, repo.verifyPin("1593"))
+        assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("4827"))
+        assertNull(repo.pendingPinActiveAt.first())
+    }
+
+    @Test
+    fun `using the current PIN cancels a pending reset`() = runTest {
+        repo.setPin("4827")
+        repo.setPinAfterRecovery("1593")
+        assertEquals(PinCheckResult.Success, repo.verifyPin("4827"))
+        assertNull(repo.pendingPinActiveAt.first())
+        wallMs += day
+        assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("1593"))
+        assertEquals(PinCheckResult.Success, repo.verifyPin("4827"))
+    }
+
+    @Test
+    fun `changing the PIN normally cancels a pending reset`() = runTest {
+        repo.setPin("4827")
+        repo.setPinAfterRecovery("1593")
+        repo.setPin("2468")
+        assertNull(repo.pendingPinActiveAt.first())
+        wallMs += day
+        assertEquals(PinCheckResult.Success, repo.verifyPin("2468"))
+    }
+
+    @Test
+    fun `approval from the parent's phone activates the new PIN at once`() = runTest {
+        repo.setPin("4827")
+        repo.setPinAfterRecovery("1593")
+        assertTrue(repo.approvePendingPin())
+        assertEquals(PinCheckResult.Success, repo.verifyPin("1593"))
+        assertNull(repo.pendingPinActiveAt.first())
+        // Nothing left to approve.
+        assertFalse(repo.approvePendingPin())
     }
 }

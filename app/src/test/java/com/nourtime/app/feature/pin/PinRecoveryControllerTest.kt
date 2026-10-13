@@ -3,13 +3,16 @@ package com.nourtime.app.feature.pin
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import com.nourtime.app.core.security.SecretHasher
 import com.nourtime.app.core.time.DeviceClock
+import com.nourtime.app.core.time.WallClock
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import com.nourtime.app.data.security.PinCheckResult
 import com.nourtime.app.data.security.SecurityRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -17,14 +20,13 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 
-/** "Forgot PIN?": the security question, then a new PIN twice. */
+/** "Forgot PIN?": the security question, then a new PIN twice, which starts working a day later. */
 class PinRecoveryControllerTest {
 
     @get:Rule
@@ -37,14 +39,16 @@ class PinRecoveryControllerTest {
 
     private val io = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val clock = FakeClock()
+    @Volatile private var wallMs = 1_800_000_000_000L
+    private val day = 24 * 60 * 60_000L
     private val security by lazy {
         val store = PreferenceDataStoreFactory.create(scope = io) { tmp.newFile("r.preferences_pb") }
-        SecurityRepository(store, SecretHasher(iterations = 1_000), clock)
+        val wall = WallClock { ZonedDateTime.ofInstant(Instant.ofEpochMilli(wallMs), ZoneOffset.UTC) }
+        SecurityRepository(store, SecretHasher(iterations = 1_000), clock, wall)
     }
-    // Set on the controller's thread, just after the stage turns DONE.
-    @Volatile private var done = false
+    // Set on the controller's thread, just before the stage turns DONE.
     @Volatile private var resets = 0
-    private val recovery by lazy { PinRecoveryController(io, security, clock, onPinReset = { resets++ }) { done = true } }
+    private val recovery by lazy { PinRecoveryController(io, security, clock, onPinReset = { resets++ }) }
 
     @Before
     fun setUp() = runTest {
@@ -77,23 +81,24 @@ class PinRecoveryControllerTest {
         assertEquals(PinRecoveryStage.ANSWER, recovery.stage.value)
         type("2580")
         type("2580")
-        assertFalse(done)
+        assertEquals(PinRecoveryStage.ANSWER, recovery.stage.value)
         assertEquals(PinCheckResult.Success, security.verifyPin("4827"))
     }
 
     @Test
-    fun `the right answer then a new PIN twice replaces the old PIN`() = runTest {
+    fun `the right answer then a new PIN twice saves it to start working a day later`() = runTest {
         answer("Blue ")
         assertEquals(PinRecoveryStage.NEW_PIN, recovery.stage.value)
         type("2580")
         type("2580")
-        realTime {
-            recovery.stage.first { it == PinRecoveryStage.DONE }
-            while (!done) delay(10)
-        }
-        assertTrue(done)
+        realTime { recovery.stage.first { it == PinRecoveryStage.DONE } }
         // The parent hears about it (2026-10-12 audit: a child who knows the answer could take over).
         assertEquals(1, resets)
+        val activeAt = recovery.activeAt.value
+        assertEquals(wallMs + day, activeAt)
+        // Nothing opens now (2026-10-13 audit, H1): the new PIN waits a day.
+        assertEquals(PinCheckResult.NotYetActive(activeAt!!), security.verifyPin("2580"))
+        wallMs += day
         assertEquals(PinCheckResult.Success, security.verifyPin("2580"))
         assertTrue(security.verifyPin("4827") is PinCheckResult.Wrong)
     }
@@ -104,7 +109,6 @@ class PinRecoveryControllerTest {
         type("2580")
         type("1397")
         assertEquals(PinRecoveryStage.NEW_PIN, recovery.stage.value)
-        assertFalse(done)
         assertEquals(PinCheckResult.Success, security.verifyPin("4827"))
     }
 }

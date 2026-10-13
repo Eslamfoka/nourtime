@@ -43,7 +43,9 @@ account can read it:
 - the names and package names of the apps that can be opened from the launcher (so the parent can
   choose limited and allowed apps);
 - protection alerts: when the phone restarted without Nour Time (for example in safe mode), when it
-  switched to another user, and whether USB debugging is on (the time of the event, no other details);
+  switched to another user, whether USB debugging is on, whether Nour Time's notifications are turned
+  off, and when the PIN was reset with the security question and when that new PIN starts working (the
+  time of the event, no other details);
 - crash reports, if Nour Time crashes: where in Nour Time's code it failed, the Android version and
   phone model, sent to Google Firebase Crashlytics so the crash can be fixed. Not linked to the parent's
   account or the child. The parent's phone sends them too once the parent signs in. Without a connected
@@ -56,7 +58,7 @@ account can read it:
   was made and the parent's answer (approved with how many minutes, or not now), no message text.
 
 The parent's phone stores the parent's Google account name and email (to show the child's phone who
-wants to connect) and the commands the parent sends (extra time, lock now, end the lock). The child's
+wants to connect) and the commands the parent sends (extra time, lock now, end the lock, approving a new PIN). The child's
 phone uses an anonymous Firebase account that contains no personal information.
 
 Not sent, ever: the child's name, age group or gender, the PIN or the security answer, what is shown on
@@ -143,7 +145,8 @@ version is released, and the app will ask for consent where required.
   Firebase ما يلي فقط، ولا يراه إلا حساب ولي الأمر: طراز الهاتف، وحالة المؤقت (الوقت المتبقي والقفل وحالة
   الحماية)، ودقائق اليوم لكل تطبيق محدد، وأسماء التطبيقات القابلة للفتح، وإعدادات وقت نور، ودقائق ركن التعلّم
   (الرصيد المدّخر ودقائق اليوم المكتسبة)، وتنبيهات الحماية (إعادة تشغيل الهاتف دون وقت نور، أو الانتقال إلى مستخدم
-  آخر، أو تفعيل تصحيح USB: وقت الحدث فقط)، وتقارير الأعطال إن توقف وقت نور فجأة (موضع الخطأ في كود وقت نور، وإصدار
+  آخر، أو تفعيل تصحيح USB، أو إيقاف إشعارات وقت نور، أو إعادة تعيين الرمز بسؤال الأمان وموعد بدء الرمز
+  الجديد: وقت الحدث فقط)، وتقارير الأعطال إن توقف وقت نور فجأة (موضع الخطأ في كود وقت نور، وإصدار
   Android وطراز الهاتف، إلى Google Firebase Crashlytics لإصلاحه، دون ربطها بحساب ولي الأمر أو بالطفل؛ ويرسلها هاتف
   ولي الأمر أيضًا بعد تسجيل الدخول، ولا يُرسل شيء منها قبل الربط)، وطلبات "أريد وقتًا إضافيًا" التي يرسلها الطفل من شاشة "خلص الوقت" (وقت
   الطلب ورد ولي الأمر فقط، دون أي نص). يحفظ هاتف ولي الأمر اسم حساب Google وبريده. لا يُرسل أبدًا اسم الطفل ولا

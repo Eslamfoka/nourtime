@@ -35,7 +35,8 @@ with friendly recorded voices. Each won level can earn a few extra minutes, up t
 
 PROTECTION PARENTS CAN TRUST
 • A 4-digit parent PIN and your own security question protect the settings.
-• Nour Time can't be switched off or uninstalled without your PIN.
+• With device admin turned on (a setup step), Nour Time can't be uninstalled without your PIN, and the phone's Settings ask for it too.
+• Forgot the PIN? Your security question sets a new one, which starts working after 24 hours, or at once if you approve it from your own phone.
 • If protection is weakened (for example Accessibility turned off), the limited apps stay blocked and you're told.
 
 FOLLOW FROM YOUR OWN PHONE (OPTIONAL)

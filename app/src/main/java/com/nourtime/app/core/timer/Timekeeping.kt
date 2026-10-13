@@ -4,7 +4,8 @@ import androidx.datastore.core.DataMigration
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.preferencesOf
 import kotlinx.coroutines.flow.first
 import javax.inject.Qualifier
 
@@ -60,7 +61,13 @@ class TimekeepingMigration(private val main: DataStore<Preferences>) : DataMigra
     companion object {
         private val PREFIXES = listOf("timer_", "trusted_")
 
-        /** A damaged timekeeping file starts over (a fresh budget) rather than blocking the app. */
-        fun onCorruption(): Preferences = emptyPreferences()
+        /** Set when the timekeeping file was damaged and replaced; [TimeEngine] then starts locked. */
+        val DAMAGED = booleanPreferencesKey("timer_damaged")
+
+        /**
+         * A damaged timekeeping file fails closed: the timer starts a lock period (the parent ends it with
+         * the PIN or from the parent's phone) instead of handing the child a fresh budget (2026-10-13 audit).
+         */
+        fun onCorruption(): Preferences = preferencesOf(DAMAGED to true)
     }
 }

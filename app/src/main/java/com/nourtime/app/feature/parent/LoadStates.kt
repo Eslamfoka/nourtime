@@ -76,13 +76,16 @@ internal fun LoadFailedCard(text: String, onRetry: () -> Unit) {
     }
 }
 
-/** A short error line under the part of the screen whose action failed. */
+/**
+ * A short error line under the part of the screen whose action failed. The theme's error color (the
+ * deep coral on light screens): the light coral of [NourTheme.colors] is too pale for small text.
+ */
 @Composable
 internal fun ActionErrorText(text: String) {
     Text(
         text,
         style = MaterialTheme.typography.bodySmall,
-        color = NourTheme.colors.danger,
+        color = MaterialTheme.colorScheme.error,
         modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
     )
 }

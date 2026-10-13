@@ -324,6 +324,8 @@ describe("commands", () => {
 
   it("lock now and end lock carry no minutes", async () => {
     await assertSucceeds(addDoc(commands(parent()), { type: "LOCK_NOW", createdAt: serverTimestamp(), by: PARENT, appliedAt: null }));
+    await assertSucceeds(addDoc(commands(parent()), { type: "APPROVE_PIN_RESET", createdAt: serverTimestamp(), by: PARENT, appliedAt: null }));
+    await assertFails(addDoc(commands(parent()), { type: "APPROVE_PIN_RESET", pin: "1234", createdAt: serverTimestamp(), by: PARENT, appliedAt: null }));
     await assertFails(addDoc(commands(parent()), { type: "END_LOCK", minutes: 5, createdAt: serverTimestamp(), by: PARENT, appliedAt: null }));
   });
 

@@ -11,6 +11,7 @@ import com.nourtime.app.core.blocking.BlockInput
 import com.nourtime.app.core.blocking.BlockPolicy
 import com.nourtime.app.core.blocking.BlockReason
 import com.nourtime.app.core.blocking.ChildDismissal
+import com.nourtime.app.core.blocking.RingingGrace
 import com.nourtime.app.core.blocking.ParentPass
 import com.nourtime.app.core.blocking.ScreenOffTimer
 import com.nourtime.app.core.detection.ForegroundAppTracker
@@ -74,6 +75,7 @@ class BlockCoordinator @Inject constructor(
 
     /** What the child dismissed with "OK"; the screen stays hidden until what's on screen changes. */
     private val dismissal = ChildDismissal()
+    private val ringingGrace = RingingGrace()
     @Volatile private var lastInputs: Inputs? = null
 
     suspend fun run() {
@@ -116,7 +118,11 @@ class BlockCoordinator @Inject constructor(
                 ownPackage = context.packageName,
                 devicePass = pass.deviceActive(),
                 fullPass = pass.fullActive(),
-                phoneRinging = audioMode == AudioManager.MODE_RINGTONE || audioMode == MODE_CALL_SCREENING,
+                // Read from the audio mode, so bounded: a minute per ring, three per half hour.
+                phoneRinging = ringingGrace.exempt(
+                    ringing = audioMode == AudioManager.MODE_RINGTONE || audioMode == MODE_CALL_SCREENING,
+                    nowElapsed = clock.elapsedRealtime(),
+                ),
                 inCall = audioMode == AudioManager.MODE_IN_CALL,
                 dialerPackage = runCatching { telecom.defaultDialerPackage }.getOrNull(),
                 extraSettingsPackages = settingsScreens,

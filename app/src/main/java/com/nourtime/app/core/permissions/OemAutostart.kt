@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Build
 
 /** Phone makers whose battery managers stop apps; each gets its own instructions. */
-enum class OemBrand { XIAOMI, OPPO, VIVO, HONOR_HUAWEI, ONEPLUS, SAMSUNG }
+enum class OemBrand { XIAOMI, OPPO, VIVO, HONOR_HUAWEI, ONEPLUS, SAMSUNG, TRANSSION }
 
 /**
  * Some OEMs (Xiaomi, Oppo, Vivo, Huawei, ...) block apps from starting after a reboot unless the user
@@ -38,6 +38,11 @@ object OemAutostart {
         OemBrand.SAMSUNG to listOf(
             "com.samsung.android.lool" to "com.samsung.android.sm.battery.ui.BatteryActivity",
         ),
+        // Tecno, Infinix, itel: Phone Master's auto-start list (not verified on every model; the
+        // written steps cover phones where it doesn't open).
+        OemBrand.TRANSSION to listOf(
+            "com.transsion.phonemaster" to "com.cyin.himgr.autostart.AutoStartActivity",
+        ),
     )
 
     private val brands = mapOf(
@@ -54,7 +59,13 @@ object OemAutostart {
         "samsung" to OemBrand.SAMSUNG,
     )
 
-    fun brand(manufacturer: String = Build.MANUFACTURER): OemBrand? = brands[manufacturer.lowercase()]
+    /** Transsion's makers appear as "TECNO", "INFINIX MOBILITY LIMITED", "itel", ... */
+    private val transsionPrefixes = listOf("tecno", "infinix", "itel")
+
+    fun brand(manufacturer: String = Build.MANUFACTURER): OemBrand? {
+        val m = manufacturer.lowercase()
+        return brands[m] ?: OemBrand.TRANSSION.takeIf { transsionPrefixes.any(m::startsWith) }
+    }
 
     fun isRelevant(manufacturer: String = Build.MANUFACTURER): Boolean = brand(manufacturer) != null
 

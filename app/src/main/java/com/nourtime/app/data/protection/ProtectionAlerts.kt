@@ -18,7 +18,12 @@ data class ProtectionAlerts(
     val pinResetAtMs: Long? = null,
     /** Nour Time's notifications are off (they can be switched off from the notification shade). */
     val notificationsOff: Boolean = false,
+    /** When the PIN from "Forgot PIN?" starts working (the parent can approve it sooner), or null. */
+    val pinResetPendingUntilMs: Long? = null,
 ) {
+    /** The waiting PIN's start time while it still waits, for the parent's "approve" card. */
+    fun pendingPinReset(nowMs: Long): Long? = pinResetPendingUntilMs?.takeIf { it > nowMs }
+
     /** What to show now: USB debugging while it's on, events for a week. */
     fun visible(nowMs: Long): List<ProtectionAlert> = buildList {
         if (usbDebugging) add(ProtectionAlert.USB_DEBUGGING)
@@ -34,6 +39,7 @@ data class ProtectionAlerts(
         "usbDebugging" to usbDebugging,
         "pinResetAt" to pinResetAtMs,
         "notificationsOff" to notificationsOff,
+        "pinResetPendingUntil" to pinResetPendingUntilMs,
     )
 
     companion object {
@@ -47,6 +53,7 @@ data class ProtectionAlerts(
                 usbDebugging = m["usbDebugging"] as? Boolean ?: false,
                 pinResetAtMs = (m["pinResetAt"] as? Number)?.toLong(),
                 notificationsOff = m["notificationsOff"] as? Boolean ?: false,
+                pinResetPendingUntilMs = (m["pinResetPendingUntil"] as? Number)?.toLong(),
             )
         }
 
