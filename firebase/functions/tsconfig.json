@@ -5,7 +5,10 @@
     "target": "ES2022",
     "outDir": "lib",
     "strict": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "rootDir": "src"
   },
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
