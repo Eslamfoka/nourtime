@@ -18,6 +18,9 @@ export type PushType =
   | "PROTECTION_DEGRADED"
   | "PIN_RESET_PENDING";
 
+/** Older events aren't news: the first upload after an app update carries alerts from weeks ago. */
+export const RECENT_MS = 24 * 60 * 60_000;
+
 const newer = (b?: number | null, a?: number | null) => a != null && (b == null || a > b);
 const turnedOn = (b?: boolean, a?: boolean) => a === true && b !== true;
 
@@ -26,8 +29,9 @@ export function newAlertEvents(before: AlertsDoc | undefined, after: AlertsDoc |
   if (!after) return [];
   const b = before ?? {};
   const out: PushType[] = [];
-  if (newer(b.missedRestartAt, after.missedRestartAt)) out.push("MISSED_RESTART");
-  if (newer(b.otherUserAt, after.otherUserAt)) out.push("OTHER_USER");
+  const recent = (at?: number | null) => at != null && nowMs - at <= RECENT_MS;
+  if (newer(b.missedRestartAt, after.missedRestartAt) && recent(after.missedRestartAt)) out.push("MISSED_RESTART");
+  if (newer(b.otherUserAt, after.otherUserAt) && recent(after.otherUserAt)) out.push("OTHER_USER");
   if (turnedOn(b.usbDebugging, after.usbDebugging)) out.push("USB_DEBUGGING");
   if (turnedOn(b.notificationsOff, after.notificationsOff)) out.push("NOTIFICATIONS_OFF");
   if (turnedOn(b.protectionDegraded, after.protectionDegraded)) out.push("PROTECTION_DEGRADED");

@@ -4,7 +4,7 @@ package com.nourtime.app.data.protection
 enum class ProtectionAlert { USB_DEBUGGING, MISSED_RESTART, OTHER_USER, NOTIFICATIONS_OFF, PIN_RESET, PROTECTION_DEGRADED }
 
 /**
- * Uploaded to the parent's phone as `devices/{id}.alerts`. Times are wall-clock ms when the child's
+ * Uploaded to the parent's phone as `devices/{id}/meta/alerts` (and, for older parent apps, `devices/{id}.alerts`). Times are wall-clock ms when the child's
  * phone noticed the event.
  */
 data class ProtectionAlerts(

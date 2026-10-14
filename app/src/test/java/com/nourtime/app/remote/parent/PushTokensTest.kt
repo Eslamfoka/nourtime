@@ -1,5 +1,6 @@
 package com.nourtime.app.remote.parent
 
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -48,6 +49,27 @@ class PushTokensTest {
         assertEquals(emptySet<Pair<String, String>>(), store.docs)
         tokens.onNewToken("p1", "tokC")
         assertEquals(setOf("p1" to "tokC"), store.docs)
+    }
+
+    @Test
+    fun `signing out offline doesn't hang`() = runTest {
+        val never = object : TokenStore {
+            override suspend fun put(uid: String, token: String) = Unit
+            override suspend fun remove(uid: String, token: String) = awaitCancellation()
+        }
+        PushTokens(source, never).unregister("p1")
+        // Returned (virtual time), and this phone's token was still replaced.
+        assertEquals("tokB", source.current)
+    }
+
+    @Test
+    fun `a failed removal still replaces this phone's token`() = runTest {
+        val broken = object : TokenStore {
+            override suspend fun put(uid: String, token: String) = Unit
+            override suspend fun remove(uid: String, token: String) = throw IllegalStateException("offline")
+        }
+        PushTokens(source, broken).unregister("p1")
+        assertEquals("tokB", source.current)
     }
 
     @Test

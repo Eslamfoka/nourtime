@@ -16,15 +16,37 @@ import com.nourtime.app.service.timer.message
 
 /** Pushes on the parent's phone: the child asks for more time, an alert, a new PIN waiting for approval. */
 object ParentNotifications {
-    private const val CHANNEL = "parent_updates"
+    const val CHANNEL = "parent_updates"
+
+    /** Pushes show only with the app's notifications on and their channel not muted (null: not created yet). */
+    fun pushesOn(appEnabled: Boolean, channelImportance: Int?): Boolean =
+        appEnabled && channelImportance != NotificationManager.IMPORTANCE_NONE
+
+    /** Whether a push would show now, for the parent's home screen. */
+    fun pushesOn(context: Context): Boolean {
+        val importance = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.getSystemService(NotificationManager::class.java)?.getNotificationChannel(CHANNEL)?.importance
+        } else {
+            null
+        }
+        return pushesOn(NotificationManagerCompat.from(context).areNotificationsEnabled(), importance)
+    }
+
+    /** True when only the channel is muted (the app's notifications are on). */
+    fun channelMuted(context: Context): Boolean =
+        NotificationManagerCompat.from(context).areNotificationsEnabled() && !pushesOn(context)
+
+    fun ensureChannel(context: Context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+        val nm = context.getSystemService(NotificationManager::class.java) ?: return
+        // Creating an existing channel keeps what the parent set for it.
+        nm.createNotificationChannel(
+            NotificationChannel(CHANNEL, context.getString(R.string.parent_push_channel), NotificationManager.IMPORTANCE_HIGH),
+        )
+    }
 
     fun show(context: Context, message: PushMessage) {
-        val nm = context.getSystemService(NotificationManager::class.java) ?: return
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            nm.createNotificationChannel(
-                NotificationChannel(CHANNEL, context.getString(R.string.parent_push_channel), NotificationManager.IMPORTANCE_HIGH),
-            )
-        }
+        ensureChannel(context)
         val name = message.deviceName.ifBlank { context.getString(R.string.ask_parent_your_child) }
         val (title, body) = when (message) {
             is PushMessage.Ask -> context.getString(R.string.parent_push_ask_title) to context.getString(R.string.parent_push_ask_body, name)

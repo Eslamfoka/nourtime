@@ -30,7 +30,8 @@ describe("pushToOwner", () => {
     const s = new FakeSender();
     expect(await pushToOwner(db, s, "d1", "ASK", {}, NOW)).toBe("sent");
     expect(s.calls[0].tokens.sort()).toEqual(["t1", "t2"]);
-    expect(s.calls[0].data).toEqual({ type: "ASK", deviceId: "d1", deviceName: "Galaxy A10" });
+    // The owner's uid lets a phone drop pushes meant for an account no longer signed in on it.
+    expect(s.calls[0].data).toEqual({ type: "ASK", deviceId: "d1", deviceName: "Galaxy A10", ownerUid: "p1" });
   });
 
   it("three asks in a row send one push", async () => {

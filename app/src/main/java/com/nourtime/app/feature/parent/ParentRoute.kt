@@ -320,20 +320,26 @@ private fun ParentHomeScreen(user: ParentUser, viewModel: ParentViewModel) {
 @Composable
 private fun NotificationsOffCard() {
     val context = LocalContext.current
-    var enabled by remember { mutableStateOf(NotificationManagerCompat.from(context).areNotificationsEnabled()) }
-    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { enabled = NotificationManagerCompat.from(context).areNotificationsEnabled() }
+    // The channel exists from the start, so muting just it is seen too.
+    var enabled by remember {
+        ParentNotifications.ensureChannel(context)
+        mutableStateOf(ParentNotifications.pushesOn(context))
+    }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { enabled = ParentNotifications.pushesOn(context) }
     val openSettings = {
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && ParentNotifications.channelMuted(context)) {
+            Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_CHANNEL_ID, ParentNotifications.CHANNEL)
+        } else {
+            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+        }
         runCatching {
-            context.startActivity(
-                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-            )
+            context.startActivity(intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
         }
     }
     val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         // Refused before: Android doesn't ask again, so the settings screen is the way.
         if (!granted) openSettings()
-        enabled = NotificationManagerCompat.from(context).areNotificationsEnabled()
+        enabled = ParentNotifications.pushesOn(context)
     }
     if (enabled) return
     NourCard {
@@ -343,7 +349,8 @@ private fun NotificationsOffCard() {
         }
         Text(stringResource(R.string.parent_push_off_body), style = MaterialTheme.typography.bodyMedium)
         NourSecondaryButton(stringResource(R.string.parent_push_off_action), {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) ask.launch(Manifest.permission.POST_NOTIFICATIONS) else openSettings()
+            val needsPermission = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !ParentNotifications.channelMuted(context)
+            if (needsPermission) ask.launch(Manifest.permission.POST_NOTIFICATIONS) else openSettings()
         })
     }
 }

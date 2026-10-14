@@ -302,13 +302,15 @@ class RemoteSync @Inject constructor(
         combine(
             protectionAlerts.alerts,
             security.pendingPinActiveAt,
-            engine.status.filterNotNull().map { it.protectionDegraded }.distinctUntilChanged(),
+            engine.status.filterNotNull().map { it.protectionDegraded }.reportedDegraded(),
         ) { alerts, pending, degraded -> alerts.copy(pinResetPendingUntilMs = pending, protectionDegraded = degraded) }
             .distinctUntilChanged()
             .collect {
                 device.collection(RemotePaths.META).document(RemotePaths.ALERTS_DOC)
                     .set(it.toMap() + ("updatedAt" to FieldValue.serverTimestamp()))
                     .logIfFailed(TAG, "alerts")
+                // Still in the device document too, for parent apps not yet updated (they read only that).
+                device.update("alerts", it.toMap()).logIfFailed(TAG, "alerts (device)")
             }
     }
 

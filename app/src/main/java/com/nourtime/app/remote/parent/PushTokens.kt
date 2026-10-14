@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withTimeoutOrNull
 
 /** FCM token of this phone (Firebase in the app, a fake in tests). */
 interface PushTokenSource {
@@ -30,10 +31,15 @@ class PushTokens(private val source: PushTokenSource, private val store: TokenSt
 
     suspend fun register(uid: String) = quietly("register") { store.put(uid, source.token()) }
 
-    /** Before signing out: the delete needs the parent still signed in. */
-    suspend fun unregister(uid: String) = quietly("unregister") {
-        store.remove(uid, source.token())
-        source.delete()
+    /**
+     * Before signing out (the delete needs the parent still signed in). Bounded: offline, Firestore waits
+     * for the server forever, and signing out must still happen. This phone's token is replaced even if
+     * the server copy couldn't be removed, and pushes for the old account are dropped on arrival anyway
+     * ([pushIsFor]).
+     */
+    suspend fun unregister(uid: String) {
+        quietly("unregister") { withTimeoutOrNull(STEP_TIMEOUT_MS) { store.remove(uid, source.token()) } }
+        quietly("new token") { withTimeoutOrNull(STEP_TIMEOUT_MS) { source.delete() } }
     }
 
     suspend fun onNewToken(uid: String?, token: String) {
@@ -52,6 +58,7 @@ class PushTokens(private val source: PushTokenSource, private val store: TokenSt
 
     private companion object {
         const val TAG = "PushTokens"
+        const val STEP_TIMEOUT_MS = 5_000L
     }
 }
 

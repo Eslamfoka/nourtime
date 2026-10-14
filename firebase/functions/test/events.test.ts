@@ -10,8 +10,8 @@ describe("newAlertEvents", () => {
   });
 
   it("a newer event time is a new event", () => {
-    expect(newAlertEvents({ otherUserAt: 1 }, { otherUserAt: 2 }, NOW)).toEqual(["OTHER_USER"]);
-    expect(newAlertEvents(undefined, { missedRestartAt: 5 }, NOW)).toEqual(["MISSED_RESTART"]);
+    expect(newAlertEvents({ otherUserAt: NOW - 2000 }, { otherUserAt: NOW - 1000 }, NOW)).toEqual(["OTHER_USER"]);
+    expect(newAlertEvents(undefined, { missedRestartAt: NOW - 5000 }, NOW)).toEqual(["MISSED_RESTART"]);
   });
 
   it("a switch turning on is an event, turning off is not", () => {
@@ -24,6 +24,12 @@ describe("newAlertEvents", () => {
     expect(newAlertEvents({}, { pinResetPendingUntil: NOW + 1000 }, NOW)).toEqual(["PIN_RESET_PENDING"]);
     expect(newAlertEvents({ pinResetPendingUntil: NOW + 1000 }, { pinResetPendingUntil: null }, NOW)).toEqual([]);
     expect(newAlertEvents({}, { pinResetPendingUntil: NOW - 1 }, NOW)).toEqual([]);
+  });
+
+  it("events older than a day are not pushed (first upload after an app update)", () => {
+    const old = NOW - 25 * 60 * 60_000;
+    expect(newAlertEvents(undefined, { missedRestartAt: old, otherUserAt: old }, NOW)).toEqual([]);
+    expect(newAlertEvents(undefined, { otherUserAt: NOW - 60_000 }, NOW)).toEqual(["OTHER_USER"]);
   });
 
   it("a deleted alerts document sends nothing", () => {

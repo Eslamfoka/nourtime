@@ -38,7 +38,8 @@ export async function pushToOwner(
   const tokens = (await db.collection(`parents/${ownerUid}/tokens`).get()).docs.map((d) => d.id);
   if (tokens.length === 0) return "no-tokens";
 
-  const data = { type, deviceId, deviceName: String(device?.name ?? ""), ...extra };
+  // ownerUid: the phone drops a push for an account that is no longer the one signed in on it.
+  const data = { type, deviceId, deviceName: String(device?.name ?? ""), ownerUid, ...extra };
   const results = await sender.send(tokens, data);
   await Promise.all(
     results.map((r, i) =>

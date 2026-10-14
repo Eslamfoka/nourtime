@@ -1621,6 +1621,14 @@ Plan: [`docs/superpowers/plans/2026-10-13-parent-push-notifications.md`](superpo
   `am broadcast` to Firebase's receiver show all three kinds and open the right screen.
   **Not yet seen:** a real FCM delivery (needs the deploy below).
 
+**Final review (fresh reviewer, then one fix pass):** sign-out no longer waits forever offline (bounded,
+token always replaced) and every push carries `ownerUid`, so a phone shows only the signed-in parent's
+pushes; a muted `parent_updates` channel counts as "notifications off"; degraded protection is reported
+only after 2 minutes (`reportedDegraded`), so restarts don't alarm the parent; alerts older than a day
+aren't pushed (first upload after an update); the child also keeps writing `devices/{id}.alerts` for
+parent apps not yet updated. Deferred (minor): a rooted child app can trigger function runs beyond the
+push throttle; an FCM error loses that push; `pushState` isn't deleted with the account.
+
 ### 24.1 Deploy runbook (owner)
 1. Firebase console → project `nourtime-8d4ce` → upgrade to **Blaze**; add a budget alert (e.g. $5/month).
    Expected cost at small scale: functions run only on asks and alert changes; FCM itself is free.

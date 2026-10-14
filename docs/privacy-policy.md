@@ -64,9 +64,12 @@ phone uses an anonymous Firebase account that contains no personal information.
 **Notifications on the parent's phone.** While the parent is signed in, the parent's phone registers a
 Firebase Cloud Messaging token (a random identifier for that app installation) so Nour Time's server can
 tell it when the child asks for more time, when a protection alert appears, and when a new PIN waits for
-approval. A notification carries only the kind of event and the name of the child's phone; the text is
-written on the parent's phone. The token is deleted when the parent signs out or deletes the account. The
-child's phone receives no notifications from the server and registers no token.
+approval. A notification carries only the kind of event, the name and Nour Time's id of the child's
+phone, the parent's account id (so a phone that changed hands shows only the signed-in parent's
+notifications) and, for a waiting PIN, when it starts working; the text is written on the parent's phone.
+The token is deleted when the parent signs out (if the phone is offline then, it ignores any notification
+for an account that is no longer signed in) or deletes the account. The child's phone receives no
+notifications from the server and registers no token.
 
 Not sent, ever: the child's name, age group or gender, the PIN or the security answer, what is shown on
 the screen or typed, location, contacts, photos or messages.
@@ -158,7 +161,9 @@ version is released, and the app will ask for consent where required.
   ولي الأمر أيضًا بعد تسجيل الدخول، ولا يُرسل شيء منها قبل الربط)، وطلبات "أريد وقتًا إضافيًا" التي يرسلها الطفل من شاشة "خلص الوقت" (وقت
   الطلب ورد ولي الأمر فقط، دون أي نص). يحفظ هاتف ولي الأمر اسم حساب Google وبريده، ومعرّف إشعارات (Firebase Cloud Messaging) ما دام مسجّلًا
   للدخول، ليُخبره خادم وقت نور عندما يطلب الطفل وقتًا إضافيًا أو يظهر تنبيه حماية أو ينتظر رمز جديد موافقته؛ لا يحمل
-  الإشعار إلا نوع الحدث واسم هاتف الطفل، ويُحذف المعرّف عند تسجيل الخروج أو حذف الحساب. لا يتلقى هاتف الطفل أي
+  الإشعار إلا نوع الحدث واسم هاتف الطفل ومعرّفه في وقت نور ومعرّف حساب ولي الأمر (فلا يعرض الهاتف إلا إشعارات
+  الحساب المسجّل فيه)، وموعد بدء الرمز الجديد إن وُجد، ويُحذف المعرّف عند تسجيل الخروج (وإن كان الهاتف بلا اتصال
+  حينها فإنه يتجاهل إشعارات أي حساب لم يعد مسجّلًا) أو حذف الحساب. لا يتلقى هاتف الطفل أي
   إشعارات من الخادم. لا يُرسل أبدًا اسم الطفل ولا
   عمره ولا الرمز ولا محتوى الشاشة ولا الموقع.
 - **الأطفال:** تُعدّ هذه المعلومات عن استخدام الطفل للهاتف معلومات شخصية عنه وفق قوانين خصوصية الأطفال، ولذلك لا

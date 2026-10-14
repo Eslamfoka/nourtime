@@ -28,6 +28,13 @@ sealed interface PushMessage {
     }
 }
 
+/**
+ * Only the parent signed in on this phone gets its pushes: after a sign-out (perhaps offline, so the
+ * server still has the old token) another account's pushes are dropped here.
+ */
+fun pushIsFor(data: Map<String, String>, signedInUid: String?): Boolean =
+    signedInUid != null && data["ownerUid"] == signedInUid
+
 /** Null for anything this version doesn't know (a newer server), or without a device. */
 fun pushMessageOf(data: Map<String, String>): PushMessage? {
     val id = data["deviceId"]?.takeIf { it.isNotBlank() } ?: return null

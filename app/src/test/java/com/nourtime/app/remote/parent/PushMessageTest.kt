@@ -40,6 +40,15 @@ class PushMessageTest {
     }
 
     @Test
+    fun `only pushes for the parent signed in on this phone are shown`() {
+        val push = base + ("type" to "ASK") + ("ownerUid" to "p1")
+        assert(pushIsFor(push, signedInUid = "p1"))
+        assert(!pushIsFor(push, signedInUid = "p2"))
+        assert(!pushIsFor(push, signedInUid = null))
+        assert(!pushIsFor(base + ("type" to "ASK"), signedInUid = "p1"))
+    }
+
+    @Test
     fun `each phone and type gets its own notification, replaced rather than stacked`() {
         val a = PushMessage.Ask("d1", "x").notificationId
         assertEquals(a, PushMessage.Ask("d1", "y").notificationId)

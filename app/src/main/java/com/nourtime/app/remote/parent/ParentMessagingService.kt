@@ -32,7 +32,7 @@ class ParentMessagingService : FirebaseMessagingService() {
     /** Called on a background thread; the mode is read from the settings file first. */
     override fun onMessageReceived(message: RemoteMessage) {
         val parent = runBlocking { modes.mode.first() == AppMode.PARENT }
-        if (!parent) return
+        if (!parent || !pushIsFor(message.data, auth.user.value?.uid)) return
         pushMessageOf(message.data)?.let { ParentNotifications.show(this, it) }
     }
 
