@@ -1,5 +1,7 @@
 package com.nourtime.app.feature.onboarding
 
+import android.content.Intent
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -138,6 +140,13 @@ fun OnboardingRoute(onBackToModeChoice: () -> Unit, viewModel: OnboardingViewMod
                     onDone = viewModel::next,
                 )
 
+                OnboardingStep.OTHER_USERS -> OtherUsersStep(
+                    progress = progress,
+                    onBack = onBack,
+                    onOpen = { open(listOf(Intent(USER_SETTINGS), Intent(Settings.ACTION_SETTINGS))) },
+                    onDone = viewModel::next,
+                )
+
                 OnboardingStep.CHILD_PROFILE -> ChildProfileStep(progress, onBack, onContinue = viewModel::next)
 
                 OnboardingStep.SELECT_APPS -> SelectAppsStep(progress, onBack, onContinue = viewModel::next)
@@ -172,3 +181,6 @@ private fun OnboardingStep.permission(): NourPermission = when (this) {
     OnboardingStep.PERM_BATTERY -> NourPermission.BATTERY
     else -> error("$this is not a permission step")
 }
+
+/** The phone's Users screen (no public constant; most phones have it, otherwise Settings opens). */
+private const val USER_SETTINGS = "android.settings.USER_SETTINGS"

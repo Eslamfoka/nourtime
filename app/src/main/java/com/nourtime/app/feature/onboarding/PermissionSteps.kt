@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Group
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material.icons.rounded.VerifiedUser
@@ -121,6 +122,32 @@ fun AutostartStep(
                 },
             ),
         )
+    }
+}
+
+/**
+ * Guest and other users: Nour Time can't limit apps in another user, so the parent turns off starting
+ * one from the lock screen. Time spent there is charged to the budget anyway (TimeRules.chargeOtherUser).
+ * Only on phones that support several users.
+ */
+@Composable
+fun OtherUsersStep(
+    progress: Pair<Int, Int>?,
+    onBack: (() -> Unit)?,
+    onOpen: () -> Unit,
+    onDone: () -> Unit,
+) {
+    StepLayout(
+        progress = progress,
+        onBack = onBack,
+        actions = {
+            NourPrimaryButton(stringResource(R.string.action_open_settings), onOpen)
+            NourSecondaryButton(stringResource(R.string.autostart_done), onDone)
+        },
+    ) {
+        StepHeader(Icons.Rounded.Group, stringResource(R.string.other_users_title))
+        Text(stringResource(R.string.other_users_why), style = MaterialTheme.typography.bodyLarge)
+        HowToCard(stringResource(R.string.other_users_how))
     }
 }
 

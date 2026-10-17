@@ -50,9 +50,13 @@ service cloud.firestore {
     // Pairing codes, valid 10 minutes from createdAt (server time, so the phone's clock doesn't
     // matter). Claiming one does nothing until the child's phone confirms.
     match /pairings/{code} {
-      // Parents (Google) look codes up; a child's phone only reads its own (or learns a code is free).
+      // Only the child's phone that made a code and the parent who claimed it can read it: a parent
+      // claims blind, so no one can look codes up to learn other phones' ids or claim them first
+      // (2026-10-17 audit). A child's phone (not a Google account) may learn that a code is free.
       allow get: if signedIn()
-        && (resource == null || isGoogle() || resource.data.childUid == request.auth.uid);
+        && ((resource == null && !isGoogle())
+          || resource.data.childUid == request.auth.uid
+          || resource.data.claimedBy == request.auth.uid);
       allow list: if false;
 
       // expireAt is for the Firestore TTL policy that deletes abandoned codes (README); it may be up to

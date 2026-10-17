@@ -2,6 +2,7 @@ package com.nourtime.app.feature.onboarding
 
 import android.content.Context
 import android.content.Intent
+import android.os.UserManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nourtime.app.MainActivity
@@ -58,9 +59,14 @@ class OnboardingViewModel @Inject constructor(
     private val apps: InstalledAppsRepository,
 ) : ViewModel() {
 
-    /** Steps for this device; the autostart step only appears on OEMs that need it. */
-    val steps: List<OnboardingStep> =
-        OnboardingStep.entries.filter { it != OnboardingStep.AUTOSTART || OemAutostart.isRelevant() }
+    /** Steps for this device; autostart only on OEMs that need it, other users only where there can be any. */
+    val steps: List<OnboardingStep> = OnboardingStep.entries.filter {
+        when (it) {
+            OnboardingStep.AUTOSTART -> OemAutostart.isRelevant()
+            OnboardingStep.OTHER_USERS -> UserManager.supportsMultipleUsers()
+            else -> true
+        }
+    }
 
     val step: StateFlow<OnboardingStep?> = onboarding.step.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 

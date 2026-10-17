@@ -139,11 +139,16 @@ class TimeEngine @Inject constructor(
             budgetMs = next.budgetMs,
             lockRemainingMs = next.lockRemainingMs,
             lockElapsedMs = next.lockElapsedMs(),
+            lockPendingMs = next.lockPendingMs,
         )
     }
 
     /** Minutes earned in the Learning Hub; see [TimeRules.reward]. */
     suspend fun reward(minutes: Int) = change { TimeRules.reward(it, minutes) }
+
+    /** Back from another user after [awayMs]; see [TimeRules.chargeOtherUser]. */
+    suspend fun chargeOtherUser(awayMs: Long, lockLeftAtStartMs: Long) =
+        change { TimeRules.chargeOtherUser(it, awayMs, lockLeftAtStartMs) }
 
     /** Persists the latest state, e.g. when the service stops. */
     suspend fun flush() = mutex.withLock {

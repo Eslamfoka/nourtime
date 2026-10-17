@@ -56,11 +56,11 @@ class ClaimFlowTest {
     fun `a code that can't be claimed is reported without waiting`() = runTest {
         var waited = false
         val result = ClaimFlow.run(
-            claimOnServer = { ClaimResult.EXPIRED },
+            claimOnServer = { ClaimResult.NOT_FOUND },
             onClaimed = {},
             waitForChild = { waited = true; ClaimResult.PAIRED },
         )
-        assertEquals(ClaimResult.EXPIRED, result)
+        assertEquals(ClaimResult.NOT_FOUND, result)
         assertTrue(!waited)
     }
 }

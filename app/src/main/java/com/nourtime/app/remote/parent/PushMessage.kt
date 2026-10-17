@@ -26,6 +26,11 @@ sealed interface PushMessage {
     data class PinResetPending(override val deviceId: String, override val deviceName: String, val untilMs: Long) : PushMessage {
         override val kind get() = "PIN_RESET_PENDING"
     }
+
+    /** The child's phone stopped checking in after [lastSeenMs] (the server noticed: quiet.ts). */
+    data class Quiet(override val deviceId: String, override val deviceName: String, val lastSeenMs: Long) : PushMessage {
+        override val kind get() = "QUIET"
+    }
 }
 
 /**
@@ -42,6 +47,7 @@ fun pushMessageOf(data: Map<String, String>): PushMessage? {
     return when (val type = data["type"]) {
         "ASK" -> PushMessage.Ask(id, name)
         "PIN_RESET_PENDING" -> data["pendingUntil"]?.toLongOrNull()?.let { PushMessage.PinResetPending(id, name, it) }
+        "QUIET" -> data["lastSeenAt"]?.toLongOrNull()?.let { PushMessage.Quiet(id, name, it) }
         else -> ProtectionAlert.entries.firstOrNull { it.name == type }?.let { PushMessage.Alert(id, name, it) }
     }
 }

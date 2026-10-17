@@ -15,4 +15,6 @@ export const MIN_GAP_MS: Record<PushType, number> = {
   PROTECTION_DEGRADED: 30 * MINUTE,
   // The parent should hear about a waiting PIN at once, every time.
   PIN_RESET_PENDING: 0,
+  // Once per silence already (quiet.ts claimQuietSpell).
+  QUIET: 0,
 };

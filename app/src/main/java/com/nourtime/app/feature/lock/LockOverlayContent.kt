@@ -10,6 +10,7 @@ import com.nourtime.app.core.blocking.BlockDecision
 import com.nourtime.app.core.blocking.BlockReason
 import com.nourtime.app.core.blocking.ParentPass
 import com.nourtime.app.core.time.DeviceClock
+import com.nourtime.app.data.security.PinEntryPoint
 import com.nourtime.app.data.security.SecurityRepository
 import com.nourtime.app.feature.pin.AnswerCheckController
 import com.nourtime.app.feature.pin.PinCheckController
@@ -43,10 +44,13 @@ class OverlayParentFlow(
     /** "Forgot PIN?": opens Nour Time's own recovery (security question, then a new PIN). */
     var onForgotPin: () -> Unit = {}
 
+    /** While this pad waits after wrong PINs: opens Nour Time, whose own pad counts apart. */
+    var onUseApp: () -> Unit = {}
+
     private val _stage = MutableStateFlow(ParentStage.CHILD)
     val stage: StateFlow<ParentStage> = _stage.asStateFlow()
 
-    val pin = PinCheckController(scope, security, clock) { onPinCorrect() }
+    val pin = PinCheckController(scope, security, clock, PinEntryPoint.LOCK_SCREEN) { onPinCorrect() }
     val answer = AnswerCheckController(scope, security, clock) {
         _stage.value = ParentStage.CHILD
         pass.grantFull()
@@ -64,6 +68,11 @@ class OverlayParentFlow(
     fun forgotPin() {
         _stage.value = ParentStage.CHILD
         onForgotPin()
+    }
+
+    fun useApp() {
+        _stage.value = ParentStage.CHILD
+        onUseApp()
     }
 
     fun phoneOnly() {
@@ -118,6 +127,7 @@ fun LockOverlayContent(
                 onDigit = parentFlow.pin::onDigit,
                 onDelete = parentFlow.pin::onDelete,
                 onForgot = parentFlow::forgotPin,
+                onUseApp = parentFlow::useApp,
             )
         }
         ParentStage.ANSWER -> ParentPanelFrame(onBack = parentFlow::back) {

@@ -35,6 +35,7 @@ import com.nourtime.app.remote.model.StatusThrottle
 import com.nourtime.app.remote.model.SyncAction
 import com.nourtime.app.remote.model.statusMap
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.channels.awaitClose
@@ -97,13 +98,14 @@ class RemoteSync @Inject constructor(
                     launch { syncSettings(device, owner, confirmed) }
                     launch {
                         confirmed.await()
-                        launch { applyCommands(device, owner) }
-                        launch { uploadStatus(device) }
-                        launch { uploadUsage(device) }
-                        launch { uploadApps(device) }
-                        launch { uploadLearning(device) }
-                        launch { uploadAlerts(device) }
-                        launch { followRequests(device) }
+                        // Each on its own: one failing (e.g. the app list upload) doesn't stop the others.
+                        alone(device, "commands") { applyCommands(device, owner) }
+                        alone(device, "status") { uploadStatus(device) }
+                        alone(device, "usage") { uploadUsage(device) }
+                        alone(device, "apps") { uploadApps(device) }
+                        alone(device, "learning") { uploadLearning(device) }
+                        alone(device, "alerts") { uploadAlerts(device) }
+                        alone(device, "requests") { followRequests(device) }
                     }
                 }
                 false
@@ -124,6 +126,19 @@ class RemoteSync @Inject constructor(
             }
         }
     }
+
+    private fun CoroutineScope.alone(device: DocumentReference, name: String, block: suspend () -> Unit) = launch {
+        runAlone(name, { endsSync(device, it) }, { msg, e -> Log.w(TAG, msg, e) }, block)
+    }
+
+    /**
+     * Errors that mean the pairing is gone, handled once for all tasks by [run]: removed by the parent,
+     * or this phone can't read its own device any more. A write one rule refused (one task's payload)
+     * is retried by that task alone.
+     */
+    private suspend fun endsSync(device: DocumentReference, e: Throwable): Boolean =
+        e is RemovedByParent ||
+            (e is FirebaseFirestoreException && e.code == FirebaseFirestoreException.Code.PERMISSION_DENIED && !canStillRead(device))
 
     private suspend fun canStillRead(device: DocumentReference): Boolean = try {
         device.get(Source.SERVER).await()

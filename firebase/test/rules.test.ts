@@ -214,12 +214,28 @@ describe("pairings", () => {
     await assertFails(setDoc(doc(child(), "pairings", CODE), newPairing));
   });
 
-  it("a Google-signed-in parent claims an open code", async () => {
+  it("a Google-signed-in parent claims an open code blind, then reads it", async () => {
     await seed((db) => setDoc(doc(db, "pairings", CODE), openPairing));
-    await assertSucceeds(getDoc(doc(parent(), "pairings", CODE)));
+    await assertFails(getDoc(doc(parent(), "pairings", CODE)));
     await assertSucceeds(
       updateDoc(doc(parent(), "pairings", CODE), { claimedBy: PARENT, claimedEmail: "parent-uid@example.com", claimedName: "Mom" }),
     );
+    await assertSucceeds(getDoc(doc(parent(), "pairings", CODE)));
+  });
+
+  it("once the child deletes a claimed code, the parent can't read it either (the app takes that as gone)", async () => {
+    await seed((db) => setDoc(doc(db, "pairings", CODE), { ...openPairing, claimedBy: PARENT }));
+    await assertSucceeds(getDoc(doc(parent(), "pairings", CODE)));
+    await seed((db) => deleteDoc(doc(db, "pairings", CODE)));
+    await assertFails(getDoc(doc(parent(), "pairings", CODE)));
+  });
+
+  it("parents can't look codes up: not open ones, not someone else's claim, not even whether one exists", async () => {
+    await seed((db) => setDoc(doc(db, "pairings", CODE), openPairing));
+    await assertFails(getDoc(doc(parent(), "pairings", CODE)));
+    await assertFails(getDoc(doc(parent(), "pairings", "999999")));
+    await seed((db) => setDoc(doc(db, "pairings", CODE), { ...openPairing, claimedBy: OTHER_PARENT }));
+    await assertFails(getDoc(doc(parent(), "pairings", CODE)));
   });
 
   it("a claim can't show someone else's email", async () => {

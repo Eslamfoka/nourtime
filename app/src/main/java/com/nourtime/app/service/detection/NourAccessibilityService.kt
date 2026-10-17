@@ -18,12 +18,14 @@ import com.nourtime.app.service.blocking.LockOverlay
 import com.nourtime.app.service.timer.TimerService
 import com.nourtime.app.service.watchdog.TimerServiceKeeper
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
@@ -75,7 +77,7 @@ class NourAccessibilityService : AccessibilityService() {
         tracker.onAccessibilityConnected()
         overlay.attach(this)
         scope.launch(Dispatchers.Default.limitedParallelism(1)) {
-            for (request in refreshRequests) publishWindows()
+            refreshLoop(refreshRequests, ::publishWindows) { e -> Log.e(TAG, "window refresh failed", e) }
         }
         refreshRequests.trySend(Unit)
         scope.launch {
@@ -154,5 +156,22 @@ class NourAccessibilityService : AccessibilityService() {
 
         /** Long enough to find the app that was opened before its window became unreadable. */
         const val FALLBACK_LOOKBACK_MS = 60 * 60_000L
+    }
+}
+
+/**
+ * One window refresh per request. A refresh that throws (a system call or the tracker failing) is
+ * logged and skipped: the next event refreshes again, instead of the loop ending, which would have
+ * left detection frozen until the service reconnected (2026-10-17 audit).
+ */
+internal suspend fun refreshLoop(requests: ReceiveChannel<Unit>, publish: () -> Unit, onError: (Exception) -> Unit) {
+    for (request in requests) {
+        try {
+            publish()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            onError(e)
+        }
     }
 }

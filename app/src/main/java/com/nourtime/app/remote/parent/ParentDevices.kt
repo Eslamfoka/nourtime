@@ -129,44 +129,47 @@ class ParentDevices @Inject constructor(
             claimOnServer = {
                 // A transaction, not a plain update: offline it fails instead of waiting in the local
                 // write queue, so the claim can't reach the child long after the parent gave up.
+                // Blind: a code can't be read until it's ours (the rules), so no one can look codes up.
                 try {
-                    val (id, refusal) = firestore.runTransaction { tx ->
-                        val snap = tx.get(ref)
-                        val precheck = ClaimCheck.before(
-                            exists = snap.exists(),
-                            createdAtMs = snap.getTimestamp("createdAt")?.toDate()?.time,
-                            claimedBy = snap.getString("claimedBy"),
-                            myUid = user.uid,
-                            nowMs = System.currentTimeMillis(),
-                        )
-                        if (precheck == null) {
+                    try {
+                        firestore.runTransaction { tx ->
                             tx.update(ref, mapOf("claimedBy" to user.uid, "claimedEmail" to user.email, "claimedName" to user.name))
-                        }
-                        snap.getString("deviceId") to precheck?.takeIf { it != ClaimResult.WAITING_FOR_CHILD }
-                    }.await()
-                    deviceId = id
-                    refusal
-                } catch (e: FirebaseFirestoreException) {
-                    if (e.code == FirebaseFirestoreException.Code.PERMISSION_DENIED) {
-                        // Claimed by someone else a moment ago, or expired by server time.
-                        val other = runCatching { ref.get(Source.SERVER).await() }.getOrNull()?.getString("claimedBy")
-                        if (other != null && other != user.uid) ClaimResult.ALREADY_CLAIMED else ClaimResult.EXPIRED
-                    } else {
-                        e.toClaimResult()
+                            Unit
+                        }.await()
+                    } catch (e: FirebaseFirestoreException) {
+                        val refused = e.code == FirebaseFirestoreException.Code.PERMISSION_DENIED ||
+                            e.code == FirebaseFirestoreException.Code.NOT_FOUND
+                        if (!refused) throw e
+                        // No such code, expired, someone else's claim, or our own earlier one (a retry):
+                        // only the last can be read.
+                        val claimedBy = runCatching { ref.get(Source.SERVER).await().getString("claimedBy") }.getOrNull()
+                        ClaimCheck.afterRefusal(claimedBy, user.uid)?.let { return@run it }
                     }
+                    // Ours now, so readable: which phone it belongs to, to see it appear once the child
+                    // confirms. The claim is on the server either way: a failed read is retried below.
+                    deviceId = readDeviceId(ref)
+                    null
                 } catch (e: Exception) {
                     e.toClaimResult()
                 }
             },
             onClaimed = onClaimed,
-            waitForChild = { waitForChild(ref, user, deviceId) },
+            waitForChild = { waitForChild(ref, user, deviceId ?: readDeviceId(ref)) },
         )
     }
+
+    private suspend fun readDeviceId(ref: DocumentReference): String? =
+        runCatching { ref.get(Source.SERVER).await().getString("deviceId") }.getOrNull()
 
     private suspend fun waitForChild(ref: DocumentReference, user: ParentUser, deviceId: String?): ClaimResult {
         val pairingGone = callbackFlow {
             // Gone only by the server's word: offline, a pairing missing from the cache isn't a refusal.
-            val registration = ref.addSnapshotListener { s, _ -> trySend(s != null && !s.exists() && !s.metadata.isFromCache) }
+            // Once the child deletes it the rules deny reading it (a missing code isn't readable by a
+            // Google account), so that denial means gone too.
+            val registration = ref.addSnapshotListener { s, e ->
+                val denied = (e as? FirebaseFirestoreException)?.code == FirebaseFirestoreException.Code.PERMISSION_DENIED
+                trySend(ClaimCheck.goneOnServer(s?.exists(), s?.metadata?.isFromCache, denied))
+            }
             awaitClose { registration.remove() }
         }
         val outcome = withTimeoutOrNull(WAIT_FOR_CHILD_MS) {

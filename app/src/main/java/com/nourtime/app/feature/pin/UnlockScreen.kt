@@ -29,6 +29,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -160,6 +163,8 @@ fun PinPanel(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
     onForgot: (() -> Unit)? = null,
+    /** The lock screen's pad, while it waits: Nour Time's own pad counts its wrong PINs apart. */
+    onUseApp: (() -> Unit)? = null,
 ) {
     val attemptsLeft = state.attemptsLeft
     val pendingAt = state.notYetActiveAtMs
@@ -181,6 +186,9 @@ fun PinPanel(
             onDelete = onDelete,
             enabled = state.lockoutRemainingMs == 0L && !state.checking,
         )
+        if (onUseApp != null && state.lockoutRemainingMs > 0) {
+            NourTextButton(stringResource(R.string.pin_lock_screen_use_app), onUseApp)
+        }
         if (onForgot != null) NourTextButton(stringResource(R.string.pin_forgot), onForgot)
     }
 }
@@ -228,7 +236,13 @@ fun SecurityAnswerPanel(
             isError = state.wrong,
             supportingText = when {
                 locked -> ({ Text(stringResource(R.string.pin_locked_out, formatCountdown(state.lockoutRemainingMs))) })
-                state.wrong -> ({ Text(stringResource(R.string.answer_wrong)) })
+                state.wrong || state.attemptsLeft != null -> {
+                    val left = state.attemptsLeft?.let { n ->
+                        if (n > 0) stringResource(R.string.answer_attempts_left, n) else stringResource(R.string.answer_last_attempt)
+                    }
+                    val text = listOfNotNull(if (state.wrong) stringResource(R.string.answer_wrong) else null, left).joinToString("\n")
+                    ({ Text(text, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }) })
+                }
                 else -> null
             },
             visualTransformation = if (showAnswer) VisualTransformation.None else PasswordVisualTransformation(),

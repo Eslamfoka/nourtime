@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
+import android.os.UserManager
 import android.telecom.TelecomManager
 import com.nourtime.app.core.blocking.BlockPolicy
 import com.nourtime.app.data.apps.InstalledAppsRepository
@@ -28,6 +29,7 @@ import com.nourtime.app.core.detection.DetectionSource
 import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.UsageStatsSource
 import com.nourtime.app.core.security.ParentSession
+import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
 import com.nourtime.app.core.timer.TimerPhase
@@ -77,6 +79,7 @@ class TimerService : Service() {
     @Inject lateinit var deviceIdentity: DeviceIdentity
     @Inject lateinit var apps: InstalledAppsRepository
     @Inject lateinit var alerts: ProtectionAlertsRepository
+    @Inject lateinit var deviceClock: DeviceClock
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -86,6 +89,9 @@ class TimerService : Service() {
                 pass.onScreenOff()
                 session.onScreenOff()
             }
+            // Only this user's unlock reaches here: back from another user on any Android version,
+            // even when the process was stopped over there and missed the switch back.
+            if (intent.action == Intent.ACTION_USER_PRESENT) chargeOtherUserSoon()
             tracker.refreshScreen()
         }
     }
@@ -98,13 +104,46 @@ class TimerService : Service() {
         }
     }
 
-    // Sent to this user's running apps when the phone switches to another user (guest, second account).
+    // Sent to this user's running apps when the phone switches to another user (guest, second account)
+    // and back. Nour Time can't limit apps over there, so the time away is charged on return.
     private val userReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            Log.w(TAG, "switched to another user")
-            scope.launch { alerts.recordOtherUser(System.currentTimeMillis()) }
-            ProtectionNotifications.showProtectionAlert(this@TimerService, ProtectionAlert.OTHER_USER)
+            when (intent.action) {
+                Intent.ACTION_USER_BACKGROUND -> {
+                    Log.w(TAG, "switched to another user")
+                    val since = deviceClock.elapsedRealtime()
+                    val boot = deviceClock.bootCount()
+                    val status = engine.status.value
+                    val lockLeft = if (status?.phase == TimerPhase.LOCKED) status.lockRemainingMs else 0
+                    // The process may be frozen right after the switch: finish the write first.
+                    val pending = goAsync()
+                    scope.launch {
+                        try {
+                            alerts.recordOtherUser(System.currentTimeMillis())
+                            alerts.recordOtherUserSince(since, boot, trustedClock.now().toInstant().toEpochMilli(), lockLeft)
+                        } catch (e: Exception) {
+                            Log.w(TAG, "couldn't record the switch to another user", e)
+                        } finally {
+                            pending.finish()
+                        }
+                    }
+                    ProtectionNotifications.showProtectionAlert(this@TimerService, ProtectionAlert.OTHER_USER)
+                }
+                Intent.ACTION_USER_FOREGROUND -> chargeOtherUserSoon()
+            }
         }
+    }
+
+    private fun chargeOtherUserSoon() {
+        scope.launch { runCatching { chargeOtherUser() }.onFailure { Log.w(TAG, "other user charge failed", it) } }
+    }
+
+    /** Charges the time spent in another user, once; also after a restart that came back here. */
+    private suspend fun chargeOtherUser() {
+        val wallMs = trustedClock.now().toInstant().toEpochMilli()
+        val away = alerts.takeOtherUserAway(deviceClock.elapsedRealtime(), deviceClock.bootCount(), wallMs) ?: return
+        Log.w(TAG, "back from another user after ${away.awayMs / 1000} s")
+        engine.chargeOtherUser(away.awayMs, away.lockLeftAtStartMs)
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -140,12 +179,21 @@ class TimerService : Service() {
         ContextCompat.registerReceiver(
             this,
             userReceiver,
-            IntentFilter(Intent.ACTION_USER_BACKGROUND),
+            IntentFilter().apply {
+                addAction(Intent.ACTION_USER_BACKGROUND)
+                addAction(Intent.ACTION_USER_FOREGROUND)
+            },
             ContextCompat.RECEIVER_EXPORTED,
         )
         tracker.refreshScreen()
         if (!tracker.accessibilityConnected) tracker.onAccessibilityDisconnected(usageStats.available)
 
+        // Restarted after the phone came back from another user (the process may have been stopped
+        // over there, missing the broadcast). Only where Android can tell this user is in front (12+);
+        // elsewhere this user's next unlock (USER_PRESENT) charges it.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && getSystemService(UserManager::class.java)?.isUserForeground == true) {
+            chargeOtherUserSoon()
+        }
         scope.launch { resilient("timer") { runTimer() } }
         scope.launch { resilient("screen sync") { runScreenSync() } }
         scope.launch { resilient("usage-stats fallback") { runUsageStatsFallback() } }

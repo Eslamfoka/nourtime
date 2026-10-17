@@ -4,23 +4,35 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.NoCredentialException
 import com.google.firebase.FirebaseNetworkException
 import com.nourtime.app.core.timer.TimerPhase
-import com.nourtime.app.remote.child.PairingStates
 import com.nourtime.app.remote.model.RemoteStatus
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.IOException
 
 /** Outcome of typing or scanning a child's pairing code on the parent's phone. */
-enum class ClaimResult { NOT_FOUND, EXPIRED, ALREADY_CLAIMED, WAITING_FOR_CHILD, REFUSED, PAIRED, OFFLINE, FAILED }
+enum class ClaimResult {
+    /** No phone shows this code, it expired, or someone else claimed it: the rules don't say which. */
+    NOT_FOUND,
+    WAITING_FOR_CHILD,
+    REFUSED,
+    PAIRED,
+    OFFLINE,
+    FAILED,
+}
 
 object ClaimCheck {
-    /** Why a code can't be claimed, from the pairing document; null when it can. */
-    fun before(exists: Boolean, createdAtMs: Long?, claimedBy: String?, myUid: String, nowMs: Long): ClaimResult? = when {
-        !exists -> ClaimResult.NOT_FOUND
-        claimedBy == myUid -> ClaimResult.WAITING_FOR_CHILD
-        claimedBy != null -> ClaimResult.ALREADY_CLAIMED
-        createdAtMs != null && nowMs >= createdAtMs + PairingStates.VALID_MS -> ClaimResult.EXPIRED
-        else -> null
-    }
+    /**
+     * After the server refused a claim: null when the code is already ours (a retry; [claimedBy] is
+     * readable only then), otherwise why it can't be claimed.
+     */
+    fun afterRefusal(claimedBy: String?, myUid: String): ClaimResult? =
+        if (claimedBy == myUid) null else ClaimResult.NOT_FOUND
+
+    /**
+     * Whether the claimed code is gone (the child refused, or confirmed and cleaned up), from its
+     * listener: missing by the server's word, or no longer readable at all ([denied]).
+     */
+    fun goneOnServer(exists: Boolean?, fromCache: Boolean?, denied: Boolean): Boolean =
+        denied || (exists == false && fromCache == false)
 }
 
 /**

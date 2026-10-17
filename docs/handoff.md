@@ -3,7 +3,9 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (2026-10-14):** push notifications to the parent's phone are built and tested on the
+> **Resume here (2026-10-17):** the fresh audit's technical fixes are done ([§25](#25-2026-10-17-fresh-audit-fixes-before-the-closed-test-ship-after-fixes)): PIN lockouts apart, quiet-phone push, other users, sync isolation, unreadable pairing codes, App Check prepared. **Owner:** §25.1 (deploy rules + functions with the new build, then App Check).
+
+> **Earlier (2026-10-14):** push notifications to the parent's phone are built and tested on the
 > emulators ([§24](#24-2026-10-14-push-notifications-to-the-parents-phone-fcm-on-blaze)); the owner
 > upgrades to Blaze and deploys with the runbook in §24.1. Firestore rules were deployed 2026-10-13.
 
@@ -1643,3 +1645,45 @@ push throttle; an FCM error loses that push; `pushState` isn't deleted with the 
 5. Check: on the child's phone tap "Ask for more time" with the parent's app closed → a notification
    on the parent's phone within seconds. Logs: Firebase console → Functions → `onTimeRequest`
    ("ask push … sent").
+
+## 25. 2026-10-17: fresh-audit fixes before the closed test (SHIP AFTER FIXES)
+
+The committee's verdict was SHIP AFTER FIXES. The owner takes the Play Console, launch packet and
+business items; these are the technical ones.
+
+| Fix | Where | Tests |
+|---|---|---|
+| **PIN lockouts apart.** The lock screen's "For parents" pad and Nour Time's own pad count wrong PINs separately (`PinEntryPoint`); a correct PIN anywhere clears both. While the lock screen's pad waits, it offers "Enter the PIN in Nour Time instead" (Nour Time's screens are never covered). | `SecurityRepository`, `ParentCheckControllers`, `LockOverlayContent`, `LockOverlay`, `UnlockScreen` | `SecurityRepositoryTest`, `PinCheckControllerTest` |
+| **Answer attempts shown.** The security-answer screen says how many wrong answers are left before the 24-hour wait, also on a later visit, and announces it to TalkBack. | `SecurityRepository.answerAttemptsLeft`, `UnlockScreen` | same |
+| **Quiet phone push.** Scheduled function `checkQuietDevices` (every 30 min): a paired phone with no status upload for 12 h (`QUIET_AFTER_MS`, long enough for a phone off overnight; given up after 7 days) gets one `QUIET` push per silence to the parent's phones. Covers safe mode + clearing Nour Time's data, which leaves no alert. A failed push gives the silence back for the next run; one phone's error doesn't stop the others. | `functions/src/quiet.ts`, `index.ts`; parent: `PushMessage.Quiet`, `ParentNotifications` | `quiet.test.ts`, `quiet-db.test.ts`, `PushMessageTest` |
+| **Other users.** Setup step "Guest and other users" (only where `UserManager.supportsMultipleUsers()`): turn off "Add users from lock screen". Time in another user is charged on return (`ACTION_USER_FOREGROUND`, this user's next unlock, or the next service start on Android 12+): it comes off the time left; a lock running at the switch is paused (given back, or restarted with what was left if it ran out meanwhile). A restart in the other user is measured in trusted wall time, at most 24 h. | `OnboardingStep.OTHER_USERS`, `OtherUsersStep`, `TimeRules.chargeOtherUser`, `ProtectionAlertsRepository`, `TimerService` | `OtherUserChargeTest`, `ProtectionAlertsRepositoryTest` |
+| **Sync tasks alone.** Each `RemoteSync` task retries by itself (5 s doubling to 60 s); only "removed by parent", or permission denied *and* this phone can no longer read its own device, still end the whole sync (they unpair). The Accessibility window-refresh loop survives a failed refresh. | `remote/child/SyncTasks.kt`, `RemoteSync`, `NourAccessibilityService.refreshLoop` | `SyncTasksTest`, `RefreshLoopTest` |
+| **Pairing codes unreadable.** Only the child's phone that made a code and the parent who claimed it can read it; a Google account can't even learn whether a code exists. The parent claims blind (a write-only transaction), then reads the device id; once the child deletes the code the parent's listener is denied, which the app takes as gone (refused). "Expired" and "already used" now share the "didn't work" message, because the parent's phone can no longer tell them apart. | `firestore.rules`, `ParentDevices.claim`, `ClaimCheck` | `rules.test.ts` (55), `ClaimCheckTest` |
+| **App Check prepared.** Play Integrity in release builds, debug provider in debug builds against the real project, nothing against the emulator. Not enforced until the owner turns it on. | `app/src/{release,debug}/…/AppCheckSetup.kt`, `FirebaseModule` | build only |
+| Small: `TimeEngine.change()` now publishes `lockPendingMs` too (break status was stale after a reward or command). | `TimeEngine` | — |
+
+### 25.1 Owner: deploy and switch on (after §24.1's Blaze upgrade)
+1. **Deploy rules and functions together with the new app build.** Older parent apps read a code before
+   claiming it, so they can't pair once the new rules are live (nothing is released yet, so only test
+   phones are affected: update both).
+   `FUNCTIONS_DISCOVERY_TIMEOUT=90 npx firebase deploy --only firestore:rules,functions --project nourtime-8d4ce`.
+   `checkQuietDevices` needs Cloud Scheduler in the functions' region: if the deploy refuses
+   `me-central2` for it, give that one function a nearby region (only it, the triggers stay).
+2. **App Check:** Firebase console → App Check → register the Android app with **Play Integrity**
+   (needs the SHA-256 of the Play app-signing key, Play Console → App integrity). Watch the metrics for
+   a week of the closed test, then **Enforce** for Firestore and Authentication. Sideloaded release
+   APKs fail Play Integrity: once enforced, testers must install from Play. Debug builds against the
+   real project: add the token from logcat (`DebugAppCheckProvider`) under Manage debug tokens.
+3. Check the quiet push: pair a test phone, turn it off for 12 h → one notification on the parent's
+   phone; turning it back on and off again gives a new one.
+
+### 25.2 Not covered (still open)
+- Safe mode itself can't be blocked without Device Owner; the quiet push only tells the parent.
+- Instrumented tests for `TimerService`, `BlockCoordinator` and the DAOs (audit item 3) and
+  Samsung/Xiaomi device runs: not done in this pass.
+- Phones set up before this version don't see the new setup step; a Home reminder could follow.
+- Separate PIN counts let a child guess on both pads: about twice as fast, still months for a 4-digit PIN.
+- A parent's "end lock" from their phone while the child is in another user is undone on return
+  (the lock that was running at the switch resumes); rare, and the parent can end it again.
+- An anonymous account can still tell whether a code is in use (the child's code generation needs
+  that); it can't read or claim one. App Check limits bulk probing.

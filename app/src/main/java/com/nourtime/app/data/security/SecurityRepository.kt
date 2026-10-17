@@ -29,7 +29,8 @@ import javax.inject.Singleton
 
 sealed interface AnswerCheckResult {
     data object Correct : AnswerCheckResult
-    data object Wrong : AnswerCheckResult
+    /** [attemptsBeforeLockout] more wrong answers are free; the one after that starts a day's wait. */
+    data class Wrong(val attemptsBeforeLockout: Int) : AnswerCheckResult
     data class LockedOut(val remainingMs: Long) : AnswerCheckResult
 }
 
@@ -41,6 +42,13 @@ sealed interface PinCheckResult {
     /** The new PIN from "Forgot PIN?", which starts working at [activeAtMs] (wall clock). Not a wrong PIN. */
     data class NotYetActive(val activeAtMs: Long) : PinCheckResult
 }
+
+/**
+ * Where a PIN is typed. Each place counts its own wrong PINs: the lock screen's "For parents" pad is
+ * the one a child taps at random, and that mustn't make the parent wait in Nour Time itself. A correct
+ * PIN anywhere clears both counts.
+ */
+enum class PinEntryPoint { APP, LOCK_SCREEN }
 
 /**
  * Parent PIN and security question. Only salted hashes are stored.
@@ -71,7 +79,7 @@ class SecurityRepository @Inject constructor(
         val hashed = withContext(Dispatchers.Default) { hasher.hash(pin) }
         store.edit {
             it[PIN_HASH] = hashed.encode()
-            it.writeAttempts(PIN_ATTEMPTS, PinAttemptPolicy.onSuccess())
+            it.clearPinAttempts()
             it.clearPendingPin()
         }
     }
@@ -98,13 +106,13 @@ class SecurityRepository @Inject constructor(
         approved
     }
 
-    suspend fun verifyPin(pin: String): PinCheckResult = attemptMutex.withLock {
+    suspend fun verifyPin(pin: String, from: PinEntryPoint = PinEntryPoint.APP): PinCheckResult = attemptMutex.withLock {
         activatePendingIfDue()
         val prefs = store.data.first()
         val stored = prefs[PIN_HASH]?.let(HashedSecret::decode) ?: return PinCheckResult.NoPin
         val pending = prefs.pendingPin()
         val result = checkWithLockout(
-            PIN_ATTEMPTS,
+            pinAttempts(from),
             PinAttemptPolicy,
             verify = { hasher.verify(pin, stored) },
             // The waiting PIN is neither right nor wrong yet: the screen says when it starts working.
@@ -112,8 +120,12 @@ class SecurityRepository @Inject constructor(
         )
         when (result) {
             is Attempt.Correct -> {
-                // The parent knows the current PIN: a waiting reset (perhaps the child's) is cancelled.
-                if (pending != null) store.edit { it.clearPendingPin() }
+                // The parent knows the current PIN: a waiting reset (perhaps the child's) is cancelled,
+                // and the other place's wrong PINs are forgiven too.
+                store.edit {
+                    it.clearPinAttempts()
+                    it.clearPendingPin()
+                }
                 PinCheckResult.Success
             }
             is Attempt.Neutral -> PinCheckResult.NotYetActive(pending!!.activeAtMs)
@@ -132,8 +144,12 @@ class SecurityRepository @Inject constructor(
 
     private fun MutablePreferences.activate(pending: PendingPin) {
         this[PIN_HASH] = pending.hash
-        writeAttempts(PIN_ATTEMPTS, PinAttemptPolicy.onSuccess())
+        clearPinAttempts()
         clearPendingPin()
+    }
+
+    private fun MutablePreferences.clearPinAttempts() {
+        PinEntryPoint.entries.forEach { writeAttempts(pinAttempts(it), PinAttemptPolicy.onSuccess()) }
     }
 
     private fun MutablePreferences.clearPendingPin() {
@@ -151,20 +167,31 @@ class SecurityRepository @Inject constructor(
 
     private suspend fun nowMs(): Long = wall.now().toInstant().toEpochMilli()
 
-    /** Remaining wrong-PIN lockout in ms, or 0. */
-    suspend fun lockoutRemaining(): Long = attemptMutex.withLock { remainingLockout(PIN_ATTEMPTS, PinAttemptPolicy) }
+    /** Remaining wrong-PIN lockout in ms at [from], or 0. */
+    suspend fun lockoutRemaining(from: PinEntryPoint = PinEntryPoint.APP): Long =
+        attemptMutex.withLock { remainingLockout(pinAttempts(from), PinAttemptPolicy) }
 
     /** Remaining wrong-answer lockout in ms, or 0. */
     suspend fun answerLockoutRemaining(): Long = attemptMutex.withLock { remainingLockout(ANSWER_ATTEMPTS, AnswerAttemptPolicy) }
 
+    /** Wrong answers left before a day's wait, or null when none has been wrong yet. */
+    suspend fun answerAttemptsLeft(): Int? = attemptMutex.withLock {
+        val failures = store.data.first().readAttempts(ANSWER_ATTEMPTS).failures
+        if (failures == 0) null else AnswerAttemptPolicy.attemptsBeforeLockout(failures)
+    }
+
     /** Checks the security answer: three wrong answers, then a day per further one ([AnswerAttemptPolicy]). */
     suspend fun checkAnswer(answer: String): AnswerCheckResult = attemptMutex.withLock {
-        val stored = store.data.first()[ANSWER_HASH]?.let(HashedSecret::decode) ?: return AnswerCheckResult.Wrong
+        val prefs = store.data.first()
+        // No answer stored (lost settings): nothing can match, and nothing is counted.
+        val stored = prefs[ANSWER_HASH]?.let(HashedSecret::decode)
+            ?: return AnswerCheckResult.Wrong(AnswerAttemptPolicy.attemptsBeforeLockout(prefs.readAttempts(ANSWER_ATTEMPTS).failures))
         val r = checkWithLockout(ANSWER_ATTEMPTS, AnswerAttemptPolicy, verify = { hasher.verify(AnswerNormalizer.normalize(answer), stored) })
         when (r) {
             is Attempt.Correct -> AnswerCheckResult.Correct
             is Attempt.Locked -> AnswerCheckResult.LockedOut(r.remainingMs)
-            is Attempt.Wrong, is Attempt.Neutral -> AnswerCheckResult.Wrong
+            is Attempt.Wrong -> AnswerCheckResult.Wrong(AnswerAttemptPolicy.attemptsBeforeLockout(r.failures))
+            is Attempt.Neutral -> AnswerCheckResult.Wrong(0)
         }
     }
 
@@ -247,6 +274,11 @@ class SecurityRepository @Inject constructor(
         this[keys.lockBoot] = state.bootCount
     }
 
+    private fun pinAttempts(from: PinEntryPoint) = when (from) {
+        PinEntryPoint.APP -> PIN_ATTEMPTS
+        PinEntryPoint.LOCK_SCREEN -> LOCK_SCREEN_PIN_ATTEMPTS
+    }
+
     companion object {
         /** How long a PIN set through the security answer waits, unless the parent's phone approves it. */
         const val PIN_RESET_WAIT_MS = 24 * 60 * 60_000L
@@ -257,6 +289,7 @@ class SecurityRepository @Inject constructor(
         private val PENDING_PIN_HASH = stringPreferencesKey("pin_pending_hash")
         private val PENDING_PIN_AT = longPreferencesKey("pin_pending_active_at")
         private val PIN_ATTEMPTS = AttemptKeys("pin")
+        private val LOCK_SCREEN_PIN_ATTEMPTS = AttemptKeys("pin_lock_screen")
         private val ANSWER_ATTEMPTS = AttemptKeys("answer")
     }
 }

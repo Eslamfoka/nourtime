@@ -29,6 +29,7 @@ object FirebaseModule {
     @Provides
     @Singleton
     fun auth(): FirebaseAuth = FirebaseAuth.getInstance().also {
+        AppCheckSetup.install()
         if (usesEmulator) it.useEmulator(BuildConfig.FIREBASE_EMULATOR_HOST, AUTH_EMULATOR_PORT)
     }
 
@@ -40,6 +41,7 @@ object FirebaseModule {
     @Provides
     @Singleton
     fun firestore(): FirebaseFirestore = FirebaseFirestore.getInstance().also {
+        AppCheckSetup.install()
         if (usesEmulator) it.useEmulator(BuildConfig.FIREBASE_EMULATOR_HOST, FIRESTORE_EMULATOR_PORT)
     }
 }

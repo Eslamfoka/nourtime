@@ -179,8 +179,6 @@ fun AddChildDialog(user: ParentUser, onClose: () -> Unit, viewModel: AddChildVie
 private fun messageFor(result: ClaimResult): Int = when (result) {
     ClaimResult.PAIRED -> R.string.add_child_paired
     ClaimResult.NOT_FOUND -> R.string.add_child_not_found
-    ClaimResult.EXPIRED -> R.string.add_child_expired
-    ClaimResult.ALREADY_CLAIMED -> R.string.add_child_taken
     ClaimResult.WAITING_FOR_CHILD -> R.string.add_child_timeout
     ClaimResult.REFUSED -> R.string.add_child_refused
     ClaimResult.OFFLINE -> R.string.add_child_offline

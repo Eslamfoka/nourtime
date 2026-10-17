@@ -33,10 +33,19 @@ class PushMessageTest {
     }
 
     @Test
+    fun `reads a phone that stopped checking in, with when it last did`() {
+        assertEquals(
+            PushMessage.Quiet("d1", "Galaxy A10", 1_800_000_000_000),
+            pushMessageOf(base + ("type" to "QUIET") + ("lastSeenAt" to "1800000000000")),
+        )
+    }
+
+    @Test
     fun `unknown types, a missing device or a bad time are ignored`() {
         assertNull(pushMessageOf(base + ("type" to "WIPE")))
         assertNull(pushMessageOf(mapOf("type" to "ASK")))
         assertNull(pushMessageOf(base + ("type" to "PIN_RESET_PENDING") + ("pendingUntil" to "soon")))
+        assertNull(pushMessageOf(base + ("type" to "QUIET")))
     }
 
     @Test

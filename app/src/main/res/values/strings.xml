@@ -54,6 +54,7 @@
     <string name="device_pin_reset_approve">Approve the new PIN</string>
     <string name="device_pin_reset_approve_body">The new PIN will work on your child\'s phone straight away.</string>
     <string name="pin_locked_out">Too many attempts. Try again in %1$s</string>
+    <string name="pin_lock_screen_use_app">Enter the PIN in Nour Time instead</string>
     <string name="pin_delete">Delete</string>
 
     <!-- Security question -->
@@ -108,6 +109,9 @@
     <string name="perm_battery_why">Some phones put background apps to sleep to save battery. Allowing Nour Time to run without restrictions keeps the timer accurate. Nour Time uses very little battery.</string>
     <string name="perm_battery_how">On the next screen, find Nour Time (you may need to show \"All apps\" first) and choose \"Don\'t optimize\" or \"Unrestricted\".</string>
 
+    <string name="other_users_title">Guest and other users</string>
+    <string name="other_users_why">This phone can switch to a guest or another user, where Nour Time can\'t limit any app. Time spent in another user counts against the budget, and a lock period doesn\'t run down meanwhile, but it\'s best to switch it off.</string>
+    <string name="other_users_how">In the screen that opens (Settings → System → Multiple users, or Users), turn off \"Add users from lock screen\". If you don\'t use other users, turn off Multiple users too and remove any guest or extra user.</string>
     <string name="autostart_title">Autostart</string>
     <string name="autostart_why">%1$s phones can stop apps from starting on their own. Allow Nour Time to autostart so protection comes back after the phone restarts.</string>
     <string name="autostart_how">In the screen that opens, turn on Nour Time. If it doesn\'t open, look for \"Autostart\" or \"App launch\" in the phone\'s settings.</string>
@@ -232,6 +236,8 @@
     <string name="answer_title">Security question</string>
     <string name="answer_body">A lock period is running. Answer your security question to continue.</string>
     <string name="answer_wrong">That\'s not the answer.</string>
+    <string name="answer_attempts_left">Wrong answers left before a 24-hour wait: %1$d</string>
+    <string name="answer_last_attempt">One more wrong answer means a 24-hour wait.</string>
     <string name="answer_submit">Continue</string>
     <string name="lock_parent_pin_body">Enter the parent PIN to continue.</string>
     <string name="lock_settings_pin_body">This part of the phone is for grown-ups. Parents: enter your PIN to open it.</string>
@@ -404,9 +410,7 @@
     <string name="add_child_confirm_on_child">Now tap \"Allow\" on your child\'s phone.</string>
     <string name="add_child_sending">Connecting…</string>
     <string name="add_child_paired">Connected! Your child\'s phone is now in your list.</string>
-    <string name="add_child_not_found">No phone is showing this code. Check the digits, or get a new code on your child\'s phone.</string>
-    <string name="add_child_expired">This code has expired. Get a new code on your child\'s phone.</string>
-    <string name="add_child_taken">Someone else already used this code. Get a new code on your child\'s phone.</string>
+    <string name="add_child_not_found">This code didn\'t work. Check the digits: a code also stops working after 10 minutes or once it\'s used. You can get a new code on your child\'s phone.</string>
     <string name="add_child_timeout">Your child\'s phone hasn\'t confirmed yet. Tap \"Allow\" on it, then try again.</string>
     <string name="add_child_refused">Your child\'s phone didn\'t allow the connection.</string>
     <string name="add_child_offline">No internet connection. Connect and try again.</string>
@@ -452,6 +456,8 @@
     <string name="parent_push_ask_body">%1$s is asking for more time.</string>
     <string name="parent_push_alert_title">Protection on %1$s</string>
     <string name="parent_push_pin_body">A new PIN was chosen on %1$s with the security question. It starts working on %2$s. Tap to approve it, or unlock that phone with the current PIN to cancel it.</string>
+    <string name="parent_push_quiet_title">%1$s stopped checking in</string>
+    <string name="parent_push_quiet_body">Nour Time on %1$s last checked in on %2$s. The phone may be off or offline, or Nour Time may have been stopped or reset. Check that phone when you can.</string>
     <string name="parent_push_off_title">Notifications are off</string>
     <string name="parent_push_off_body">You won\'t hear when your child asks for more time or when protection needs attention.</string>
     <string name="parent_push_off_action">Turn on notifications</string>

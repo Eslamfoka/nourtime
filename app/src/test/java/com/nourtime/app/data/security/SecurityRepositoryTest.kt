@@ -79,6 +79,43 @@ class SecurityRepositoryTest {
     }
 
     @Test
+    fun `wrong PINs on the lock screen don't make the parent wait in the app`() = runTest {
+        repo.setPin("4827")
+        // A child tapping at random, waiting out each lockout, up to the longest one.
+        repeat(9) {
+            repo.verifyPin("0000", PinEntryPoint.LOCK_SCREEN)
+            clock.now += 60 * 60_000L
+        }
+        repo.verifyPin("0000", PinEntryPoint.LOCK_SCREEN)
+        assertEquals(60 * 60_000L, repo.lockoutRemaining(PinEntryPoint.LOCK_SCREEN))
+        assertEquals(0L, repo.lockoutRemaining(PinEntryPoint.APP))
+        // The app's pad still has all its free attempts, and the right PIN works there at once.
+        assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("1111", PinEntryPoint.APP))
+        assertEquals(PinCheckResult.Success, repo.verifyPin("4827", PinEntryPoint.APP))
+        // The parent is proven: the lock screen's count is forgiven too.
+        assertEquals(0L, repo.lockoutRemaining(PinEntryPoint.LOCK_SCREEN))
+        assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("0000", PinEntryPoint.LOCK_SCREEN))
+    }
+
+    @Test
+    fun `wrong PINs in the app don't lock the lock screen's pad`() = runTest {
+        repo.setPin("4827")
+        repeat(5) { repo.verifyPin("0000") }
+        assertEquals(30_000L, repo.lockoutRemaining(PinEntryPoint.APP))
+        assertEquals(PinCheckResult.Success, repo.verifyPin("4827", PinEntryPoint.LOCK_SCREEN))
+        assertEquals(0L, repo.lockoutRemaining(PinEntryPoint.APP))
+    }
+
+    @Test
+    fun `reboot does not clear a lock screen lockout`() = runTest {
+        repo.setPin("4827")
+        repeat(5) { repo.verifyPin("0000", PinEntryPoint.LOCK_SCREEN) }
+        clock.now = 1_000
+        clock.boot = 2
+        assertEquals(30_000L, repo.lockoutRemaining(PinEntryPoint.LOCK_SCREEN))
+    }
+
+    @Test
     fun `reboot does not clear a lockout`() = runTest {
         repo.setPin("4827")
         repeat(5) { repo.verifyPin("0000") }
@@ -92,14 +129,18 @@ class SecurityRepositoryTest {
         repo.setSecurityQuestion("  اسم قرية جدتي؟ ", "أبو حمص")
         assertEquals("اسم قرية جدتي؟", repo.securityQuestion.first())
         assertEquals(AnswerCheckResult.Correct, repo.checkAnswer("ابو  حمص"))
-        assertEquals(AnswerCheckResult.Wrong, repo.checkAnswer("طنطا"))
+        assertEquals(AnswerCheckResult.Wrong(2), repo.checkAnswer("طنطا"))
     }
 
     @Test
     fun `three wrong answers, then answers are locked for a day, independently of the PIN`() = runTest {
         repo.setPin("4827")
         repo.setSecurityQuestion("Question?", "blue")
-        repeat(3) { assertEquals(AnswerCheckResult.Wrong, repo.checkAnswer("red")) }
+        assertNull(repo.answerAttemptsLeft())
+        assertEquals(AnswerCheckResult.Wrong(2), repo.checkAnswer("red"))
+        assertEquals(AnswerCheckResult.Wrong(1), repo.checkAnswer("red"))
+        assertEquals(AnswerCheckResult.Wrong(0), repo.checkAnswer("red"))
+        assertEquals(0, repo.answerAttemptsLeft())
         assertEquals(AnswerCheckResult.LockedOut(day), repo.checkAnswer("red"))
         assertEquals(AnswerCheckResult.LockedOut(day), repo.checkAnswer("blue"))
         // The PIN has its own counter.

@@ -54,6 +54,7 @@
     <string name="device_pin_reset_approve">الموافقة على الرمز الجديد</string>
     <string name="device_pin_reset_approve_body">سيعمل الرمز الجديد على هاتف طفلك فورًا.</string>
     <string name="pin_locked_out">محاولات كثيرة. حاول مرة أخرى بعد %1$s</string>
+    <string name="pin_lock_screen_use_app">أدخل الرمز في تطبيق وقت نور بدلًا من ذلك</string>
     <string name="pin_delete">حذف</string>
 
     <!-- Security question -->
@@ -108,6 +109,9 @@
     <string name="perm_battery_why">بعض الهواتف توقف التطبيقات في الخلفية لتوفير البطارية. السماح لوقت نور بالعمل دون قيود يُبقي المؤقت دقيقًا. يستهلك وقت نور القليل جدًا من البطارية.</string>
     <string name="perm_battery_how">في الشاشة التالية، ابحث عن وقت نور (قد تحتاج أولًا إلى عرض \"كل التطبيقات\") واختر \"عدم التحسين\" أو \"غير مقيّد\".</string>
 
+    <string name="other_users_title">الضيف والمستخدمون الآخرون</string>
+    <string name="other_users_why">يمكن لهذا الهاتف التبديل إلى ضيف أو مستخدم آخر، ولا يستطيع وقت نور تحديد أي تطبيق هناك. الوقت الذي يُقضى في مستخدم آخر يُخصم من الرصيد، ولا تنقضي فترة القفل في أثنائه، لكن الأفضل إيقاف هذه الميزة.</string>
+    <string name="other_users_how">في الشاشة التي ستفتح (الإعدادات ← النظام ← مستخدمون متعددون، أو المستخدمون)، أوقف \"إضافة مستخدمين من شاشة القفل\". وإن كنت لا تستخدم مستخدمين آخرين، فأوقف ميزة المستخدمين المتعددين أيضًا واحذف أي ضيف أو مستخدم إضافي.</string>
     <string name="autostart_title">التشغيل التلقائي</string>
     <string name="autostart_why">قد تمنع هواتف %1$s التطبيقات من العمل تلقائيًا. اسمح لوقت نور بالتشغيل التلقائي لتعود الحماية بعد إعادة تشغيل الهاتف.</string>
     <string name="autostart_how">في الشاشة التي ستفتح، فعّل وقت نور. إن لم تفتح، ابحث عن \"التشغيل التلقائي\" أو \"تشغيل التطبيقات\" في إعدادات الهاتف.</string>
@@ -242,6 +246,8 @@
     <string name="answer_title">سؤال الأمان</string>
     <string name="answer_body">فترة القفل جارية. أجب عن سؤال الأمان للمتابعة.</string>
     <string name="answer_wrong">هذه ليست الإجابة.</string>
+    <string name="answer_attempts_left">الإجابات الخاطئة المتبقية قبل انتظار 24 ساعة: %1$d</string>
+    <string name="answer_last_attempt">إجابة خاطئة أخرى تعني الانتظار 24 ساعة.</string>
     <string name="answer_submit">متابعة</string>
     <string name="lock_parent_pin_body">أدخل رمز الأهل للمتابعة.</string>
     <string name="lock_settings_pin_body">هذا الجزء من الهاتف للكبار. أيها الأهل: أدخلوا الرمز لفتحه.</string>
@@ -414,9 +420,7 @@
     <string name="add_child_confirm_on_child">اضغط الآن \"اسمح\" على هاتف طفلك.</string>
     <string name="add_child_sending">جارٍ الربط…</string>
     <string name="add_child_paired">تم الربط! أصبح هاتف طفلك في قائمتك.</string>
-    <string name="add_child_not_found">لا يوجد هاتف يعرض هذا الرمز. تحقق من الأرقام، أو اطلب رمزًا جديدًا على هاتف طفلك.</string>
-    <string name="add_child_expired">انتهت صلاحية هذا الرمز. اطلب رمزًا جديدًا على هاتف طفلك.</string>
-    <string name="add_child_taken">استخدم شخص آخر هذا الرمز. اطلب رمزًا جديدًا على هاتف طفلك.</string>
+    <string name="add_child_not_found">لم يعمل هذا الرمز. تحقق من الأرقام: يتوقف الرمز أيضًا بعد 10 دقائق أو بعد استخدامه. يمكنك طلب رمز جديد على هاتف طفلك.</string>
     <string name="add_child_timeout">لم يؤكد هاتف طفلك بعد. اضغط \"اسمح\" عليه ثم حاول مرة أخرى.</string>
     <string name="add_child_refused">لم يسمح هاتف طفلك بالربط.</string>
     <string name="add_child_offline">لا يوجد اتصال بالإنترنت. اتصل وحاول مرة أخرى.</string>
@@ -462,6 +466,8 @@
     <string name="parent_push_ask_body">وصل طلب وقت إضافي من %1$s.</string>
     <string name="parent_push_alert_title">الحماية على %1$s</string>
     <string name="parent_push_pin_body">اختير رمز جديد على %1$s باستخدام سؤال الأمان، ويبدأ العمل في %2$s. اضغط للموافقة عليه، أو افتح ذلك الهاتف بالرمز الحالي لإلغائه.</string>
+    <string name="parent_push_quiet_title">انقطع الاتصال بـ %1$s</string>
+    <string name="parent_push_quiet_body">آخر اتصال لوقت نور على %1$s كان في %2$s. قد يكون الهاتف مغلقًا أو بلا إنترنت، أو ربما أُوقف وقت نور أو أُعيد ضبطه. تفقّد ذلك الهاتف عندما تستطيع.</string>
     <string name="parent_push_off_title">الإشعارات متوقفة</string>
     <string name="parent_push_off_body">لن تعرف عندما يطلب طفلك وقتًا إضافيًا أو عندما تحتاج الحماية إلى انتباه.</string>
     <string name="parent_push_off_action">تشغيل الإشعارات</string>

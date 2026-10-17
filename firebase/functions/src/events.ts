@@ -16,7 +16,9 @@ export type PushType =
   | "USB_DEBUGGING"
   | "NOTIFICATIONS_OFF"
   | "PROTECTION_DEGRADED"
-  | "PIN_RESET_PENDING";
+  | "PIN_RESET_PENDING"
+  // Not an alert from the phone: the server noticed it stopped checking in (quiet.ts).
+  | "QUIET";
 
 /** Older events aren't news: the first upload after an app update carries alerts from weeks ago. */
 export const RECENT_MS = 24 * 60 * 60_000;

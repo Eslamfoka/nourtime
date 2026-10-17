@@ -160,6 +160,31 @@ object TimeRules {
         return state.copy(phase = TimerPhase.AVAILABLE, remainingMs = remaining, lockRemainingMs = 0, bonusMs = remaining, lockPendingMs = state.lockRemainingMs)
     }
 
+    /**
+     * Time the phone spent in another user (guest, second account), where Nour Time can't see or limit
+     * apps. [lockLeftAtStartMs] is the lock time left when it switched away (0 = no lock running).
+     * - No lock then: the time counts as use of the limited apps; it comes off the time left, and a
+     *   lock starts when that runs out.
+     * - A lock then: the lock is paused while away, so a guest session can't wait it out. The lock
+     *   time that ran down meanwhile is given back, and a lock that ran out meanwhile starts again
+     *   with what was left of it.
+     */
+    fun chargeOtherUser(state: TimerState, awayMs: Long, lockLeftAtStartMs: Long = 0): TimerState {
+        if (awayMs <= 0) return state
+        val lockLeft = minOf(lockLeftAtStartMs, state.lockMs)
+        return when {
+            // Still locked: back to what was left at the switch (a lock started meanwhile, e.g. from the
+            // parent's phone, stays as it is).
+            state.phase == TimerPhase.LOCKED -> state.copy(lockRemainingMs = maxOf(state.lockRemainingMs, lockLeft))
+            lockLeft > 0 -> startLock(state.copy(lockPendingMs = lockLeft))
+            else -> {
+                val left = (state.remainingMs - awayMs).coerceAtLeast(0)
+                val charged = state.copy(remainingMs = left, bonusMs = minOf(state.bonusMs, left))
+                if (left == 0L) startLock(charged) else charged
+            }
+        }
+    }
+
     /** Starts a lock period, or resumes the one a break paused. */
     private fun startLock(state: TimerState) = state.copy(
         phase = TimerPhase.LOCKED,

@@ -3,8 +3,10 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getMessaging } from "firebase-admin/messaging";
 import { logger } from "firebase-functions/v2";
 import { onDocumentCreated, onDocumentWritten } from "firebase-functions/v2/firestore";
+import { onSchedule } from "firebase-functions/v2/scheduler";
 import { REGION } from "./config.js";
 import { type AlertsDoc, newAlertEvents } from "./events.js";
+import { claimQuietSpell, quietDevices, releaseQuietSpell } from "./quiet.js";
 import { pushToOwner, type Sender } from "./send.js";
 
 initializeApp();
@@ -32,5 +34,26 @@ export const onAlertsChanged = onDocumentWritten({ document: "devices/{id}/meta/
     const extra: Record<string, string> = type === "PIN_RESET_PENDING" ? { pendingUntil: String(after?.pinResetPendingUntil) } : {};
     const result = await pushToOwner(db, fcm, event.params.id, type, extra, Date.now());
     logger.info("alert push", { device: event.params.id, type, result });
+  }
+});
+
+/**
+ * A child's phone that stopped checking in: off, offline, or Nour Time stopped or reset (safe mode
+ * then clearing its data leaves no alert behind). One push per silence.
+ */
+export const checkQuietDevices = onSchedule({ schedule: "every 30 minutes", region: REGION }, async () => {
+  const now = Date.now();
+  for (const { id, lastSeenMs } of await quietDevices(db, now)) {
+    // One phone's failure mustn't cost the others their push, nor its own: it's tried again next run.
+    let claimed = false;
+    try {
+      claimed = await claimQuietSpell(db, id, lastSeenMs, now);
+      if (!claimed) continue;
+      const result = await pushToOwner(db, fcm, id, "QUIET", { lastSeenAt: String(lastSeenMs) }, now);
+      logger.info("quiet push", { device: id, lastSeenMs, result });
+    } catch (e) {
+      logger.error("quiet push failed", { device: id, error: String(e) });
+      if (claimed) await releaseQuietSpell(db, id, lastSeenMs).catch(() => undefined);
+    }
   }
 });

@@ -6,8 +6,8 @@
   "engines": { "node": "22" },
   "scripts": {
     "build": "tsc",
-    "test": "vitest run test/events.test.ts test/throttle.test.ts",
-    "test:send": "vitest run test/send.test.ts"
+    "test": "vitest run test/events.test.ts test/throttle.test.ts test/quiet.test.ts",
+    "test:send": "vitest run test/send.test.ts test/quiet-db.test.ts"
   },
   "dependencies": {
     "firebase-admin": "^14.5.0",

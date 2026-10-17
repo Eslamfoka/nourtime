@@ -53,6 +53,8 @@ object ParentNotifications {
             is PushMessage.Alert -> context.getString(R.string.parent_push_alert_title, name) to context.getString(message.alert.message)
             is PushMessage.PinResetPending -> context.getString(R.string.device_pin_reset_title) to
                 context.getString(R.string.parent_push_pin_body, name, time(context, message.untilMs))
+            is PushMessage.Quiet -> context.getString(R.string.parent_push_quiet_title, name) to
+                context.getString(R.string.parent_push_quiet_body, name, time(context, message.lastSeenMs))
         }
         val open = PendingIntent.getActivity(
             context,

@@ -4,6 +4,7 @@ import com.nourtime.app.core.security.PinRules
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.data.security.AnswerCheckResult
 import com.nourtime.app.data.security.PinCheckResult
+import com.nourtime.app.data.security.PinEntryPoint
 import com.nourtime.app.data.security.SecurityRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -25,11 +26,15 @@ data class PinUiState(
     val notYetActiveAtMs: Long? = null,
 )
 
-/** PIN entry with lockout countdown. Shared by the app's unlock screen and the lock overlay. */
+/**
+ * PIN entry with lockout countdown. Shared by the app's unlock screen and the lock overlay, which
+ * count their wrong PINs apart ([entryPoint]).
+ */
 class PinCheckController(
     private val scope: CoroutineScope,
     private val security: SecurityRepository,
     private val clock: DeviceClock,
+    private val entryPoint: PinEntryPoint = PinEntryPoint.APP,
     private val onSuccess: () -> Unit,
 ) {
     private val _state = MutableStateFlow(PinUiState())
@@ -39,7 +44,7 @@ class PinCheckController(
     private var countdown: Job? = null
 
     init {
-        scope.launch { startCountdown(security.lockoutRemaining()) }
+        scope.launch { startCountdown(security.lockoutRemaining(entryPoint)) }
     }
 
     fun reset() {
@@ -64,7 +69,7 @@ class PinCheckController(
     private fun verify(pin: String) {
         _state.update { it.copy(checking = true) }
         scope.launch {
-            val result = security.verifyPin(pin)
+            val result = security.verifyPin(pin, entryPoint)
             input = ""
             when (result) {
                 PinCheckResult.Success -> {
@@ -103,6 +108,8 @@ data class AnswerUiState(
     val answer: String = "",
     val checking: Boolean = false,
     val wrong: Boolean = false,
+    /** Wrong answers left before a day's wait, once one has been wrong (also from an earlier visit). */
+    val attemptsLeft: Int? = null,
     val lockoutRemainingMs: Long = 0,
 )
 
@@ -119,7 +126,9 @@ class AnswerCheckController(
 
     init {
         scope.launch {
-            _state.update { it.copy(question = security.securityQuestion.first().orEmpty()) }
+            val question = security.securityQuestion.first().orEmpty()
+            val left = security.answerAttemptsLeft()
+            _state.update { it.copy(question = question, attemptsLeft = left) }
             startCountdown(security.answerLockoutRemaining())
         }
     }
@@ -133,12 +142,14 @@ class AnswerCheckController(
         scope.launch {
             when (val result = security.checkAnswer(s.answer)) {
                 AnswerCheckResult.Correct -> {
-                    _state.update { it.copy(answer = "", checking = false) }
+                    _state.update { it.copy(answer = "", checking = false, attemptsLeft = null) }
                     onSuccess()
                 }
-                AnswerCheckResult.Wrong -> _state.update { it.copy(checking = false, wrong = true) }
+                is AnswerCheckResult.Wrong -> _state.update {
+                    it.copy(checking = false, wrong = true, attemptsLeft = result.attemptsBeforeLockout)
+                }
                 is AnswerCheckResult.LockedOut -> {
-                    _state.update { it.copy(checking = false, wrong = true) }
+                    _state.update { it.copy(checking = false, wrong = true, attemptsLeft = null) }
                     startCountdown(result.remainingMs)
                 }
             }
