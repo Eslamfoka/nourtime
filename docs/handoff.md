@@ -1687,3 +1687,19 @@ business items; these are the technical ones.
   (the lock that was running at the switch resumes); rare, and the parent can end it again.
 - An anonymous account can still tell whether a code is in use (the child's code generation needs
   that); it can't read or claim one. App Check limits bulk probing.
+
+### 25.3 Verified and shipped (2026-10-17)
+- Commit `9a0c650cb2` on `master`, pushed. 575 unit tests, 55 Firestore rules tests, 16 + 9 functions
+  tests (pure + emulator), `npm run build` (tsc), lint 0 errors (67 warnings, none on changed lines),
+  `assembleRelease` OK. An independent code review found 2 high + 4 medium issues; all fixed before
+  the commit (refused pairing seen again, guest charge survives a restart, lock paused while away,
+  charge only in this user, per-task permission errors retried, quiet push per-device errors).
+- **APK:** `dist/NourTime-2026-10-17-audit-fixes-release.apk` (13.8 MB, minified, real Firebase
+  project, signed with the debug key SHA-1 `cad6d508…`, so `adb install -r` keeps data).
+- **Honor smoke test:** installed over the 2026-10-06 build with data kept; launches to the parent PIN
+  screen (Arabic, RTL fine), TimerService in the foreground, no crash in the crash buffer.
+  **Accessibility was OFF after the install** (`enabled_accessibility_services` empty); whether the
+  update or something earlier turned it off is unknown. Re-enable it on the phone (Nour Time's Home
+  shows the reminder) and watch whether an update turns it off again: if so, that's a release-blocker
+  to investigate. Not exercised on the phone: the new PIN split, the setup step, the guest charge,
+  the quiet push (needs the functions deployed).
