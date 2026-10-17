@@ -1725,5 +1725,10 @@ Run: AVD **`nourdm-test-api36`** (created for this, clean, API 36; config digits
 first run. Never without `ANDROID_SERIAL` while the Honor is plugged in (README). CI: new
 `instrumented` job, API 34 via `reactivecircus/android-emulator-runner`.
 
+CI: the first run (39032355607) failed `lockPeriod_wholeDevice_coversAnyApp` on API 34 (screen state
+read once while the slow emulator may still have shown the lock screen); fixed in `8590f9785d` (setup
+waits for a usable screen, checks detection agrees, 10 s waits, logcat saved on failure). Run
+39033184519: all three jobs green, 11/11 on API 34.
+
 Not covered yet: the Accessibility service itself (needs it enabled by the shell), the DAOs, RemoteSync
 against the emulators, the guest-user charge (its broadcasts are system-only).
