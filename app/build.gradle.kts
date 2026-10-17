@@ -23,6 +23,8 @@ android {
         versionName = "0.1.0"
         // The app speaks Arabic and English only: leave the libraries' other ~80 translations out.
         resourceConfigurations += listOf("en", "ar")
+        // Instrumented tests (app/src/androidTest) run with Hilt's test application; see HiltTestRunner.
+        testInstrumentationRunner = "com.nourtime.app.HiltTestRunner"
     }
 
     // Release signing: keystore.properties in the project root (git-ignored; see README "Release"), or
@@ -126,6 +128,13 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    kspAndroidTest(libs.hilt.compiler)
 }
 
 // SpeechCatalogTest reads the recorded clips from disk: rerun it when they change.

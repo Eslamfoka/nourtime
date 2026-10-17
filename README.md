@@ -14,9 +14,18 @@ Requirements: JDK 17, Android SDK 35.
 ./gradlew :app:testDebugUnitTest   # unit tests
 ./gradlew :app:assembleDebug       # debug APK: app/build/outputs/apk/debug/app-debug.apk
 ./gradlew :app:lintDebug           # lint (no errors expected)
+ANDROID_SERIAL=emulator-5554 ./gradlew :app:connectedDebugAndroidTest   # instrumented tests (below)
 ./gradlew :app:bundleRelease       # minified release bundle for Play: app/build/outputs/bundle/release/
 ./gradlew :app:assembleRelease     # minified release APK; both need app/google-services.json (Phase 2)
 ```
+
+### Instrumented tests
+
+`app/src/androidTest` runs the real `TimerService` and `BlockCoordinator` on an emulator (Hilt test
+application, a fresh set of data files per test, the lock screen as a "display over other apps" window).
+Use a **clean emulator kept for this** (here: AVD `nourdm-test-api36`), and always set `ANDROID_SERIAL`:
+the task runs on every connected device, replaces Nour Time there and uninstalls it afterwards, so a
+plugged-in phone would lose its setup. CI runs them on API 34.
 
 ### Release signing
 

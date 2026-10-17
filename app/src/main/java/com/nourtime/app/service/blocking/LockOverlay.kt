@@ -61,6 +61,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -87,6 +88,10 @@ class LockOverlay @Inject constructor(
     private val state = MutableStateFlow<LockScreenState?>(null)
     /** When showing failed (e.g. no overlay permission), don't retry every second. */
     private var lastFailedOpen: Long? = null
+
+    /** The screen asked for (null = none), and whether its window is up: what instrumented tests check. */
+    val requested: StateFlow<LockScreenState?> get() = state
+    val windowShown: Boolean get() = window != null
 
     /** True while the child plays in the Learning Hub (the whole-device screen-off waits). */
     @Volatile

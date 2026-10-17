@@ -1703,3 +1703,27 @@ business items; these are the technical ones.
   shows the reminder) and watch whether an update turns it off again: if so, that's a release-blocker
   to investigate. Not exercised on the phone: the new PIN split, the setup step, the guest charge,
   the quiet push (needs the functions deployed).
+
+## 26. 2026-10-17 (later): instrumented tests for TimerService and BlockCoordinator
+
+Audit item 3 (the enforcement code was never run in tests). `app/src/androidTest`, Hilt test runner
+(`HiltTestRunner`), `TestAppModule` replacing `AppModule` (own DataStore files per test, prefix
+`itest_`, in-memory Room, cheap hasher), `testing/Device` (wake + dismiss keyguard, overlay app-op,
+`waitFor`). `LockOverlay` gained read-only `requested` / `windowShown` for the checks.
+
+- `BlockCoordinatorTest` (7): nothing covers a limited app with time left; a lock covers it with the
+  time's-up screen; leaving it lifts the cover (selected apps); whole-phone lock covers any app; the
+  parent's pass and the end of the lock lift it; Settings are covered for the PIN with time left.
+- `TimerServiceTest` (4): starts in the foreground; counts only while a limited app is on screen
+  (2.5–6 s used in 4 s, none after leaving); during a lock the service's own coordinator covers the app;
+  restarting the service keeps the time left.
+- Detection is fed as Accessibility would (`tracker.onWindows`), with package names that aren't
+  installed; the overlay is the real window.
+
+Run: AVD **`nourdm-test-api36`** (created for this, clean, API 36; config digits fixed after
+`avdmanager`), `ANDROID_SERIAL=emulator-5554 ./gradlew :app:connectedDebugAndroidTest`: 11/11 passed,
+first run. Never without `ANDROID_SERIAL` while the Honor is plugged in (README). CI: new
+`instrumented` job, API 34 via `reactivecircus/android-emulator-runner`.
+
+Not covered yet: the Accessibility service itself (needs it enabled by the shell), the DAOs, RemoteSync
+against the emulators, the guest-user charge (its broadcasts are system-only).
