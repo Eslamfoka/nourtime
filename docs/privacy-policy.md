@@ -18,6 +18,12 @@ stays on the device. Nour Time never sells data, shows ads or uses analytics.**
   installer and security apps (so the child can't switch Nour Time off or uninstall it), and to go back
   to the home screen when the time is up. Nour Time never reads the text or content of any screen, or
   anything typed.
+- **Background audio of the limited apps.** From the media notifications of the apps the parent limits,
+  the Accessibility service takes only the control that plays and pauses them. During a lock period,
+  bedtime, or while protection is weakened, Nour Time pauses their music or videos (also when played
+  again from the notification shade); while the screen is on, their playback counts toward the time
+  budget. The text of notifications is never read, and other apps' notifications are ignored. This
+  stays on the device.
 - **Time used per app per day.** Stored on the device to show the parent today's usage.
 - **Apps installed later.** The list of apps already on the phone, so that a newly installed app can
   be added to the limited apps (the parent can turn this off).
@@ -57,8 +63,9 @@ account can read it:
 - "Ask for more time" requests the child sends from the "Time's up" screen: only when the request
   was made and the parent's answer (approved with how many minutes, or not now), no message text.
 
-The parent's phone stores the parent's Google account name and email (to show the child's phone who
-wants to connect) and the commands the parent sends (extra time, lock now, end the lock, approving a new PIN). The child's
+The parent's Google account name and email are stored with the connection in Cloud Firestore and on the
+child's phone (so the child's phone can show who wants to connect and who is connected); the parent's phone
+stores them too, with and the commands the parent sends (extra time, lock now, end the lock, approving a new PIN). The child's
 phone uses an anonymous Firebase account that contains no personal information.
 
 **Notifications on the parent's phone.** While the parent is signed in, the parent's phone registers a
@@ -70,6 +77,10 @@ notifications) and, for a waiting PIN, when it starts working; the text is writt
 The token is deleted when the parent signs out (if the phone is offline then, it ignores any notification
 for an account that is no longer signed in) or deletes the account. The child's phone receives no
 notifications from the server and registers no token.
+
+**"Stopped checking in" notifications.** Nour Time's server checks when each connected child's phone last
+updated its timer status (the time already sent above). If a phone hasn't for 12 hours, the parent gets one
+notification for that silence. No new information is collected for this.
 
 Not sent, ever: the child's name, age group or gender, the PIN or the security answer, what is shown on
 the screen or typed, location, contacts, photos or messages.

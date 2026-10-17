@@ -1732,3 +1732,33 @@ waits for a usable screen, checks detection agrees, 10 s waits, logcat saved on 
 
 Not covered yet: the Accessibility service itself (needs it enabled by the shell), the DAOs, RemoteSync
 against the emulators, the guest-user charge (its broadcasts are system-only).
+
+## 27. 2026-10-17 (evening): background audio of limited apps (audit M2), Play docs
+
+Owner's choices: media notifications through the Accessibility service (not audio-focus grabbing), and
+background playback counts only while the screen is on (the brief's rule).
+
+- `core/media/MediaRules` (pure): limited apps playing; which to pause (limited apps blocked = lock
+  period, bedtime or degraded detection; not with the parent's full pass; allowed apps aren't limited).
+- `service/media/MediaWatcher`: a `MediaController` per limited app's session, from the session token in
+  its media notification; publishes who plays; `pause()`.
+- `NourAccessibilityService`: also `typeNotificationStateChanged`; for **limited apps only** passes the
+  `Notification` to the watcher, which takes `EXTRA_MEDIA_SESSION` and nothing else; others ignored.
+- `BlockCoordinator`: every tick, screen on or off, pauses limited apps' playing sessions while they're
+  blocked (pressed play again in the shade → paused within a second). `TimerService`: limited playback
+  counts as use while the screen is usable.
+- Disclosures: Accessibility now lists **four** uses (in-app short + full text, service description,
+  EN + AR), privacy policy, Play Accessibility declaration (`play-compliance.md`).
+- Tests: `MediaRulesTest` (4), instrumented `LimitedMediaTest` (5) with a real `MediaSession`: notification
+  → session; non-media notification ignored; paused during a lock and again when replayed; an allowed
+  app keeps playing; background playback counts. 579 unit tests, 16/16 instrumented (API 36), lint 0 errors.
+- **Not verified:** that Android delivers a *third-party* app's media notification (with its token) to
+  the Accessibility service on real phones (tests hand the notification to the watcher directly). Check
+  on the Honor with YouTube/Spotify limited: play, let the lock start → audio stops; play from the shade
+  → stops again.
+
+Play docs (owner does the Console): Arabic listing now matches the English device-admin wording and has
+the 24-hour PIN-reset bullet; both languages mention background audio and the parent notifications;
+privacy policy covers background audio, the quiet-phone notification, and the parent's name/email in
+Firestore and on the child's phone (audit M5, `play-compliance.md` corrected too). Full descriptions:
+3,484 (en) / 2,906 (ar) of 4,000.

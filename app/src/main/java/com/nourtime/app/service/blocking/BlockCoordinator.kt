@@ -16,6 +16,7 @@ import com.nourtime.app.core.blocking.ParentPass
 import com.nourtime.app.core.blocking.ScreenOffTimer
 import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.ForegroundState
+import com.nourtime.app.core.media.MediaRules
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
@@ -34,6 +35,7 @@ import com.nourtime.app.feature.lock.AllowedApp
 import com.nourtime.app.feature.lock.LockScreenState
 import com.nourtime.app.feature.lock.templateFor
 import com.nourtime.app.service.admin.ScreenLocker
+import com.nourtime.app.service.media.MediaWatcher
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -63,6 +65,7 @@ class BlockCoordinator @Inject constructor(
     private val screenLocker: ScreenLocker,
     private val apps: InstalledAppsRepository,
     private val permissions: PermissionChecker,
+    private val media: MediaWatcher,
 ) {
     private val screenOff = ScreenOffTimer()
 
@@ -92,6 +95,18 @@ class BlockCoordinator @Inject constructor(
             Inputs(fg, status, s, periods)
         }.combine(ticker) { inputs, _ -> inputs }
             .collect { evaluate(it) }
+    }
+
+    /**
+     * Limited apps' background audio, screen on or off: paused while they're blocked, and again within
+     * a tick if the child presses play in the notification shade.
+     */
+    private fun pauseLimitedMedia(limited: Set<String>, limitedBlocked: Boolean) {
+        val toPause = MediaRules.toPause(media.sessions.value, limited, limitedBlocked, fullPass = pass.fullActive())
+        for (pkg in toPause) {
+            Log.i(TAG, "pausing $pkg's media")
+            media.pause(pkg)
+        }
     }
 
     private suspend fun evaluate(inputs: Inputs) {
@@ -132,6 +147,8 @@ class BlockCoordinator @Inject constructor(
                 allowedDuringLock = s.allowedDuringLock,
             ),
         )
+
+        pauseLimitedMedia(s.limitedApps, limitedBlocked = timeUp || bedtime || status?.protectionDegraded == true)
 
         val hidden = dismissal.isHidden(decision, fg, s.limitedApps, clock.elapsedRealtime())
 

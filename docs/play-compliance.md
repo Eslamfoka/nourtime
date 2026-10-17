@@ -8,7 +8,7 @@ notes collect what the Play Console declarations will need.
 
 | Permission / API | Why Nour Time needs it | Where it's disclosed |
 |---|---|---|
-| **AccessibilityService** (`isAccessibilityTool` not set) | Three uses, all declared: (1) knows which apps are on screen, including picture-in-picture and split screen, so the time budget only runs while a parent-selected app is in use, and shows the "Time's up" screen over it; (2) covers the phone's Settings, the package installer and OEM security apps with the PIN screen (`BlockPolicy.SYSTEM_SETTINGS_PACKAGES`), and the Play Store while device admin is off (`APP_STORE_PACKAGES`), so the child can't disable or uninstall Nour Time; (3) performs `GLOBAL_ACTION_HOME` when the child leaves a blocked app (`LockOverlay.goHome`). From each window it reads **only the owner package name and window type**; it never reads text, view content or what the child types. | Prominent disclosure screen, the Accessibility step, and the service description in system Settings (all three uses, EN + AR, since 2026-10-12). |
+| **AccessibilityService** (`isAccessibilityTool` not set) | Four uses, all declared: (1) knows which apps are on screen, including picture-in-picture and split screen, so the time budget only runs while a parent-selected app is in use, and shows the "Time's up" screen over it; (2) covers the phone's Settings, the package installer and OEM security apps with the PIN screen (`BlockPolicy.SYSTEM_SETTINGS_PACKAGES`), and the Play Store while device admin is off (`APP_STORE_PACKAGES`), so the child can't disable or uninstall Nour Time; (3) performs `GLOBAL_ACTION_HOME` when the child leaves a blocked app (`LockOverlay.goHome`); (4) receives notification events and, for the parent-limited apps only, takes the media session token from their media notifications (`MediaWatcher`), to pause their background audio during a lock, bedtime or weakened protection and count their playback while the screen is on; other apps' notifications are ignored and no notification text is read. From each window it reads **only the owner package name and window type**; it never reads text, view content or what the child types. | Prominent disclosure screen, the Accessibility step, and the service description in system Settings (all four uses, EN + AR; the fourth since 2026-10-17). |
 | `canRetrieveWindowContent="true"` + `flagRetrieveInteractiveWindows` | Required by Android to list visible windows and read the owning package (`AccessibilityWindowInfo.getRoot().getPackageName()`). No node text is read anywhere in the code. | Same as above. |
 | `PACKAGE_USAGE_STATS` (Usage access) | Fallback foreground-app detection while Accessibility is off (fail-closed protection), and the per-app stats. | Disclosure + Usage step. |
 | `SYSTEM_ALERT_WINDOW` | Shows the "Time's up" screen over limited apps when the accessibility overlay isn't available. | Disclosure + Overlay step. |
@@ -27,7 +27,7 @@ notes collect what the Play Console declarations will need.
 ## Accessibility API declaration (Play Console text draft)
 
 > Nour Time is a parental control app that limits a child's time on apps chosen by the parent. It uses
-> the AccessibilityService API for three purposes: (1) to detect which apps are visible on the screen
+> the AccessibilityService API for four purposes: (1) to detect which apps are visible on the screen
 > (including picture-in-picture and split-screen windows), so that the time limit counts only while a
 > parent-selected app is in use, and to show a full-screen "Time's up" screen over those apps when the
 > time runs out; (2) to protect the parental controls from being disabled by the child: when the
@@ -35,7 +35,12 @@ notes collect what the Play Console declarations will need.
 > Play Store while Nour Time's device admin is off, since it can uninstall apps itself), Nour Time
 > shows its parent-PIN screen over it, so only the parent can turn off Nour Time's permissions or
 > uninstall it; (3) to return to the home screen (global action Home) when the child dismisses the
-> "Time's up" screen. For each visible window the app reads only the package name of the app that owns
+> "Time's up" screen; (4) to stop the parental limit being bypassed with background audio: it receives
+> notification events and, only for the apps the parent limited, takes the media session token from their
+> media notifications, so it can pause their music or video during a lock period (also when played again
+> from the notification shade) and count that playback toward the time limit while the screen is on.
+> Other apps' notifications are ignored, and no notification text is read. For each visible window the
+> app reads only the package name of the app that owns
 > it. It does not read, collect, store or share any text or content shown on the screen, or anything
 > the user types. What it learns from the Accessibility service stays on the device unless the parent
 > connects their own phone. Then the minutes used today on each limited app (measured with this
@@ -71,7 +76,8 @@ reason.
 ## Data safety form (submit this one form: Play takes one form for the whole app)
 
 On-device only (not declared): settings, hashed PIN and security answer, per-day usage, Learning Hub
-progress. Backups and device transfer are disabled (`allowBackup=false`, `data_extraction_rules.xml`).
+progress, and the playback state of limited apps' media sessions (from their media notifications, used
+to pause them during a lock and count their audio; never leaves the phone). Backups and device transfer are disabled (`allowBackup=false`, `data_extraction_rules.xml`).
 
 - Data collected, and shared only with the connected parent's own account, when a parent's phone is
   connected (stored in Google Cloud Firestore, encrypted in transit):
@@ -93,7 +99,9 @@ progress. Backups and device transfer are disabled (`allowBackup=false`, `data_e
   - **Device or other IDs:** a random device id generated by Nour Time; phone make/model; on the
     **parent's** phone only, the Firebase Cloud Messaging token while signed in (app functionality:
     notifications to the parent; not shared; deleted on sign-out and account deletion).
-  - **Personal info → Name, Email:** the parent's Google account (parent's phone only).
+  - **Personal info → Name, Email:** the parent's Google account name and email. Stored on the parent's
+    phone, with the connection in Firestore (`pairings`, `devices`) and on the child's phone, which shows
+    who is connecting (2026-10-17 audit, M5: earlier drafts said "parent's phone only").
 - Purpose: app functionality (parental control). Not used for ads or analytics; not sold.
 - SDKs to check before submitting: `play-services-code-scanner` (QR scan, parent's phone) and
   `firebase-crashlytics`. Read Google's data-disclosure pages for both, declare anything they list, and

@@ -1,6 +1,7 @@
 package com.nourtime.app.service.detection
 
 import android.accessibilityservice.AccessibilityService
+import android.app.Notification
 import android.content.Intent
 import android.os.Build
 import android.os.SystemClock
@@ -14,10 +15,14 @@ import com.nourtime.app.core.detection.UsageStatsSource
 import com.nourtime.app.data.mode.AppMode
 import com.nourtime.app.data.mode.AppModeRepository
 import com.nourtime.app.data.onboarding.OnboardingRepository
+import com.nourtime.app.data.settings.ParentSettingsRepository
 import com.nourtime.app.service.blocking.LockOverlay
+import com.nourtime.app.service.media.MediaWatcher
 import com.nourtime.app.service.timer.TimerService
 import com.nourtime.app.service.watchdog.TimerServiceKeeper
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.ConcurrentHashMap
+import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,8 +33,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.util.concurrent.ConcurrentHashMap
-import javax.inject.Inject
 
 /**
  * Detects which apps are on screen, including picture-in-picture and split screen.
@@ -46,6 +49,8 @@ class NourAccessibilityService : AccessibilityService() {
     @Inject lateinit var usageStats: UsageStatsSource
     @Inject lateinit var overlay: LockOverlay
     @Inject lateinit var modes: AppModeRepository
+    @Inject lateinit var settings: ParentSettingsRepository
+    @Inject lateinit var media: MediaWatcher
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -55,6 +60,9 @@ class NourAccessibilityService : AccessibilityService() {
      * one background worker, and bursts of events collapse into a single refresh.
      */
     private val refreshRequests = Channel<Unit>(Channel.CONFLATED)
+
+    /** Only these apps' media notifications are looked at (for their session handle, nothing else). */
+    @Volatile private var limitedApps: Set<String> = emptySet()
 
     // Cached so that events never wait for the settings store; until read, nothing is restarted here.
     @Volatile private var mode: AppMode? = null
@@ -84,6 +92,7 @@ class NourAccessibilityService : AccessibilityService() {
             if (onboarding.isComplete.first()) TimerService.start(this@NourAccessibilityService)
         }
         scope.launch { modes.mode.collect { mode = it } }
+        scope.launch { settings.settings.collect { limitedApps = it.limitedApps } }
         scope.launch { onboarding.isComplete.collect { setupComplete = it } }
     }
 
@@ -99,6 +108,14 @@ class NourAccessibilityService : AccessibilityService() {
                 if (pkg != null && event.windowId != AppWindow.NO_WINDOW_ID) eventPackages[event.windowId] = pkg
                 refreshRequests.trySend(Unit)
                 keeper.onEvent()
+            }
+            // A limited app's media notification: only its media session handle is taken, so its
+            // background audio can be paused during a lock and counted (MediaWatcher). Every other
+            // app's notification is ignored here, unread.
+            AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED -> {
+                val pkg = event.packageName?.toString() ?: return
+                if (pkg !in limitedApps) return
+                (event.parcelableData as? Notification)?.let { media.onMediaNotification(pkg, it) }
             }
         }
     }

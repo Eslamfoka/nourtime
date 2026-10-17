@@ -29,6 +29,7 @@ import com.nourtime.app.core.detection.DetectionSource
 import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.UsageStatsSource
 import com.nourtime.app.core.security.ParentSession
+import com.nourtime.app.core.media.MediaRules
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
@@ -38,6 +39,7 @@ import com.nourtime.app.data.settings.ParentSettingsRepository
 import com.nourtime.app.data.usage.UsageRepository
 import com.nourtime.app.remote.child.DeviceIdentity
 import com.nourtime.app.remote.child.RemoteSync
+import com.nourtime.app.service.media.MediaWatcher
 import com.nourtime.app.service.blocking.BlockCoordinator
 import dagger.Lazy
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,6 +82,7 @@ class TimerService : Service() {
     @Inject lateinit var apps: InstalledAppsRepository
     @Inject lateinit var alerts: ProtectionAlertsRepository
     @Inject lateinit var deviceClock: DeviceClock
+    @Inject lateinit var media: MediaWatcher
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -250,8 +253,10 @@ class TimerService : Service() {
 
     /** Re-evaluates on every detection or settings change, and ticks while something may be counting. */
     private suspend fun runTimer() {
-        combine(tracker.state, settings.settings) { fg, s -> fg to s }.collectLatest { (fg, s) ->
-            val inUse = fg.limitedInUse(s.limitedApps)
+        combine(tracker.state, settings.settings, media.sessions) { fg, s, playing -> Triple(fg, s, playing) }.collectLatest { (fg, s, playing) ->
+            // On screen, or playing in the background while the screen is on (owner, 2026-10-17).
+            val inUse = fg.limitedInUse(s.limitedApps) +
+                if (fg.screen.usable) MediaRules.playingLimited(playing, s.limitedApps) else emptySet()
             while (true) {
                 engine.update(inUse, fg.source, s)
                 delay(if (fg.screen.usable) TICK_MS else IDLE_TICK_MS)

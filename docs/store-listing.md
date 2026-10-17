@@ -38,24 +38,29 @@ PROTECTION PARENTS CAN TRUST
 • With device admin turned on (a setup step), Nour Time can't be uninstalled without your PIN, and the phone's Settings ask for it too.
 • Forgot the PIN? Your security question sets a new one, which starts working after 24 hours, or at once if you approve it from your own phone.
 • If protection is weakened (for example Accessibility turned off), the limited apps stay blocked and you're told.
+• Music or videos from a limited app that keep playing in the background are paused during the lock.
 
 FOLLOW FROM YOUR OWN PHONE (OPTIONAL)
 Install Nour Time on your phone, sign in with Google and connect your child's phone with a QR code.
 See the time left and today's usage, give extra time, lock now or end the lock, and change settings.
-Your child's phone asks you to confirm every connection.
+Your child's phone asks you to confirm every connection. Get a notification when your child asks for
+more time, when protection is weakened, or when their phone stops checking in.
 
 PRIVACY FIRST
 • Without a connected parent's phone, nothing leaves your child's phone.
 • No ads, no analytics, no tracking. We never collect your child's name, photos, location or messages.
-• Nour Time never reads what's on the screen or what your child types; it only needs to know which app is open.
+• Nour Time never reads what's on the screen or what your child types; it only needs to know which app is open
+  (and, for the apps you limit, whether they're playing audio).
 • Delete your account and data at any time from the app.
 
 Arabic and English, light and dark mode for parents.
 
 Nour Time uses the Accessibility service to know which apps are on the screen, so the time limit counts
 only in the apps you chose and the "Time's up" screen can appear over them; to cover the phone's Settings
-and the app installer with the PIN screen, so your child can't switch it off or uninstall it; and to go
-back to the home screen when the time is up. It reads no text or content from the screen.
+and the app installer with the PIN screen, so your child can't switch it off or uninstall it; to go
+back to the home screen when the time is up; and to pause the background audio of the apps you limit
+during the lock, taking only the playback control from their media notifications. It reads no text or
+content from the screen or from notifications.
 
 ## العربية (ar)
 
@@ -89,25 +94,31 @@ back to the home screen when the time is up. It reads no text or content from th
 
 حماية يثق بها الأهل
 • رقم سري من 4 أرقام وسؤال أمان من اختيارك يحميان الإعدادات.
-• لا يمكن إيقاف وقت نور أو إلغاء تثبيته دون رمزك.
+• عند تفعيل «مسؤول الجهاز» (خطوة في الإعداد) لا يمكن حذف وقت نور دون رمزك، وتطلب إعدادات الهاتف الرمز أيضًا.
+• نسيت الرمز؟ يضبط سؤال الأمان رمزًا جديدًا يبدأ العمل بعد 24 ساعة، أو فورًا إذا وافقت عليه من هاتفك.
 • إذا ضعفت الحماية (مثل إيقاف إمكانية الوصول) تبقى التطبيقات المحددة مقفلة ويصلك تنبيه.
+• الموسيقى أو الفيديو من تطبيق محدد إذا ظل يعمل في الخلفية يتوقف أثناء القفل.
 
 تابع من هاتفك (اختياري)
 ثبّت وقت نور على هاتفك وسجّل الدخول بحساب Google واربط هاتف طفلك برمز QR. شاهد الوقت المتبقي
 واستخدام اليوم، وامنح وقتًا إضافيًا، واقفل الآن أو أنهِ القفل، وغيّر الإعدادات. يطلب هاتف طفلك
-موافقتك على كل ربط.
+موافقتك على كل ربط. يصلك إشعار عندما يطلب طفلك وقتًا إضافيًا، أو عندما تضعف الحماية، أو عندما
+ينقطع اتصال هاتفه.
 
 الخصوصية أولًا
 • دون ربط هاتف ولي الأمر لا يغادر أي شيء هاتف طفلك.
 • لا إعلانات ولا تحليلات ولا تتبّع. لا نجمع اسم طفلك أو صوره أو موقعه أو رسائله أبدًا.
-• لا يقرأ وقت نور ما يظهر على الشاشة ولا ما يكتبه طفلك؛ يكفيه معرفة التطبيق المفتوح.
+• لا يقرأ وقت نور ما يظهر على الشاشة ولا ما يكتبه طفلك؛ يكفيه معرفة التطبيق المفتوح (وهل تشغّل التطبيقات
+  المحددة صوتًا).
 • احذف حسابك وبياناتك في أي وقت من داخل التطبيق.
 
 بالعربية والإنجليزية، مع الوضع الفاتح والداكن للأهل.
 
 يستخدم وقت نور خدمة إمكانية الوصول لمعرفة التطبيقات الظاهرة على الشاشة، حتى يُحسب الوقت في التطبيقات
 التي اخترتها فقط وتظهر شاشة «انتهى الوقت» فوقها؛ ولتغطية إعدادات الهاتف ومثبّت التطبيقات بشاشة الرمز حتى
-لا يستطيع طفلك إيقافه أو حذفه؛ وللرجوع إلى الشاشة الرئيسية عند انتهاء الوقت. لا يقرأ أي نص أو محتوى من الشاشة.
+لا يستطيع طفلك إيقافه أو حذفه؛ وللرجوع إلى الشاشة الرئيسية عند انتهاء الوقت؛ ولإيقاف صوت التطبيقات التي
+تحدّها إذا ظل يعمل في الخلفية أثناء القفل، آخذًا من إشعارات الوسائط أداة التحكم في التشغيل فقط. لا يقرأ أي
+نص أو محتوى من الشاشة أو من الإشعارات.
 
 ## Listing details
 
@@ -127,10 +138,10 @@ back to the home screen when the time is up. It reads no text or content from th
 
 ## Character counts
 
-Checked with Python (`len()` on each field) when this file was written:
+Checked with Python (`len()` on each field, line breaks included as written), last on 2026-10-17:
 
 | Field | en | ar | Limit |
 |---|---|---|---|
 | App name | 29 | 24 | 30 |
 | Short description | 79 | 62 | 80 |
-| Full description | 2,828 | 2,397 | 4,000 |
+| Full description | 3,484 | 2,906 | 4,000 |

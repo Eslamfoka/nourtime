@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Window content access is used only to read which app owns each visible window
-     (picture-in-picture, split screen). No text or view content is ever read. -->
+     (picture-in-picture, split screen). No text or view content is ever read. Notification events:
+     only the media session handle of the apps the parent limits, to pause their background audio
+     during a lock and count it while the screen is on; other notifications are ignored unread. -->
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
-    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowsChanged"
+    android:accessibilityEventTypes="typeWindowStateChanged|typeWindowsChanged|typeNotificationStateChanged"
     android:accessibilityFeedbackType="feedbackGeneric"
     android:accessibilityFlags="flagRetrieveInteractiveWindows"
     android:canRetrieveWindowContent="true"
