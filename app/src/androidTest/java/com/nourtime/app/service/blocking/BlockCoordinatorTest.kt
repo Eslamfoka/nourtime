@@ -59,7 +59,9 @@ class BlockCoordinatorTest {
         hilt.inject()
         Device.wakeAndUnlock()
         Device.allowOverlay()
+        // Read once here: without the timer service nothing re-reads it in these tests.
         tracker.refreshScreen()
+        check(tracker.state.value.screen.usable) { "detection sees a locked or dark screen" }
         settings.setAppLimited(LIMITED, true)
         settings.setLockType(LockType.SELECTED_APPS)
         tracker.onAccessibilityConnected()

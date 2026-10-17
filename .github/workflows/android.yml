@@ -104,7 +104,8 @@ jobs:
           arch: x86_64
           disable-animations: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
-          script: ./gradlew --no-daemon connectedDebugAndroidTest
+          # On failure, the phone's log too (what the coordinator decided, overlay errors).
+          script: ./gradlew --no-daemon connectedDebugAndroidTest || (adb logcat -d > app/build/reports/androidTests/logcat.txt; exit 1)
 
       - name: Instrumented test reports
         if: always()
