@@ -43,6 +43,13 @@ object Device {
         File(context.filesDir, "datastore").listFiles { f -> f.name.startsWith(TestFiles.PREFIX) }?.forEach { it.delete() }
     }
 
+    /** Every thread's stack to logcat (tag ThreadDump): where things wait when a test times out. */
+    fun dumpThreads() {
+        for ((thread, stack) in Thread.getAllStackTraces()) {
+            android.util.Log.w("ThreadDump", "${thread.name} (${thread.state})\n" + stack.joinToString("\n") { "    at $it" })
+        }
+    }
+
     /** Waits up to [timeoutMs] for [condition]; false if it never held. */
     fun waitFor(timeoutMs: Long = 10_000, condition: () -> Boolean): Boolean {
         val end = SystemClock.elapsedRealtime() + timeoutMs

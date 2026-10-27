@@ -141,12 +141,22 @@ class LimitedMediaTest {
         tracker.onAccessibilityConnected()
         // Something else is on screen: only the audio is left of the limited app.
         tracker.onWindows(listOf(AppWindow(OTHER, isApplication = true, isActive = true)))
+        // Until detection is connected protection counts as weakened, and the limited app's audio is
+        // (rightly) paused at once: wait for it, or a play in that moment is undone.
+        assertTrue("detection never connected", Device.waitFor { engine.status.value?.protectionDegraded == false })
         setPlaying(false)
         deliverMediaNotification()
+        // Each link in turn, so a failure says which one broke (it failed once in a full run on API 37).
+        assertTrue("the watcher never got the session", Device.waitFor { media.sessions.value.any { it.packageName == LIMITED && !it.playing } })
         assertTrue(Device.waitFor { engine.status.value?.counting == false })
 
         setPlaying(true)
-        assertTrue("background audio wasn't counted", Device.waitFor { engine.status.value?.counting == true })
+        assertTrue("the watcher didn't see it play", Device.waitFor { media.sessions.value.any { it.packageName == LIMITED && it.playing } })
+        assertTrue("detection sees a locked or dark screen", Device.waitFor { tracker.state.value.screen.usable })
+        assertTrue(
+            "background audio wasn't counted: status=${engine.status.value}",
+            Device.waitFor { engine.status.value?.counting == true },
+        )
         assertEquals(setOf(LIMITED), engine.status.value?.appsInUse)
         setPlaying(false)
         assertTrue(Device.waitFor { engine.status.value?.counting == false })

@@ -189,7 +189,7 @@ class BlockCoordinator @Inject constructor(
         // Logged on any change of what the decision depends on, so "why wasn't it blocked" can be read later.
         val why = "decision=$decision fg=${fg.foreground} visible=${fg.visible} source=${fg.source} hidden=$hidden " +
             "usable=${fg.screen.usable} interactive=${fg.screen.interactive} keyguard=${fg.screen.keyguardLocked} " +
-            "timeUp=$timeUp pass=${pass.deviceActive()}/${pass.fullActive()}"
+            "timeUp=$timeUp lockType=${s.lockType} pass=${pass.deviceActive()}/${pass.fullActive()}"
         if (why != lastWhy) {
             Log.i(TAG, why)
             lastWhy = why

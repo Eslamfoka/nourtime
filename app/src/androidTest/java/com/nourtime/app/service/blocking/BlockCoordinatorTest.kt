@@ -108,7 +108,12 @@ class BlockCoordinatorTest {
         settings.setLockType(LockType.WHOLE_DEVICE)
         show(OTHER)
         engine.apply(TimerCommand.LockNow)
-        assertTrue("whole-phone lock didn't open", Device.waitFor { overlay.windowShown })
+        val opened = Device.waitFor { overlay.windowShown }
+        if (!opened) {
+            android.util.Log.w("ThreadDump", "store now says lockType=${settings.settings.first().lockType}")
+            Device.dumpThreads()
+        }
+        assertTrue("whole-phone lock didn't open", opened)
         assertEquals(true, overlay.requested.value?.decision?.wholeDevice)
     }
 
