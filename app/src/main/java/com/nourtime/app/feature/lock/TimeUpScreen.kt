@@ -11,8 +11,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -54,7 +56,10 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.CenteredScrollColumn
@@ -104,22 +109,70 @@ fun TimeUpScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 ParentsButton(text, onParents, Modifier.align(Alignment.End))
-                CenteredScrollColumn(Modifier.weight(1f).fillMaxWidth()) {
-                    when (state.ageGroup) {
-                        AgeGroup.AGES_3_6 -> YoungLayout(state, style, text)
-                        AgeGroup.AGES_7_9 -> MiddleLayout(state, style, text)
-                        AgeGroup.AGES_10_12 -> OlderLayout(state, style, text)
-                    }
-                }
-                if (onBackToCall != null) BackToCallButton(onBackToCall)
-                if (onLearn != null) LearnButton(state, onLearn)
-                if (ask != null) AskRow(ask, state, text, onAsk)
-                if (state.allowedApps.isNotEmpty()) AllowedAppsRow(state, text, onOpenApp)
-                if (onOk != null) OkButton(onOk)
+                HeroAndActions(
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    hero = {
+                        when (state.ageGroup) {
+                            AgeGroup.AGES_3_6 -> YoungLayout(state, style, text)
+                            AgeGroup.AGES_7_9 -> MiddleLayout(state, style, text)
+                            AgeGroup.AGES_10_12 -> OlderLayout(state, style, text)
+                        }
+                    },
+                    actions = {
+                        if (onBackToCall != null) BackToCallButton(onBackToCall)
+                        if (onLearn != null) LearnButton(state, onLearn)
+                        if (ask != null) AskRow(ask, state, text, onAsk)
+                        if (state.allowedApps.isNotEmpty()) AllowedAppsRow(state, text, onOpenApp)
+                        if (onOk != null) OkButton(onOk)
+                    },
+                )
             }
         }
     }
 }
+
+/**
+ * Nour in the middle, the actions (and OK) fixed at the bottom, as long as that leaves Nour at least
+ * [MIN_HERO_HEIGHT]. With all actions shown they need about 450 dp, more than a landscape phone or a
+ * large font size leaves (the overlay can't fix the orientation): then Nour and the actions scroll
+ * together, so OK can't be pushed off the screen. The actions are measured first to choose.
+ */
+@Composable
+private fun HeroAndActions(
+    modifier: Modifier,
+    hero: @Composable ColumnScope.() -> Unit,
+    actions: @Composable ColumnScope.() -> Unit,
+) {
+    SubcomposeLayout(modifier) { constraints ->
+        // Measured only, never placed; hidden from TalkBack, which would otherwise read every action twice.
+        val actionsHeight = subcompose("measure") {
+            Column(Modifier.fillMaxWidth().clearAndSetSemantics {}, horizontalAlignment = Alignment.CenterHorizontally, content = actions)
+        }.sumOf { it.measure(constraints.copy(minHeight = 0, maxHeight = Constraints.Infinity)).height }
+        val fixedActions = constraints.maxHeight - actionsHeight >= MIN_HERO_HEIGHT.roundToPx()
+        val content = subcompose(fixedActions) {
+            if (fixedActions) {
+                Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    CenteredScrollColumn(Modifier.weight(1f).fillMaxWidth(), content = hero)
+                    actions()
+                }
+            } else {
+                // Spacer, Nour, actions spread out: Nour centred above the actions while they fit.
+                Column(
+                    Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).heightIn(min = constraints.maxHeight.toDp()),
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Spacer(Modifier)
+                    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, content = hero)
+                    Column(Modifier.fillMaxWidth().padding(top = 16.dp), horizontalAlignment = Alignment.CenterHorizontally, content = actions)
+                }
+            }
+        }.map { it.measure(constraints.copy(minHeight = constraints.maxHeight)) }
+        layout(constraints.maxWidth, constraints.maxHeight) { content.forEach { it.place(0, 0) } }
+    }
+}
+
+private val MIN_HERO_HEIGHT = 200.dp
 
 /** Short phones (roughly under 700 dp tall) get a smaller Nour so everything fits. */
 @Composable
