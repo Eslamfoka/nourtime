@@ -98,7 +98,7 @@ class PinRecoveryControllerTest {
         assertEquals(wallMs + day, activeAt)
         // Nothing opens now (2026-10-13 audit, H1): the new PIN waits a day.
         assertEquals(PinCheckResult.NotYetActive(activeAt!!), security.verifyPin("2580"))
-        wallMs += day
+        clock.now += day
         assertEquals(PinCheckResult.Success, security.verifyPin("2580"))
         assertTrue(security.verifyPin("4827") is PinCheckResult.Wrong)
     }

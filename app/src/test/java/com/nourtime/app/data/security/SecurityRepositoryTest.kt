@@ -1,6 +1,9 @@
 package com.nourtime.app.data.security
 
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.nourtime.app.core.security.SecretHasher
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.time.WallClock
@@ -37,10 +40,9 @@ class SecurityRepositoryTest {
     private var wallMs = 1_800_000_000_000L
     private val wall = WallClock { ZonedDateTime.ofInstant(Instant.ofEpochMilli(wallMs), ZoneOffset.UTC) }
     private val day = 24 * 60 * 60_000L
-    private val repo by lazy {
-        val store = PreferenceDataStoreFactory.create(scope = scope) { tmp.newFile("test.preferences_pb") }
-        SecurityRepository(store, SecretHasher(iterations = 1_000), clock, wall)
-    }
+    private val hasher = SecretHasher(iterations = 1_000)
+    private val store by lazy { PreferenceDataStoreFactory.create(scope = scope) { tmp.newFile("test.preferences_pb") } }
+    private val repo by lazy { SecurityRepository(store, hasher, clock, wall) }
 
     @After
     fun tearDown() = scope.cancel()
@@ -159,10 +161,73 @@ class SecurityRepositoryTest {
         assertEquals(PinCheckResult.NotYetActive(activeAt), repo.verifyPin("1593"))
         assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("0000"))
 
-        wallMs += day
+        clock.now += day - 1
+        wallMs += day - 1
+        assertEquals(PinCheckResult.NotYetActive(activeAt), repo.verifyPin("1593"))
+        clock.now += 1
         assertEquals(PinCheckResult.Success, repo.verifyPin("1593"))
         assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("4827"))
         assertNull(repo.pendingPinActiveAt.first())
+    }
+
+    @Test
+    fun `moving the date forward doesn't shorten the wait for a reset PIN`() = runTest {
+        repo.setPin("4827")
+        repo.setPinAfterRecovery("1593")
+        wallMs += 2 * day
+        assertTrue(repo.verifyPin("1593") is PinCheckResult.NotYetActive)
+        // Nor does a reboot with the date moved forward (automatic time off).
+        clock.boot = 2
+        clock.now = 1_000
+        wallMs += 2 * day
+        assertTrue(repo.verifyPin("1593") is PinCheckResult.NotYetActive)
+        assertEquals(PinCheckResult.Success, repo.verifyPin("4827"))
+    }
+
+    @Test
+    fun `a reboot keeps the wait left and doesn't count the time the phone was off`() = runTest {
+        repo.setPin("4827")
+        val firstShown = repo.setPinAfterRecovery("1593")
+        clock.now += 10 * 60 * 60_000L
+        wallMs += 10 * 60 * 60_000L
+        assertTrue(repo.verifyPin("1593") is PinCheckResult.NotYetActive)
+        // Off for five hours, then on again: elapsed time restarts and 14 hours are still left.
+        clock.boot = 2
+        clock.now = 5_000
+        wallMs += 5 * 60 * 60_000L
+        val result = repo.verifyPin("1593")
+        assertEquals(PinCheckResult.NotYetActive(wallMs + 14 * 60 * 60_000L), result)
+        // The date shown moved later by the time off.
+        assertEquals(firstShown + 5 * 60 * 60_000L, repo.pendingPinActiveAt.first())
+        clock.now += 14 * 60 * 60_000L - 1
+        assertTrue(repo.verifyPin("1593") is PinCheckResult.NotYetActive)
+        clock.now += 1
+        assertEquals(PinCheckResult.Success, repo.verifyPin("1593"))
+    }
+
+    @Test
+    fun `a reset waiting since an older version starts its wait again`() = runTest {
+        repo.setPin("4827")
+        // Saved by a version that timed the wait by the wall clock; that time has passed.
+        store.edit {
+            it[stringPreferencesKey("pin_pending_hash")] = hasher.hash("1593").encode()
+            it[longPreferencesKey("pin_pending_active_at")] = wallMs - 1
+        }
+        assertEquals(PinCheckResult.NotYetActive(wallMs + day), repo.verifyPin("1593"))
+        assertEquals(wallMs + day, repo.pendingPinActiveAt.first())
+        clock.now += day
+        assertEquals(PinCheckResult.Success, repo.verifyPin("1593"))
+    }
+
+    @Test
+    fun `using the current PIN partway through the wait cancels the reset`() = runTest {
+        repo.setPin("4827")
+        repo.setPinAfterRecovery("1593")
+        clock.now += day / 2
+        assertEquals(PinCheckResult.Success, repo.verifyPin("4827"))
+        assertNull(repo.pendingPinActiveAt.first())
+        clock.now += day
+        assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("1593"))
     }
 
     @Test
@@ -171,7 +236,7 @@ class SecurityRepositoryTest {
         repo.setPinAfterRecovery("1593")
         assertEquals(PinCheckResult.Success, repo.verifyPin("4827"))
         assertNull(repo.pendingPinActiveAt.first())
-        wallMs += day
+        clock.now += day
         assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("1593"))
         assertEquals(PinCheckResult.Success, repo.verifyPin("4827"))
     }
@@ -182,7 +247,7 @@ class SecurityRepositoryTest {
         repo.setPinAfterRecovery("1593")
         repo.setPin("2468")
         assertNull(repo.pendingPinActiveAt.first())
-        wallMs += day
+        clock.now += day
         assertEquals(PinCheckResult.Success, repo.verifyPin("2468"))
     }
 

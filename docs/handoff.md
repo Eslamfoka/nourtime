@@ -1801,3 +1801,38 @@ the lock type in BlockCoordinator's decision log, step-by-step waits in `Limited
 Verified: `./gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green (582 unit tests,
 lint 0 errors / 17 warnings); `ANDROID_SERIAL=emulator-5554 ./gradlew :app:connectedDebugAndroidTest`
 on `nourdm-test-api36`: 17/17. Not yet on an API 37 emulator or the Honor.
+
+## 29. 2026-10-27: the "Forgot PIN?" wait can't be shortened by the date
+
+**Hole:** the new PIN from the security answer started working when the wall clock passed
+`pin_pending_active_at` (now + 24 h). `TrustedClock` refuses backward jumps but accepts a forward one
+after a reboot with automatic time off, so a child who once guessed the answer could reboot, move the
+date a day ahead and have their own PIN.
+
+**Fix:** the wait is real time the phone was on, like the timer (`TimeRules.advance`). New pure
+`core/security/PinResetWait` keeps the time left plus an (elapsedRealtime, boot count) anchor; each
+count subtracts the elapsed time since the anchor, and a reboot (new boot count, or elapsed going back
+when the boot count can't be read) counts nothing, so switching off never shortens the wait (the
+owner's rule for locks). `SecurityRepository` stores it in `pin_pending_wait_remaining/_elapsed/_boot`
+and activates only when it reaches 0. `pin_pending_active_at` is now only the date shown (unlock screen,
+parent's card, `pinResetPendingUntil` in the alerts doc): now + time left, rewritten only when it moves by
+more than 15 min, so the parent isn't pushed again for nothing (a push goes out on every change of
+`pinResetPendingUntil`). The wall clock never decides.
+
+- The time left is saved on every PIN entry and every 5 min while a reset waits
+  (`keepPendingPinWaitCounting`, started from `NourTimeApp`), so a reboot loses at most 5 min of
+  progress, and a PIN nobody types still starts on time. The settings mirror copies these keys like any
+  other (a restored copy is at most 30 s older: a slightly longer wait, never a shorter one).
+- **Migration:** a reset saved by an older version (hash, no wait keys) starts its 24 h again at the
+  first check, since its wall-clock date may already have been moved. The parent's current PIN and the
+  "approve" from their phone still work at once.
+- Unchanged: the current PIN (or a normal PIN change) cancels the reset; approval activates it.
+
+Tests: `PinResetWaitTest` (4), `SecurityRepositoryTest` +4 (date moved forward, also across a reboot;
+reboot keeps the time left without the time off and moves the shown date; legacy reset restarts its
+wait; current PIN partway through cancels), existing reset tests now advance elapsed time instead of
+the wall clock (also `PinRecoveryControllerTest`). The 5-min loop itself isn't unit-tested (real I/O
+plus `delay`).
+
+Verified: `./gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green (590 unit tests,
+lint 0 errors / 20 warnings, none in the changed files). Not run on a device.
