@@ -1,17 +1,14 @@
 package com.nourtime.app.feature.home
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
@@ -37,16 +34,8 @@ fun WeekendSection(weekend: WeekendRules, onChange: (WeekendRules) -> Unit) {
     val week = (0L until 7L).map { firstDay.plus(it) }
 
     NourCard {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.weekend_title), style = MaterialTheme.typography.titleMedium)
-                Text(
-                    stringResource(R.string.weekend_hint),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            NourSwitch(weekend.enabled) { onChange(weekend.copy(enabled = it)) }
+        SwitchRow(stringResource(R.string.weekend_title), stringResource(R.string.weekend_hint), weekend.enabled) {
+            onChange(weekend.copy(enabled = it))
         }
         if (weekend.enabled) {
             Text(stringResource(R.string.weekend_days), style = MaterialTheme.typography.titleSmall)

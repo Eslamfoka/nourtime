@@ -2,10 +2,8 @@ package com.nourtime.app.feature.learning
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -47,7 +45,7 @@ import com.nourtime.app.data.learning.LearningRepository
 import com.nourtime.app.data.learning.LearningState
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
-import com.nourtime.app.feature.home.NourSwitch
+import com.nourtime.app.feature.home.SwitchRow
 import com.nourtime.app.feature.setup.durationText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -127,17 +125,7 @@ fun LearningSettingsEditor(
 ) {
     val s = settings
     run {
-        Row {
-            Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.learn_settings_toggle_title), style = MaterialTheme.typography.titleMedium)
-                Text(
-                    stringResource(R.string.learn_settings_toggle_hint),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            NourSwitch(s.enabled, onEnabled)
-        }
+        SwitchRow(stringResource(R.string.learn_settings_toggle_title), stringResource(R.string.learn_settings_toggle_hint), s.enabled, onEnabled)
         if (s.enabled) {
             Text(stringResource(R.string.learn_settings_per_level), style = MaterialTheme.typography.titleSmall)
             MinuteChips(LearningSettings.MINUTES_PER_LEVEL_OPTIONS, s.minutesPerLevel, onMinutesPerLevel)

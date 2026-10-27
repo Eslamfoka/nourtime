@@ -26,8 +26,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -341,24 +339,8 @@ private fun PermissionsRow(allowed: Boolean, onClick: () -> Unit) {
 internal fun DailyResetCard(minute: Int?, onChange: (Int?) -> Unit) {
     val context = LocalContext.current
     NourCard {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.daily_reset_title), style = MaterialTheme.typography.titleMedium)
-                Text(
-                    stringResource(R.string.daily_reset_hint),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            Switch(
-                checked = minute != null,
-                onCheckedChange = { on -> onChange(if (on) DEFAULT_RESET_MINUTE else null) },
-                colors = SwitchDefaults.colors(
-                    checkedTrackColor = NourTheme.colors.success,
-                    checkedThumbColor = MaterialTheme.colorScheme.surface,
-                    checkedBorderColor = NourTheme.colors.success,
-                ),
-            )
+        SwitchRow(stringResource(R.string.daily_reset_title), stringResource(R.string.daily_reset_hint), minute != null) { on ->
+            onChange(if (on) DEFAULT_RESET_MINUTE else null)
         }
         if (minute != null) {
             val time = formatMinuteOfDay(minute)

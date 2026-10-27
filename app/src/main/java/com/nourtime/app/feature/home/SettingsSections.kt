@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -16,8 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.NourCard
@@ -56,17 +59,31 @@ fun NourSwitch(checked: Boolean, onCheckedChange: ((Boolean) -> Unit)?) {
     )
 }
 
+/**
+ * A title and hint with a switch. The whole row is the switch (like the app list), so TalkBack reads the
+ * title with "On, switch" and a tap anywhere on it toggles.
+ */
+@Composable
+fun SwitchRow(title: String, hint: String, checked: Boolean, onChange: (Boolean) -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.small)
+            .toggleable(value = checked, role = Role.Switch, onValueChange = onChange),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(title, style = MaterialTheme.typography.titleMedium)
+            Text(hint, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        NourSwitch(checked, onCheckedChange = null)
+    }
+}
+
 @Composable
 internal fun ToggleCard(title: String, hint: String, checked: Boolean, onChange: (Boolean) -> Unit) {
-    NourCard {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Column(Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.titleMedium)
-                Text(hint, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            NourSwitch(checked, onChange)
-        }
-    }
+    NourCard { SwitchRow(title, hint, checked, onChange) }
 }
 
 /** Lock type (brief §3): only the selected apps, or the whole phone. */
@@ -100,17 +117,7 @@ internal fun BedtimeCard(
 ) {
     val context = LocalContext.current
     NourCard {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Column(Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.titleMedium)
-                Text(
-                    hint,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            NourSwitch(bedtime.enabled) { onChange(bedtime.copy(enabled = it)) }
-        }
+        SwitchRow(title, hint, bedtime.enabled) { onChange(bedtime.copy(enabled = it)) }
         if (bedtime.enabled) {
             Text(
                 stringResource(R.string.bedtime_window, formatMinuteOfDay(bedtime.startMinute), formatMinuteOfDay(bedtime.endMinute)),
