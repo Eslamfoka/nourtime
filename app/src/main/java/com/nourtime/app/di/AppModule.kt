@@ -14,6 +14,7 @@ import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.timer.TimekeepingMigration
 import com.nourtime.app.core.timer.TimekeepingStore
 import com.nourtime.app.data.db.NourDatabase
+import com.nourtime.app.data.RecheckingDataStore
 import com.nourtime.app.data.backup.SettingsBackup
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,9 +45,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideDataStore(@ApplicationContext context: Context, backup: SettingsBackup): DataStore<Preferences> =
-        SettingsBackup.mainStore(backup, CoroutineScope(Dispatchers.IO + SupervisorJob())) {
-            context.preferencesDataStoreFile("nour_prefs")
-        }
+        RecheckingDataStore(
+            SettingsBackup.mainStore(backup, CoroutineScope(Dispatchers.IO + SupervisorJob())) {
+                context.preferencesDataStoreFile("nour_prefs")
+            },
+        )
 
     /** The timer's and trusted clock's state, written while the child uses the phone; see [TimekeepingStore]. */
     @Provides

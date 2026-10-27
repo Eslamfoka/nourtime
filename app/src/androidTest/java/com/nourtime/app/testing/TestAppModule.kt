@@ -13,6 +13,7 @@ import com.nourtime.app.core.time.AndroidDeviceClock
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.timer.TimekeepingMigration
 import com.nourtime.app.core.timer.TimekeepingStore
+import com.nourtime.app.data.RecheckingDataStore
 import com.nourtime.app.data.backup.SettingsBackup
 import com.nourtime.app.data.db.NourDatabase
 import com.nourtime.app.di.AppModule
@@ -54,9 +55,11 @@ object TestAppModule {
     @Provides
     @Singleton
     fun provideDataStore(@ApplicationContext context: Context, backup: SettingsBackup, files: TestFiles): DataStore<Preferences> =
-        SettingsBackup.mainStore(backup, CoroutineScope(Dispatchers.IO + SupervisorJob())) {
-            context.preferencesDataStoreFile(files.name("prefs"))
-        }
+        RecheckingDataStore(
+            SettingsBackup.mainStore(backup, CoroutineScope(Dispatchers.IO + SupervisorJob())) {
+                context.preferencesDataStoreFile(files.name("prefs"))
+            },
+        )
 
     @Provides
     @Singleton
