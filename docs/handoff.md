@@ -1762,3 +1762,42 @@ the 24-hour PIN-reset bullet; both languages mention background audio and the pa
 privacy policy covers background audio, the quiet-phone notification, and the parent's name/email in
 Firestore and on the child's phone (audit M5, `play-compliance.md` corrected too). Full descriptions:
 3,484 (en) / 2,906 (ar) of 4,000.
+
+## 28. 2026-10-27: toolchain upgrade (API 37) and a DataStore that can't stay behind
+
+Toolchain: AGP 8.7.3 → **9.4.1**, Gradle 8.9 → **9.8.1** (wrapper regenerated), Kotlin 2.0.21 → **2.4.21**
+(KSP 2.3.12, Hilt 2.60.1), compile/target SDK 36 → **37**; AndroidX, Compose BOM 2026.09.00, Room 2.8.5,
+DataStore 1.2.1, Firebase BoM 35.0.2 and the test libraries to current. Still builds with **JDK 17**
+(local and CI unchanged). What AGP 9 changed for us:
+
+- **Built-in Kotlin**: no `org.jetbrains.kotlin.android` plugin and no `kotlinOptions` (the JVM target
+  follows `compileOptions`). AGP bundles an older Kotlin Gradle plugin, so the root `build.gradle.kts`
+  puts `kotlin-gradle-plugin` 2.4.21 on the buildscript classpath to match the compose/serialization
+  compiler plugins.
+- `resourceConfigurations` is gone: the en/ar filter is now `androidResources.localeFilters` (same effect).
+- `android.suppressUnsupportedCompileSdk` removed (AGP 9.4 knows API 37).
+- Unit tests get the Android build of multiplatform libraries. DataStore's Android file storage can't
+  replace an existing file on Windows, so every second write failed in unit tests on the PC: unit-test
+  classpaths substitute `datastore-core-jvm` (`app/build.gradle.kts`). The app is unchanged.
+- `hilt-navigation-compose` → `hilt-lifecycle-viewmodel-compose` (`androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel`).
+- New lint/compiler findings fixed: `return` inside expression-bodied `synchronized` (ForegroundAppTracker),
+  `Locale.ROOT` instead of the default locale as fallback (WeekCard, WeekendSection), `LocalConfiguration`
+  instead of reading resources in composition (LearningSettings), a POST_NOTIFICATIONS check before
+  notifying (ParentNotifications). FCM's token calls are deprecated in firebase-messaging 25.1 in favour
+  of the Firebase installation id; suppressed in `PushTokens` / `ParentMessagingService` for now. Moving
+  over changes how the push functions address the parent's phones, so it's its own task (open).
+
+**`data/RecheckingDataStore`** wraps the main settings store (`AppModule`, `TestAppModule`). On API 37
+DataStore's flow sometimes missed a write that landed just as a collector started, and that collector
+kept the old value until the next write (1 in 300; seen as `lockPeriod_wholeDevice_coversAnyApp` failing:
+the coordinator still had "selected apps"). Each collector re-reads the store 1 s and 5 s after it
+starts; if the store holds something other than what was sent, the subscription is cancelled (joined)
+and started again, so the new one begins with the current value and an older value can't follow a newer
+one. Writes go straight to the store. Tests: `RecheckingDataStoreTest` (3, a fake store that drops the
+second subscription's updates) and instrumented `RecheckingDataStoreDeviceTest` (300 subscribers starting
+during a write, none may miss it). Instrumented diagnostics added while chasing it: `Device.dumpThreads()`,
+the lock type in BlockCoordinator's decision log, step-by-step waits in `LimitedMediaTest`.
+
+Verified: `./gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green (582 unit tests,
+lint 0 errors / 17 warnings); `ANDROID_SERIAL=emulator-5554 ./gradlew :app:connectedDebugAndroidTest`
+on `nourdm-test-api36`: 17/17. Not yet on an API 37 emulator or the Honor.
