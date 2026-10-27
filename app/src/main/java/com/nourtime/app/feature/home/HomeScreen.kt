@@ -17,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.Group
 import androidx.compose.material.icons.rounded.VerifiedUser
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -54,6 +55,8 @@ import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.designsystem.component.StatusPill
 import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.core.permissions.NourPermission
+import com.nourtime.app.core.permissions.OtherUsers
+import com.nourtime.app.core.permissions.OtherUsersState
 import com.nourtime.app.core.permissions.PermissionChecker
 import com.nourtime.app.core.ui.startFirstAvailable
 import com.nourtime.app.data.settings.AgeGroup
@@ -61,6 +64,7 @@ import com.nourtime.app.data.settings.ChildGender
 import com.nourtime.app.feature.language.LanguageCard
 import com.nourtime.app.feature.learning.LearningSettingsCard
 import com.nourtime.app.feature.lock.TimeUpPreviewDialog
+import com.nourtime.app.feature.onboarding.OtherUsersPill
 import com.nourtime.app.feature.onboarding.ui
 import com.nourtime.app.feature.remote.ParentPhoneSection
 import com.nourtime.app.feature.schedule.ScheduleTab
@@ -84,11 +88,15 @@ class PermissionsViewModel @Inject constructor(
     private val _status = MutableStateFlow(permissions.statusOfAll())
     val status: StateFlow<Map<NourPermission, Boolean>> = _status.asStateFlow()
 
+    private val _otherUsers = MutableStateFlow(permissions.otherUsers())
+    val otherUsers: StateFlow<OtherUsersState> = _otherUsers.asStateFlow()
+
     fun refresh() {
         val status = permissions.statusOfAll()
         // Seen once on the Honor right after the system restarted the app: one briefly read as off.
         status.filterValues { !it }.keys.takeIf { it.isNotEmpty() }?.let { Log.i("Permissions", "missing: $it") }
         _status.value = status
+        _otherUsers.value = permissions.otherUsers()
     }
 
     fun settingsIntents(permission: NourPermission) = permissions.settingsIntents(permission)
@@ -175,6 +183,39 @@ internal fun PermissionsSection(viewModel: PermissionsViewModel) {
                     ) { Text(stringResource(R.string.action_fix)) }
                 }
             }
+        }
+    }
+    val otherUsers by viewModel.otherUsers.collectAsStateWithLifecycle()
+    if (otherUsers != OtherUsersState.UNSUPPORTED) OtherUsersCard(otherUsers)
+}
+
+/**
+ * Guest and other users (no permission can block them): the phone's Users screen while "Multiple users"
+ * is on, or when this Android version can't tell.
+ */
+@Composable
+private fun OtherUsersCard(state: OtherUsersState) {
+    val context = LocalContext.current
+    NourCard {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Icon(Icons.Rounded.Group, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.other_users_title), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+        }
+        OtherUsersPill(state)
+        if (state.recommendTurningOff) {
+            Text(
+                stringResource(R.string.other_users_recommend),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            OutlinedButton(
+                onClick = {
+                    if (!context.startFirstAvailable(OtherUsers.settingsIntents())) {
+                        Toast.makeText(context, R.string.cannot_open_settings, Toast.LENGTH_LONG).show()
+                    }
+                },
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
+            ) { Text(stringResource(R.string.action_open_settings)) }
         }
     }
 }

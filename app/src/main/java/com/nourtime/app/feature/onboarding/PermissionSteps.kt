@@ -29,6 +29,7 @@ import com.nourtime.app.core.designsystem.component.NourTextButton
 import com.nourtime.app.core.designsystem.component.StatusPill
 import com.nourtime.app.core.permissions.NourPermission
 import com.nourtime.app.core.permissions.OemBrand
+import com.nourtime.app.core.permissions.OtherUsersState
 
 /**
  * One permission: why it's needed, how to grant it, live status. Continue unlocks once granted;
@@ -127,13 +128,15 @@ fun AutostartStep(
 
 /**
  * Guest and other users: Nour Time can't limit apps in another user, so the parent turns off starting
- * one from the lock screen. Time spent there is charged to the budget anyway (TimeRules.chargeOtherUser).
- * Only on phones that support several users.
+ * one from the lock screen, or multiple users altogether. Time spent there is charged to the budget
+ * anyway (TimeRules.chargeOtherUser). Only on phones that support several users; from Android 12 the
+ * step shows whether "Multiple users" is still on ([OtherUsersState]).
  */
 @Composable
 fun OtherUsersStep(
     progress: Pair<Int, Int>?,
     onBack: (() -> Unit)?,
+    state: OtherUsersState,
     onOpen: () -> Unit,
     onDone: () -> Unit,
 ) {
@@ -141,13 +144,30 @@ fun OtherUsersStep(
         progress = progress,
         onBack = onBack,
         actions = {
-            NourPrimaryButton(stringResource(R.string.action_open_settings), onOpen)
-            NourSecondaryButton(stringResource(R.string.autostart_done), onDone)
+            if (state == OtherUsersState.OFF) {
+                NourPrimaryButton(stringResource(R.string.action_continue), onDone)
+            } else {
+                NourPrimaryButton(stringResource(R.string.action_open_settings), onOpen)
+                NourSecondaryButton(stringResource(R.string.autostart_done), onDone)
+            }
         },
     ) {
         StepHeader(Icons.Rounded.Group, stringResource(R.string.other_users_title))
+        OtherUsersPill(state)
         Text(stringResource(R.string.other_users_why), style = MaterialTheme.typography.bodyLarge)
-        HowToCard(stringResource(R.string.other_users_how))
+        if (state != OtherUsersState.OFF) HowToCard(stringResource(R.string.other_users_how))
+    }
+}
+
+/** "Multiple users is off" / "is on"; nothing when the phone doesn't say (Android 11 and older). */
+@Composable
+fun OtherUsersPill(state: OtherUsersState) {
+    if (state == OtherUsersState.ON || state == OtherUsersState.OFF) {
+        StatusPill(
+            done = state == OtherUsersState.OFF,
+            doneText = stringResource(R.string.other_users_off),
+            pendingText = stringResource(R.string.other_users_on),
+        )
     }
 }
 

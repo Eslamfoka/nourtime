@@ -21,6 +21,7 @@ notes collect what the Play Console declarations will need.
 | `REQUEST_DELETE_PACKAGES` | Settings → *Uninstall Nour Time* opens the system uninstall dialog for Nour Time itself (after the parent's security answer). | Settings screen. |
 | `ACTION_PACKAGE_ADDED` (runtime receiver, no permission) | Limits newly installed apps by default ("Limit new apps", the parent can turn it off), so a newly installed game or browser isn't unlimited. | Settings toggle; "New app limited" notification. |
 | `Settings.Global.BOOT_COUNT` / `ADB_ENABLED`, `ACTION_USER_BACKGROUND` (no permission) | Protection alerts: a restart without Nour Time (safe mode), a switch to another user, USB debugging on, Nour Time's notifications off, a PIN reset through the security question (and when the new PIN starts working). Shown on the child's phone and, when connected, on the parent's phone. | Notification; privacy policy. |
+| `Settings.Global` `user_switcher_enabled` (hidden key, read only, no permission) | Whether the phone's "Multiple users" switch is on, so setup and the Permissions screen can recommend turning off guest and other users (Nour Time can't limit apps there). Stays on the phone, never uploaded. | Setup step "Guest and other users"; Permissions screen. |
 | `INTERNET` | Phase 2 remote control (Firebase Auth + Firestore): only used on a parent's phone, or on a child's phone after the parent connected it. | Privacy policy; the pairing screens. |
 | `<queries>` for launcher apps | Lists apps with a launcher icon for the app picker. **No `QUERY_ALL_PACKAGES`.** | — |
 

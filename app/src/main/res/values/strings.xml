@@ -110,6 +110,9 @@
     <string name="perm_battery_how">On the next screen, find Nour Time (you may need to show \"All apps\" first) and choose \"Don\'t optimize\" or \"Unrestricted\".</string>
 
     <string name="other_users_title">Guest and other users</string>
+    <string name="other_users_on">Multiple users is on</string>
+    <string name="other_users_off">Multiple users is off</string>
+    <string name="other_users_recommend">Nour Time can\'t stop a switch to a guest or another user, and limits nothing there. The time is charged on return and you\'re alerted, but it\'s safest to turn off multiple users (or at least \"Add users from lock screen\") and remove any guest.</string>
     <string name="other_users_why">This phone can switch to a guest or another user, where Nour Time can\'t limit any app. Time spent in another user counts against the budget, and a lock period doesn\'t run down meanwhile, but it\'s best to switch it off.</string>
     <string name="other_users_how">In the screen that opens (Settings → System → Multiple users, or Users), turn off \"Add users from lock screen\". If you don\'t use other users, turn off Multiple users too and remove any guest or extra user.</string>
     <string name="autostart_title">Autostart</string>

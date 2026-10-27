@@ -9,6 +9,7 @@ import com.nourtime.app.MainActivity
 import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.permissions.NourPermission
 import com.nourtime.app.core.permissions.OemAutostart
+import com.nourtime.app.core.permissions.OtherUsersState
 import com.nourtime.app.core.permissions.PermissionChecker
 import com.nourtime.app.core.security.ParentSession
 import com.nourtime.app.core.security.PinCreation
@@ -110,8 +111,12 @@ class OnboardingViewModel @Inject constructor(
         viewModelScope.launch { onboarding.setStep(steps[steps.indexOf(current) - 1]) }
     }
 
+    private val _otherUsers = MutableStateFlow(permissions.otherUsers())
+    val otherUsers: StateFlow<OtherUsersState> = _otherUsers.asStateFlow()
+
     fun refreshPermissions() {
         _permissionStatus.value = permissions.statusOfAll()
+        _otherUsers.value = permissions.otherUsers()
     }
 
     fun settingsIntents(permission: NourPermission): List<Intent> = permissions.settingsIntents(permission)

@@ -1,7 +1,5 @@
 package com.nourtime.app.feature.onboarding
 
-import android.content.Intent
-import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -28,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nourtime.app.R
 import com.nourtime.app.core.permissions.NourPermission
 import com.nourtime.app.core.permissions.OemAutostart
+import com.nourtime.app.core.permissions.OtherUsers
 import com.nourtime.app.core.ui.startFirstAvailable
 import com.nourtime.app.data.onboarding.OnboardingStep
 
@@ -37,6 +36,7 @@ fun OnboardingRoute(onBackToModeChoice: () -> Unit, viewModel: OnboardingViewMod
     val permissionStatus by viewModel.permissionStatus.collectAsStateWithLifecycle()
     val pin by viewModel.pin.collectAsStateWithLifecycle()
     val question by viewModel.question.collectAsStateWithLifecycle()
+    val otherUsers by viewModel.otherUsers.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { viewModel.refreshPermissions() }
@@ -143,7 +143,8 @@ fun OnboardingRoute(onBackToModeChoice: () -> Unit, viewModel: OnboardingViewMod
                 OnboardingStep.OTHER_USERS -> OtherUsersStep(
                     progress = progress,
                     onBack = onBack,
-                    onOpen = { open(listOf(Intent(USER_SETTINGS), Intent(Settings.ACTION_SETTINGS))) },
+                    state = otherUsers,
+                    onOpen = { open(OtherUsers.settingsIntents()) },
                     onDone = viewModel::next,
                 )
 
@@ -181,6 +182,3 @@ private fun OnboardingStep.permission(): NourPermission = when (this) {
     OnboardingStep.PERM_BATTERY -> NourPermission.BATTERY
     else -> error("$this is not a permission step")
 }
-
-/** The phone's Users screen (no public constant; most phones have it, otherwise Settings opens). */
-private const val USER_SETTINGS = "android.settings.USER_SETTINGS"

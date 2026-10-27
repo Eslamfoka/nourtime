@@ -44,6 +44,9 @@ class PermissionChecker @Inject constructor(
 
     fun statusOfAll(): Map<NourPermission, Boolean> = NourPermission.entries.associateWith(::isGranted)
 
+    /** Not a permission, but a way around protection the parent can switch off. */
+    fun otherUsers(): OtherUsersState = OtherUsers.read(context)
+
     fun isGranted(permission: NourPermission): Boolean = when (permission) {
         NourPermission.ACCESSIBILITY -> isAccessibilityServiceEnabled()
         NourPermission.USAGE_ACCESS -> hasUsageAccess()
