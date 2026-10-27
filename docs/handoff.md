@@ -1836,3 +1836,40 @@ plus `delay`).
 
 Verified: `./gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green (590 unit tests,
 lint 0 errors / 20 warnings, none in the changed files). Not run on a device.
+
+## 30. 2026-10-27: an accurate disclosure, and no FCM token on unconnected phones
+
+**Disclosure (Play Prominent Disclosure / Accessibility policy):** `disclosure_intro` said Nour Time
+"never reads what's on the screen", but the Accessibility service also receives limited apps'
+notification events (`typeNotificationStateChanged`) and, when paired, the phone's maker and model are
+uploaded (`ChildPairing.deviceName`). What the service really reads: window type and owning package
+of each window (`toAppWindow`), the package of window events, and, only for limited apps' notifications,
+`Notification.extras[EXTRA_MEDIA_SESSION]` (`MediaWatcher.sessionToken`); nothing else of a notification.
+The intro (EN + AR) now says so (sees which app is on screen; receives limited apps' notifications only
+to notice and pause their music or videos, never reads, keeps or sends their content) and lists the
+phone's name, "ask for more time" requests and crash reports among what is shared when connected.
+`perm_accessibility_short` now says "never reads the text on the screen or in notifications";
+`accessibility_service_description` scopes its "nothing leaves" sentence to what the service sees.
+Docs: store listing (EN + AR bullet), Arabic privacy policy (background-audio bullet it lacked, "phone
+name (maker and model)"), Data safety note on FCM auto-init.
+
+**Firebase on unconnected phones:** FCM auto-init was on, so every phone could create an FCM token
+and Firebase installation id at launch. Now `firebase_messaging_auto_init_enabled=false` in the
+manifest, and `CrashReportingController` became `FirebaseCollectionController` (same flow over mode,
+pairing and parent sign-in, started from `NourTimeApp`), applying the pure `FirebaseCollection.of`:
+crash reports as before (`CrashReporting`); pushes (FCM auto-init) only for a signed-in parent's phone,
+in debug too. A child's phone never gets a token, even paired (it receives no pushes). With pushes
+off, the FCM token is deleted (5 s bound; a local no-op when there is none), which also cleans up tokens
+created by older versions on child/unpaired phones at the first start after the update. Already
+connected parents get auto-init on at start; `PushTokens.register`/`unregister` are unchanged.
+- No analytics SDK on the classpath (checked the merged manifest's component registrars), so no
+  analytics flags. `firebase_data_collection_default_enabled` not set: Crashlytics and FCM have their
+  own flags and runtime setters, and the global default would also turn off App Check's token
+  auto-refresh on connected phones.
+
+Tests: `FirebaseCollectionTest` (5). The controller itself isn't unit-tested (Firebase singletons).
+
+Verified: `./gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green (595 unit tests,
+lint 0 errors / 20 warnings, none in the changed files); merged manifest carries both flags. Not run on
+a device; a network capture of a fresh unpaired install (no `fcmtoken.googleapis.com` /
+`firebaseinstallations.googleapis.com` / Crashlytics settings calls) is still to do.

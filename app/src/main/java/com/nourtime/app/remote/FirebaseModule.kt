@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 /**
  * Firebase for Phase 2. Nothing here runs until parent mode or pairing asks for it, so Phase 1
- * stays offline. Debug builds talk to the local Firebase Emulator Suite
+ * stays offline (Crashlytics and FCM's own start-up are off until then: FirebaseCollection). Debug builds talk to the local Firebase Emulator Suite
  * (`firebase/`, `npm run emulators`) through `adb reverse tcp:9099 tcp:9099` and `tcp:8080`.
  */
 @Module

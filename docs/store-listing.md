@@ -49,7 +49,7 @@ more time, when protection is weakened, or when their phone stops checking in.
 PRIVACY FIRST
 • Without a connected parent's phone, nothing leaves your child's phone.
 • No ads, no analytics, no tracking. We never collect your child's name, photos, location or messages.
-• Nour Time never reads what's on the screen or what your child types; it only needs to know which app is open
+• Nour Time never reads the text on the screen or in notifications, or what your child types; it only needs to know which app is open
   (and, for the apps you limit, whether they're playing audio).
 • Delete your account and data at any time from the app.
 
@@ -108,7 +108,7 @@ content from the screen or from notifications.
 الخصوصية أولًا
 • دون ربط هاتف ولي الأمر لا يغادر أي شيء هاتف طفلك.
 • لا إعلانات ولا تحليلات ولا تتبّع. لا نجمع اسم طفلك أو صوره أو موقعه أو رسائله أبدًا.
-• لا يقرأ وقت نور ما يظهر على الشاشة ولا ما يكتبه طفلك؛ يكفيه معرفة التطبيق المفتوح (وهل تشغّل التطبيقات
+• لا يقرأ وقت نور النصوص على الشاشة أو في الإشعارات ولا ما يكتبه طفلك؛ يكفيه معرفة التطبيق المفتوح (وهل تشغّل التطبيقات
   المحددة صوتًا).
 • احذف حسابك وبياناتك في أي وقت من داخل التطبيق.
 

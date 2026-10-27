@@ -6,7 +6,7 @@ import com.nourtime.app.core.locale.AppLocales
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.nourtime.app.core.crash.CrashReportingController
+import com.nourtime.app.core.crash.FirebaseCollectionController
 import com.nourtime.app.data.backup.SettingsBackup
 import com.nourtime.app.data.security.SecurityRepository
 import dagger.hilt.android.HiltAndroidApp
@@ -40,8 +40,8 @@ class NourTimeApp : Application() {
                 runCatching { start.security().keepPendingPinWaitCounting() }
                     .onFailure { if (it !is CancellationException) Log.w("NourTimeApp", "PIN reset wait stopped", it) }
             }
-            runCatching { start.crashReporting().run() }
-                .onFailure { if (it !is CancellationException) Log.w("NourTimeApp", "crash reporting setup stopped", it) }
+            runCatching { start.firebaseCollection().run() }
+                .onFailure { if (it !is CancellationException) Log.w("NourTimeApp", "Firebase collection setup stopped", it) }
         }
     }
 
@@ -58,6 +58,6 @@ class NourTimeApp : Application() {
 interface AppStartEntryPoint {
     fun settingsStore(): DataStore<Preferences>
     fun settingsBackup(): SettingsBackup
-    fun crashReporting(): CrashReportingController
+    fun firebaseCollection(): FirebaseCollectionController
     fun security(): SecurityRepository
 }

@@ -56,9 +56,14 @@
             android:name="com.google.android.gms.isMonitoringTool"
             android:value="child_monitoring" />
 
-        <!-- Crash reports only from connected phones (CrashReporting); off until then. -->
+        <!-- Crash reports only from connected phones, and an FCM token only on a signed-in parent's
+             phone (FirebaseCollection); off until then, so an unconnected phone sends nothing.
+             No analytics SDK is included, so no analytics flags. -->
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
 
         <activity
