@@ -62,6 +62,12 @@ class PushTokens(private val source: PushTokenSource, private val store: TokenSt
     }
 }
 
+/**
+ * FCM's token calls, deprecated in firebase-messaging 25.1.0 for registration through the Firebase
+ * installation id. They still work; moving over changes how the push functions address the parent's
+ * phones too, so it's its own task (handoff §28).
+ */
+@Suppress("DEPRECATION")
 class FirebasePushTokenSource : PushTokenSource {
     override suspend fun token(): String = FirebaseMessaging.getInstance().token.await()
     override suspend fun delete() {

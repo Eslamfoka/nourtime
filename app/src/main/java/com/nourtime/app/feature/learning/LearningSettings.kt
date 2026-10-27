@@ -25,10 +25,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
@@ -59,7 +60,7 @@ import javax.inject.Inject
 /** Arabic when the app shows Arabic, otherwise English. */
 @Composable
 fun currentLearnLanguage(): LearnLanguage =
-    if (LocalContext.current.resources.configuration.locales[0].language == "ar") LearnLanguage.ARABIC else LearnLanguage.ENGLISH
+    if (LocalConfiguration.current.locales[0].language == "ar") LearnLanguage.ARABIC else LearnLanguage.ENGLISH
 
 @HiltViewModel
 class LearningSettingsViewModel @Inject constructor(

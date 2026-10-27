@@ -25,6 +25,8 @@ class ParentMessagingService : FirebaseMessagingService() {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
+    // Deprecated with the token calls (see FirebasePushTokenSource); still delivered.
+    @Deprecated("FCM token registration; see FirebasePushTokenSource")
     override fun onNewToken(token: String) {
         scope.launch { pushTokens.onNewToken(auth.user.value?.uid, token) }
     }

@@ -1,10 +1,12 @@
 package com.nourtime.app.feature.parent
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.text.format.DateUtils
 import androidx.core.app.NotificationCompat
@@ -74,6 +76,11 @@ object ParentNotifications {
             .setAutoCancel(true)
             .build()
         // Without the permission (Android 13+) nothing shows; the parent's home screen says so.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
         runCatching { NotificationManagerCompat.from(context).notify(message.notificationId, notification) }
     }
 

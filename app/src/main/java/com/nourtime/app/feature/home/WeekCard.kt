@@ -35,7 +35,7 @@ import kotlin.math.abs
  */
 @Composable
 fun WeekCard(report: WeekReport, topAppName: String?) {
-    val locale = ConfigurationCompat.getLocales(LocalConfiguration.current)[0] ?: Locale.getDefault()
+    val locale = ConfigurationCompat.getLocales(LocalConfiguration.current)[0] ?: Locale.ROOT
     val max = report.days.maxOf { it.totalMs }.coerceAtLeast(1)
     NourCard {
         Row(verticalAlignment = Alignment.CenterVertically) {

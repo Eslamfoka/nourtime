@@ -8,7 +8,7 @@ The product brief is in [`nour-time-brief-en.md`](nour-time-brief-en.md) (Arabic
 
 ## Build
 
-Requirements: JDK 17, Android SDK 35.
+Requirements: JDK 17 or newer, Android SDK platform 37 (Gradle 9.8 via the wrapper, AGP 9.4, Kotlin 2.4).
 
 ```bash
 ./gradlew :app:testDebugUnitTest   # unit tests

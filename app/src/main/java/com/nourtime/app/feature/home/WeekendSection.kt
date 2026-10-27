@@ -32,7 +32,7 @@ import java.time.temporal.WeekFields
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WeekendSection(weekend: WeekendRules, onChange: (WeekendRules) -> Unit) {
-    val locale = ConfigurationCompat.getLocales(LocalConfiguration.current)[0] ?: java.util.Locale.getDefault()
+    val locale = ConfigurationCompat.getLocales(LocalConfiguration.current)[0] ?: java.util.Locale.ROOT
     val firstDay = WeekFields.of(locale).firstDayOfWeek
     val week = (0L until 7L).map { firstDay.plus(it) }
 

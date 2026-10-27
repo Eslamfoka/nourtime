@@ -2,7 +2,6 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
@@ -13,16 +12,14 @@ plugins {
 
 android {
     namespace = "com.nourtime.app"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.nourtime.app"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "0.1.0"
-        // The app speaks Arabic and English only: leave the libraries' other ~80 translations out.
-        resourceConfigurations += listOf("en", "ar")
         // Instrumented tests (app/src/androidTest) run with Hilt's test application; see HiltTestRunner.
         testInstrumentationRunner = "com.nourtime.app.HiltTestRunner"
     }
@@ -66,15 +63,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     buildFeatures {
         compose = true
         buildConfig = true
     }
     androidResources {
         generateLocaleConfig = true
+        // The app speaks Arabic and English only: leave the libraries' other ~80 translations out.
+        localeFilters += listOf("en", "ar")
     }
     packaging {
         // Debug and build metadata that a phone never reads.
@@ -105,7 +101,7 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.lifecycle.viewmodel.compose)
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
@@ -135,6 +131,17 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.kotlinx.coroutines.test)
     kspAndroidTest(libs.hilt.compiler)
+}
+
+// AGP 9 gives unit tests the Android build of multiplatform libraries. DataStore's Android file storage
+// can't replace an existing file on Windows (Android can), so every second write failed in the unit
+// tests on the development PC. Unit tests use DataStore's JVM build, as they did with AGP 8; the app is
+// unchanged.
+configurations.matching { it.name.endsWith("UnitTestRuntimeClasspath") }.configureEach {
+    resolutionStrategy.dependencySubstitution {
+        substitute(module("androidx.datastore:datastore-core"))
+            .using(module("androidx.datastore:datastore-core-jvm:${libs.versions.datastore.get()}"))
+    }
 }
 
 // SpeechCatalogTest reads the recorded clips from disk: rerun it when they change.

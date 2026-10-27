@@ -58,20 +58,24 @@ class ForegroundAppTracker internal constructor(
         _state.update { it.copy(source = if (fallbackAvailable) DetectionSource.USAGE_STATS else DetectionSource.NONE) }
     }
 
-    fun onWindows(windows: List<AppWindow>) = synchronized(sourceLock) {
-        if (!accessibilityConnected) return
-        _state.update { ForegroundRules.fromWindows(windows, ignoredPackages, it).copy(source = DetectionSource.ACCESSIBILITY) }
+    fun onWindows(windows: List<AppWindow>) {
+        synchronized(sourceLock) {
+            if (!accessibilityConnected) return
+            _state.update { ForegroundRules.fromWindows(windows, ignoredPackages, it).copy(source = DetectionSource.ACCESSIBILITY) }
+        }
     }
 
     /** Fallback result; ignored while Accessibility is connected. */
-    fun onUsageStats(foreground: String?, available: Boolean) = synchronized(sourceLock) {
-        if (accessibilityConnected) return
-        _state.update {
-            if (!available) {
-                it.copy(foreground = null, visible = emptySet(), source = DetectionSource.NONE)
-            } else {
-                val pkg = foreground ?: it.foreground
-                it.copy(foreground = pkg, visible = setOfNotNull(pkg), source = DetectionSource.USAGE_STATS)
+    fun onUsageStats(foreground: String?, available: Boolean) {
+        synchronized(sourceLock) {
+            if (accessibilityConnected) return
+            _state.update {
+                if (!available) {
+                    it.copy(foreground = null, visible = emptySet(), source = DetectionSource.NONE)
+                } else {
+                    val pkg = foreground ?: it.foreground
+                    it.copy(foreground = pkg, visible = setOfNotNull(pkg), source = DetectionSource.USAGE_STATS)
+                }
             }
         }
     }
