@@ -1873,3 +1873,54 @@ Verified: `./gradlew :app:testDebugUnitTest :app:lintDebug :app:assembleDebug` g
 lint 0 errors / 20 warnings, none in the changed files); merged manifest carries both flags. Not run on
 a device; a network capture of a fresh unpaired install (no `fcmtoken.googleapis.com` /
 `firebaseinstallations.googleapis.com` / Crashlytics settings calls) is still to do.
+
+## 31. 2026-10-27: guest users, TalkBack switches, a reachable OK, the overlay's direction
+
+**Guest and other users (what's possible).** Nour Time is a device admin, not a device owner, so it
+can't stop a switch: `DISALLOW_USER_SWITCH` / `DISALLOW_ADD_USER` need a device or profile owner (or a
+system permission on 14+), and switching back (`ActivityManager.switchUser`) needs `MANAGE_USERS`.
+The Quick Settings / lock-screen user switcher belongs to System UI: its window is drawn above Nour
+Time's app overlay, differs per maker (AOSP dialog, Samsung inside the shade, keyguard switcher), and
+could only be recognised by reading class names or text, which the disclosure (§30) rules out. So no
+covering of the switcher. Already in place and checked: `TimerService.userReceiver` raises the
+OTHER_USER alert **at the switch** (`ACTION_USER_BACKGROUND`, notification + `alerts.otherUserAt`, which
+`RemoteSync.uploadAlerts` sends and `functions/src/events.ts` pushes to the parent), and on return
+(`ACTION_USER_FOREGROUND` / unlock / service start) the time away is charged; `BlockCoordinator` reacts
+to the new status at once, so an exhausted budget or a running lock covers again immediately.
+What's new is the recommendation:
+- `core/permissions/OtherUsers` (pure `state` + `read`): `UserManager.supportsMultipleUsers()` and the
+  hidden global setting `user_switcher_enabled` (the "Multiple users" switch). No public API says
+  whether other users or a guest exist (`getUserCount` needs `MANAGE_USERS`; `isUserSwitcherEnabled`
+  isn't in the SDK). States: UNSUPPORTED (nothing shown), OFF, ON, UNKNOWN (unset = maker default, or
+  unreadable: the advice is shown anyway).
+- Setup step "Guest and other users" shows "Multiple users is on/off" and offers Continue when off;
+  the parent's Permissions screen gets a "Guest and other users" card (status, advice, Open settings →
+  `android.settings.USER_SETTINGS`, else Settings). It doesn't count as a missing permission.
+- `play-compliance.md`: the setting read added to the API table (local only).
+
+**TalkBack switches.** New `SwitchRow` (`feature/home/SettingsSections.kt`): the whole row is
+`toggleable(role = Role.Switch)`, the `Switch` has `onCheckedChange = null` (as the app list). Used by
+`ToggleCard` (protect settings, limit new apps, sound), bedtime, daily reset, weekend days and the
+learning toggle: TalkBack now reads the title with the state, and the whole row toggles.
+
+**Time's up: OK always reachable.** `TimeUpScreen` measures its actions first (`HeroAndActions`, a
+`SubcomposeLayout`; the measuring copy has no semantics). If they leave Nour at least 200 dp, the layout
+is as before (Nour centred and scrolling, actions and OK fixed at the bottom). Otherwise (landscape,
+large font, many actions) Nour and all actions scroll together, still Nour-above-actions while they
+fit, so nothing is pushed off-screen. Checked with captured screenshots of all three ages, portrait
+and 340 dp at font 1.6.
+
+**Overlay direction.** `core/locale/AppLayoutDirection` (shared with `MainActivity`) lays out by the
+language Nour Time shows. The lock overlay's `ComposeView` now uses `AppLocales.wrap(context)` (its
+strings no longer depend on the shared resources a configuration change can reset on Android 12 and
+older) and takes the direction from `AppLocales.locale`, not the window (whose configuration keeps the
+phone's locale, also after a rotation).
+
+Tests: `OtherUsersTest` (3); instrumented `OtherUsersDeviceTest` (an ordinary app reads the switch:
+on/off/unset, setting restored) and `TimeUpScreenLayoutTest` (call, Learn, Ask, an allowed app and OK
+each scrolled fully into view, every age, 340 dp tall at font 1.6). Compose UI test libraries added
+(`ui-test-junit4` for androidTest, `ui-test-manifest` in debug only).
+
+Not covered: the switch itself, the switcher UI, time in the other user before return (charged after);
+`user_switcher_enabled` on makers that store "Multiple users" elsewhere reads as UNKNOWN; the overlay's
+direction fix only matters on Android 12 and older, and the test emulator is API 36 (not run there).

@@ -38,6 +38,8 @@ import com.nourtime.app.R
 import com.nourtime.app.core.blocking.BlockReason
 import com.nourtime.app.core.blocking.ParentPass
 import com.nourtime.app.core.designsystem.theme.NourTheme
+import com.nourtime.app.core.locale.AppLayoutDirection
+import com.nourtime.app.core.locale.AppLocales
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.data.security.SecurityRepository
 import com.nourtime.app.data.settings.AgeGroup
@@ -326,40 +328,47 @@ class LockOverlay @Inject constructor(
         fun show(): Boolean {
             savedState.performRestore(null)
             lifecycleRegistry.currentState = Lifecycle.State.RESUMED
-            val compose = ComposeView(context).apply {
+            // Nour Time's language, not the phone's: on Android 12 and older the overlay's context and
+            // window follow the phone (strings from shared resources a configuration change can reset,
+            // and the phone's direction). The window's configuration doesn't carry the choice, so the
+            // direction comes from the choice itself.
+            val locale = AppLocales.locale(context)
+            val compose = ComposeView(AppLocales.wrap(context)).apply {
                 setContent {
                     val s by state.collectAsStateWithLifecycle()
                     val stage by parentFlow.stage.collectAsStateWithLifecycle()
-                    NourTheme(darkTheme = false) {
-                        AnimatedContent(s != null, transitionSpec = { fadeIn() togetherWith fadeOut() }, label = "overlay") { visible ->
-                            val current = s
-                            if (visible && current != null) {
-                                // Only a time-up lock can be shortened by a bonus; bedtime and Settings can't.
-                                val ask = if (current.decision.reason == BlockReason.TIME_UP) {
-                                    remember { timeRequests.state }.collectAsStateWithLifecycle(null).value
-                                } else {
-                                    null
-                                }
-                                // Learning games only in a time-up lock, and only if the parent allows them.
-                                val learnSettings = remember { learning.settings }.collectAsStateWithLifecycle(null).value
-                                val canLearn = current.decision.reason == BlockReason.TIME_UP && learnSettings?.enabled == true
-                                val hubController by hub.collectAsStateWithLifecycle()
-                                val language = currentLearnLanguage()
-                                val openHub = hubController
-                                if (openHub != null && canLearn && stage == ParentStage.CHILD) {
-                                    LearningHub(openHub, current.gender, onClose = ::closeHub)
-                                } else {
-                                    LockOverlayContent(
-                                        state = current,
-                                        stage = stage,
-                                        parentFlow = parentFlow,
-                                        onChildOk = { onChildDismiss() },
-                                        onOpenApp = ::openApp,
-                                        ask = ask,
-                                        onAsk = { scope.launch { runCatching { timeRequests.ask() }.onFailure { Log.w(TAG, "couldn't ask for more time", it) } } },
-                                        onLearn = if (canLearn) ({ openHub(current, language) }) else null,
-                                        onBackToCall = if (current.inCall) ::openCall else null,
-                                    )
+                    AppLayoutDirection(locale) {
+                        NourTheme(darkTheme = false) {
+                            AnimatedContent(s != null, transitionSpec = { fadeIn() togetherWith fadeOut() }, label = "overlay") { visible ->
+                                val current = s
+                                if (visible && current != null) {
+                                    // Only a time-up lock can be shortened by a bonus; bedtime and Settings can't.
+                                    val ask = if (current.decision.reason == BlockReason.TIME_UP) {
+                                        remember { timeRequests.state }.collectAsStateWithLifecycle(null).value
+                                    } else {
+                                        null
+                                    }
+                                    // Learning games only in a time-up lock, and only if the parent allows them.
+                                    val learnSettings = remember { learning.settings }.collectAsStateWithLifecycle(null).value
+                                    val canLearn = current.decision.reason == BlockReason.TIME_UP && learnSettings?.enabled == true
+                                    val hubController by hub.collectAsStateWithLifecycle()
+                                    val language = currentLearnLanguage()
+                                    val openHub = hubController
+                                    if (openHub != null && canLearn && stage == ParentStage.CHILD) {
+                                        LearningHub(openHub, current.gender, onClose = ::closeHub)
+                                    } else {
+                                        LockOverlayContent(
+                                            state = current,
+                                            stage = stage,
+                                            parentFlow = parentFlow,
+                                            onChildOk = { onChildDismiss() },
+                                            onOpenApp = ::openApp,
+                                            ask = ask,
+                                            onAsk = { scope.launch { runCatching { timeRequests.ask() }.onFailure { Log.w(TAG, "couldn't ask for more time", it) } } },
+                                            onLearn = if (canLearn) ({ openHub(current, language) }) else null,
+                                            onBackToCall = if (current.inCall) ::openCall else null,
+                                        )
+                                    }
                                 }
                             }
                         }

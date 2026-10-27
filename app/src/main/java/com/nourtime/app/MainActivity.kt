@@ -4,8 +4,6 @@ import com.nourtime.app.feature.parent.OpenDeviceRequest
 import android.content.Intent
 import android.content.Context
 import android.os.Bundle
-import android.text.TextUtils
-import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -24,8 +22,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -33,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.nourtime.app.core.designsystem.theme.NourTheme
+import com.nourtime.app.core.locale.AppLayoutDirection
 import com.nourtime.app.core.locale.AppLocales
 import com.nourtime.app.data.onboarding.OnboardingRepository
 import com.nourtime.app.feature.home.MainRoute
@@ -68,11 +65,8 @@ class MainActivity : ComponentActivity() {
             }
         }
         setContent {
-            // The chosen language decides the direction; on Android 12 and older the window would keep
-            // the phone's (Arabic text laid out left to right, or English right to left).
-            val locale = LocalConfiguration.current.locales[0]
-            val rtl = TextUtils.getLayoutDirectionFromLocale(locale) == View.LAYOUT_DIRECTION_RTL
-            CompositionLocalProvider(LocalLayoutDirection provides if (rtl) LayoutDirection.Rtl else LayoutDirection.Ltr) {
+            // The chosen language decides the direction (the activity's configuration carries it).
+            AppLayoutDirection(LocalConfiguration.current.locales[0]) {
                 NourTheme {
                     NourApp()
                 }
