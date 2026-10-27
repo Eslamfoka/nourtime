@@ -1924,3 +1924,39 @@ each scrolled fully into view, every age, 340 dp tall at font 1.6). Compose UI t
 Not covered: the switch itself, the switcher UI, time in the other user before return (charged after);
 `user_switcher_enabled` on makers that store "Multiple users" elsewhere reads as UNKNOWN; the overlay's
 direction fix only matters on Android 12 and older, and the test emulator is API 36 (not run there).
+
+## 32. 2026-10-28: review fixes (FCM delete only when a token may exist, PIN wait loop, wording)
+
+**FCM on phones that never had a token (HIGH).** §30 deleted the FCM token at every start on every
+phone without pushes. firebase-messaging 26.0.0's `deleteToken()` returns at once when no token is
+stored (bytecode: `getTokenWithoutTriggeringSync() == null` → `Tasks.forResult(null)`), so it was a
+local no-op, but nothing in the app guaranteed it. Now the app doesn't touch FCM unless a token may
+exist:
+- `FcmTokenFlag` (key `fcm_token_may_exist` in the main settings store): set before auto-init is turned
+  on, in `FirebasePushTokenSource.token()` (register/unregister) and in `ParentMessagingService.onNewToken`;
+  cleared by `FirebaseCollectionController` only after auto-init is off and the delete succeeded (kept on
+  a failure or the 5 s timeout, retried at the next start).
+- Pure `FcmTokenCleanup`: `tokenMayExist(stored, updatedFromOlderVersion)` and `action(pushes,
+  mayExist)` → TURN_ON / TURN_OFF_AND_DELETE / NOTHING. NOTHING doesn't call `FirebaseMessaging` at all
+  (only saves `false` the first time).
+- Migration: with no flag yet, a token may exist only if `PackageInfo.firstInstallTime !=
+  lastUpdateTime` (an older version was installed). Not a settings key: older versions made the token at
+  their first start, before any setting was written (a phone opened once and left on Welcome has no
+  key). A fresh install updated before its first start costs one no-op delete.
+- FCM's start-up: `FirebaseMessagingRegistrar` is `alwaysEager`, so `FirebaseMessaging` is constructed at
+  Firebase start-up anyway; its constructor syncs the token and topics only if `isAutoInitEnabled()`.
+  Setting auto-init false isn't redundant after it was set true at runtime (persisted in FCM's own
+  prefs, overriding the manifest), which is why TURN_OFF_AND_DELETE still sets it.
+
+**PIN reset wait loop (LOW).** `keepPendingPinWaitCounting` catches non-cancellation errors per
+checkpoint, logs, and goes on; the time since the last successful save is counted at the next one.
+
+**Wording (LOW).** `disclosure_intro` (EN + AR): the service "sees notifications, but uses only those of
+the apps you limit … and ignores the rest" (Android delivers every app's notification events). Docs
+already said this; `play-compliance.md` Data safety note gained the token clean-up. `OtherUsersPill`
+comment no longer claims an Android version.
+
+Tests: `FcmTokenCleanupTest` (5); `SecurityRepositoryTest` + 1 (in-memory store on virtual time: saved
+every 5 min, a failed save skipped, the next one counts all the time). Verified: `:app:testDebugUnitTest
+:app:lintDebug :app:assembleDebug` green, 604 unit tests, lint 0 errors / 20 warnings (none new). Not
+run on a device; the network capture of a fresh unpaired install (§30) is still to do.

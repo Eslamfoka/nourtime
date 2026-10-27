@@ -1,5 +1,6 @@
 package com.nourtime.app.data.security
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
@@ -18,6 +19,7 @@ import com.nourtime.app.core.security.PinResetWaitState
 import com.nourtime.app.core.security.SecretHasher
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.time.WallClock
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -110,12 +112,19 @@ class SecurityRepository @Inject constructor(
      * Keeps counting a waiting reset while Nour Time runs. The wait is counted from elapsedRealtime, which
      * restarts with the phone, so time not saved before a reboot is lost: saving every
      * [WAIT_CHECKPOINT_MS] means a reboot loses at most that much, and a PIN nobody types still starts
-     * working on time.
+     * working on time. A failed save is logged and tried again at the next checkpoint (the time since
+     * the last save is still counted then); one error mustn't stop the counting until Nour Time restarts.
      */
     suspend fun keepPendingPinWaitCounting() {
         store.data.map { it[PENDING_PIN_HASH] != null }.distinctUntilChanged().collectLatest { waiting ->
             while (waiting) {
-                attemptMutex.withLock { activatePendingIfDue() }
+                try {
+                    attemptMutex.withLock { activatePendingIfDue() }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    runCatching { Log.w(TAG, "PIN reset wait not saved; trying again later", e) }
+                }
                 delay(WAIT_CHECKPOINT_MS)
             }
         }
@@ -346,6 +355,8 @@ class SecurityRepository @Inject constructor(
 
         /** The shown date (and the parent's notice) changes only when it moves by more than this. */
         private const val SHOWN_DATE_SLACK_MS = 15 * 60_000L
+
+        private const val TAG = "SecurityRepository"
 
         private val PIN_HASH = stringPreferencesKey("pin_hash")
         private val QUESTION = stringPreferencesKey("security_question")

@@ -1,7 +1,10 @@
 package com.nourtime.app.data.security
 
+import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.nourtime.app.core.security.SecretHasher
@@ -11,7 +14,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -21,6 +29,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
+import java.io.IOException
 import java.time.Instant
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -260,5 +269,49 @@ class SecurityRepositoryTest {
         assertNull(repo.pendingPinActiveAt.first())
         // Nothing left to approve.
         assertFalse(repo.approvePendingPin())
+    }
+
+    /** Settings in memory, so the save loop runs on the test's virtual time; [failingWrites] saves throw. */
+    private class FlakyStore : DataStore<Preferences> {
+        private val state = MutableStateFlow(emptyPreferences())
+        var failingWrites = 0
+        val current: Preferences get() = state.value
+        override val data: Flow<Preferences> = state
+
+        override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences): Preferences {
+            if (failingWrites > 0) {
+                failingWrites--
+                throw IOException("disk full")
+            }
+            return transform(state.value).also { state.value = it }
+        }
+    }
+
+    @Test
+    fun `while Nour Time runs the wait is saved every five minutes, and a failed save doesn't stop it`() = runTest {
+        val flaky = FlakyStore()
+        val repo = SecurityRepository(flaky, hasher, clock, wall)
+        val checkpoint = SecurityRepository.WAIT_CHECKPOINT_MS
+        val remaining = { flaky.current[longPreferencesKey("pin_pending_wait_remaining")] }
+        fun fiveMinutesPass() {
+            clock.now += checkpoint
+            advanceTimeBy(checkpoint)
+            runCurrent()
+        }
+        repo.setPin("4827")
+        repo.setPinAfterRecovery("1593")
+        backgroundScope.launch { repo.keepPendingPinWaitCounting() }
+        runCurrent()
+        assertEquals(day, remaining())
+
+        fiveMinutesPass()
+        assertEquals(day - checkpoint, remaining())
+        // One save fails: nothing is saved this time...
+        flaky.failingWrites = 1
+        fiveMinutesPass()
+        assertEquals(day - checkpoint, remaining())
+        // ...and the next one still comes, counting the time since the last save that worked.
+        fiveMinutesPass()
+        assertEquals(day - 3 * checkpoint, remaining())
     }
 }

@@ -159,7 +159,7 @@ fun OtherUsersStep(
     }
 }
 
-/** "Multiple users is off" / "is on"; nothing when the phone doesn't say (Android 11 and older). */
+/** "Multiple users is off" / "is on"; nothing when the phone has no multiple users or doesn't say (the switch was never set, or can't be read). */
 @Composable
 fun OtherUsersPill(state: OtherUsersState) {
     if (state == OtherUsersState.ON || state == OtherUsersState.OFF) {
