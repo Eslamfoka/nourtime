@@ -2,10 +2,12 @@ package com.nourtime.app.remote.parent
 
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.nourtime.app.core.crash.FcmTokenFlag
 import com.nourtime.app.data.mode.AppMode
 import com.nourtime.app.data.mode.AppModeRepository
 import com.nourtime.app.feature.parent.ParentNotifications
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -22,13 +24,18 @@ class ParentMessagingService : FirebaseMessagingService() {
     @Inject lateinit var modes: AppModeRepository
     @Inject lateinit var auth: ParentAuth
     @Inject lateinit var pushTokens: PushTokens
+    @Inject lateinit var tokenFlag: FcmTokenFlag
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     // Deprecated with the token calls (see FirebasePushTokenSource); still delivered.
     @Deprecated("FCM token registration; see FirebasePushTokenSource")
     override fun onNewToken(token: String) {
-        scope.launch { pushTokens.onNewToken(auth.user.value?.uid, token) }
+        scope.launch {
+            // So it's deleted when pushes go off, however it was made. A settings error mustn't crash this.
+            runCatching { tokenFlag.set(true) }.onFailure { if (it is CancellationException) throw it }
+            pushTokens.onNewToken(auth.user.value?.uid, token)
+        }
     }
 
     /** Called on a background thread; the mode is read from the settings file first. */

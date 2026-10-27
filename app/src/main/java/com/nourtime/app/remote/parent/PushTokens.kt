@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.nourtime.app.core.crash.FcmTokenFlag
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withTimeoutOrNull
@@ -65,11 +66,16 @@ class PushTokens(private val source: PushTokenSource, private val store: TokenSt
 /**
  * FCM's token calls, deprecated in firebase-messaging 25.1.0 for registration through the Firebase
  * installation id. They still work; moving over changes how the push functions address the parent's
- * phones too, so it's its own task (handoff §28).
+ * phones too, so it's its own task (handoff §28). Asking for the token makes one if there is none, so
+ * [FcmTokenFlag] is set first and the token is deleted when pushes go off.
  */
 @Suppress("DEPRECATION")
-class FirebasePushTokenSource : PushTokenSource {
-    override suspend fun token(): String = FirebaseMessaging.getInstance().token.await()
+class FirebasePushTokenSource(private val tokenFlag: FcmTokenFlag) : PushTokenSource {
+    override suspend fun token(): String {
+        tokenFlag.set(true)
+        return FirebaseMessaging.getInstance().token.await()
+    }
+
     override suspend fun delete() {
         FirebaseMessaging.getInstance().deleteToken().await()
     }

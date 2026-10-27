@@ -1,5 +1,6 @@
 package com.nourtime.app.remote
 
+import com.nourtime.app.core.crash.FcmTokenFlag
 import com.nourtime.app.remote.parent.FirebasePushTokenSource
 import com.nourtime.app.remote.parent.FirestoreTokenStore
 import com.nourtime.app.remote.parent.PushTokens
@@ -36,7 +37,8 @@ object FirebaseModule {
     /** The parent's phone's push registration (Phase 2 push, 2026-10-13). */
     @Provides
     @Singleton
-    fun pushTokens(firestore: FirebaseFirestore): PushTokens = PushTokens(FirebasePushTokenSource(), FirestoreTokenStore(firestore))
+    fun pushTokens(firestore: FirebaseFirestore, tokenFlag: FcmTokenFlag): PushTokens =
+        PushTokens(FirebasePushTokenSource(tokenFlag), FirestoreTokenStore(firestore))
 
     @Provides
     @Singleton

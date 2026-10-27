@@ -102,6 +102,9 @@ to pause them during a lock and count their audio; never leaves the phone). Back
     notifications to the parent; not shared; deleted on sign-out and account deletion). FCM auto-init
     is off in the manifest (`firebase_messaging_auto_init_enabled=false`) and turned on only while a
     parent is signed in (`FirebaseCollection`), so an unconnected or child's phone creates no token.
+    A token made by an older version is deleted once after the update; on a phone that never had one,
+    Nour Time makes no FCM call at all (`FcmTokenCleanup`), and FCM's own start-up contacts nothing
+    while auto-init is off.
   - **Personal info → Name, Email:** the parent's Google account name and email. Stored on the parent's
     phone, with the connection in Firestore (`pairings`, `devices`) and on the child's phone, which shows
     who is connecting (2026-10-17 audit, M5: earlier drafts said "parent's phone only").
