@@ -20,6 +20,7 @@ import {
   Timestamp,
   updateDoc,
   where,
+  writeBatch,
 } from "firebase/firestore";
 
 let env: RulesTestEnvironment;
@@ -69,6 +70,26 @@ const openPairing = { deviceId: DEVICE, childUid: CHILD, createdAt: Timestamp.no
 /** What the child's phone writes: the server sets createdAt, and codes expire 10 minutes later. */
 const newPairing = { ...openPairing, createdAt: serverTimestamp(), expireAt: minutesFromNow(24 * 60) };
 
+/** Today (UTC) as a usage document id. */
+const isoDay = (offsetDays = 0) => new Date(Date.now() + offsetDays * 24 * 60 * 60_000).toISOString().slice(0, 10);
+const TODAY = isoDay();
+
+/** A device with the account record naming it, in one write, as the child's phone makes it. */
+function createDevice(db: Firestore, id = DEVICE, data: object = unpairedDevice, uid = CHILD) {
+  const batch = writeBatch(db);
+  batch.set(doc(db, "childAccounts", uid), { deviceId: id }, { merge: true });
+  batch.set(doc(db, "devices", id), data);
+  return batch.commit();
+}
+
+/** A pairing code with the account record naming it, in one write, as the child's phone makes it. */
+function createPairing(db: Firestore, code = CODE, data: object = newPairing, uid = CHILD, deviceId = DEVICE) {
+  const batch = writeBatch(db);
+  batch.set(doc(db, "childAccounts", uid), { deviceId, openCode: code });
+  batch.set(doc(db, "pairings", code), data);
+  return batch.commit();
+}
+
 beforeAll(async () => {
   env = await initializeTestEnvironment({
     // Separate from the app's demo-nourtime data: these tests clear the database.
@@ -96,11 +117,11 @@ describe("devices", () => {
   });
 
   it("the child phone creates its own unpaired device", async () => {
-    await assertSucceeds(setDoc(doc(child(), "devices", DEVICE), unpairedDevice));
+    await assertSucceeds(createDevice(child()));
   });
 
   it("the child phone can't create a device that is already paired", async () => {
-    await assertFails(setDoc(doc(child(), "devices", DEVICE), pairedDevice));
+    await assertFails(createDevice(child(), DEVICE, pairedDevice));
   });
 
   it("another phone can't take over an existing device", async () => {
@@ -180,38 +201,38 @@ describe("devices", () => {
 describe("pairings", () => {
   it("the child creates a pairing for its own device", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
-    await assertSucceeds(setDoc(doc(child(), "pairings", CODE), newPairing));
+    await assertSucceeds(createPairing(child(), CODE, newPairing));
   });
 
   it("nobody can create a pairing for someone else's device", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
-    await assertFails(setDoc(doc(anonymous(), "pairings", CODE), { ...newPairing, childUid: "someone-else" }));
+    await assertFails(createPairing(anonymous(), CODE, { ...newPairing, childUid: "someone-else" }, "someone-else"));
   });
 
   it("pairing codes are exactly 6 digits", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
-    await assertFails(setDoc(doc(child(), "pairings", "12345"), newPairing));
-    await assertFails(setDoc(doc(child(), "pairings", "abcdef"), newPairing));
-    await assertFails(setDoc(doc(child(), "pairings", "1234567"), newPairing));
+    await assertFails(createPairing(child(), "12345", newPairing));
+    await assertFails(createPairing(child(), "abcdef", newPairing));
+    await assertFails(createPairing(child(), "1234567", newPairing));
   });
 
   it("a pairing carries a clean-up time between 10 minutes and 2 days away (Firestore TTL)", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
     const { expireAt: _, ...withoutExpiry } = newPairing;
-    await assertFails(setDoc(doc(child(), "pairings", CODE), withoutExpiry));
-    await assertFails(setDoc(doc(child(), "pairings", CODE), { ...newPairing, expireAt: minutesFromNow(5) }));
-    await assertFails(setDoc(doc(child(), "pairings", CODE), { ...newPairing, expireAt: minutesFromNow(3 * 24 * 60) }));
+    await assertFails(createPairing(child(), CODE, withoutExpiry));
+    await assertFails(createPairing(child(), CODE, { ...newPairing, expireAt: minutesFromNow(5) }));
+    await assertFails(createPairing(child(), CODE, { ...newPairing, expireAt: minutesFromNow(3 * 24 * 60) }));
   });
 
   it("a pairing's start time is the server's, not the phone's clock", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
-    await assertFails(setDoc(doc(child(), "pairings", CODE), { ...openPairing, createdAt: minutesFromNow(60) }));
+    await assertFails(createPairing(child(), CODE, { ...openPairing, createdAt: minutesFromNow(60) }));
   });
 
   it("an existing code can't be overwritten", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
     await seed((db) => setDoc(doc(db, "pairings", CODE), { ...openPairing, childUid: "someone-else" }));
-    await assertFails(setDoc(doc(child(), "pairings", CODE), newPairing));
+    await assertFails(createPairing(child(), CODE, newPairing));
   });
 
   it("a Google-signed-in parent claims an open code blind, then reads it", async () => {
@@ -298,9 +319,9 @@ describe("pairings", () => {
 describe("usage and app list", () => {
   it("the child writes them and the parent reads them", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), pairedDevice));
-    await assertSucceeds(setDoc(doc(child(), "devices", DEVICE, "usage", "2026-09-27"), { ms: { a: 1 } }));
+    await assertSucceeds(setDoc(doc(child(), "devices", DEVICE, "usage", TODAY), { ms: { a: 1 } }));
     await assertSucceeds(setDoc(doc(child(), "devices", DEVICE, "meta", "apps"), { apps: [] }));
-    await assertSucceeds(getDoc(doc(parent(), "devices", DEVICE, "usage", "2026-09-27")));
+    await assertSucceeds(getDoc(doc(parent(), "devices", DEVICE, "usage", TODAY)));
     await assertSucceeds(getDoc(doc(parent(), "devices", DEVICE, "meta", "apps")));
   });
 
@@ -317,7 +338,7 @@ describe("usage and app list", () => {
 
   it("the parent can't write them and strangers can't read them", async () => {
     await seed((db) => setDoc(doc(db, "devices", DEVICE), pairedDevice));
-    await assertFails(setDoc(doc(parent(), "devices", DEVICE, "usage", "2026-09-27"), { ms: {} }));
+    await assertFails(setDoc(doc(parent(), "devices", DEVICE, "usage", TODAY), { ms: {} }));
     await assertFails(getDoc(doc(parent(OTHER_PARENT), "devices", DEVICE, "usage", "2026-09-27")));
   });
 });
@@ -448,5 +469,115 @@ describe("parent push tokens", () => {
   it("the push state is server-only", async () => {
     await assertFails(getDoc(doc(parent(), "pushState", DEVICE)));
     await assertFails(setDoc(doc(child(), "pushState", DEVICE), { ASK: 1 }));
+  });
+});
+
+// 2026-10-28 audit: any signed-in account, also an anonymous one, could make devices and pairing codes
+// without limit (the codes are only a million) and write documents of any size or day.
+describe("limits per account", () => {
+  it("a device needs the account record naming it, in the same write", async () => {
+    await assertFails(setDoc(doc(child(), "devices", DEVICE), unpairedDevice));
+    await seed((db) => setDoc(doc(db, "childAccounts", CHILD), { deviceId: "device-2" }));
+    await assertFails(setDoc(doc(child(), "devices", DEVICE), unpairedDevice));
+  });
+
+  it("one device per account: a second only once the first is gone", async () => {
+    await assertSucceeds(createDevice(child()));
+    await assertFails(createDevice(child(), "device-2"));
+    await assertSucceeds(deleteDoc(doc(child(), "devices", DEVICE)));
+    await assertSucceeds(createDevice(child(), "device-2"));
+  });
+
+  it("the same device can be made again by its account (after a failed disconnect)", async () => {
+    await seed((db) => setDoc(doc(db, "childAccounts", CHILD), { deviceId: DEVICE }));
+    await assertSucceeds(createDevice(child()));
+  });
+
+  it("one open code per account: a new one only with the old one deleted", async () => {
+    await seed((db) => setDoc(doc(db, "devices", DEVICE), unpairedDevice));
+    await assertSucceeds(createPairing(child(), CODE));
+    await assertFails(createPairing(child(), "654321"));
+    // Without naming the new code, the code isn't accepted either.
+    await assertFails(setDoc(doc(child(), "pairings", "654321"), newPairing));
+    const db = child();
+    const batch = writeBatch(db);
+    batch.delete(doc(db, "pairings", CODE));
+    batch.set(doc(db, "childAccounts", CHILD), { deviceId: DEVICE, openCode: "654321" });
+    batch.set(doc(db, "pairings", "654321"), newPairing);
+    await assertSucceeds(batch.commit());
+  });
+
+  it("an old code already deleted, or now another phone's, doesn't block a new one", async () => {
+    await seed(async (db) => {
+      await setDoc(doc(db, "devices", DEVICE), unpairedDevice);
+      await setDoc(doc(db, "childAccounts", CHILD), { deviceId: DEVICE, openCode: CODE });
+    });
+    await assertSucceeds(createPairing(child(), "654321"));
+    await seed(async (db) => {
+      await setDoc(doc(db, "childAccounts", CHILD), { deviceId: DEVICE, openCode: CODE });
+      await setDoc(doc(db, "pairings", CODE), { ...openPairing, childUid: "someone-else" });
+    });
+    await assertSucceeds(createPairing(child(), "111111"));
+  });
+
+  it("the account record is its own phone's, with a 6-digit code and nothing else", async () => {
+    await assertFails(setDoc(doc(anonymous(), "childAccounts", CHILD), { deviceId: DEVICE }));
+    await assertFails(getDoc(doc(anonymous(), "childAccounts", CHILD)));
+    await assertFails(setDoc(doc(child(), "childAccounts", CHILD), { deviceId: DEVICE, openCode: "12" }));
+    await assertFails(setDoc(doc(child(), "childAccounts", CHILD), { deviceId: DEVICE, extra: true }));
+    await assertFails(setDoc(doc(child(), "childAccounts", CHILD), { deviceId: "x".repeat(65) }));
+    await assertSucceeds(setDoc(doc(child(), "childAccounts", CHILD), { deviceId: DEVICE, openCode: null }));
+    await assertSucceeds(getDoc(doc(child(), "childAccounts", CHILD)));
+    await assertFails(getDocs(collection(child(), "childAccounts")));
+  });
+
+  it("the account record is deleted only after its device and code", async () => {
+    await seed(async (db) => {
+      await setDoc(doc(db, "devices", DEVICE), unpairedDevice);
+      await setDoc(doc(db, "pairings", CODE), openPairing);
+      await setDoc(doc(db, "childAccounts", CHILD), { deviceId: DEVICE, openCode: CODE });
+    });
+    await assertFails(deleteDoc(doc(child(), "childAccounts", CHILD)));
+    await assertSucceeds(deleteDoc(doc(child(), "devices", DEVICE)));
+    await assertFails(deleteDoc(doc(child(), "childAccounts", CHILD)));
+    await assertSucceeds(deleteDoc(doc(child(), "pairings", CODE)));
+    await assertSucceeds(deleteDoc(doc(child(), "childAccounts", CHILD)));
+  });
+
+  it("a device has a short name and a bounded number of fields", async () => {
+    await assertFails(createDevice(child(), DEVICE, { ...unpairedDevice, name: "x".repeat(101) }));
+    await assertFails(createDevice(child(), DEVICE, { ...unpairedDevice, extra: 1 }));
+    await seed((db) => setDoc(doc(db, "devices", DEVICE), pairedDevice));
+    await assertFails(updateDoc(doc(child(), "devices", DEVICE), { name: "x".repeat(101) }));
+    const many = Object.fromEntries(Array.from({ length: 20 }, (_, i) => [`f${i}`, i]));
+    await assertFails(updateDoc(doc(child(), "devices", DEVICE), many));
+    await assertSucceeds(updateDoc(doc(child(), "devices", DEVICE), { name: "Samsung SM-A155F" }));
+  });
+
+  it("usage only for days close to now, with its two fields and at most 500 apps", async () => {
+    await seed((db) => setDoc(doc(db, "devices", DEVICE), pairedDevice));
+    const usage = (day: string) => doc(child(), "devices", DEVICE, "usage", day);
+    await assertSucceeds(setDoc(usage(isoDay(-1)), { ms: { a: 1 }, updatedAt: serverTimestamp() }));
+    await assertSucceeds(setDoc(usage(isoDay(-6)), { ms: { a: 1 } }));
+    await assertSucceeds(setDoc(usage(isoDay(1)), { ms: { a: 1 } }));
+    await assertFails(setDoc(usage(isoDay(-9)), { ms: { a: 1 } }));
+    await assertFails(setDoc(usage(isoDay(3)), { ms: { a: 1 } }));
+    await assertFails(setDoc(usage("not-a-day"), { ms: { a: 1 } }));
+    await assertFails(setDoc(usage(TODAY), { ms: { a: 1 }, extra: "x" }));
+    await assertFails(setDoc(usage(TODAY), { ms: "lots" }));
+    const tooMany = Object.fromEntries(Array.from({ length: 501 }, (_, i) => [`app${i}`, 1]));
+    await assertFails(setDoc(usage(TODAY), { ms: tooMany }));
+    // An old day is still pruned.
+    await seed((db) => setDoc(doc(db, "devices", DEVICE, "usage", "2026-01-01"), { ms: { a: 1 } }));
+    await assertSucceeds(deleteDoc(usage("2026-01-01")));
+  });
+
+  it("only the app list and the alerts under meta, the list bounded", async () => {
+    await seed((db) => setDoc(doc(db, "devices", DEVICE), pairedDevice));
+    const meta = (id: string) => doc(child(), "devices", DEVICE, "meta", id);
+    await assertSucceeds(setDoc(meta("alerts"), { protectionDegraded: false, updatedAt: serverTimestamp() }));
+    await assertFails(setDoc(meta("other"), { a: 1 }));
+    await assertFails(setDoc(meta("apps"), { apps: Array.from({ length: 2001 }, (_, i) => ({ p: `p${i}`, l: "x" })) }));
+    await assertFails(setDoc(meta("apps"), { apps: "all" }));
   });
 });

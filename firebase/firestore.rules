@@ -14,6 +14,13 @@ service cloud.firestore {
       return signedIn() && request.auth.token.firebase.sign_in_provider == 'google.com';
     }
 
+    // A device document: the fields the phones write (a few spare for older versions), a short name.
+    function deviceSizeOk() {
+      return request.resource.data.size() <= 24
+        && (!('name' in request.resource.data)
+          || (request.resource.data.name is string && request.resource.data.name.size() <= 100));
+    }
+
     function changedOnly(keys) {
       return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
     }
@@ -32,6 +39,26 @@ service cloud.firestore {
 
     function pairing(code) {
       return get(/databases/$(database)/documents/pairings/$(code)).data;
+    }
+
+    function childAccountAfter() {
+      return getAfter(/databases/$(database)/documents/childAccounts/$(request.auth.uid)).data;
+    }
+
+    // After this write, the code's pairing is gone or isn't this account's (the TTL deleted it and
+    // another phone made the same code since).
+    function codeGoneAfter(code) {
+      return !existsAfter(/databases/$(database)/documents/pairings/$(code))
+        || getAfter(/databases/$(database)/documents/pairings/$(code)).data.childUid != request.auth.uid;
+    }
+
+    // usage/{day}: a date close to now (today and yesterday on any time zone, a week for a phone that
+    // was off), so a phone can't make day documents without limit.
+    function recentDay(day) {
+      let parts = day.split('-');
+      return day.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+        && timestamp.date(int(parts[0]), int(parts[1]), int(parts[2])) > request.time - duration.value(8, 'd')
+        && timestamp.date(int(parts[0]), int(parts[1]), int(parts[2])) < request.time + duration.value(2, 'd');
     }
 
     // The child's phone may keep its owner, clear it, or set it to the parent who claimed one of
@@ -71,7 +98,9 @@ service cloud.firestore {
         && request.resource.data.claimedBy == null
         && request.resource.data.createdAt == request.time
         && exists(/databases/$(database)/documents/devices/$(request.resource.data.deviceId))
-        && device(request.resource.data.deviceId).childUid == request.auth.uid;
+        && device(request.resource.data.deviceId).childUid == request.auth.uid
+        // One open code per account: the code is named in childAccounts/{uid} in the same write.
+        && childAccountAfter().get('openCode', null) == code;
 
       allow update: if isGoogle()
         && resource.data.claimedBy == null
@@ -94,15 +123,20 @@ service cloud.firestore {
         && (resource == null || resource.data.childUid == request.auth.uid || resource.data.ownerUid == request.auth.uid);
       allow list: if signedIn() && resource.data.ownerUid == request.auth.uid;
 
+      // One device per account: the one childAccounts/{uid} names, written together with it.
       allow create: if signedIn()
         && request.resource.data.childUid == request.auth.uid
-        && request.resource.data.ownerUid == null;
+        && request.resource.data.ownerUid == null
+        && request.resource.data.keys().hasOnly(['childUid', 'ownerUid', 'ownerEmail', 'ownerName', 'name', 'createdAt'])
+        && deviceSizeOk()
+        && childAccountAfter().deviceId == id;
 
       // The child's phone writes everything but its own identity; the owner writes only the
       // settings, or removes itself.
       allow update: if signedIn() && (
         (resource.data.childUid == request.auth.uid
           && request.resource.data.childUid == resource.data.childUid
+          && deviceSizeOk()
           && ownerChangeAllowed(id))
         || (resource.data.ownerUid == request.auth.uid
           && (changedOnly(['settings'])
@@ -113,14 +147,26 @@ service cloud.firestore {
       // the rules check against this document).
       allow delete: if signedIn() && resource.data.childUid == request.auth.uid;
 
+      // Minutes per limited app for one day: {ms: {package: ms}, updatedAt}.
       match /usage/{day} {
         allow read: if isChildOf(id) || isOwnerOf(id);
-        allow write: if isChildOf(id);
+        allow create, update: if isChildOf(id)
+          && recentDay(day)
+          && request.resource.data.keys().hasOnly(['ms', 'updatedAt'])
+          && request.resource.data.ms is map
+          && request.resource.data.ms.size() <= 500;
+        // Old days are pruned whatever their date.
+        allow delete: if isChildOf(id);
       }
 
+      // The app list (apps) and the protection alerts (alerts); nothing else.
       match /meta/{docId} {
         allow read: if isChildOf(id) || isOwnerOf(id);
-        allow write: if isChildOf(id);
+        allow create, update: if isChildOf(id)
+          && docId in ['apps', 'alerts']
+          && request.resource.data.size() <= 30
+          && (docId != 'apps' || (request.resource.data.apps is list && request.resource.data.apps.size() <= 2000));
+        allow delete: if isChildOf(id);
       }
 
       // A child's request for more time (Phase 4c): asked by the child, answered once by the owner.
@@ -174,6 +220,34 @@ service cloud.firestore {
         // Account deletion: the child's phone clears all of them; a parent clears the ones it sent.
         allow delete: if isChildOf(id) || (isOwnerOf(id) && resource.data.by == request.auth.uid);
       }
+    }
+
+    // A child's phone account: its one device and its one open pairing code (2026-10-28 audit: any
+    // account, also an anonymous one, could make devices and codes without limit; codes are only a
+    // million, so that could have used them up). Moving to another device or code needs the old one
+    // gone in the same write.
+    match /childAccounts/{uid} {
+      allow get: if signedIn() && request.auth.uid == uid;
+      allow list: if false;
+
+      allow create, update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['deviceId', 'openCode'])
+        && request.resource.data.deviceId is string
+        && request.resource.data.deviceId.size() <= 64
+        && (request.resource.data.get('openCode', null) == null
+          || (request.resource.data.openCode is string && request.resource.data.openCode.matches('^[0-9]{6}$')))
+        && (resource == null
+          || resource.data.deviceId == request.resource.data.deviceId
+          || !existsAfter(/databases/$(database)/documents/devices/$(resource.data.deviceId)))
+        && (resource == null
+          || resource.data.get('openCode', null) == null
+          || resource.data.openCode == request.resource.data.get('openCode', null)
+          || codeGoneAfter(resource.data.openCode));
+
+      // With the account: once its device and code are gone.
+      allow delete: if signedIn() && request.auth.uid == uid
+        && !existsAfter(/databases/$(database)/documents/devices/$(resource.data.deviceId))
+        && (resource.data.get('openCode', null) == null || codeGoneAfter(resource.data.openCode));
     }
 
     // FCM tokens of a parent's phones (one document per token, id = token).

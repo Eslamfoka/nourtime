@@ -4,6 +4,8 @@ package com.nourtime.app.remote
 object RemotePaths {
     const val DEVICES = "devices"
     const val PAIRINGS = "pairings"
+    /** Per child's phone account (id = uid): its one device and its one open pairing code. */
+    const val CHILD_ACCOUNTS = "childAccounts"
     const val USAGE = "usage"
     const val META = "meta"
     const val APPS_DOC = "apps"

@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.Source
 import com.nourtime.app.remote.RemotePaths
 import com.nourtime.app.remote.model.PairingCode
@@ -32,6 +33,8 @@ class ChildPairing @Inject constructor(
     suspend fun createCode(): String {
         val uid = identity.ensureSignedIn()
         val device = deviceRef()
+        // The rules allow an account one device and one open code, both named here (2026-10-28 audit).
+        val account = firestore.collection(RemotePaths.CHILD_ACCOUNTS).document(uid)
         val create = mapOf(
             "childUid" to uid,
             "ownerUid" to null,
@@ -43,7 +46,15 @@ class ChildPairing @Inject constructor(
         if (device.get(Source.SERVER).await().exists()) {
             device.update("name", deviceName()).await()
         } else {
-            device.set(create).await()
+            firestore.batch()
+                .set(account, mapOf("deviceId" to device.id), SetOptions.merge())
+                .set(device, create)
+                .commit().await()
+        }
+        // A code left open earlier (the app was closed while it showed) must go before a new one is
+        // allowed. Gone already, or another phone's by now: the delete is refused, nothing to do.
+        account.get(Source.SERVER).await().getString("openCode")?.let { previous ->
+            runCatching { firestore.collection(RemotePaths.PAIRINGS).document(previous).delete().await() }
         }
         repeat(CODE_ATTEMPTS) {
             val code = PairingCode.generate()
@@ -53,6 +64,7 @@ class ChildPairing @Inject constructor(
                 if (tx.get(ref).exists()) {
                     false
                 } else {
+                    tx.set(account, mapOf("deviceId" to device.id, "openCode" to code))
                     tx.set(
                         ref,
                         mapOf(
@@ -124,6 +136,7 @@ class ChildPairing @Inject constructor(
                     }
                     device.delete().await()
                 }
+                deleteAccountRecord()
                 identity.deleteAccount()
             }.isSuccess
         } ?: false
@@ -132,6 +145,15 @@ class ChildPairing @Inject constructor(
         }
         identity.setErasePending(!erased)
         return erased
+    }
+
+    /** The account's device-and-code record, after its open code (the device is gone by now). */
+    private suspend fun deleteAccountRecord() {
+        val account = firestore.collection(RemotePaths.CHILD_ACCOUNTS).document(identity.ensureSignedIn())
+        val snapshot = account.get(Source.SERVER).await()
+        if (!snapshot.exists()) return
+        snapshot.getString("openCode")?.let { forget(it) }
+        account.delete().await()
     }
 
     private suspend fun deleteAll(refs: List<DocumentReference>) {
