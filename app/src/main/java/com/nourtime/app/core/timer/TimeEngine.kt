@@ -18,6 +18,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -127,20 +128,36 @@ class TimeEngine @Inject constructor(
     /** Applies a command from the parent's phone (or the debug tools on Home) and saves it at once. */
     suspend fun apply(command: TimerCommand) = change { TimeRules.apply(it, command) }
 
-    private suspend fun change(rule: (TimerState) -> TimerState) = mutex.withLock {
-        val current = state ?: load() ?: return@withLock
-        val next = rule(current)
-        state = next
-        save(next)
-        lastSavedElapsed = clock.elapsedRealtime()
-        _status.value = _status.value?.copy(
-            phase = next.phase,
-            remainingMs = next.remainingMs,
-            budgetMs = next.budgetMs,
-            lockRemainingMs = next.lockRemainingMs,
-            lockElapsedMs = next.lockElapsedMs(),
-            lockPendingMs = next.lockPendingMs,
-        )
+    /**
+     * Applies [rule] to the current state and saves it. With no state yet (a fresh install before the
+     * timer service's first [update], which needs the settings to start one), the change waits for that
+     * update instead of being dropped: Home's "Lock now" used to do nothing then.
+     */
+    private suspend fun change(rule: (TimerState) -> TimerState) {
+        // The status is set only after the state, which is never cleared: one wait is enough.
+        while (!tryChange(rule)) status.filterNotNull().first()
+    }
+
+    /** False when there's no state to change yet. */
+    private suspend fun tryChange(rule: (TimerState) -> TimerState): Boolean = mutex.withLock {
+        val current = state ?: load()
+        if (current == null) {
+            false
+        } else {
+            val next = rule(current)
+            state = next
+            save(next)
+            lastSavedElapsed = clock.elapsedRealtime()
+            _status.value = _status.value?.copy(
+                phase = next.phase,
+                remainingMs = next.remainingMs,
+                budgetMs = next.budgetMs,
+                lockRemainingMs = next.lockRemainingMs,
+                lockElapsedMs = next.lockElapsedMs(),
+                lockPendingMs = next.lockPendingMs,
+            )
+            true
+        }
     }
 
     /** Minutes earned in the Learning Hub; see [TimeRules.reward]. */

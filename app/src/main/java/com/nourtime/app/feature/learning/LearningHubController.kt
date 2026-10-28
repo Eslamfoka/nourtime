@@ -1,5 +1,6 @@
 package com.nourtime.app.feature.learning
 
+import android.util.Log
 import com.nourtime.app.core.learning.ClockLevel
 import com.nourtime.app.core.learning.ColoringPack
 import com.nourtime.app.core.learning.ColoringRound
@@ -110,6 +111,8 @@ data class HubContent(
     val tracing: Map<LearnLanguage, GamePack<TraceLetter>> = emptyMap(),
     /** Color names in the app language, spoken when a coloring color is picked. */
     val colorNames: Map<Long, String> = emptyMap(),
+    /** The packs have been read (a game whose pack is still null or empty then has nothing to play). */
+    val loaded: Boolean = false,
 ) {
     /** The levels of [game]; [language] is the words language (only Letter Tracing depends on it). */
     fun levels(game: GameId, language: LearnLanguage): GamePack<out Level>? = GameRegistry.of(game).levels(this, language)
@@ -166,7 +169,10 @@ class LearningHubController(
                 shop = content.shop(),
                 tracing = LearnLanguage.entries.associateWith { content.tracing(it) },
                 colorNames = content.letters(appLanguage).colors.associate { it.argb to it.name },
+                loaded = true,
             )
+            val hidden = GameRegistry.hidden(_content.value, appLanguage)
+            if (hidden.isNotEmpty()) runCatching { Log.w(TAG, "games without levels, not shown: ${hidden.map { it.id }}") }
         }
     }
 
@@ -218,8 +224,13 @@ class LearningHubController(
         advancing?.cancel()
         advancing = scope.launch {
             // Null: nothing to play in this level (e.g. no words in that language yet), stay here.
-            val start = GameStart(c, content, lettersLanguage(s), random)
-            _screen.value = GameRegistry.of(game).start(start, level, tutorial) ?: return@launch
+            val start = GameStart(c, content::letters, lettersLanguage(s), random)
+            val next = GameRegistry.of(game).start(start, level, tutorial)
+            if (next == null) {
+                runCatching { Log.i(TAG, "$game level $level has nothing to play") }
+                return@launch
+            }
+            _screen.value = next
         }
     }
 
@@ -474,6 +485,7 @@ class LearningHubController(
     }
 
     private companion object {
+        const val TAG = "LearningHub"
         const val CELEBRATE_MS = 900L
 
         /** Two cards that don't match stay up this long, so the child can remember them. */

@@ -11,6 +11,7 @@ import com.nourtime.app.core.learning.GameId
 import com.nourtime.app.core.learning.GamePack
 import com.nourtime.app.core.learning.LearnLanguage
 import com.nourtime.app.core.learning.LettersGame
+import com.nourtime.app.core.learning.LettersLanguagePack
 import com.nourtime.app.core.learning.Level
 import com.nourtime.app.core.learning.ListenGame
 import com.nourtime.app.core.learning.MathGame
@@ -32,7 +33,8 @@ internal enum class GameOption { NONE, NUMERALS, LANGUAGE }
 /** What a game gets when a level starts. */
 internal class GameStart(
     val packs: HubContent,
-    val repo: LearningContentRepository,
+    /** The words, letters and colors of a language ([LearningContentRepository.letters]). */
+    val letters: suspend (LearnLanguage) -> LettersLanguagePack,
     /** The language chosen for words (Letters & Words, Listen & Find). */
     val wordsLanguage: LearnLanguage,
     val random: Random,
@@ -41,7 +43,8 @@ internal class GameStart(
 /**
  * One Learning Hub game: its tile, the option on its level screen, its levels and how a level starts.
  * [wordsLanguage]: the questions speak the chosen words language (else the app language).
- * [start] returns null when the level can't be played (e.g. no content in that language yet).
+ * [start] returns null when the level can't be played (no content in that language yet, or its pack
+ * is missing or shorter than expected).
  */
 internal class GameSpec(
     val id: GameId,
@@ -65,7 +68,7 @@ internal object GameRegistry {
             wordsLanguage = false,
             levels = { c, _ -> c.math },
             start = { level, tutorial ->
-                HubScreen.Playing(GameId.MATH, level, Round(MathGame.questions(packs.math!!.levels[level], random), tutorial = tutorial))
+                packs.math.level(level)?.let { HubScreen.Playing(GameId.MATH, level, Round(MathGame.questions(it, random), tutorial = tutorial)) }
             },
         ),
         GameSpec(
@@ -75,8 +78,8 @@ internal object GameRegistry {
             wordsLanguage = true,
             levels = { c, _ -> c.letters },
             start = { level, tutorial ->
-                LettersGame.questions(packs.letters!!.levels[level], repo.letters(wordsLanguage), random)
-                    .takeIf { it.isNotEmpty() }
+                packs.letters.level(level)?.let { LettersGame.questions(it, letters(wordsLanguage), random) }
+                    ?.takeIf { it.isNotEmpty() }
                     ?.let { HubScreen.Playing(GameId.LETTERS, level, Round(it, tutorial = tutorial)) }
             },
         ),
@@ -87,7 +90,7 @@ internal object GameRegistry {
             wordsLanguage = false,
             levels = { c, _ -> c.connect },
             start = { level, tutorial ->
-                HubScreen.Connecting(GameId.CONNECT, level, ConnectRound(packs.connect!!.levels[level], tutorial = tutorial))
+                packs.connect.level(level)?.let { HubScreen.Connecting(GameId.CONNECT, level, ConnectRound(it, tutorial = tutorial)) }
             },
         ),
         GameSpec(
@@ -97,9 +100,10 @@ internal object GameRegistry {
             wordsLanguage = false,
             levels = { c, _ -> c.coloring?.pack },
             start = { level, tutorial ->
-                val pack = packs.coloring!!
-                val picture = pack.pack.levels[level]
-                HubScreen.Coloring(GameId.COLORING, level, ColoringRound(picture, ColoringPalette.of(picture, pack.distractors, random), tutorial = tutorial))
+                val pack = packs.coloring ?: return@GameSpec null
+                pack.pack.level(level)?.let { picture ->
+                    HubScreen.Coloring(GameId.COLORING, level, ColoringRound(picture, ColoringPalette.of(picture, pack.distractors, random), tutorial = tutorial))
+                }
             },
         ),
         GameSpec(
@@ -109,8 +113,8 @@ internal object GameRegistry {
             wordsLanguage = true,
             levels = { c, _ -> c.listen },
             start = { level, tutorial ->
-                ListenGame.questions(packs.listen!!.levels[level], repo.letters(wordsLanguage), random)
-                    .takeIf { it.isNotEmpty() }
+                packs.listen.level(level)?.let { ListenGame.questions(it, letters(wordsLanguage), random) }
+                    ?.takeIf { it.isNotEmpty() }
                     ?.let { HubScreen.Playing(GameId.LISTEN, level, Round(it, tutorial = tutorial)) }
             },
         ),
@@ -121,8 +125,8 @@ internal object GameRegistry {
             wordsLanguage = false,
             levels = { c, _ -> c.patterns },
             start = { level, tutorial ->
-                PatternGame.questions(packs.patterns!!.levels[level], repo.letters(wordsLanguage), random)
-                    .takeIf { it.isNotEmpty() }
+                packs.patterns.level(level)?.let { PatternGame.questions(it, letters(wordsLanguage), random) }
+                    ?.takeIf { it.isNotEmpty() }
                     ?.let { HubScreen.Playing(GameId.PATTERNS, level, Round(it, tutorial = tutorial)) }
             },
         ),
@@ -133,7 +137,7 @@ internal object GameRegistry {
             wordsLanguage = false,
             levels = { c, _ -> c.clock },
             start = { level, tutorial ->
-                HubScreen.Playing(GameId.CLOCK, level, Round(ClockGame.questions(packs.clock!!.levels[level], random), tutorial = tutorial))
+                packs.clock.level(level)?.let { HubScreen.Playing(GameId.CLOCK, level, Round(ClockGame.questions(it, random), tutorial = tutorial)) }
             },
         ),
         GameSpec(
@@ -143,8 +147,8 @@ internal object GameRegistry {
             wordsLanguage = true,
             levels = { c, _ -> c.memory },
             start = { level, tutorial ->
-                MemoryGame.deal(packs.memory!!.levels[level], repo.letters(wordsLanguage), random)
-                    .takeIf { it.isNotEmpty() }
+                packs.memory.level(level)?.let { MemoryGame.deal(it, letters(wordsLanguage), random) }
+                    ?.takeIf { it.isNotEmpty() }
                     ?.let { HubScreen.Memory(GameId.MEMORY, level, MemoryRound(it, tutorial = tutorial)) }
             },
         ),
@@ -155,10 +159,11 @@ internal object GameRegistry {
             wordsLanguage = true,
             levels = { c, _ -> c.words },
             start = { level, tutorial ->
-                val spec = packs.words!!.levels[level]
-                WordBuilder.tasks(spec, repo.letters(wordsLanguage), random)
-                    .takeIf { it.isNotEmpty() }
-                    ?.let { HubScreen.Words(GameId.WORDS, level, WordRound(it, tutorial = tutorial, hint = spec.hint)) }
+                packs.words.level(level)?.let { spec ->
+                    WordBuilder.tasks(spec, letters(wordsLanguage), random)
+                        .takeIf { it.isNotEmpty() }
+                        ?.let { HubScreen.Words(GameId.WORDS, level, WordRound(it, tutorial = tutorial, hint = spec.hint)) }
+                }
             },
         ),
         GameSpec(
@@ -168,7 +173,7 @@ internal object GameRegistry {
             wordsLanguage = true,
             levels = { c, _ -> c.sorting },
             start = { level, tutorial ->
-                SortGame.deal(packs.sorting!!.levels[level], repo.letters(wordsLanguage), random)
+                packs.sorting.level(level)?.let { SortGame.deal(it, letters(wordsLanguage), random) }
                     ?.let { HubScreen.Sorting(GameId.SORTING, level, it.copy(tutorial = tutorial)) }
             },
         ),
@@ -179,7 +184,7 @@ internal object GameRegistry {
             wordsLanguage = true,
             levels = { c, _ -> c.shop },
             start = { level, tutorial ->
-                ShopGame.deal(packs.shop!!.levels[level], repo.letters(wordsLanguage), random)
+                packs.shop.level(level)?.let { ShopGame.deal(it, letters(wordsLanguage), random) }
                     ?.let { HubScreen.Shop(GameId.SHOP, level, it.copy(tutorial = tutorial)) }
             },
         ),
@@ -190,10 +195,24 @@ internal object GameRegistry {
             wordsLanguage = true,
             levels = { c, language -> c.tracing[language] },
             start = { level, tutorial ->
-                packs.tracing[wordsLanguage]?.levels?.getOrNull(level)?.let { HubScreen.Tracing(GameId.TRACING, level, TraceRound(it, tutorial = tutorial)) }
+                packs.tracing[wordsLanguage].level(level)?.let { HubScreen.Tracing(GameId.TRACING, level, TraceRound(it, tutorial = tutorial)) }
             },
         ),
     )
 
     fun of(id: GameId): GameSpec = all.first { it.id == id }
+
+    /**
+     * The games on the menu: all of them while the packs load, then only those with levels in
+     * [language]. A game whose pack is missing or broken (an empty pack) is left out, not shown with
+     * nothing to play; [hidden] lists them for the log.
+     */
+    fun shown(content: HubContent, language: LearnLanguage): List<GameSpec> =
+        if (!content.loaded) all else all - hidden(content, language).toSet()
+
+    fun hidden(content: HubContent, language: LearnLanguage): List<GameSpec> =
+        if (!content.loaded) emptyList() else all.filter { it.levels(content, language)?.levels.isNullOrEmpty() }
 }
+
+/** Level [index] of this pack, or null without a pack or such a level. */
+private fun <T : Level> GamePack<T>?.level(index: Int): T? = this?.levels?.getOrNull(index)

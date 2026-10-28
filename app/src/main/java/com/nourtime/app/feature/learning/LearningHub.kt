@@ -153,7 +153,8 @@ private fun ColumnScope.HubMenu(controller: LearningHubController, state: Learni
     val settings = state?.settings
     val earning = controller.rewards && settings != null && settings.dailyMaxMinutes > 0
     val today by controller.todayDate.collectAsStateWithLifecycle()
-    val maxReached = earning && state != null && today != null && state.earnedOn(today!!) >= settings!!.dailyMaxMinutes
+    val day = today
+    val maxReached = earning && day != null && state.earnedOn(day) >= settings.dailyMaxMinutes
     HubTopBar(stringResource(R.string.learn_hub_title), onClose)
     Column(
         Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
@@ -186,7 +187,8 @@ private fun ColumnScope.HubMenu(controller: LearningHubController, state: Learni
                 }
             }
         }
-        GameRegistry.all.chunked(2).forEach { row ->
+        val content by controller.hubContent.collectAsStateWithLifecycle()
+        GameRegistry.shown(content, controller.lettersLanguage(state)).chunked(2).forEach { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxWidth()) {
                 row.forEach { spec -> GameTile(spec.id, true, { controller.openGame(spec.id) }, Modifier.weight(1f)) }
                 // An odd last tile keeps the size of the others.

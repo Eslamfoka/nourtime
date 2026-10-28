@@ -34,6 +34,7 @@ import com.nourtime.app.remote.model.SettingsSync
 import com.nourtime.app.remote.model.StatusThrottle
 import com.nourtime.app.remote.model.SyncAction
 import com.nourtime.app.remote.model.statusMap
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
@@ -188,7 +189,7 @@ class RemoteSync @Inject constructor(
      * the transaction fails and the next snapshot after reconnecting decides again.
      */
     private suspend fun uploadSettings(device: DocumentReference, local: RemoteSettings, lastRev: Long) {
-        val rev = runCatching {
+        val rev = try {
             firestore.runTransaction { tx ->
                 val current = tx.get(device)
                 @Suppress("UNCHECKED_CAST")
@@ -200,8 +201,25 @@ class RemoteSync @Inject constructor(
                     SettingsSync.nextRev(lastRev, currentRev).also { tx.update(device, "settings", local.toMap(it, RemoteSettings.BY_CHILD)) }
                 }
             }.await()
-        }.getOrNull() ?: return
+        } catch (e: CancellationException) {
+            // The sync stopping (unpaired, service gone) isn't an upload error.
+            throw e
+        } catch (e: Exception) {
+            Log.w(TAG, "settings upload failed; the next snapshot decides again", e)
+            null
+        } ?: return
         remember(local, rev)
+    }
+
+    /** Like runCatching, but the sync stopping (a cancellation) passes through instead of being taken for a failure. */
+    private inline fun logFailure(what: String, block: () -> Unit) {
+        try {
+            block()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Log.w(TAG, what, e)
+        }
     }
 
     private suspend fun remember(synced: RemoteSettings, rev: Long) {
@@ -276,13 +294,13 @@ class RemoteSync @Inject constructor(
     }
 
     private suspend fun pruneUsage(device: DocumentReference, before: LocalDate) {
-        runCatching {
+        logFailure("couldn't list old usage") {
             device.collection(RemotePaths.USAGE)
                 .orderBy(FieldPath.documentId())
                 .endBefore(before.format(DateTimeFormatter.ISO_LOCAL_DATE))
                 .get().await()
                 .documents.forEach { it.reference.delete().logIfFailed(TAG, "old usage") }
-        }.onFailure { Log.w(TAG, "couldn't list old usage", it) }
+        }
     }
 
     /**
@@ -291,11 +309,11 @@ class RemoteSync @Inject constructor(
      * restart). Requests older than a day are deleted.
      */
     private suspend fun followRequests(device: DocumentReference) {
-        runCatching {
+        logFailure("couldn't list old requests") {
             val cutoff = Timestamp(Date(trustedClock.now().toInstant().toEpochMilli() - REQUESTS_KEEP_MS))
             device.collection(RemotePaths.REQUESTS).whereLessThan("createdAt", cutoff).get().await()
                 .documents.forEach { it.reference.delete().logIfFailed(TAG, "old request") }
-        }.onFailure { Log.w(TAG, "couldn't list old requests", it) }
+        }
         timeRequests.latest()
             .map { it?.status == AskPolicy.PENDING }
             .distinctUntilChanged()

@@ -202,6 +202,32 @@ class TimeEngineTest {
         assertEquals(60 * 60_000L, engine.status.value!!.lockRemainingMs)
     }
 
+    @Test
+    fun `lock now before the first update waits for it instead of doing nothing`() = runTest {
+        val engine = engine(newStore())
+        // Home's quick action on a fresh install, before the timer service has run once.
+        val lock = launch { engine.apply(TimerCommand.LockNow) }
+        runCurrent()
+        assertTrue("still waiting", lock.isActive)
+        engine.update(emptySet(), DetectionSource.ACCESSIBILITY, settings)
+        advanceUntilIdle()
+        assertTrue(lock.isCompleted)
+        assertEquals(TimerPhase.LOCKED, engine.status.value!!.phase)
+        // And it was saved: a new engine on the same file starts locked.
+        val again = engine(newStoreSameFile())
+        assertTrue(again.isLocked())
+    }
+
+    @Test
+    fun `a change with a saved state but no update yet applies at once`() = runTest {
+        val first = engine(newStore())
+        first.update(emptySet(), DetectionSource.ACCESSIBILITY, settings)
+        first.flush()
+        val engine = engine(newStoreSameFile())
+        engine.apply(TimerCommand.LockNow)
+        assertTrue(engine.isLocked())
+    }
+
     // A second DataStore on the same file needs the first one's scope gone; reading the file directly
     // into a fresh store keeps the test simple.
     private fun TestScope.newStoreSameFile(): CountingStore {
