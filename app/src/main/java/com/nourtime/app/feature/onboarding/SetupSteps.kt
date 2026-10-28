@@ -19,6 +19,7 @@ import com.nourtime.app.feature.home.LockTypeEditor
 import com.nourtime.app.feature.setup.AppList
 import com.nourtime.app.feature.setup.AppSearchField
 import com.nourtime.app.feature.setup.AppsViewModel
+import com.nourtime.app.feature.setup.BrowserWarningCard
 import com.nourtime.app.feature.setup.ChildProfileEditor
 import com.nourtime.app.feature.setup.ParentSettingsViewModel
 import com.nourtime.app.feature.setup.TimeBudgetEditor
@@ -92,6 +93,7 @@ fun SelectAppsStep(
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
+                        BrowserWarningCard(state.unlimitedBrowsers, viewModel::limitBrowsers)
                         AppSearchField(state.query, viewModel::onQueryChange)
                     }
                 }

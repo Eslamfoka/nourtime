@@ -8,6 +8,7 @@ import android.content.pm.PackageItemInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.content.res.Configuration
+import androidx.core.net.toUri
 import android.os.Build
 import android.util.LruCache
 import androidx.compose.ui.graphics.ImageBitmap
@@ -50,6 +51,26 @@ class InstalledAppsRepository @Inject constructor(
             .filter { it.activityInfo.packageName != context.packageName }
             .map { InstalledApp(it.activityInfo.packageName, localizedLabel(it.activityInfo) { it.loadLabel(pm) }) }
             .sortedWith { a, b -> collator.compare(a.label, b.label) }
+    }
+
+    /**
+     * Apps that open web links ([Browsers]). Visible through the `<queries>` web-link intents in the
+     * manifest; MATCH_ALL also lists browsers that aren't the default.
+     */
+    suspend fun browserPackages(): Set<String> = withContext(Dispatchers.IO) {
+        val resolved = listOf("http", "https").flatMap { scheme ->
+            val intent = Intent(Intent.ACTION_VIEW, "$scheme://example.com".toUri()).addCategory(Intent.CATEGORY_BROWSABLE)
+            runCatching {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    pm.queryIntentActivities(intent, PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL.toLong()))
+                } else {
+                    @Suppress("DEPRECATION")
+                    pm.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+                }
+            }.getOrDefault(emptyList()).map { it.activityInfo.packageName }
+        }
+        val launchable = launchableApps().map { it.packageName }
+        Browsers.among(resolved, launchable, context.packageName)
     }
 
     /** Keyed by language too, so switching Nour Time's language shows the new names. */

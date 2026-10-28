@@ -33,6 +33,17 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent>
+        <!-- Browsers (apps that open web links), suggested for limiting in the app list. -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="http" />
+        </intent>
         <!-- Text-to-speech for the Learning Hub games (Android 11+ package visibility). -->
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />

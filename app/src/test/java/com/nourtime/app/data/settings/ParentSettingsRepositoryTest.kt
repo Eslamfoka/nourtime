@@ -106,6 +106,13 @@ class ParentSettingsRepositoryTest {
     }
 
     @Test
+    fun `limiting several apps at once keeps the ones already limited`() = runTest {
+        repo.setAppLimited("com.google.android.youtube", true)
+        repo.limitApps(setOf("com.android.chrome", "org.mozilla.firefox"))
+        assertEquals(setOf("com.google.android.youtube", "com.android.chrome", "org.mozilla.firefox"), repo.settings.first().limitedApps)
+    }
+
+    @Test
     fun `toggles limited apps`() = runTest {
         repo.setAppLimited("com.google.android.youtube", true)
         repo.setAppLimited("com.zhiliaoapp.musically", true)

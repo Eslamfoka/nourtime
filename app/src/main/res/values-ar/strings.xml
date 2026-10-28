@@ -173,6 +173,11 @@
     <string name="apps_search">ابحث عن تطبيق</string>
     <string name="apps_none_selected">لم تختر أي تطبيق بعد. فعّل التطبيقات التي تريد تحديد وقتها.</string>
     <string name="apps_no_results">لا توجد تطبيقات تطابق \"%1$s\"</string>
+    <string name="apps_browser_label">متصفح</string>
+    <string name="apps_browsers_warning">تستطيع المتصفحات فتح يوتيوب ومواقع أخرى. هل تريد تحديدها أيضًا؟</string>
+    <string name="apps_browsers_list">غير محددة: %1$s</string>
+    <string name="apps_browsers_separator">"، "</string>
+    <string name="apps_limit_browsers">حدّد المتصفحات</string>
     <string name="apps_limited_label">التطبيقات المحددة</string>
     <plurals name="apps_selected_count">
         <item quantity="zero">لم تختر أي تطبيق</item>

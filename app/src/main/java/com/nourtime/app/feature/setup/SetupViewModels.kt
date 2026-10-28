@@ -3,6 +3,7 @@ package com.nourtime.app.feature.setup
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nourtime.app.data.apps.Browsers
 import com.nourtime.app.data.apps.InstalledApp
 import com.nourtime.app.data.apps.InstalledAppsRepository
 import com.nourtime.app.data.apps.filterApps
@@ -59,14 +60,19 @@ class ParentSettingsViewModel @Inject constructor(
     }
 }
 
-/** One app in a switch list; [checked] means limited, or allowed during the lock, by list. */
-data class AppRow(val app: InstalledApp, val checked: Boolean)
+/**
+ * One app in a switch list; [checked] means limited, or allowed during the lock, by list. [browser]
+ * marks a web browser ([Browsers]).
+ */
+data class AppRow(val app: InstalledApp, val checked: Boolean, val browser: Boolean = false)
 
 data class AppsUiState(
     val loading: Boolean = true,
     val query: String = "",
     val rows: List<AppRow> = emptyList(),
     val limitedCount: Int = 0,
+    /** Browsers on this phone the parent hasn't limited (nor allowed during the lock): the warning's list. */
+    val unlimitedBrowsers: List<InstalledApp> = emptyList(),
 )
 
 /** The installed-app list with search and on/off switches. */
@@ -77,20 +83,15 @@ class AppsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val installed = MutableStateFlow<List<InstalledApp>?>(null)
+    private val browsers = MutableStateFlow<Set<String>>(emptySet())
     private val query = MutableStateFlow("")
     private var pinned: Set<String> = emptySet()
 
-    val state: StateFlow<AppsUiState> = combine(installed, query, settings.settings) { list, q, s ->
+    val state: StateFlow<AppsUiState> = combine(installed, browsers, query, settings.settings) { list, web, q, s ->
         if (list == null) {
             AppsUiState(query = q)
         } else {
-            val limited = s.limitedApps
-            AppsUiState(
-                loading = false,
-                query = q,
-                rows = filterApps(list, q, pinned).map { AppRow(it, it.packageName in limited) },
-                limitedCount = list.count { it.packageName in limited },
-            )
+            appsUiState(list, web, q, pinned, s.limitedApps, s.allowedDuringLock)
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AppsUiState())
 
@@ -99,7 +100,15 @@ class AppsViewModel @Inject constructor(
             // Pin the already-limited apps to the top once, so rows don't jump while toggling.
             pinned = settings.settings.first().limitedApps
             installed.value = apps.launchableApps()
+            browsers.value = runCatching { apps.browserPackages() }.getOrDefault(emptySet())
         }
+    }
+
+    /** "Limit browsers": every browser the warning lists, in one tap. */
+    fun limitBrowsers() {
+        val toLimit = state.value.unlimitedBrowsers.mapTo(HashSet()) { it.packageName }
+        if (toLimit.isEmpty()) return
+        viewModelScope.launch { settings.limitApps(toLimit) }
     }
 
     fun onQueryChange(value: String) {
@@ -111,4 +120,23 @@ class AppsViewModel @Inject constructor(
     }
 
     suspend fun icon(packageName: String): ImageBitmap? = apps.icon(packageName)
+}
+
+/** The app list as shown: search results with switches and browser labels, and the browsers to suggest. */
+internal fun appsUiState(
+    list: List<InstalledApp>,
+    browsers: Set<String>,
+    query: String,
+    pinned: Set<String>,
+    limited: Set<String>,
+    allowedDuringLock: Set<String>,
+): AppsUiState {
+    val suggest = Browsers.unlimited(browsers, limited, allowedDuringLock)
+    return AppsUiState(
+        loading = false,
+        query = query,
+        rows = filterApps(list, query, pinned).map { AppRow(it, it.packageName in limited, browser = it.packageName in browsers) },
+        limitedCount = list.count { it.packageName in limited },
+        unlimitedBrowsers = list.filter { it.packageName in suggest },
+    )
 }

@@ -186,6 +186,12 @@ class ParentSettingsRepository @Inject constructor(
         if (limited) prefs[ALLOWED_DURING_LOCK] = prefs[ALLOWED_DURING_LOCK].orEmpty() - packageName
     }
 
+    /** Several apps limited at once ("Limit browsers"), as [setAppLimited] does for one. */
+    suspend fun limitApps(packageNames: Set<String>) = store.edit { prefs ->
+        prefs[LIMITED_APPS] = prefs[LIMITED_APPS].orEmpty() + packageNames
+        prefs[ALLOWED_DURING_LOCK] = prefs[ALLOWED_DURING_LOCK].orEmpty() - packageNames
+    }
+
     /** Allowing an app during the lock takes it off the limited list, so its time is free. */
     suspend fun setAppAllowedDuringLock(packageName: String, allowed: Boolean) = store.edit { prefs ->
         val current = prefs[ALLOWED_DURING_LOCK].orEmpty()

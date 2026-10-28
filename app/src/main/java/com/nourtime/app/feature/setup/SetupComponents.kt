@@ -22,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Boy
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Girl
+import androidx.compose.material.icons.rounded.Language
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
@@ -52,9 +53,11 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.NourCard
+import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.designsystem.component.nourTextFieldColors
 import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.core.ui.formatDuration
+import com.nourtime.app.data.apps.InstalledApp
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
 import com.nourtime.app.data.settings.TimeLimits
@@ -322,7 +325,10 @@ fun AppRowItem(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         AppIcon(row.app.packageName, loadIcon)
-        Text(row.app.label, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+        Column(Modifier.weight(1f)) {
+            Text(row.app.label, style = MaterialTheme.typography.titleSmall)
+            if (row.browser) BrowserLabel()
+        }
         Switch(
             checked = row.checked,
             onCheckedChange = null,
@@ -332,6 +338,42 @@ fun AppRowItem(
                 checkedBorderColor = NourTheme.colors.success,
             ),
         )
+    }
+}
+
+/** Small "Browser" tag under a browser's name. */
+@Composable
+private fun BrowserLabel() {
+    Surface(shape = RoundedCornerShape(6.dp), color = MaterialTheme.colorScheme.secondaryContainer, modifier = Modifier.padding(top = 2.dp)) {
+        Text(
+            stringResource(R.string.apps_browser_label),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.dp),
+        )
+    }
+}
+
+/**
+ * Browsers open YouTube and every other site: offered for limiting, never chosen for the parent.
+ * Shown while a browser is neither limited nor allowed during the lock.
+ */
+@Composable
+fun BrowserWarningCard(browsers: List<InstalledApp>, onLimit: () -> Unit) {
+    if (browsers.isEmpty()) return
+    NourCard(containerColor = MaterialTheme.colorScheme.primaryContainer) {
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.Top) {
+            Icon(Icons.Rounded.Language, contentDescription = null, tint = MaterialTheme.colorScheme.onSurface, modifier = Modifier.size(22.dp))
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(stringResource(R.string.apps_browsers_warning), style = MaterialTheme.typography.titleSmall)
+                Text(
+                    stringResource(R.string.apps_browsers_list, browsers.joinToString(stringResource(R.string.apps_browsers_separator)) { it.label }),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+        NourSecondaryButton(stringResource(R.string.apps_limit_browsers), onLimit, modifier = Modifier.fillMaxWidth())
     }
 }
 

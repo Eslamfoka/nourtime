@@ -175,6 +175,11 @@
     <string name="apps_search">Search apps</string>
     <string name="apps_none_selected">No apps selected yet. Turn on the apps you want to limit.</string>
     <string name="apps_no_results">No apps match \"%1$s\"</string>
+    <string name="apps_browser_label">Browser</string>
+    <string name="apps_browsers_warning">Browsers can open YouTube and other sites. Limit them too?</string>
+    <string name="apps_browsers_list">Not limited: %1$s</string>
+    <string name="apps_browsers_separator">", "</string>
+    <string name="apps_limit_browsers">Limit browsers</string>
     <string name="apps_limited_label">Limited apps</string>
     <plurals name="apps_selected_count">
         <item quantity="one">%d app selected</item>

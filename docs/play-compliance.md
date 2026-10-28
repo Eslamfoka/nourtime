@@ -24,6 +24,7 @@ notes collect what the Play Console declarations will need.
 | `Settings.Global` `user_switcher_enabled` (hidden key, read only, no permission) | Whether the phone's "Multiple users" switch is on, so setup and the Permissions screen can recommend turning off guest and other users (Nour Time can't limit apps there). Stays on the phone, never uploaded. | Setup step "Guest and other users"; Permissions screen. |
 | `INTERNET` | Phase 2 remote control (Firebase Auth + Firestore): only used on a parent's phone, or on a child's phone after the parent connected it. | Privacy policy; the pairing screens. |
 | `<queries>` for launcher apps | Lists apps with a launcher icon for the app picker. **No `QUERY_ALL_PACKAGES`.** | — |
+| `<queries>` for web links (`ACTION_VIEW` http/https, `BROWSABLE`) | Marks the installed browsers in the app picker and suggests limiting them (the parent chooses). Local only. | — |
 
 ## Accessibility API declaration (Play Console text draft)
 
