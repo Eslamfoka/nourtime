@@ -58,6 +58,8 @@
     <string name="device_pin_reset_approve">الموافقة على الرمز الجديد</string>
     <string name="device_pin_reset_approve_body">سيعمل الرمز الجديد على هاتف طفلك فورًا.</string>
     <string name="pin_locked_out">محاولات كثيرة. حاول مرة أخرى بعد %1$s</string>
+    <string name="pin_too_many_attempts">محاولات كثيرة.</string>
+    <string name="pin_try_again_in">حاول مرة أخرى بعد %1$s</string>
     <string name="pin_delete">حذف</string>
 
     <!-- Security question -->
@@ -405,6 +407,7 @@
     <string name="parent_signin_error">تعذّر تسجيل الدخول. تحقق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
     <string name="parent_signin_no_account">لا يوجد حساب Google على هذا الهاتف. أضف حسابًا من إعدادات الهاتف ← الحسابات، ثم حاول مرة أخرى.</string>
     <string name="parent_signin_failed">تعذّر تسجيل الدخول. حاول مرة أخرى.</string>
+    <string name="parent_signing_in">جارٍ تسجيل الدخول…</string>
     <string name="parent_home_title">هواتف أطفالك</string>
     <string name="parent_sign_out">تسجيل الخروج</string>
     <string name="parent_delete_account">حذف حسابي</string>
@@ -460,6 +463,8 @@
     <string name="ask_parent_just_now">الآن</string>
     <string name="ask_parent_decline">ليس الآن</string>
     <string name="ask_parent_failed">تعذّر إرسال الرد. تحقّق من الاتصال بالإنترنت وحاول مرة أخرى.</string>
+    <string name="ask_parent_sending">جارٍ إرسال الرد…</string>
+    <string name="ask_parent_sent">تم إرسال الرد.</string>
     <string name="ask_parent_list">يطلب وقتًا إضافيًا</string>
     <string name="device_today">اليوم</string>
     <string name="device_today_none">لم تُستخدم التطبيقات المحددة اليوم بعد.</string>

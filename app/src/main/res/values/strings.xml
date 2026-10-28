@@ -58,6 +58,8 @@
     <string name="device_pin_reset_approve">Approve the new PIN</string>
     <string name="device_pin_reset_approve_body">The new PIN will work on your child\'s phone straight away.</string>
     <string name="pin_locked_out">Too many attempts. Try again in %1$s</string>
+    <string name="pin_too_many_attempts">Too many attempts.</string>
+    <string name="pin_try_again_in">Try again in %1$s</string>
     <string name="pin_delete">Delete</string>
 
     <!-- Security question -->
@@ -395,6 +397,7 @@
     <string name="parent_signin_error">Couldn\'t sign in. Check the internet connection and try again.</string>
     <string name="parent_signin_no_account">There\'s no Google account on this phone. Add one in the phone\'s Settings → Accounts, then try again.</string>
     <string name="parent_signin_failed">Couldn\'t sign in. Try again.</string>
+    <string name="parent_signing_in">Signing in…</string>
     <string name="parent_home_title">Your children\'s phones</string>
     <string name="parent_sign_out">Sign out</string>
     <string name="parent_delete_account">Delete my account</string>
@@ -450,6 +453,8 @@
     <string name="ask_parent_just_now">Just now</string>
     <string name="ask_parent_decline">Not now</string>
     <string name="ask_parent_failed">Couldn\'t send the answer. Check the internet connection and try again.</string>
+    <string name="ask_parent_sending">Sending your answer…</string>
+    <string name="ask_parent_sent">Your answer was sent.</string>
     <string name="ask_parent_list">Asking for more time</string>
     <string name="device_today">Today</string>
     <string name="device_today_none">No limited apps used yet today.</string>

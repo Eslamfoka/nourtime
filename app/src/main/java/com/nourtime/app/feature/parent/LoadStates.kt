@@ -33,12 +33,14 @@ import kotlinx.coroutines.delay
 
 /**
  * A spinner with what is being loaded, for the parent's screens. Offline, loading never ends (the
- * server is waited for), so after [SLOW_AFTER_MS] it also says to check the connection.
+ * server is waited for), so after [SLOW_AFTER_MS] it also says to check the connection (unless [slowHint]
+ * is off: the wait may be the parent choosing an account).
  */
 @Composable
-internal fun LoadingRow(text: String, modifier: Modifier = Modifier) {
+internal fun LoadingRow(text: String, modifier: Modifier = Modifier, slowHint: Boolean = true) {
     var slow by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
+        if (!slowHint) return@LaunchedEffect
         delay(SLOW_AFTER_MS)
         slow = true
     }

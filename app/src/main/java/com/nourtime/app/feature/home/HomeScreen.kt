@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -162,14 +163,22 @@ internal fun PermissionsSection(viewModel: PermissionsViewModel) {
     }
     NourCard {
         NourPermission.entries.forEach { permission ->
+            val allowed = status[permission] == true
+            // An allowed row is read as one item ("Usage access, Allowed"); a missing one says its name and
+            // "Not allowed yet" before TalkBack reaches "Fix".
             Row(
-                Modifier.fillMaxWidth().padding(vertical = 6.dp),
+                Modifier.fillMaxWidth().padding(vertical = 6.dp).semantics(mergeDescendants = allowed) {},
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 Icon(permission.ui.icon, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text(stringResource(permission.ui.title), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
-                if (status[permission] == true) {
+                Column(Modifier.weight(1f).semantics(mergeDescendants = true) {}) {
+                    Text(stringResource(permission.ui.title), style = MaterialTheme.typography.titleSmall)
+                    if (!allowed) {
+                        Text(stringResource(R.string.status_not_allowed), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                    }
+                }
+                if (allowed) {
                     StatusPill(true, stringResource(R.string.status_allowed), "")
                 } else {
                     OutlinedButton(

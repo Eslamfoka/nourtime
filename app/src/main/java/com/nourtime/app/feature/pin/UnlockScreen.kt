@@ -175,8 +175,10 @@ fun PinPanel(
 ) {
     val attemptsLeft = state.attemptsLeft
     val pendingAt = state.notYetActiveAtMs
+    val lockedOut = state.lockoutRemainingMs > 0
     val message = when {
-        state.lockoutRemainingMs > 0 -> stringResource(R.string.pin_locked_out, formatCountdown(state.lockoutRemainingMs))
+        // The countdown goes under it (detail), so TalkBack says the wait once, not every second.
+        lockedOut -> stringResource(R.string.pin_too_many_attempts)
         pendingAt != null -> stringResource(R.string.pin_pending_not_yet, pinResetTime(pendingAt))
         attemptsLeft == null -> null
         attemptsLeft > 0 -> stringResource(R.string.pin_wrong_attempts_left, attemptsLeft)
@@ -192,6 +194,7 @@ fun PinPanel(
             onDigit = onDigit,
             onDelete = onDelete,
             enabled = state.lockoutRemainingMs == 0L && !state.checking,
+            detail = if (lockedOut) stringResource(R.string.pin_try_again_in, formatCountdown(state.lockoutRemainingMs)) else null,
         )
         if (onForgot != null) NourTextButton(stringResource(R.string.pin_forgot), onForgot)
     }

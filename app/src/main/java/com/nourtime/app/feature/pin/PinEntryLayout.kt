@@ -15,6 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nourtime.app.core.designsystem.component.NourPose
@@ -34,6 +37,8 @@ fun PinEntryLayout(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    /** Shown under [message] and read only when focused: a countdown that changes every second. */
+    detail: String? = null,
 ) {
     Column(
         modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp),
@@ -51,13 +56,20 @@ fun PinEntryLayout(
             textAlign = TextAlign.Center,
         )
         PinDots(filled = filled, shakeKey = shakeKey, modifier = Modifier.padding(top = 8.dp))
-        Text(
-            text = message.orEmpty(),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.error,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.heightIn(min = 36.dp),
-        )
+        Column(Modifier.heightIn(min = 36.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            // Always there, so TalkBack announces each new message (a wrong PIN, the tries left, a wait
+            // starting) once, without moving focus off the pad.
+            Text(
+                text = message.orEmpty(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+            )
+            if (detail != null) {
+                Text(detail, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
+            }
+        }
         PinPad(onDigit = onDigit, onDelete = onDelete, enabled = enabled)
     }
 }

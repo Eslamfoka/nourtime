@@ -91,9 +91,11 @@ fun NourTextButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     TextButton(
         onClick = onClick,
+        enabled = enabled,
         modifier = modifier.heightIn(min = 48.dp),
         colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant),
     ) {

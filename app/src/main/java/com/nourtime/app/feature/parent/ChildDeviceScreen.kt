@@ -46,6 +46,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.nourtime.app.service.timer.message
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import com.nourtime.app.R
 import com.nourtime.app.core.designsystem.component.FullScreenDialog
 import com.nourtime.app.core.designsystem.component.NourCard
@@ -135,8 +138,9 @@ class ChildDeviceViewModel @Inject constructor(
     private fun <T> load(source: (String) -> Flow<T>): StateFlow<Load<T>> =
         ids.flatMapLatest { id -> loadWithRetry(retries) { source(id) } }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), Load.Loading)
-    private val _answerFailed = MutableStateFlow(false)
-    val answerFailed: StateFlow<Boolean> = _answerFailed
+    /** The last answer to a request for more time, while it's sent and after. */
+    private val _answer = MutableStateFlow<AskAnswer?>(null)
+    val answer: StateFlow<AskAnswer?> = _answer.asStateFlow()
 
     /** The last change the server refused or that couldn't reach it; cleared by the next one that works. */
     private val _failure = MutableStateFlow<DeviceActionFailure?>(null)
@@ -166,9 +170,18 @@ class ChildDeviceViewModel @Inject constructor(
     /** [minutes] approves the request with that bonus; null declines it. Needs the network. */
     fun answer(requestId: String, minutes: Int?, user: ParentUser) {
         val id = deviceId.value ?: return
-        _answerFailed.value = false
+        // One answer per request: a second tap while it's sent (or after) would send it twice.
+        val last = _answer.value
+        if (last != null && last.requestId == requestId && last.phase != AskAnswer.Phase.FAILED) return
+        _answer.value = AskAnswer(requestId, AskAnswer.Phase.SENDING)
         viewModelScope.launch {
-            runCatching { remote.answer(id, requestId, minutes, user.uid) }.onFailure { _answerFailed.value = true }
+            val ok = runCatching { remote.answer(id, requestId, minutes, user.uid) }
+                .onFailure {
+                    if (it is CancellationException) throw it
+                    Log.w("ChildDevice", "answer failed", it)
+                }
+                .isSuccess
+            _answer.value = AskAnswer(requestId, if (ok) AskAnswer.Phase.SENT else AskAnswer.Phase.FAILED)
         }
     }
 
@@ -206,6 +219,10 @@ class ChildDeviceViewModel @Inject constructor(
 
 enum class DeviceActionFailure { SEND, SAVE, REMOVE }
 
+data class AskAnswer(val requestId: String, val phase: Phase) {
+    enum class Phase { SENDING, SENT, FAILED }
+}
+
 private val BONUS_CHOICES = listOf(15, 30, 60)
 
 @Composable
@@ -226,7 +243,7 @@ fun ChildDeviceScreen(
     val week by viewModel.week.collectAsStateWithLifecycle()
     val commands by viewModel.commands.collectAsStateWithLifecycle()
     val request by viewModel.request.collectAsStateWithLifecycle()
-    val answerFailed by viewModel.answerFailed.collectAsStateWithLifecycle()
+    val answer by viewModel.answer.collectAsStateWithLifecycle()
     val now by rememberNow()
     var confirm by remember { mutableStateOf<TimerCommand?>(null) }
     var removing by remember { mutableStateOf(false) }
@@ -255,8 +272,19 @@ fun ChildDeviceScreen(
             if (listOf(usage, week, apps, commands, request).any { it == Load.Failed }) {
                 LoadFailedCard(stringResource(R.string.device_details_failed), viewModel::retry)
             }
-            request.valueOrNull()?.takeIf { AskPolicy.state(it, now) == AskState.Waiting }?.let { r ->
-                AskCard(d.name, r, now, answerFailed, onAnswer = { minutes -> viewModel.answer(r.id, minutes, user) })
+            val latest = request.valueOrNull()
+            val answered = answer?.takeIf { it.requestId == latest?.id }?.phase
+            latest?.takeIf { AskPolicy.state(it, now) == AskState.Waiting }?.let { r ->
+                AskCard(d.name, r, now, answered, onAnswer = { minutes -> viewModel.answer(r.id, minutes, user) })
+            }
+            // Outside the card, which goes once the answer is in: TalkBack hears "sent" once either way.
+            if (answered == AskAnswer.Phase.SENT) {
+                Text(
+                    stringResource(R.string.ask_parent_sent),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+                )
             }
 
             NourCard {
@@ -458,7 +486,9 @@ private fun ActionsCard(summary: DeviceSummary, commands: List<SentCommand>, onC
 /** "Sara is asking for more time": approve with a bonus (one tap, no confirmation) or say not now. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun AskCard(name: String, request: TimeRequest, now: Long, failed: Boolean, onAnswer: (Int?) -> Unit) {
+private fun AskCard(name: String, request: TimeRequest, now: Long, answered: AskAnswer.Phase?, onAnswer: (Int?) -> Unit) {
+    // Off while the answer is sent and once it's in; on again after a failure, to try again.
+    val canAnswer = answered == null || answered == AskAnswer.Phase.FAILED
     NourCard {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Icon(Icons.Rounded.MoreTime, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
@@ -477,12 +507,19 @@ private fun AskCard(name: String, request: TimeRequest, now: Long, failed: Boole
         }
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             ASK_CHOICES.forEach { minutes ->
-                NourPrimaryButton(stringResource(R.string.device_bonus_chip, durationText(minutes)), { onAnswer(minutes) }, Modifier.fillMaxWidth(0.45f))
+                NourPrimaryButton(
+                    stringResource(R.string.device_bonus_chip, durationText(minutes)),
+                    { onAnswer(minutes) },
+                    Modifier.fillMaxWidth(0.45f),
+                    enabled = canAnswer,
+                )
             }
         }
-        NourTextButton(stringResource(R.string.ask_parent_decline), { onAnswer(null) })
-        if (failed) {
-            ActionErrorText(stringResource(R.string.ask_parent_failed))
+        NourTextButton(stringResource(R.string.ask_parent_decline), { onAnswer(null) }, enabled = canAnswer)
+        when (answered) {
+            AskAnswer.Phase.SENDING -> LoadingRow(stringResource(R.string.ask_parent_sending), Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+            AskAnswer.Phase.FAILED -> ActionErrorText(stringResource(R.string.ask_parent_failed))
+            AskAnswer.Phase.SENT, null -> Unit
         }
     }
 }

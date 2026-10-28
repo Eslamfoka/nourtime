@@ -49,6 +49,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -126,20 +129,30 @@ class ParentViewModel @Inject constructor(
     private val _signInError = MutableStateFlow<SignInFailure?>(null)
     val signInError: StateFlow<SignInFailure?> = _signInError.asStateFlow()
 
+    /** True from the tap until sign-in ends: the buttons are off meanwhile, so a second tap can't start another. */
+    private val _signingIn = MutableStateFlow(false)
+    val signingIn: StateFlow<Boolean> = _signingIn.asStateFlow()
+
     val testAccountAvailable: Boolean get() = auth.testAccountAvailable
 
-    fun signIn(activityContext: Context) {
-        viewModelScope.launch {
-            _signInError.value = runCatching { auth.signInWithGoogle(activityContext) }
-                .onFailure { Log.w("ParentSignIn", "Google sign-in failed", it) }
-                .exceptionOrNull()?.let(SignInFailure::of)
-        }
+    fun signIn(activityContext: Context) = signInWith {
+        runCatching { auth.signInWithGoogle(activityContext) }
+            .onFailure { Log.w("ParentSignIn", "Google sign-in failed", it) }
     }
 
-    fun signInTestAccount() {
+    fun signInTestAccount() = signInWith { runCatching { auth.signInTestAccount("parent@example.com", "Test Parent") } }
+
+    private fun signInWith(attempt: suspend () -> Result<Unit>) {
+        if (_signingIn.value) return
+        _signingIn.value = true
+        // Cleared first, so the same failure again is a new message TalkBack reads.
+        _signInError.value = null
         viewModelScope.launch {
-            _signInError.value = runCatching { auth.signInTestAccount("parent@example.com", "Test Parent") }
-                .exceptionOrNull()?.let(SignInFailure::of)
+            try {
+                _signInError.value = attempt().exceptionOrNull()?.let(SignInFailure::of)
+            } finally {
+                _signingIn.value = false
+            }
         }
     }
 
@@ -211,6 +224,7 @@ fun ParentRoute(onBackToModeChoice: () -> Unit, viewModel: ParentViewModel = hil
 private fun SignInScreen(viewModel: ParentViewModel, onBack: () -> Unit) {
     val context = LocalContext.current
     val error by viewModel.signInError.collectAsStateWithLifecycle()
+    val signingIn by viewModel.signingIn.collectAsStateWithLifecycle()
     Box(Modifier.fillMaxSize()) {
         CenteredScrollColumn(Modifier.fillMaxSize().safeDrawingPadding().padding(24.dp)) {
             Column(
@@ -226,9 +240,12 @@ private fun SignInScreen(viewModel: ParentViewModel, onBack: () -> Unit) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                 )
-                NourPrimaryButton(stringResource(R.string.parent_signin_google), { viewModel.signIn(context) })
+                NourPrimaryButton(stringResource(R.string.parent_signin_google), { viewModel.signIn(context) }, enabled = !signingIn)
                 if (viewModel.testAccountAvailable) {
-                    NourTextButton(stringResource(R.string.parent_signin_test), viewModel::signInTestAccount)
+                    NourTextButton(stringResource(R.string.parent_signin_test), viewModel::signInTestAccount, enabled = !signingIn)
+                }
+                if (signingIn) {
+                    LoadingRow(stringResource(R.string.parent_signing_in), Modifier.semantics { liveRegion = LiveRegionMode.Polite }, slowHint = false)
                 }
                 error?.let { failure ->
                     val message = when (failure) {
@@ -236,7 +253,12 @@ private fun SignInScreen(viewModel: ParentViewModel, onBack: () -> Unit) {
                         SignInFailure.OFFLINE -> R.string.parent_signin_error
                         SignInFailure.OTHER -> R.string.parent_signin_failed
                     }
-                    Text(stringResource(message), color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
+                    Text(
+                        stringResource(message),
+                        color = MaterialTheme.colorScheme.error,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+                    )
                 }
             }
         }
@@ -287,13 +309,19 @@ private fun ParentHomeScreen(user: ParentUser, viewModel: ParentViewModel) {
         }
         NourPrimaryButton(stringResource(R.string.parent_add_child), { adding = true })
         LanguageCard()
+        // While deleting, a spinner (said by TalkBack) replaces the button, so it can't be tapped again.
         if (deletion == DeletionState.DELETING) {
-            Text(stringResource(R.string.parent_deleting), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            LoadingRow(stringResource(R.string.parent_deleting), Modifier.semantics { liveRegion = LiveRegionMode.Polite })
         } else {
             NourTextButton(stringResource(R.string.parent_delete_account), { confirmDelete = true })
         }
         if (deletion == DeletionState.FAILED) {
-            Text(stringResource(R.string.parent_delete_error), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error)
+            Text(
+                stringResource(R.string.parent_delete_error),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+            )
         }
     }
     if (adding) AddChildDialog(user = user, onClose = { adding = false })
