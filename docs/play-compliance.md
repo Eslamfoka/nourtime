@@ -44,9 +44,11 @@ notes collect what the Play Console declarations will need.
 > app reads only the package name of the app that owns
 > it. It does not read, collect, store or share any text or content shown on the screen, or anything
 > the user types. What it learns from the Accessibility service stays on the device unless the parent
-> connects their own phone. Then the minutes used today on each limited app (measured with this
-> detection), the time left and the list of installed apps are sent to Google Cloud Firestore, where
-> only that parent's own account can read them.
+> connects their own phone. Then the phone's make and model, the minutes used today on each limited app
+> (measured with this detection), the time left, the list of installed apps, Nour Time's settings, the
+> Learning Hub minutes, requests for more time and protection alerts are sent to Google Cloud Firestore,
+> where only that parent's own account can read them, and crash reports, if Nour Time crashes, are sent
+> to Firebase Crashlytics so the developer can fix them.
 
 The prominent disclosure is shown before any permission is requested and requires an explicit
 "I agree" tap. It's in onboarding step 1 (`DisclosureStep`) and each permission step repeats the
@@ -84,8 +86,9 @@ to pause them during a lock and count their audio; never leaves the phone). Back
   connected (stored in Google Cloud Firestore, encrypted in transit):
   - **App activity → App interactions:** per-app minutes of limited apps, timer status, "ask for more
     time" requests (time asked and the parent's answer), Learning Hub minutes (bank, minutes earned
-    today, a paused lock waiting after a learning break), and the settings the parent changes
-    remotely (time budget, lock, bedtime, limited/allowed apps, Learning Hub and voice settings).
+    today, a paused lock waiting after a learning break), and Nour Time's settings, uploaded whenever
+    they change on either phone so the parent can see and change them remotely (time budget, lock,
+    bedtime, limited/allowed apps, Learning Hub and voice settings).
   - **App activity → Installed apps:** list of launchable apps (names, package names).
   - **App info and performance → Other app performance data:** protection alerts (time of a restart
     without Nour Time or of a switch to another user, whether USB debugging is on, whether Nour Time's
