@@ -2105,3 +2105,48 @@ lint 0 errors / 20 warnings (none in changed code). `:app:connectedDebugAndroidT
 (ANDROID_SERIAL=emulator-5554, `nourdm-test-api36`) after the protection change: 20/20; the emulator's
 `enabled_accessibility_services` / `accessibility_enabled` back to null / 0 afterwards. Commits: protection
 notice and alert, browsers, safe-mode note + this section (not pushed).
+
+## 36. 2026-10-28: language at the start of setup; TalkBack hears what's happening; a safe boot start
+
+**Language on the first screens.** `CompactLanguagePicker` (`feature/language/LanguageCard.kt`: a globe
+read as "Language", then Phone language / العربية / English) at the top of "Whose phone is this?" and of
+Welcome (the first screen after a restart once the phone is the child's). Same chips and the same
+`AppLocales.set` as `LanguageCard` (Settings, the parent's phone), which now uses them too. Android 13+:
+the system's per-app language, the system recreates the activity. Older: the choice saved, applied to the
+app's resources, the activity recreated. Nothing is lost: the mode and the onboarding step are saved
+settings, the view models outlive the recreation; `MainActivity`'s `AppLayoutDirection` flips the
+direction. "العربية" / "English" carry their own locale (`SpanStyle.localeList`), so TalkBack reads each in
+its language. Checked on `nourdm-test-api36`: tapping العربية on the mode screen showed it in Arabic, right
+to left, chip selected; set back to the phone's language afterwards (`cmd locale get-app-locales` empty).
+
+**TalkBack and "sending" states.**
+- PIN (`PinEntryLayout`, used by the unlock screen, recovery, setup and the lock overlay's `PinPanel`): the
+  message line is always there and a polite live region, so "Wrong PIN. Attempts left…", a wait starting,
+  "That's the new PIN…" are said once. During a wait the message is "Too many attempts." and the countdown
+  is a separate `detail` line, not live (it changes every second; read when focused).
+- Parent sign-in: `ParentViewModel.signingIn` turns off both sign-in buttons (a second tap is also ignored
+  in the view model) and shows "Signing in…" (`LoadingRow`, live, no "taking longer" hint: the wait may be
+  the account picker). The error is cleared at each attempt and is a live region, so a repeated failure is
+  said again.
+- Answers to "asking for more time" (`ChildDeviceViewModel.answer`, `AskAnswer` SENDING / SENT / FAILED for
+  one request id): the 15/30 min and "Not now" buttons are off while sending and once sent (a second answer
+  is ignored), "Sending your answer…" (live, with the usual "check the connection" after 10 s: offline the
+  write waits for the server), "Couldn't send…" (live) turns them back on. "Your answer was sent." (live) is
+  under the card, not in it, since the card goes once the child's phone has the answer.
+- Account deletion: a live spinner row replaces the button while deleting; the error is a live region.
+- Permissions list: a missing permission shows "Not allowed yet" under its name (merged with it, read
+  before "Fix"); an allowed row is one item ("…, Allowed").
+- `NourTextButton` gained `enabled`; `LoadingRow` gained `slowHint`.
+
+**Boot start (`service/boot/BootStart`).** `BootReceiver` read "setup complete" in a coroutine with no
+catch: a settings read error crashed the process, and the Accessibility service with it. Now an error
+(not a cancellation) is logged and protection starts anyway (fail closed): a set-up child's phone left
+unprotected until Nour Time is opened is worse than, on a phone not set up or a parent's, the status
+notification until the next restart. `pending.finish()` stays in `finally`.
+
+Tests: `BootStartTest` (4: set up, not set up, read error starts and is logged, cancellation passes
+through). Verified: `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green (one combined run):
+645 unit tests, 0 failures/skips; lint 0 errors / 20 warnings (none new). No instrumented tests added or
+run. Not covered: TalkBack by ear (live regions, the merged permission rows), the language switch on
+Android 12 or older (emulator is API 36), the sign-in and answer states on a real account.
+Commits: language picker, TalkBack/progress, boot start + this section (not pushed).

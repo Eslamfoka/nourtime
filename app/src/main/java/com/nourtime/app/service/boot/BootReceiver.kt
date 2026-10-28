@@ -3,6 +3,7 @@ package com.nourtime.app.service.boot
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.nourtime.app.data.onboarding.OnboardingRepository
 import com.nourtime.app.service.timer.TimerService
 import com.nourtime.app.service.watchdog.WatchdogJobService
@@ -24,7 +25,7 @@ class BootReceiver : BroadcastReceiver() {
         val pending = goAsync()
         CoroutineScope(Dispatchers.Default).launch {
             try {
-                if (onboarding.isComplete.first()) {
+                if (BootStart.shouldStart({ onboarding.isComplete.first() }, { message, e -> Log.w(TAG, message, e) })) {
                     WatchdogJobService.schedule(context)
                     TimerService.start(context)
                 }
@@ -32,5 +33,9 @@ class BootReceiver : BroadcastReceiver() {
                 pending.finish()
             }
         }
+    }
+
+    private companion object {
+        const val TAG = "BootReceiver"
     }
 }
