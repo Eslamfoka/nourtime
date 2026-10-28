@@ -1,6 +1,7 @@
-# Unit tests, lint and a debug build on every push and pull request; instrumented tests on an emulator; the Firestore rules and push functions tests too.
+# Unit tests, lint, a debug build and a minified release build on every push and pull request; instrumented tests on an emulator; the Firestore rules and push functions tests too.
 # Debug builds use the committed demo Firebase config (app/src/debug/google-services.json), so no
-# secrets are needed. The release build needs the real config and the upload key, kept off GitHub.
+# secrets are needed. A real release build needs the real config and the upload key, kept off GitHub.
+# Actions are pinned to full commit SHAs (the version in the comment): a moved tag can't change CI.
 name: Android
 
 on:
@@ -16,21 +17,29 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4.9.1
         with:
           distribution: temurin
           java-version: "17"
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
 
       - name: Unit tests, lint, debug build
         run: ./gradlew --no-daemon testDebugUnitTest lintDebug assembleDebug
 
+      # A minified release build, so R8 problems (missing keep rules, stripped classes) show up here and
+      # not on a phone. There's no real Firebase config on GitHub: this runner's copy uses the committed
+      # demo one (git-ignored at this path, so it can't be committed by mistake). Unsigned, never shipped.
+      - name: Minified release build (demo Firebase config)
+        run: |
+          cp app/src/debug/google-services.json app/google-services.json
+          ./gradlew --no-daemon assembleRelease -Pnourtime.versionCode=${{ github.run_number }} -Pnourtime.crashlyticsMappingUpload=false
+
       - name: Test and lint reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: reports
           path: |
@@ -46,16 +55,16 @@ jobs:
       run:
         working-directory: firebase
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "22"
           cache: npm
           cache-dependency-path: firebase/package-lock.json
 
       # The Firestore emulator in firebase-tools 15 needs Java 21.
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4.9.1
         with:
           distribution: temurin
           java-version: "21"
@@ -80,14 +89,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4.9.1
         with:
           distribution: temurin
           java-version: "17"
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a # v4.4.3
 
       # Hardware acceleration for the emulator on GitHub's Linux runners.
       - name: Enable KVM
@@ -97,7 +106,7 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: Instrumented tests
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2.38.0
         with:
           api-level: 34
           target: google_apis
@@ -109,7 +118,7 @@ jobs:
 
       - name: Instrumented test reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: instrumented-reports
           path: app/build/reports/androidTests/

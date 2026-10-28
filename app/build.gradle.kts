@@ -1,3 +1,4 @@
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import java.util.Properties
 
 plugins {
@@ -18,7 +19,9 @@ android {
         applicationId = "com.nourtime.app"
         minSdk = 26
         targetSdk = 37
-        versionCode = 1
+        // 1 locally; a build server or a release sets it with -Pnourtime.versionCode=<n> (Play needs it
+        // to grow with each upload).
+        versionCode = (project.findProperty("nourtime.versionCode") as String?)?.toInt() ?: 1
         versionName = "0.1.0"
         // Instrumented tests (app/src/androidTest) run with Hilt's test application; see HiltTestRunner.
         testInstrumentationRunner = "com.nourtime.app.HiltTestRunner"
@@ -57,7 +60,22 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            // CI's minified build uses the demo Firebase project, which has no Crashlytics to send the
+            // R8 mapping to: -Pnourtime.crashlyticsMappingUpload=false.
+            configure<CrashlyticsExtension> {
+                mappingFileUploadEnabled = (project.findProperty("nourtime.crashlyticsMappingUpload") as String?)?.toBoolean() ?: true
+            }
         }
+    }
+    lint {
+        // Today's warnings are in the baseline (`./gradlew :app:updateLintBaseline` after fixing some);
+        // any new warning fails lint, so it can't slip in unnoticed (2026-10-28 audit).
+        baseline = file("lint-baseline.xml")
+        warningsAsErrors = true
+        abortOnError = true
+        // Newer library or tool versions appear on their own and are upgraded on purpose (§28), not
+        // when a build happens to see them: listed, never failing.
+        informational += setOf("GradleDependency", "NewerVersionAvailable", "AndroidGradlePluginVersion", "OldTargetApi")
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

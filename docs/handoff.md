@@ -2150,3 +2150,67 @@ through). Verified: `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` g
 run. Not covered: TalkBack by ear (live regions, the merged permission rows), the language switch on
 Android 12 or older (emulator is API 36), the sign-in and answer states on a real account.
 Commits: language picker, TalkBack/progress, boot start + this section (not pushed).
+
+## 37. 2026-10-28: battery, a non-blocking last save, robustness, CI health, Firestore limits
+
+**Battery (`core/power/LoopPacing`, `BlockCoordinator`, `TimerService`).** Screen on: unchanged, every
+check once a second. Screen off: the block check ticks every 30 s (the timer's existing idle tick) instead
+of every second; it still runs at once on every input change (screen, windows, settings, timer, schedule,
+pass) and now also when a limited app's media session changes (a headset "play" with the screen off is
+paused at once, not on the next tick). The ticker restarts when the screen turns on, so the first check is
+immediate. The screen re-read is 1 s while on, 5 s while off, plus a `DisplayManager.DisplayListener` that
+re-reads at once when the display changes while the state says "off" (a third way next to the broadcasts).
+The usage-stats fallback no longer wakes every 2 s while Accessibility is connected or the screen isn't
+usable: it waits on the tracker's state. The lock screen's allowed apps (launch intent, label, icon per
+app) are resolved only when the allowed set, the language or the installed packages change
+(`KeyedCache`; `PACKAGE_ADDED/REMOVED/REPLACED/CHANGED` bump a counter), not every second.
+Per minute with the screen off: about 60 evaluations + 60 screen reads + 30 fallback wakes + 2 timer
+ticks (≈150 wakes) → 2 + 12 + 0 + 2 (≈16). In a lock period with the screen on: N binder calls
+(`getLaunchIntentForPackage`) + N label/icon lookups + a sort per second → none after the first.
+
+**Last save (`TimerService.onDestroy`).** No `runBlocking` any more: the save is launched on the
+never-cancelled `FLUSH_SCOPE` (the engine's writes are `NonCancellable`) and the main thread goes on.
+Trade-off: if the process is killed within that moment, at most the time counted since the last save is
+lost (saves happen every 15 s while counting and at once on any lock or command); before, a slow disk
+froze the screen for up to 2 s.
+
+**Robustness.** `TimeEngine.change()` (Home's "Lock now"/"End lock", rewards, other-user charge) waits
+for the first timer state instead of silently doing nothing on a fresh install. `RemoteSync`: the settings
+upload, old-usage and old-request clean-ups rethrow cancellation and log failures. `GameRegistry`: no
+`!!`; a missing pack or level makes `start` return null (logged), and once the packs are loaded a game
+with no levels is left off the menu (`GameRegistry.shown/hidden`, logged once). `LearningHub`'s `!!`
+removed. `CommandQueue.createdAtMs!!` left: it runs only after the null filter.
+
+**CI and build.** Actions pinned to commit SHAs (checkout v4.4.0, setup-java v4.9.1, setup-gradle v4.4.3,
+upload-artifact v4.6.2, setup-node v4.4.0, android-emulator-runner v2.38.0). The build job also runs a
+minified `assembleRelease` with the demo Firebase config copied to `app/google-services.json` on the
+runner only (git-ignored path), with `-Pnourtime.crashlyticsMappingUpload=false` (new switch, default on)
+and `-Pnourtime.versionCode=<run number>`. `versionCode` is 1 unless `-Pnourtime.versionCode` is given.
+Lint: `app/lint-baseline.xml` (today's 17 warnings + 5 hints), `warningsAsErrors = true`, version-check
+warnings informational. Fix a baselined one, then `./gradlew :app:updateLintBaseline`.
+
+**Firestore limits (`firestore.rules`, `ChildPairing`).** New `childAccounts/{uid}` = `{deviceId,
+openCode}`. A device can be created only together with the account record naming it, and the record can
+name another device only once the old one is gone: one live device per account. A pairing code can be
+created only with the record naming it, and the record can move to a new code only when the old code is
+deleted in the same write (or already gone, or another phone's after the TTL): one open code per account.
+The app writes the record with the device (batch) and the code (transaction), deletes a leftover open
+code first, and deletes the record on disconnect. Devices: create only with the six known fields, at most
+24 fields, name ≤ 100 characters. `usage/{day}`: only `ms` (≤ 500 apps) and `updatedAt`, only days from
+8 days ago to tomorrow (old days can still be deleted). `meta`: only `apps` (≤ 2000) and `alerts`.
+Phones paired before keep working (only creation is checked); their next code creates the record.
+
+Tests: `LoopPacingTest` (4), `KeyedCacheTest` (3), `TimeEngineTest` (+2), `GameRegistryTest` (5),
+rules (+10, 65 total). Verified: `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green, 659
+unit tests, lint 0 errors / 0 warnings outside the baseline; `:app:connectedDebugAndroidTest`
+(emulator-5554, `nourdm-test-api36`) 20/20; rules 65/65; local minified `assembleRelease` with the demo
+config and `-Pnourtime.versionCode=7` OK (real config restored, checksum checked). Functions not touched.
+
+### 37.1 Owner
+- **Deploy the rules together with the new app build**: an older child app creates codes and devices
+  without the account record and is refused. `npx firebase deploy --only firestore:rules --project nourtime-8d4ce`.
+- Not covered: pairing end to end against the new rules on two phones (only the rules tests and a
+  compile); the display listener on real phones (Honor); a phone with two device documents under one
+  account (from older builds) can't make a new code until one is deleted. Requests for more time
+  (`requests`) are still unbounded per device; anonymous accounts themselves are only limited by Firebase
+  Auth's per-IP sign-up limit until App Check is enforced (§25.1).
