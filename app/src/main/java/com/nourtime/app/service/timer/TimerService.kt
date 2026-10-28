@@ -62,8 +62,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 
 /**
@@ -252,10 +250,18 @@ class TimerService : Service() {
         unregisterReceiver(packageReceiver)
         unregisterReceiver(userReceiver)
         runCatching { getSystemService(DisplayManager::class.java).unregisterDisplayListener(displayListener) }
-        // The last save runs on its own scope, which outlives this service: the main thread waits for it
-        // at most FLUSH_WAIT_MS (slow storage froze the main thread here), and the save still finishes.
-        val flush = FLUSH_SCOPE.launch { engine.flush() }
-        runBlocking { withTimeoutOrNull(FLUSH_WAIT_MS) { flush.join() } ?: Log.w(TAG, "last save still running") }
+        // The last save runs on its own scope, which outlives this service, and the main thread doesn't
+        // wait for it (it used to, up to 2 s, freezing the screen on slow storage). The process normally
+        // lives on (the Accessibility service, the watchdog), so the save finishes. Only a process killed
+        // within that moment loses it, and then at most what was counted since the last save (every 15 s
+        // while counting, at once on every lock or command).
+        FLUSH_SCOPE.launch {
+            try {
+                engine.flush()
+            } catch (e: Exception) {
+                Log.w(TAG, "last save failed", e)
+            }
+        }
         scope.cancel()
         super.onDestroy()
     }
@@ -434,8 +440,7 @@ class TimerService : Service() {
 
     companion object {
         private const val TAG = "TimerService"
-        private const val FLUSH_WAIT_MS = 2_000L
-        /** For the last save when the service stops; never cancelled. */
+        /** For the last save when the service stops; never cancelled, and the engine's saves are NonCancellable. */
         private val FLUSH_SCOPE = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         private const val POLL_MS = 2_000L
         private const val FIRST_LOOKBACK_MS = 60 * 60_000L
