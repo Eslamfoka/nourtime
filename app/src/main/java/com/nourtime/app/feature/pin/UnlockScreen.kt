@@ -56,6 +56,7 @@ fun UnlockRoute(viewModel: UnlockViewModel = hiltViewModel()) {
     val pin by viewModel.pin.state.collectAsStateWithLifecycle()
     val answer by viewModel.answer.state.collectAsStateWithLifecycle()
     val recovery by viewModel.recovery.collectAsStateWithLifecycle()
+    val pendingResetAt by viewModel.pendingReset.activeAt.collectAsStateWithLifecycle()
 
     BackHandler(enabled = askAnswer) { viewModel.cancelAnswer() }
     BackHandler(enabled = recovery != null) { viewModel.cancelRecovery() }
@@ -72,6 +73,14 @@ fun UnlockRoute(viewModel: UnlockViewModel = hiltViewModel()) {
                 onSecondary = viewModel::cancelAnswer,
             )
         } else {
+            pendingResetAt?.let {
+                PendingPinResetBanner(
+                    it,
+                    R.string.pin_reset_pending_unlock_body,
+                    Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+                    announce = true,
+                )
+            }
             PinPanel(
                 state = pin,
                 title = stringResource(R.string.pin_unlock_title),

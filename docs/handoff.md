@@ -2000,3 +2000,42 @@ Verified: `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:connect
 (ANDROID_SERIAL=emulator-5554) green: 610 unit tests, lint 0 errors / 20 warnings (none new),
 instrumented 19/19 on `nourdm-test-api36`. Not covered by a test: the service's unbind/rebind (no
 instrumented test binds and unbinds the Accessibility service); not run on the Honor.
+
+## 34. 2026-10-28: one count of PIN tries, a longer security answer, the waiting reset shown
+
+**One count of free PIN tries** (`SecurityRepository`, `PinAttemptPolicy.stricter`, `PinCheckController`).
+§25 split the counts (`PinEntryPoint`) so a child's taps on the lock screen's "For parents" pad
+couldn't make the parent wait in Nour Time. But Nour Time is never covered, so the child could guess on
+both pads: 8 free tries and two waits side by side. Now both pads share the `pin_*` count and its
+lockout; `PinEntryPoint` and "Enter the PIN in Nour Time instead" are gone. What's kept of the old
+protection: a PIN typed during a wait isn't counted, so random tapping only reaches a long wait if
+someone sits out each shorter one first (a toddler gets 30 s, perhaps 1 min); a correct PIN on either
+pad clears the count; the parent's phone works without the PIN. **Migration:** an old
+`pin_lock_screen_*` count is folded in at the next PIN check or lockout read (both rebased to this boot,
+expired waits forgotten): the higher failure count and the longer running wait, then the old keys are
+removed. Checked every time, since a restored settings copy may bring them back.
+
+**Security answer at least 4 characters** (`SecurityQuestionValidator.MIN_ANSWER_LENGTH`, was 2),
+counted in code points after `AnswerNormalizer` (Arabic letters one each; spaces, diacritics and tatweel
+not at all). Only when an answer is set or changed: `checkAnswer` never looks at the length, so a saved
+2- or 3-letter answer keeps working. The question step now says to choose a question the child can't
+answer (not a pet's or family name); the example question is no longer the grandmother's village.
+
+**Waiting PIN reset shown on the phone** (`feature/pin/PendingPinReset.kt`). Before, only a paired
+parent's phone heard of it. A coral warning card (`PendingPinResetBanner`, read by TalkBack as one
+item) above the unlock screen's pad ("…starts working on <date>. Didn't ask for it? Unlock with your
+current PIN to cancel it", a polite live region, since the lock screen's "Forgot PIN?" can save one
+while the screen is open) and at the top of Home, where the parent is already unlocked, with "Cancel the
+PIN reset" (`SecurityRepository.cancelPendingPin`, the same as typing the current PIN). Both follow
+`pendingPinActiveAt`, so the card goes when the reset is cancelled, approved or starts working. Not
+shown on the lock overlay itself (the child's screen).
+
+Tests: `SecurityRepositoryTest` (taps during a wait not counted; 3 migration cases; a correct PIN clears
+a migrated count; an old 2-letter answer still works), `PinCheckControllerTest` (both pads use the same
+free tries; a wait from the lock screen holds in the app), `PinAttemptPolicyTest` (`stricter`),
+`SecurityQuestionValidatorTest` (+2), `PendingPinResetTest` (4: shown, cancelled by the PIN, completed,
+approved, cancelled from Home).
+
+Verified: `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green: 621 unit tests, lint 0
+errors / 15 warnings (none in the changed files). Not run on a device or the emulator; TalkBack reading
+of the card not checked by ear.

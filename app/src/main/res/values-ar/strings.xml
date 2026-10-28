@@ -47,6 +47,10 @@
     <string name="pin_wrong">رمز غير صحيح</string>
     <string name="pin_wrong_attempts_left">رمز غير صحيح. المحاولات المتبقية قبل الانتظار: %1$d</string>
     <string name="pin_pending_not_yet">هذا هو الرمز الجديد، ويبدأ العمل في %1$s. حتى ذلك الحين استخدم الرمز الحالي.</string>
+    <string name="pin_reset_pending_title">طلب تغيير الرمز في الانتظار</string>
+    <string name="pin_reset_pending_unlock_body">يبدأ الرمز الجديد العمل في %1$s. ألم تطلبه؟ افتح القفل بالرمز الحالي لإلغائه.</string>
+    <string name="pin_reset_pending_home_body">يبدأ الرمز الجديد العمل في %1$s. ألم تطلبه؟ ألغِه من هنا ويبقى رمزك الحالي.</string>
+    <string name="pin_reset_pending_cancel">إلغاء تغيير الرمز</string>
     <string name="pin_reset_saved_title">تم حفظ الرمز الجديد</string>
     <string name="pin_reset_saved_body">يبدأ العمل في %1$s، أو فور الموافقة عليه من هاتف ولي الأمر. حتى ذلك الحين يبقى الرمز الحالي صالحًا، واستخدامه يلغي هذا التغيير.</string>
     <string name="device_pin_reset_title">رمز جديد في الانتظار</string>

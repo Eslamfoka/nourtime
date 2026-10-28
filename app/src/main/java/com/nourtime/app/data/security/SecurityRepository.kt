@@ -142,6 +142,20 @@ class SecurityRepository @Inject constructor(
         approved
     }
 
+    /**
+     * The parent, already unlocked in Nour Time (the PIN was checked), cancels a waiting reset: the same
+     * as typing the current PIN again. False when nothing was waiting.
+     */
+    suspend fun cancelPendingPin(): Boolean = attemptMutex.withLock {
+        var cancelled = false
+        store.edit { prefs ->
+            if (prefs[PENDING_PIN_HASH] == null) return@edit
+            prefs.clearPendingPin()
+            cancelled = true
+        }
+        cancelled
+    }
+
     /** Checks a PIN from any pad: all of them share one count of wrong PINs ([PinAttemptPolicy]). */
     suspend fun verifyPin(pin: String): PinCheckResult = attemptMutex.withLock {
         activatePendingIfDue()

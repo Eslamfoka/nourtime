@@ -41,6 +41,9 @@ class UnlockViewModel @Inject constructor(
 
     val answer = AnswerCheckController(viewModelScope, security, clock) { unlock() }
 
+    /** A reset from "Forgot PIN?" waiting: shown above the pad, where the current PIN cancels it. */
+    val pendingReset = PendingPinReset(viewModelScope, security)
+
     /** "Forgot PIN?" in progress: a fresh flow each time, so an earlier correct answer doesn't carry over. */
     private val _recovery = MutableStateFlow<PinRecoveryController?>(null)
     val recovery: StateFlow<PinRecoveryController?> = _recovery.asStateFlow()

@@ -78,8 +78,11 @@ import com.nourtime.app.core.ui.formatCountdown
 import com.nourtime.app.core.ui.startFirstAvailable
 import com.nourtime.app.data.apps.InstalledAppsRepository
 import com.nourtime.app.data.db.DailyUsage
+import com.nourtime.app.data.security.SecurityRepository
 import com.nourtime.app.data.usage.UsageRepository
 import com.nourtime.app.data.usage.WeekReport
+import com.nourtime.app.feature.pin.PendingPinReset
+import com.nourtime.app.feature.pin.PendingPinResetBanner
 import com.nourtime.app.feature.setup.durationText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -102,9 +105,13 @@ class HomeViewModel @Inject constructor(
     private val permissions: PermissionChecker,
     trustedClock: TrustedClock,
     usage: UsageRepository,
+    security: SecurityRepository,
 ) : ViewModel() {
     val status = engine.status
     val detection = tracker.state
+
+    /** A reset from "Forgot PIN?" waiting on this phone (also on one with no parent's phone paired). */
+    val pendingReset = PendingPinReset(viewModelScope, security)
 
     // Re-checked every minute so the cards roll over at midnight while Home stays open.
     private val date = flow {
@@ -158,11 +165,15 @@ internal fun Dashboard(
     val permissions by permissionsViewModel.status.collectAsStateWithLifecycle()
     val today by viewModel.today.collectAsStateWithLifecycle()
     val week by viewModel.week.collectAsStateWithLifecycle()
+    val pendingResetAt by viewModel.pendingReset.activeAt.collectAsStateWithLifecycle()
     val context = LocalContext.current
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { permissionsViewModel.refresh() }
     var confirm by remember { mutableStateOf<TimerCommand?>(null) }
 
     TabColumn(padding) {
+        pendingResetAt?.let {
+            PendingPinResetBanner(it, R.string.pin_reset_pending_home_body, onCancel = viewModel.pendingReset::cancel)
+        }
         val s = status
         if (s == null) {
             NourCard { Text(stringResource(R.string.status_starting), style = MaterialTheme.typography.bodyLarge) }

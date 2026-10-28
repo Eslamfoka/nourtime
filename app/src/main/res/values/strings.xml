@@ -47,6 +47,10 @@
     <string name="pin_wrong">Wrong PIN</string>
     <string name="pin_wrong_attempts_left">Wrong PIN. Attempts left before a wait: %1$d</string>
     <string name="pin_pending_not_yet">That\'s the new PIN. It starts working on %1$s. Until then, use the current PIN.</string>
+    <string name="pin_reset_pending_title">A PIN reset is waiting</string>
+    <string name="pin_reset_pending_unlock_body">The new PIN starts working on %1$s. Didn\'t ask for it? Unlock with your current PIN to cancel it.</string>
+    <string name="pin_reset_pending_home_body">The new PIN starts working on %1$s. Didn\'t ask for it? Cancel it here and your current PIN stays.</string>
+    <string name="pin_reset_pending_cancel">Cancel the PIN reset</string>
     <string name="pin_reset_saved_title">New PIN saved</string>
     <string name="pin_reset_saved_body">It starts working on %1$s, or as soon as it\'s approved on the parent\'s phone. Until then the current PIN still works, and using it cancels this change.</string>
     <string name="device_pin_reset_title">A new PIN is waiting</string>
