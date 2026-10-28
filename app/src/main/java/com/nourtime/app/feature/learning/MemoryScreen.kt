@@ -162,11 +162,11 @@ private fun MemoryCardView(face: Card, up: Boolean, matched: Boolean, accent: Co
         // The face is drawn mirrored back, so it reads the right way after the flip.
         Box(Modifier.fillMaxSize().graphicsLayer { rotationY = if (showFace) 180f else 0f }.padding(6.dp), contentAlignment = Alignment.Center) {
             if (!showFace) {
-                Text("⭐", fontSize = (width.value * 0.35f).sp)
+                Text("⭐", fontSize = fixedSize(width * 0.35f))
             } else {
-                val big = (width.value * 0.42f).sp
+                val big = fixedSize(width * 0.42f)
                 when (face) {
-                    is Card.Picture -> LearningPicture(face.image, face.emoji, width * 0.7f, (width.value * 0.45f).sp)
+                    is Card.Picture -> LearningPicture(face.image, face.emoji, width * 0.7f, width * 0.45f)
                     is Card.Text -> FitText(face.text, maxSize = if (face.text.length <= 2) big else (width.value * 0.24f).sp, color = NourPalette.Navy, minSize = 10.sp)
                     is Card.Number -> Text(numerals.format(face.value), fontSize = big, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
                     is Card.Dots -> DotsFace(face.count, width * 0.8f)

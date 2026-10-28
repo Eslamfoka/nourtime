@@ -92,7 +92,7 @@ internal fun ColumnScope.ShopScreen(controller: LearningHubController, state: Le
         // The thing with its price tag (and the note it was paid with).
         Box {
             Surface(shape = RoundedCornerShape(28.dp), color = NourPalette.White, shadowElevation = 3.dp) {
-                Box(Modifier.padding(18.dp)) { LearningPicture(task.item.image, task.item.emoji, 104.dp, 72.sp, description = task.item.word) }
+                Box(Modifier.padding(18.dp)) { LearningPicture(task.item.image, task.item.emoji, 104.dp, 72.dp, description = task.item.word) }
             }
             Surface(
                 shape = RoundedCornerShape(12.dp),

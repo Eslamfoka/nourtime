@@ -15,6 +15,7 @@
     <string name="status_allowed">Allowed</string>
     <string name="status_not_allowed">Not allowed yet</string>
     <string name="step_counter">Step %1$d of %2$d</string>
+    <string name="onboarding_back_hint">Setup continues from here. You can change everything later in Settings.</string>
     <string name="cannot_open_settings">Couldn\'t open that screen on this phone. Please find it in Settings.</string>
 
     <!-- Welcome -->
@@ -205,6 +206,10 @@
         <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
+    <plurals name="duration_seconds">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
 
     <!-- Parent tabs -->
     <string name="nav_home">Home</string>
@@ -280,6 +285,7 @@
     <string name="tu_bravo_m">Well done! You finished your time, let\'s do something fun</string>
     <string name="tu_bravo_f">Well done! You finished your time, let\'s do something fun</string>
     <string name="tu_back_in_label">Back in</string>
+    <string name="tu_countdown_left">%1$s left</string>
     <string name="tu_parents_button">For parents</string>
     <string name="tu_back_to_call">Back to the call</string>
     <string name="tu_ok">OK</string>

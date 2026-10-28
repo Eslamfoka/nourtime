@@ -13,7 +13,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -28,6 +27,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.nourtime.app.core.designsystem.component.CenteredProgress
 import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.core.locale.AppLayoutDirection
 import com.nourtime.app.core.locale.AppLocales
@@ -100,7 +100,8 @@ private fun NourApp(viewModel: AppViewModel = hiltViewModel(), pickers: TimePick
                 label = "destination",
             ) { target ->
                 when (target) {
-                    AppDestination.LOADING -> Box(Modifier.fillMaxSize())
+                    // The app's background with a small spinner, only if deciding takes a moment.
+                    AppDestination.LOADING -> CenteredProgress(Modifier.fillMaxSize())
                     AppDestination.MODE_CHOICE -> ModeChooserScreen(onChoose = viewModel::chooseMode)
                     AppDestination.PARENT -> ParentRoute(onBackToModeChoice = viewModel::backToModeChoice)
                     AppDestination.ONBOARDING -> OnboardingRoute(onBackToModeChoice = viewModel::backToModeChoice)

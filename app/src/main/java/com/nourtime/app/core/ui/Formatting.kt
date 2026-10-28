@@ -15,6 +15,24 @@ fun formatCountdown(ms: Long, locale: Locale = Locale.getDefault()): String {
     return if (h > 0) String.format(locale, "%d:%02d:%02d", h, m, s) else String.format(locale, "%d:%02d", m, s)
 }
 
+/** Hours, minutes and seconds of a countdown, rounded up as [formatCountdown] does. */
+data class CountdownParts(val hours: Int, val minutes: Int, val seconds: Int)
+
+fun countdownParts(ms: Long): CountdownParts {
+    val totalSeconds = (ms.coerceAtLeast(0) + 999) / 1000
+    return CountdownParts((totalSeconds / 3600).toInt(), ((totalSeconds % 3600) / 60).toInt(), (totalSeconds % 60).toInt())
+}
+
+/** A countdown in words for TalkBack: "4 minutes 59 seconds", "2 hours" (localized, with plurals). */
+fun Resources.formatCountdownWords(ms: Long): String {
+    val (h, m, s) = countdownParts(ms)
+    return listOfNotNull(
+        if (h > 0) getQuantityString(R.plurals.duration_hours, h, h) else null,
+        if (m > 0) getQuantityString(R.plurals.duration_minutes, m, m) else null,
+        if (s > 0 || h + m == 0) getQuantityString(R.plurals.duration_seconds, s, s) else null,
+    ).joinToString(getString(R.string.duration_joiner))
+}
+
 /** Starts the first intent this device can handle. Returns false if none worked. */
 fun Context.startFirstAvailable(intents: List<Intent>): Boolean = intents.any { intent ->
     runCatching { startActivity(intent) }.isSuccess

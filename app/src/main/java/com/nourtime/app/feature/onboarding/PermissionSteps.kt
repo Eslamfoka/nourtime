@@ -200,11 +200,14 @@ fun TestProtectionStep(
         },
     ) {
         StepHeader(Icons.Rounded.VerifiedUser, stringResource(R.string.test_title))
-        StatusPill(
-            done = detected,
-            doneText = stringResource(R.string.test_detected, detectedLabel.orEmpty()),
-            pendingText = stringResource(R.string.test_waiting),
-        )
+        // Nothing to wait for when no limited app can be opened from here: the body says so.
+        if (detected || appLabel != null) {
+            StatusPill(
+                done = detected,
+                doneText = stringResource(R.string.test_detected, detectedLabel.orEmpty()),
+                pendingText = stringResource(R.string.test_waiting),
+            )
+        }
         Text(
             stringResource(
                 when {

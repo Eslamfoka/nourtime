@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -37,10 +36,11 @@ private object ImageCache {
 
 /**
  * A picture card's content: the illustration [image] when the content pack has one, otherwise the
- * [emoji]. Illustrations are decoded off the main thread at about [size], then cached.
+ * [emoji] (at [emojiSize], whatever the font size). Illustrations are decoded off the main thread at
+ * about [size], then cached.
  */
 @Composable
-fun LearningPicture(image: String?, emoji: String, size: Dp, emojiSize: TextUnit, description: String? = null) {
+fun LearningPicture(image: String?, emoji: String, size: Dp, emojiSize: Dp, description: String? = null) {
     val source = LocalImageSource.current
     var bitmap by remember(image) { mutableStateOf(image?.let(ImageCache::get)) }
     if (image != null && bitmap == null && !ImageCache.isMissing(image)) {
@@ -56,7 +56,7 @@ fun LearningPicture(image: String?, emoji: String, size: Dp, emojiSize: TextUnit
     if (b != null) {
         Image(b, contentDescription = description, modifier = Modifier.size(size))
     } else {
-        Text(emoji, fontSize = emojiSize)
+        Text(emoji, fontSize = fixedSize(emojiSize))
     }
 }
 

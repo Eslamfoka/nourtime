@@ -246,7 +246,7 @@ private fun PromptItem(card: Card, numerals: NumeralStyle, dots: Boolean, big: B
             color = NourPalette.Navy,
             modifier = Modifier.clickable(role = Role.Button, onClick = onSay).padding(horizontal = 8.dp),
         )
-        is Card.Picture -> if (compact) LearningPicture(card.image, card.emoji, 40.dp, 30.sp) else LearningPicture(card.image, card.emoji, 112.dp, 72.sp)
+        is Card.Picture -> if (compact) LearningPicture(card.image, card.emoji, 40.dp, 30.dp) else LearningPicture(card.image, card.emoji, 112.dp, 72.dp)
         is Card.Sound -> Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Surface(onClick = onSay, shape = CircleShape, color = NourPalette.GoldLight, shadowElevation = 2.dp, modifier = Modifier.size(112.dp)) {
                 Box(contentAlignment = Alignment.Center) {
@@ -364,7 +364,7 @@ private fun ChoiceCard(
                     is Card.Symbol -> SymbolText(card, numerals, 40.sp, NourPalette.Navy)
                     // A single letter is shown big; words stay readable on two lines.
                     is Card.Text -> FitText(card.text, maxSize = if (card.text.length <= 2) 44.sp else 28.sp, color = NourPalette.Navy)
-                    is Card.Picture -> LearningPicture(card.image, card.emoji, 72.dp, 48.sp)
+                    is Card.Picture -> LearningPicture(card.image, card.emoji, 72.dp, 48.dp)
                     is Card.Swatch -> Box(
                         Modifier
                             .fillMaxWidth()
@@ -406,7 +406,7 @@ private fun TutorialHand(modifier: Modifier) {
         animationSpec = infiniteRepeatable(tween(600), RepeatMode.Reverse),
         label = "bob",
     )
-    Text("👆", fontSize = 44.sp, modifier = modifier.offset(y = (28 + bob * 10).dp).graphicsLayer { alpha = 0.95f })
+    Text("👆", fontSize = fixedSize(44.dp), modifier = modifier.offset(y = (28 + bob * 10).dp).graphicsLayer { alpha = 0.95f })
 }
 
 private fun mathDirection(numerals: NumeralStyle) =

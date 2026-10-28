@@ -45,6 +45,13 @@ fun OnboardingRoute(onBackToModeChoice: () -> Unit, viewModel: OnboardingViewMod
     val canGoBack = viewModel.canGoBack(current)
     BackHandler(enabled = canGoBack) { viewModel.back() }
     BackHandler(enabled = current == OnboardingStep.WELCOME, onBack = onBackToModeChoice)
+    // Past the saved PIN or question, Back can't go further; say so once instead of silently closing.
+    var backHintShown by rememberSaveable { mutableStateOf(false) }
+    val backBlocked = !canGoBack && current != OnboardingStep.WELCOME && current != OnboardingStep.FINISHED
+    BackHandler(enabled = backBlocked && !backHintShown) {
+        backHintShown = true
+        Toast.makeText(context, R.string.onboarding_back_hint, Toast.LENGTH_LONG).show()
+    }
     val onBack = if (canGoBack) viewModel::back else null
 
     fun open(intents: List<android.content.Intent>) {

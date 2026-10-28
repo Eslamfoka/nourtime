@@ -47,7 +47,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -55,8 +54,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.unit.Constraints
@@ -67,6 +68,7 @@ import com.nourtime.app.core.designsystem.component.NourStar
 import com.nourtime.app.core.designsystem.theme.NourPalette
 import com.nourtime.app.core.designsystem.theme.NourTheme
 import com.nourtime.app.core.ui.formatCountdown
+import com.nourtime.app.core.ui.formatCountdownWords
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.feature.setup.durationText
 import com.nourtime.app.remote.model.AskState
@@ -266,8 +268,10 @@ private fun OlderLayout(state: LockScreenState, style: TemplateStyle, text: Colo
     )
     state.countdownMs?.let { ms ->
         Spacer(Modifier.height(24.dp))
-        Text(stringResource(R.string.tu_back_in_label), style = MaterialTheme.typography.labelLarge, color = text.copy(alpha = 0.8f))
-        Text(formatCountdown(ms), style = MaterialTheme.typography.displayMedium, color = text)
+        Column(Modifier.countdownSemantics(countdownWords(ms)), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(stringResource(R.string.tu_back_in_label), style = MaterialTheme.typography.labelLarge, color = text.copy(alpha = 0.8f))
+            Text(formatCountdown(ms), style = MaterialTheme.typography.displayMedium, color = text)
+        }
     }
 }
 
@@ -275,7 +279,7 @@ private fun OlderLayout(state: LockScreenState, style: TemplateStyle, text: Colo
 private fun CountdownRing(ms: Long, totalMs: Long?, text: Color) {
     // The gold part is what's left of the lock, so the ring empties as the refill comes closer.
     val sweep = 360f * countdownFraction(ms, totalMs)
-    Box(contentAlignment = Alignment.Center) {
+    Box(Modifier.countdownSemantics(countdownWords(ms)), contentAlignment = Alignment.Center) {
         Canvas(Modifier.size(132.dp)) {
             val stroke = 10.dp.toPx()
             drawArc(text.copy(alpha = 0.15f), 0f, 360f, false, Offset(stroke / 2, stroke / 2), Size(size.width - stroke, size.height - stroke), style = Stroke(stroke))
@@ -288,15 +292,33 @@ private fun CountdownRing(ms: Long, totalMs: Long?, text: Color) {
     }
 }
 
-/** Small and subtle so it doesn't catch the child's attention (brief §12). */
+/**
+ * The countdown read by TalkBack in words ("4 minutes 59 seconds left") as one item. Not a live region:
+ * it changes every second, so it's read when focused, not announced.
+ */
+private fun Modifier.countdownSemantics(words: String): Modifier = clearAndSetSemantics { contentDescription = words }
+
+@Composable
+private fun countdownWords(ms: Long): String {
+    return stringResource(R.string.tu_countdown_left, LocalResources.current.formatCountdownWords(ms))
+}
+
+/**
+ * Small and subtle so it doesn't catch the child's attention (brief §12), but still readable: at
+ * [PARENTS_BUTTON_ALPHA] it has at least 4.5:1 contrast on every template (`TimeUpTemplatesTest`).
+ */
 @Composable
 private fun ParentsButton(text: Color, onClick: () -> Unit, modifier: Modifier) {
-    TextButton(onClick = onClick, modifier = modifier.alpha(0.55f).heightIn(min = 48.dp)) {
-        Icon(Icons.Rounded.Lock, contentDescription = null, tint = text, modifier = Modifier.size(16.dp))
+    val color = text.copy(alpha = PARENTS_BUTTON_ALPHA)
+    TextButton(onClick = onClick, modifier = modifier.heightIn(min = 48.dp)) {
+        Icon(Icons.Rounded.Lock, contentDescription = null, tint = color, modifier = Modifier.size(16.dp))
         Spacer(Modifier.size(6.dp))
-        Text(stringResource(R.string.tu_parents_button), style = MaterialTheme.typography.labelMedium, color = text)
+        Text(stringResource(R.string.tu_parents_button), style = MaterialTheme.typography.labelMedium, color = color)
     }
 }
+
+/** How faint "For parents" is drawn (was 0.55, below 4.5:1 on every light template). */
+internal const val PARENTS_BUTTON_ALPHA = 0.75f
 
 /** "You can still open": the educational apps allowed during the lock, big enough for small hands. */
 @Composable
@@ -390,7 +412,8 @@ private fun LearnButton(state: LockScreenState, onClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
-            Text("🧩", style = MaterialTheme.typography.headlineSmall)
+            // Decoration: TalkBack would read the emoji's name before the button's label.
+            Text("🧩", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.clearAndSetSemantics {})
             Spacer(Modifier.size(12.dp))
             Text(
                 stringResource(Gendered(R.string.learn_hub_button_m, R.string.learn_hub_button_f).pick(state.gender)),

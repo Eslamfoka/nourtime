@@ -126,7 +126,7 @@ internal fun ColumnScope.SortingScreen(controller: LearningHubController, state:
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     when (val c = item.card) {
-                        is Card.Picture -> LearningPicture(c.image, c.emoji, 110.dp, 80.sp)
+                        is Card.Picture -> LearningPicture(c.image, c.emoji, 110.dp, 80.dp)
                         is Card.Number -> Text(numerals.format(c.value), fontSize = 64.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
                         else -> Unit
                     }

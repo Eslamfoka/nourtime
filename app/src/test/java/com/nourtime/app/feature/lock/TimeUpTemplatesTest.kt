@@ -1,12 +1,17 @@
 package com.nourtime.app.feature.lock
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.luminance
 import com.nourtime.app.R
 import com.nourtime.app.core.blocking.BlockReason
+import com.nourtime.app.core.designsystem.theme.NourPalette
 import com.nourtime.app.data.db.PeriodKind
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class TimeUpTemplatesTest {
@@ -42,5 +47,26 @@ class TimeUpTemplatesTest {
         assertEquals(play.background, play.forAge(AgeGroup.AGES_3_6).background)
         val sleep = styleFor(TemplateKind.SLEEP)
         assertEquals(sleep.background, sleep.forAge(AgeGroup.AGES_10_12).background)
+    }
+
+    @Test
+    fun `for parents is readable on every template and age`() {
+        // WCAG AA for small text: 4.5:1, against both ends of each background gradient.
+        TemplateKind.entries.forEach { kind ->
+            AgeGroup.entries.forEach { age ->
+                val style = styleFor(kind).forAge(age)
+                val text = if (style.dark) NourPalette.Cream else NourPalette.Navy
+                style.background.forEach { background ->
+                    val drawn = text.copy(alpha = PARENTS_BUTTON_ALPHA).compositeOver(background)
+                    val ratio = contrast(drawn, background)
+                    assertTrue("$kind $age: $ratio", ratio >= 4.5)
+                }
+            }
+        }
+    }
+
+    private fun contrast(a: Color, b: Color): Double {
+        val (light, dark) = listOf(a.luminance().toDouble(), b.luminance().toDouble()).sortedDescending()
+        return (light + 0.05) / (dark + 0.05)
     }
 }

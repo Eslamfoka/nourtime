@@ -11,10 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.SemanticsNodeInteraction
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasAnyDescendant
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.unit.Density
@@ -24,6 +26,7 @@ import com.nourtime.app.R
 import com.nourtime.app.core.blocking.BlockDecision
 import com.nourtime.app.core.blocking.BlockReason
 import com.nourtime.app.core.designsystem.theme.NourTheme
+import com.nourtime.app.core.ui.formatCountdownWords
 import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
 import com.nourtime.app.remote.model.AskState
@@ -101,6 +104,26 @@ class TimeUpScreenLayoutTest {
                 assertTrue("$label in $group: $shown not inside $area", shown.height > 0 && shown.top >= area.top && shown.bottom <= area.bottom)
             }
         }
+    }
+
+    @Test
+    fun countdown_readInWords_andLearnWithoutItsEmoji() {
+        var age by mutableStateOf(AgeGroup.AGES_7_9)
+        compose.setContent {
+            NourTheme(darkTheme = false) {
+                TimeUpScreen(state = state(age), onOk = {}, onParents = {}, onLearn = {})
+            }
+        }
+        val words = Device.context.getString(R.string.tu_countdown_left, Device.context.resources.formatCountdownWords(2 * 60 * 60_000L))
+        // The ring (7–9) and the big numbers (10–12) are each one item, read in words.
+        listOf(AgeGroup.AGES_7_9, AgeGroup.AGES_10_12).forEach { group ->
+            age = group
+            compose.waitForIdle()
+            compose.onNodeWithContentDescription(words).assertExists()
+            compose.onAllNodes(hasText(text(R.string.tu_back_in_label))).assertCountEquals(0)
+        }
+        compose.onAllNodes(hasText("🧩", substring = true)).assertCountEquals(0)
+        compose.onNodeWithText(text(R.string.learn_hub_button_m)).assertExists()
     }
 
     /**

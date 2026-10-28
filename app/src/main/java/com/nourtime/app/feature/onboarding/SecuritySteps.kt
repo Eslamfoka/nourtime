@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Visibility
@@ -137,6 +138,8 @@ fun SecurityQuestionStep(
                 isError = SecurityQuestionValidator.Error.ANSWER_MISMATCH in errors,
                 supportingText = errorText(SecurityQuestionValidator.Error.ANSWER_MISMATCH in errors, R.string.sq_error_answer_mismatch),
                 keyboardOptions = KeyboardOptions(autoCorrectEnabled = false, imeAction = ImeAction.Done),
+                // Done saves like the button (the view model shows what's missing on an incomplete form).
+                keyboardActions = KeyboardActions(onDone = { if (!form.saving) onSave() }),
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.fillMaxWidth(),
             )

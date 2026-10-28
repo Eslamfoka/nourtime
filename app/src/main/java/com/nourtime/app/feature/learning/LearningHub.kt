@@ -58,10 +58,11 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nourtime.app.R
+import com.nourtime.app.core.designsystem.component.CenteredProgress
 import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.designsystem.component.NourStar
@@ -92,27 +93,38 @@ fun LearningHub(controller: LearningHubController, gender: ChildGender, onClose:
     val speaker = rememberSpeaker(state?.voicePacks.orEmpty())
     CompositionLocalProvider(LocalSpeaker provides speaker, LocalImageSource provides controller::image) {
         Box(Modifier.fillMaxSize().background(HubBackground)) {
-            AnimatedContent(
-                targetState = screen,
-                contentKey = { it::class to (it as? HubScreen.Playing)?.level },
-                transitionSpec = { fadeIn(tween(250)) togetherWith fadeOut(tween(200)) },
-                label = "hub",
-            ) { s ->
-                Column(Modifier.fillMaxSize().safeDrawingPadding().padding(horizontal = 16.dp, vertical = 8.dp)) {
-                    when (s) {
-                        HubScreen.Menu -> HubMenu(controller, state, gender, onClose)
-                        is HubScreen.Levels -> LevelPicker(controller, state, s.game, gender)
-                        is HubScreen.Playing -> QuestionScreen(controller, state, s, gender)
-                        is HubScreen.Connecting -> ConnectScreen(controller, state, s, gender, controller.age)
-                        is HubScreen.Coloring -> ColoringScreen(controller, state, s, gender)
-                        is HubScreen.Tracing -> TracingScreen(controller, state, s, gender)
-                        is HubScreen.Memory -> MemoryScreen(controller, state, s, gender)
-                        is HubScreen.Words -> WordsScreen(controller, state, s, gender)
-                        is HubScreen.Sorting -> SortingScreen(controller, state, s, gender)
-                        is HubScreen.Shop -> ShopScreen(controller, state, s, gender)
-                        is HubScreen.Done -> DoneScreen(controller, state, s, gender)
-                    }
-                }
+            // Until the saved progress is read, the menu would show no bank and the wrong locks.
+            val loaded = state
+            if (loaded == null) {
+                CenteredProgress(Modifier.fillMaxSize())
+            } else {
+                HubScreens(controller, screen, loaded, gender, onClose)
+            }
+        }
+    }
+}
+
+@Composable
+private fun HubScreens(controller: LearningHubController, screen: HubScreen, state: LearningState, gender: ChildGender, onClose: () -> Unit) {
+    AnimatedContent(
+        targetState = screen,
+        contentKey = { it::class to (it as? HubScreen.Playing)?.level },
+        transitionSpec = { fadeIn(tween(250)) togetherWith fadeOut(tween(200)) },
+        label = "hub",
+    ) { s ->
+        Column(Modifier.fillMaxSize().safeDrawingPadding().padding(horizontal = 16.dp, vertical = 8.dp)) {
+            when (s) {
+                HubScreen.Menu -> HubMenu(controller, state, gender, onClose)
+                is HubScreen.Levels -> LevelPicker(controller, state, s.game, gender)
+                is HubScreen.Playing -> QuestionScreen(controller, state, s, gender)
+                is HubScreen.Connecting -> ConnectScreen(controller, state, s, gender, controller.age)
+                is HubScreen.Coloring -> ColoringScreen(controller, state, s, gender)
+                is HubScreen.Tracing -> TracingScreen(controller, state, s, gender)
+                is HubScreen.Memory -> MemoryScreen(controller, state, s, gender)
+                is HubScreen.Words -> WordsScreen(controller, state, s, gender)
+                is HubScreen.Sorting -> SortingScreen(controller, state, s, gender)
+                is HubScreen.Shop -> ShopScreen(controller, state, s, gender)
+                is HubScreen.Done -> DoneScreen(controller, state, s, gender)
             }
         }
     }
@@ -130,6 +142,7 @@ internal fun HubTopBar(title: String, onBack: () -> Unit, trailing: @Composable 
             color = NourPalette.Navy,
             modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
             maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
         trailing()
     }
@@ -216,7 +229,7 @@ private fun GameTile(game: GameId, playable: Boolean, onClick: () -> Unit, modif
             verticalArrangement = Arrangement.Center,
         ) {
             Box(Modifier.size(72.dp).background(look.accent.copy(alpha = 0.25f), CircleShape), contentAlignment = Alignment.Center) {
-                Text(look.emoji, fontSize = 40.sp)
+                Text(look.emoji, fontSize = fixedSize(40.dp))
             }
             Spacer(Modifier.height(10.dp))
             Text(stringResource(look.title), style = MaterialTheme.typography.titleMedium, color = NourPalette.Navy, textAlign = TextAlign.Center, fontWeight = FontWeight.Bold)
@@ -317,7 +330,7 @@ private fun LevelButton(label: String, stars: Int, locked: Boolean, current: Boo
                 if (locked) {
                     Icon(Icons.Rounded.Lock, contentDescription = null, tint = NourPalette.Muted)
                 } else {
-                    Text(label, fontSize = 28.sp, fontWeight = FontWeight.Bold, color = NourPalette.Navy)
+                    Text(label, fontSize = fixedSize(28.dp), fontWeight = FontWeight.Bold, color = NourPalette.Navy)
                 }
             }
         }

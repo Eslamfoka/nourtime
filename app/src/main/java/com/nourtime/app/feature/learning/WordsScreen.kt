@@ -99,7 +99,7 @@ internal fun ColumnScope.WordsScreen(controller: LearningHubController, state: L
             shadowElevation = 3.dp,
             modifier = Modifier.clickable(role = Role.Button) { say(shown.word.word) },
         ) {
-            Box(Modifier.padding(16.dp)) { LearningPicture(shown.word.image, shown.word.emoji, 120.dp, 84.sp, description = shown.word.word) }
+            Box(Modifier.padding(16.dp)) { LearningPicture(shown.word.image, shown.word.emoji, 120.dp, 84.dp, description = shown.word.word) }
         }
         if (round.hint && s.celebrating == null) {
             FitText(shown.word.word, maxSize = 30.sp, color = NourPalette.Navy.copy(alpha = 0.3f))
