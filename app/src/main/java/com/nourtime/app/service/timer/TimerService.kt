@@ -6,8 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ServiceInfo
+import android.hardware.display.DisplayManager
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
+import android.view.Display
 import android.os.UserManager
 import android.telecom.TelecomManager
 import com.nourtime.app.core.blocking.BlockPolicy
@@ -30,6 +34,7 @@ import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.UsageStatsSource
 import com.nourtime.app.core.security.ParentSession
 import com.nourtime.app.core.media.MediaRules
+import com.nourtime.app.core.power.LoopPacing
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.time.TrustedClock
 import com.nourtime.app.core.timer.TimeEngine
@@ -189,6 +194,8 @@ class TimerService : Service() {
             },
             ContextCompat.RECEIVER_EXPORTED,
         )
+        runCatching { getSystemService(DisplayManager::class.java).registerDisplayListener(displayListener, Handler(Looper.getMainLooper())) }
+            .onFailure { Log.w(TAG, "no display listener", it) }
         tracker.refreshScreen()
         if (!tracker.accessibilityConnected) tracker.onAccessibilityDisconnected(usageStats.available)
 
@@ -244,6 +251,7 @@ class TimerService : Service() {
         unregisterReceiver(screenReceiver)
         unregisterReceiver(packageReceiver)
         unregisterReceiver(userReceiver)
+        runCatching { getSystemService(DisplayManager::class.java).unregisterDisplayListener(displayListener) }
         // The last save runs on its own scope, which outlives this service: the main thread waits for it
         // at most FLUSH_WAIT_MS (slow storage froze the main thread here), and the save still finishes.
         val flush = FLUSH_SCOPE.launch { engine.flush() }
@@ -260,35 +268,51 @@ class TimerService : Service() {
                 if (fg.screen.usable) MediaRules.playingLimited(playing, s.limitedApps) else emptySet()
             while (true) {
                 engine.update(inUse, fg.source, s)
-                delay(if (fg.screen.usable) TICK_MS else IDLE_TICK_MS)
+                delay(LoopPacing.timerTickMs(fg.screen.usable))
             }
         }
     }
 
-    /** Re-reads the lock-screen state each second; the broadcasts alone can be missed. */
+    /**
+     * Re-reads the lock-screen state each second while the screen is on (also while "locked": a missed
+     * unlock is exactly the case this catches; two binder reads, no wake lock); the broadcasts alone can
+     * be missed. Every few seconds while it's off: [displayListener] notices it coming on as well.
+     */
     private suspend fun runScreenSync() {
         while (true) {
             tracker.syncScreen()
-            delay(SCREEN_SYNC_MS)
+            delay(LoopPacing.screenSyncMs(tracker.state.value.screen.interactive))
         }
+    }
+
+    /** The display turning on, independent of the screen broadcasts; only read while the screen seems off. */
+    private val displayListener = object : DisplayManager.DisplayListener {
+        override fun onDisplayChanged(displayId: Int) {
+            if (displayId == Display.DEFAULT_DISPLAY && !tracker.state.value.screen.interactive) tracker.syncScreen()
+        }
+        override fun onDisplayAdded(displayId: Int) = Unit
+        override fun onDisplayRemoved(displayId: Int) = Unit
     }
 
     /** While Accessibility is off, usage stats keep detection (and fail-closed blocking) going. */
     private suspend fun runUsageStatsFallback() {
         var firstPoll = true
         while (true) {
-            if (!tracker.accessibilityConnected && tracker.state.value.screen.usable) {
-                val available = usageStats.available
-                val pkg = if (available) {
-                    usageStats.latestForeground(tracker.ignoredPackages, if (firstPoll) FIRST_LOOKBACK_MS else POLL_LOOKBACK_MS)
-                } else {
-                    null
-                }
-                firstPoll = false
-                tracker.onUsageStats(pkg, available)
-            } else if (tracker.accessibilityConnected) {
-                firstPoll = true
+            // Nothing to poll while Accessibility sees the windows or the screen isn't usable: wait for
+            // that to change (a disconnect and the screen both change the tracker's state) instead of
+            // waking every 2 s.
+            tracker.state.first { state ->
+                if (tracker.accessibilityConnected) firstPoll = true
+                LoopPacing.usagePollNeeded(tracker.accessibilityConnected, state.screen.usable)
             }
+            val available = usageStats.available
+            val pkg = if (available) {
+                usageStats.latestForeground(tracker.ignoredPackages, if (firstPoll) FIRST_LOOKBACK_MS else POLL_LOOKBACK_MS)
+            } else {
+                null
+            }
+            firstPoll = false
+            tracker.onUsageStats(pkg, available)
             delay(POLL_MS)
         }
     }
@@ -410,13 +434,9 @@ class TimerService : Service() {
 
     companion object {
         private const val TAG = "TimerService"
-        private const val TICK_MS = 1_000L
         private const val FLUSH_WAIT_MS = 2_000L
         /** For the last save when the service stops; never cancelled. */
         private val FLUSH_SCOPE = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-        private const val IDLE_TICK_MS = 30_000L
-        // Also while "locked": a missed unlock is exactly the case this catches. Two binder reads, no wake lock.
-        private const val SCREEN_SYNC_MS = 1_000L
         private const val POLL_MS = 2_000L
         private const val FIRST_LOOKBACK_MS = 60 * 60_000L
         private const val POLL_LOOKBACK_MS = 15_000L

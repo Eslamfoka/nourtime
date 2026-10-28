@@ -1,6 +1,9 @@
 package com.nourtime.app.service.blocking
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.media.AudioManager
 import android.telecom.TelecomManager
 import android.util.Log
@@ -36,20 +39,28 @@ import com.nourtime.app.feature.lock.LockScreenState
 import com.nourtime.app.feature.lock.templateFor
 import com.nourtime.app.service.admin.ScreenLocker
 import com.nourtime.app.service.media.MediaWatcher
+import androidx.core.content.ContextCompat
+import com.nourtime.app.core.locale.AppLocales
+import com.nourtime.app.core.power.LoopPacing
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.withContext
 import java.time.Duration
 import java.time.ZonedDateTime
+import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Decides, about once a second and on every change, whether something must be blocked, and shows
- * or hides the lock overlay accordingly (brief §3, §4, §5).
+ * Decides, on every change and about once a second while the screen is on (every 30 s while it's off,
+ * [LoopPacing]), whether something must be blocked, and shows or hides the lock overlay accordingly
+ * (brief §3, §4, §5).
  */
 @Singleton
 class BlockCoordinator @Inject constructor(
@@ -81,25 +92,49 @@ class BlockCoordinator @Inject constructor(
     private val ringingGrace = RingingGrace()
     @Volatile private var lastInputs: Inputs? = null
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun run() {
         withContext(Dispatchers.Main) {
             overlay.onChildDismiss = ::onChildDismiss
         }
-        val ticker = flow {
+        // Every second while the screen is on; slowly while it's off. Restarted when the screen
+        // changes, so the first check after it comes on is immediate and the next a second later.
+        val ticker = tracker.state.map { it.screen.interactive }.distinctUntilChanged().transformLatest { interactive ->
             while (true) {
                 emit(Unit)
-                delay(TICK_MS)
+                delay(LoopPacing.blockTickMs(interactive))
             }
         }
-        combine(tracker.state, engine.status, settings.settings, schedule.periods, pass.state) { fg, status, s, periods, _ ->
-            Inputs(fg, status, s, periods)
-        }.combine(ticker) { inputs, _ -> inputs }
-            .collect { evaluate(it) }
+        // Only the system sends package broadcasts.
+        ContextCompat.registerReceiver(context, packageReceiver, PACKAGE_CHANGES, ContextCompat.RECEIVER_EXPORTED)
+        try {
+            combine(tracker.state, engine.status, settings.settings, schedule.periods, pass.state) { fg, status, s, periods, _ ->
+                Inputs(fg, status, s, periods)
+            }.combine(ticker) { inputs, _ -> inputs }
+                // A limited app starting to play (a headset button with the screen off) is checked at once.
+                .combine(media.sessions) { inputs, _ -> inputs }
+                .collect { evaluate(it) }
+        } finally {
+            runCatching { context.unregisterReceiver(packageReceiver) }
+        }
     }
 
+    /** Bumped when an app is installed, removed, updated or turned on or off: the allowed apps are looked up again. */
+    private val installedVersion = AtomicInteger()
+
+    private val packageReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            installedVersion.incrementAndGet()
+        }
+    }
+
+    private data class AllowedKey(val packages: Set<String>, val language: String, val installedVersion: Int)
+
+    private val allowedCache = KeyedCache<AllowedKey, List<AllowedApp>>()
+
     /**
-     * Limited apps' background audio, screen on or off: paused while they're blocked, and again within
-     * a tick if the child presses play in the notification shade.
+     * Limited apps' background audio, screen on or off: paused while they're blocked, and again as soon
+     * as the child presses play in the notification shade (or on a headset).
      */
     private fun pauseLimitedMedia(limited: Set<String>, limitedBlocked: Boolean) {
         val toPause = MediaRules.toPause(media.sessions.value, limited, limitedBlocked, fullPass = pass.fullActive())
@@ -207,11 +242,16 @@ class BlockCoordinator @Inject constructor(
     /** Ringing, call screening or in a call. No permission needed. */
     private fun audioMode(): Int = runCatching { audioManager.mode }.getOrDefault(AudioManager.MODE_NORMAL)
 
-    /** Launchable allowed apps, by name. Labels and icons are cached by [InstalledAppsRepository]. */
-    private suspend fun allowedApps(packages: Set<String>): List<AllowedApp> = packages
-        .filter { context.packageManager.getLaunchIntentForPackage(it) != null }
-        .map { AllowedApp(it, apps.label(it), apps.icon(it)) }
-        .sortedBy { it.label }
+    /** Launchable allowed apps, by name; resolved again only when the set, the language or the installed apps change. */
+    private suspend fun allowedApps(packages: Set<String>): List<AllowedApp> {
+        val key = AllowedKey(packages, AppLocales.locale(context).toLanguageTag(), installedVersion.get())
+        return allowedCache.get(key) { k ->
+            k.packages
+                .filter { context.packageManager.getLaunchIntentForPackage(it) != null }
+                .map { AllowedApp(it, apps.label(it), apps.icon(it)) }
+                .sortedBy { it.label }
+        }
+    }
 
     /** The child tapped "OK": go home and keep the screen hidden while nothing changes. */
     private fun onChildDismiss() {
@@ -237,7 +277,13 @@ class BlockCoordinator @Inject constructor(
 
     private companion object {
         const val TAG = "BlockCoordinator"
-        const val TICK_MS = 1_000L
+        val PACKAGE_CHANGES = IntentFilter().apply {
+            addAction(Intent.ACTION_PACKAGE_ADDED)
+            addAction(Intent.ACTION_PACKAGE_REMOVED)
+            addAction(Intent.ACTION_PACKAGE_REPLACED)
+            addAction(Intent.ACTION_PACKAGE_CHANGED)
+            addDataScheme("package")
+        }
         /** `AudioManager.MODE_CALL_SCREENING` (API 30); older phones never report it. */
         const val MODE_CALL_SCREENING = 4
     }
