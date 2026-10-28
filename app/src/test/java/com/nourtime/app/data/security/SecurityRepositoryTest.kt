@@ -176,6 +176,13 @@ class SecurityRepositoryTest {
     }
 
     @Test
+    fun `an answer saved under the old 2-letter minimum still works`() = runTest {
+        // The 4-letter minimum is checked only when an answer is set or changed, never when one is checked.
+        repo.setSecurityQuestion("Initials?", "Al")
+        assertEquals(AnswerCheckResult.Correct, repo.checkAnswer(" al "))
+    }
+
+    @Test
     fun `three wrong answers, then answers are locked for a day, independently of the PIN`() = runTest {
         repo.setPin("4827")
         repo.setSecurityQuestion("Question?", "blue")

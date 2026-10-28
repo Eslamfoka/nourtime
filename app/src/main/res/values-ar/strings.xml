@@ -60,12 +60,13 @@
     <string name="sq_title">سؤال الأمان</string>
     <string name="sq_body">إذا عرف طفلك الرمز يومًا ما، سيُبقي هذا السؤال التطبيقات المختارة والإعدادات مغلقة خلال فترة القفل. اكتب سؤالًا لا يعرف إجابته غيرك.</string>
     <string name="sq_question_label">سؤالك</string>
-    <string name="sq_question_placeholder">مثلًا: ما اسم قرية جدتي؟</string>
+    <string name="sq_question_tip">اختر سؤالًا لا يعرف طفلك إجابته، وتجنّب اسم حيوان أليف أو اسم أحد من العائلة.</string>
+    <string name="sq_question_placeholder">مثلًا: ما اسم أول معلم درّسني؟</string>
     <string name="sq_answer_label">الإجابة</string>
     <string name="sq_answer_confirm_label">تأكيد الإجابة</string>
     <string name="sq_answer_note">المسافات وحالة الأحرف وأشكال الهمزة والألف (أ إ آ ا) لا تهم.</string>
     <string name="sq_error_question_short">اكتب سؤالًا من ٥ أحرف على الأقل.</string>
-    <string name="sq_error_answer_short">يجب أن تتكون الإجابة من حرفين على الأقل.</string>
+    <string name="sq_error_answer_short">يجب أن تتكون الإجابة من ٤ أحرف على الأقل.</string>
     <string name="sq_error_answer_mismatch">الإجابتان غير متطابقتين.</string>
     <string name="sq_show_answer">إظهار الإجابة</string>
     <string name="sq_hide_answer">إخفاء الإجابة</string>

@@ -60,12 +60,13 @@
     <string name="sq_title">Security question</string>
     <string name="sq_body">If your child ever learns the PIN, this question keeps the selected apps and the settings closed during a lock period. Write a question only you can answer.</string>
     <string name="sq_question_label">Your question</string>
-    <string name="sq_question_placeholder">e.g. What was my grandmother\'s village called?</string>
+    <string name="sq_question_tip">Choose a question your child can\'t answer: not a pet\'s name or a family name.</string>
+    <string name="sq_question_placeholder">e.g. What was my first teacher\'s name?</string>
     <string name="sq_answer_label">Answer</string>
     <string name="sq_answer_confirm_label">Confirm the answer</string>
     <string name="sq_answer_note">Spaces, capital letters and hamza/alef forms (أ إ آ ا) don\'t matter.</string>
     <string name="sq_error_question_short">Write a question of at least 5 characters.</string>
-    <string name="sq_error_answer_short">The answer needs at least 2 letters.</string>
+    <string name="sq_error_answer_short">The answer needs at least 4 letters.</string>
     <string name="sq_error_answer_mismatch">The two answers don\'t match.</string>
     <string name="sq_show_answer">Show answer</string>
     <string name="sq_hide_answer">Hide answer</string>

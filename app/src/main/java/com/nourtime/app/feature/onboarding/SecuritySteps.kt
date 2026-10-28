@@ -98,6 +98,8 @@ fun SecurityQuestionStep(
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+        // The answer sets a new PIN ("Forgot PIN?"): one the child can guess is a way around the PIN.
+        Text(stringResource(R.string.sq_question_tip), style = MaterialTheme.typography.bodyMedium)
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             OutlinedTextField(
                 colors = nourTextFieldColors(),
