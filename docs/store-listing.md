@@ -38,6 +38,7 @@ PROTECTION PARENTS CAN TRUST
 • With device admin turned on (a setup step), Nour Time can't be uninstalled without your PIN, and the phone's Settings ask for it too.
 • Forgot the PIN? Your security question sets a new one, which starts working after 24 hours, or at once if you approve it from your own phone.
 • If protection is weakened (for example Accessibility turned off), the limited apps stay blocked and you're told.
+• Restarting the phone in safe mode can turn protection off (Android allows it for every app of this kind). Connect your own phone to be alerted when that happens.
 • Music or videos from a limited app that keep playing in the background are paused during the lock.
 
 FOLLOW FROM YOUR OWN PHONE (OPTIONAL)
@@ -97,6 +98,7 @@ content from the screen or from notifications.
 • عند تفعيل «مسؤول الجهاز» (خطوة في الإعداد) لا يمكن حذف وقت نور دون رمزك، وتطلب إعدادات الهاتف الرمز أيضًا.
 • نسيت الرمز؟ يضبط سؤال الأمان رمزًا جديدًا يبدأ العمل بعد 24 ساعة، أو فورًا إذا وافقت عليه من هاتفك.
 • إذا ضعفت الحماية (مثل إيقاف إمكانية الوصول) تبقى التطبيقات المحددة مقفلة ويصلك تنبيه.
+• إعادة تشغيل الهاتف في الوضع الآمن قد توقف الحماية (يسمح Android بذلك لكل تطبيقات هذا النوع). اربط هاتفك لتصلك تنبيهات عندما يحدث ذلك.
 • الموسيقى أو الفيديو من تطبيق محدد إذا ظل يعمل في الخلفية يتوقف أثناء القفل.
 
 تابع من هاتفك (اختياري)
@@ -138,10 +140,10 @@ content from the screen or from notifications.
 
 ## Character counts
 
-Checked with Python (`len()` on each field, line breaks included as written), last on 2026-10-17:
+Checked with Python (`len()` on each field, line breaks included as written), last on 2026-10-28:
 
 | Field | en | ar | Limit |
 |---|---|---|---|
 | App name | 29 | 24 | 30 |
 | Short description | 79 | 62 | 80 |
-| Full description | 3,484 | 2,906 | 4,000 |
+| Full description | 3,648 | 3,042 | 4,000 |

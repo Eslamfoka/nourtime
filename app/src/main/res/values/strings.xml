@@ -139,6 +139,7 @@
     <string name="test_waiting">Waiting for a limited app</string>
     <string name="test_detected">Nour Time saw %1$s</string>
     <string name="test_success">Protection is working. When the time is up, this app will lock.</string>
+    <string name="test_safe_mode_note">Restarting the phone in safe mode can turn protection off; Android allows this for every parental control app. Connect your own phone to Nour Time to be alerted when it happens.</string>
 
     <!-- Finished -->
     <string name="finished_title">All set!</string>

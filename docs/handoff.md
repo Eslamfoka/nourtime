@@ -2039,3 +2039,69 @@ approved, cancelled from Home).
 Verified: `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green: 621 unit tests, lint 0
 errors / 15 warnings (none in the changed files). Not run on a device or the emulator; TalkBack reading
 of the card not checked by ear.
+
+## 35. 2026-10-28: protection off shown and reported in seconds; browsers; safe mode said plainly
+
+**How a loss is seen (unchanged, already immediate on every brand).** `NourAccessibilityService.onUnbind`
+/ `onDestroy` call `tracker.onAccessibilityDisconnected`, so switching the service off (Settings, a
+computer, safe mode, an update that drops it) moves detection to usage stats (`USAGE_STATS`, or `NONE`
+without usage access) at once; a process restarted without the service starts disconnected
+(`TimerService.onCreate`). `TimeEngine.status.protectionDegraded` follows the source on the next tick.
+What was slow was telling anyone.
+
+**Notice (`BlockReason.PROTECTION` → `TemplateKind.PROTECTION_OFF`).** "Protection is off / A parent
+needs to turn Nour Time back on" on every age's layout (new `TemplateStyle.body`, which also stops the
+10–12 layout saying "Well done! You finished your time" here), with a navy "Parents: turn it back on"
+button in place of the small "For parents". It leads to the PIN (plus the answer in a lock period, as
+before); then `OverlayParentFlow.onFixProtection` → `LockOverlay.openAccessibilitySettings`
+(`ACTION_ACCESSIBILITY_SETTINGS`, Nour Time itself if missing). The full pass granted by the PIN keeps
+Settings uncovered. Window: the regular "display over other apps" overlay, the only kind without
+Accessibility (below the shade; Android hides it on some Settings screens: nothing to do about that).
+- **Scope: the limited apps only**, as the fail-closed block already was. Not the whole phone: the
+  loss is often not the child's doing (an update, a phone maker's cleaner), a parent may be hours
+  away, and usage stats can't see picture in picture or tell the call screen reliably; WhatsApp calls
+  (often how a child reaches a parent) don't ring through the audio mode for long (`RingingGrace`).
+  So unlimited apps, the phone app and Nour Time stay usable; a ringing phone uncovers (`RingingGrace`);
+  the parent's whole-phone lock periods still cover everything. During a lock period the lock's own
+  screen stays (the child is blocked anyway; the parent has the alert and Home's card).
+- Without usage access (`NONE`) nothing can see the limited app, so no notice; the alert still goes.
+
+**Alert timing (`remote/child/DegradedReport.kt`, `DegradedGrace`).** The parent's phone
+(`meta/alerts.protectionDegraded`, pushed by `onAlertsChanged`) and the local "protection" notification
+now wait **15 s** instead of 2 min, and at least until **2 min of uptime** after a phone restart (the
+service often connects late while a phone starts). A rebind within the wait (update, uiautomator, a
+cleaner restarting the process: 1–3 s) is never reported; recovery is reported at once; the function's
+30-minute throttle per alert type bounds a flapping service. The 15 s is shared by both paths, so the
+child's phone never shows an alert the parent's phone didn't get.
+
+**Browsers (`data/apps/Browsers`).** `InstalledAppsRepository.browserPackages()` asks which apps open
+`http(s)://example.com` (`ACTION_VIEW` + `BROWSABLE`, `MATCH_ALL`), visible through two new `<queries>`
+(no `QUERY_ALL_PACKAGES`), kept to launchable apps. Onboarding's app step and the Apps tab mark them
+"Browser" and, while any is neither limited nor allowed during the lock, show "Browsers can open YouTube
+and other sites. Limit them too?" with the unlimited ones named and "Limit browsers"
+(`ParentSettingsRepository.limitApps`). Nothing is pre-selected. Not on the parent's phone's remote
+app list (the uploaded list has no browser flag; adding one would change the disclosure).
+
+**Safe mode.** The test step ("Let's check it works") ends with a note: restarting in safe mode can turn
+protection off, Android allows it for every parental control app, connect your own phone to be alerted.
+Store listing (EN + AR) has the same bullet; full descriptions 3,648 / 3,042 of 4,000.
+`play-compliance.md`: the web-link `<queries>` added to the API table.
+
+Tests: `ProtectionNoticeTest` (8: notice over a limited app and where its PIN leads, unlimited apps and
+the dialer usable, ringing, call screen, the pass uncovers Settings, recovery, lock period),
+`DegradedReportTest` (6: brief rebind, 15 s, recovery, flapping, uptime rule, slow reconnect after a
+restart), `TimeUpTemplatesTest` (+1), `BrowsersTest` (6), `ParentSettingsRepositoryTest` (+1).
+Instrumented `ProtectionLossTest`: enables Nour Time's real Accessibility service with
+`settings put secure enabled_accessibility_services`, waits for it to connect, deletes the setting,
+sees the unbind, and the coordinator opens the PROTECTION_OFF notice over a limited app (and lifts it
+over an unlimited one); the settings are restored. `Device.shell` now keeps Accessibility services
+while the test's UiAutomation is connected (`FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES`).
+
+Not covered: the notice on a real phone (Honor: Settings screens that hide app overlays), the browser
+query on Samsung/Xiaomi, the PIN → Accessibility settings path by hand (unit-level only), TalkBack.
+
+Verified: `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green after each task: 641 unit tests,
+lint 0 errors / 20 warnings (none in changed code). `:app:connectedDebugAndroidTest`
+(ANDROID_SERIAL=emulator-5554, `nourdm-test-api36`) after the protection change: 20/20; the emulator's
+`enabled_accessibility_services` / `accessibility_enabled` back to null / 0 afterwards. Commits: protection
+notice and alert, browsers, safe-mode note + this section (not pushed).

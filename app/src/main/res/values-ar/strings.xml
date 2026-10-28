@@ -139,6 +139,7 @@
     <string name="test_waiting">بانتظار فتح تطبيق محدد</string>
     <string name="test_detected">رأى وقت نور %1$s</string>
     <string name="test_success">الحماية تعمل. عندما ينتهي الوقت سيُقفل هذا التطبيق.</string>
+    <string name="test_safe_mode_note">قد تؤدي إعادة تشغيل الهاتف في الوضع الآمن إلى إيقاف الحماية، ويسمح Android بذلك لكل تطبيقات الرقابة الأبوية. اربط هاتفك بوقت نور لتصلك التنبيهات عندما يحدث ذلك.</string>
 
     <!-- Finished -->
     <string name="finished_title">كل شيء جاهز!</string>

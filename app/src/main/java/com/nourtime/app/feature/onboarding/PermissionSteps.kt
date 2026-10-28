@@ -215,6 +215,8 @@ fun TestProtectionStep(
             ),
             style = MaterialTheme.typography.bodyLarge,
         )
+        // A platform limit, said once and plainly: only a device owner could block safe mode.
+        HowToCard(stringResource(R.string.test_safe_mode_note))
     }
 }
 
