@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { afterAll, beforeAll, beforeEach, describe, it } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import {
   assertFails,
   assertSucceeds,
@@ -518,6 +518,65 @@ describe("limits per account", () => {
       await setDoc(doc(db, "pairings", CODE), { ...openPairing, childUid: "someone-else" });
     });
     await assertSucceeds(createPairing(child(), "111111"));
+  });
+
+  it("a record naming an old device of its own: the phone clears that device and its code, then moves on", async () => {
+    // Two device documents left by an older build, or a restored device id: the record names device-1.
+    await seed(async (db) => {
+      await setDoc(doc(db, "devices", DEVICE), pairedDevice);
+      await setDoc(doc(db, "devices", DEVICE, "usage", TODAY), { ms: { a: 1 }, updatedAt: Timestamp.now() });
+      await setDoc(doc(db, "pairings", CODE), openPairing);
+      await setDoc(doc(db, "childAccounts", CHILD), { deviceId: DEVICE, openCode: CODE });
+    });
+    // Refused while the old device is there, as the phone first sees it.
+    await assertFails(createDevice(child(), "device-2"));
+    // What the phone may clear: the old code, the old device's data, then the old device.
+    await assertSucceeds(deleteDoc(doc(child(), "pairings", CODE)));
+    await assertSucceeds(deleteDoc(doc(child(), "devices", DEVICE, "usage", TODAY)));
+    await assertSucceeds(deleteDoc(doc(child(), "devices", DEVICE)));
+    await assertSucceeds(createDevice(child(), "device-2"));
+    await assertSucceeds(createPairing(child(), "654321", { ...newPairing, deviceId: "device-2" }, CHILD, "device-2"));
+    // Still one device and one code: the first can't come back beside the second.
+    await assertFails(createDevice(child(), DEVICE));
+    await assertFails(createPairing(child(), "111111", { ...newPairing, deviceId: "device-2" }, CHILD, "device-2"));
+  });
+
+  it("a record naming an existing device of its own, already made by an older build, moves once the old one is gone", async () => {
+    await seed(async (db) => {
+      await setDoc(doc(db, "devices", DEVICE), unpairedDevice);
+      await setDoc(doc(db, "devices", "device-2"), unpairedDevice);
+      await setDoc(doc(db, "childAccounts", CHILD), { deviceId: DEVICE });
+    });
+    const move = () => setDoc(doc(child(), "childAccounts", CHILD), { deviceId: "device-2" }, { merge: true });
+    await assertFails(move());
+    await assertSucceeds(deleteDoc(doc(child(), "devices", DEVICE)));
+    await assertSucceeds(move());
+  });
+
+  it("a record naming a device that isn't its own doesn't block the phone, and frees no extra device", async () => {
+    await seed(async (db) => {
+      await setDoc(doc(db, "devices", DEVICE), { ...unpairedDevice, childUid: "someone-else" });
+      await setDoc(doc(db, "childAccounts", CHILD), { deviceId: DEVICE });
+    });
+    // Not its device: it can't delete it, but the record may move on without it.
+    await assertFails(deleteDoc(doc(child(), "devices", DEVICE)));
+    await assertSucceeds(createDevice(child(), "device-2"));
+    // Its own device still counts: no third device while device-2 exists.
+    await assertFails(createDevice(child(), "device-3"));
+    // The other account's device is untouched.
+    let other: unknown;
+    await seed(async (db) => {
+      other = (await getDoc(doc(db, "devices", DEVICE))).data()?.childUid;
+    });
+    expect(other).toBe("someone-else");
+  });
+
+  it("a record naming a device that isn't its own can be deleted (account deletion)", async () => {
+    await seed(async (db) => {
+      await setDoc(doc(db, "devices", DEVICE), { ...unpairedDevice, childUid: "someone-else" });
+      await setDoc(doc(db, "childAccounts", CHILD), { deviceId: DEVICE });
+    });
+    await assertSucceeds(deleteDoc(doc(child(), "childAccounts", CHILD)));
   });
 
   it("the account record is its own phone's, with a 6-digit code and nothing else", async () => {

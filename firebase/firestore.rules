@@ -52,6 +52,15 @@ service cloud.firestore {
         || getAfter(/databases/$(database)/documents/pairings/$(code)).data.childUid != request.auth.uid;
     }
 
+    // After this write, the device is gone or isn't this account's. A device's childUid never
+    // changes, so one that names another account was never this account's: moving the record off it
+    // frees nothing, and the one-device limit holds (2026-10-28 review: a record naming such a device
+    // refused the phone every new code for good).
+    function deviceGoneAfter(id) {
+      return !existsAfter(/databases/$(database)/documents/devices/$(id))
+        || getAfter(/databases/$(database)/documents/devices/$(id)).data.childUid != request.auth.uid;
+    }
+
     // usage/{day}: a date close to now (today and yesterday on any time zone, a week for a phone that
     // was off), so a phone can't make day documents without limit.
     function recentDay(day) {
@@ -238,7 +247,7 @@ service cloud.firestore {
           || (request.resource.data.openCode is string && request.resource.data.openCode.matches('^[0-9]{6}$')))
         && (resource == null
           || resource.data.deviceId == request.resource.data.deviceId
-          || !existsAfter(/databases/$(database)/documents/devices/$(resource.data.deviceId)))
+          || deviceGoneAfter(resource.data.deviceId))
         && (resource == null
           || resource.data.get('openCode', null) == null
           || resource.data.openCode == request.resource.data.get('openCode', null)
@@ -246,7 +255,7 @@ service cloud.firestore {
 
       // With the account: once its device and code are gone.
       allow delete: if signedIn() && request.auth.uid == uid
-        && !existsAfter(/databases/$(database)/documents/devices/$(resource.data.deviceId))
+        && deviceGoneAfter(resource.data.deviceId)
         && (resource.data.get('openCode', null) == null || codeGoneAfter(resource.data.openCode));
     }
 

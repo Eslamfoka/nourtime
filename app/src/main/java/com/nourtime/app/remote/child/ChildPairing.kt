@@ -1,6 +1,7 @@
 package com.nourtime.app.remote.child
 
 import android.os.Build
+import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -42,15 +43,12 @@ class ChildPairing @Inject constructor(
             "name" to deviceName(),
             "createdAt" to FieldValue.serverTimestamp(),
         )
-        // Never set() an existing device: it would clear ownerUid. The server copy decides.
-        if (device.get(Source.SERVER).await().exists()) {
-            device.update("name", deviceName()).await()
-        } else {
-            firestore.batch()
-                .set(account, mapOf("deviceId" to device.id), SetOptions.merge())
-                .set(device, create)
-                .commit().await()
-        }
+        // A record naming another device (two left by older builds, a restored device id) made the
+        // rules refuse this phone for good: the old device and its code go, then one more try.
+        PairingRecovery.retryOnceAfter(
+            isRefused = { it.isPermissionDenied() },
+            recover = { clearStaleRecord(account, device.id) },
+        ) { claimDevice(account, device, create) }
         // A code left open earlier (the app was closed while it showed) must go before a new one is
         // allowed. Gone already, or another phone's by now: the delete is refused, nothing to do.
         account.get(Source.SERVER).await().getString("openCode")?.let { previous ->
@@ -147,6 +145,42 @@ class ChildPairing @Inject constructor(
         return erased
     }
 
+    /** This phone's device, created with the account record naming it, or the record moved to it. */
+    private suspend fun claimDevice(account: DocumentReference, device: DocumentReference, create: Map<String, Any?>) {
+        // Never set() an existing device: it would clear ownerUid. The server copy decides.
+        if (device.get(Source.SERVER).await().exists()) {
+            device.update("name", deviceName()).await()
+            // Otherwise the code's write below is refused, and that reads as "code taken".
+            if (account.get(Source.SERVER).await().getString("deviceId") != device.id) {
+                account.set(mapOf("deviceId" to device.id), SetOptions.merge()).await()
+            }
+        } else {
+            firestore.batch()
+                .set(account, mapOf("deviceId" to device.id), SetOptions.merge())
+                .set(device, create)
+                .commit().await()
+        }
+    }
+
+    /**
+     * Deletes what the account record names that isn't this phone's: the old device (its data first,
+     * as the rules look the device up) and the open code. Each step is allowed to fail: gone already,
+     * or never this account's (the rules then let the record move on without it).
+     */
+    private suspend fun clearStaleRecord(account: DocumentReference, currentDeviceId: String) {
+        val record = account.get(Source.SERVER).await()
+        record.getString("openCode")?.let { forget(it) }
+        val stale = PairingRecovery.staleDevice(record.getString("deviceId"), currentDeviceId) ?: return
+        Log.w(TAG, "account record names another device; clearing it")
+        val old = firestore.collection(RemotePaths.DEVICES).document(stale)
+        runCatching {
+            for (name in listOf(RemotePaths.USAGE, RemotePaths.META, RemotePaths.COMMANDS, RemotePaths.REQUESTS)) {
+                deleteAll(old.collection(name).get(Source.SERVER).await().documents.map { it.reference })
+            }
+        }.onFailure { Log.w(TAG, "old device data not cleared", it) }
+        runCatching { old.delete().await() }.onFailure { Log.w(TAG, "old device not deleted", it) }
+    }
+
     /** The account's device-and-code record, after its open code (the device is gone by now). */
     private suspend fun deleteAccountRecord() {
         val account = firestore.collection(RemotePaths.CHILD_ACCOUNTS).document(identity.ensureSignedIn())
@@ -171,6 +205,7 @@ class ChildPairing @Inject constructor(
         listOf(Build.MANUFACTURER.replaceFirstChar { it.uppercase() }, Build.MODEL).distinct().joinToString(" ")
 
     private companion object {
+        const val TAG = "ChildPairing"
         const val CODE_ATTEMPTS = 5
         const val ERASE_TIMEOUT_MS = 20_000L
         const val CODE_CLEANUP_MS = 24 * 60 * 60_000L

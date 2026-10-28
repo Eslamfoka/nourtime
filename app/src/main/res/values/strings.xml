@@ -397,6 +397,7 @@
     <string name="pair_try_again">Try again</string>
     <string name="pair_offline">Connect this phone to the internet to pair.</string>
     <string name="pair_error">Something went wrong. Please try again.</string>
+    <string name="pair_refused">An old pairing record for this phone is blocking a new code. Try again in a few minutes. If this keeps happening, reinstall Nour Time on this phone.</string>
     <string name="parent_signin_title">Follow your child\'s phone</string>
     <string name="parent_signin_body">Sign in with your Google account. You\'ll see your children\'s phones here, give extra time, lock or unlock them, and change their settings.</string>
     <string name="parent_signin_google">Sign in with Google</string>

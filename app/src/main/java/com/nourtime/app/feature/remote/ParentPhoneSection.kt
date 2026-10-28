@@ -47,6 +47,7 @@ import com.nourtime.app.remote.child.ChildPairing
 import com.nourtime.app.remote.child.DeviceIdentity
 import com.nourtime.app.remote.child.PairedOwner
 import com.nourtime.app.remote.child.PairingError
+import com.nourtime.app.remote.child.PairingRefusedException
 import com.nourtime.app.remote.child.PairingState
 import com.nourtime.app.remote.child.PairingStates
 import com.nourtime.app.remote.model.PairingCode
@@ -97,7 +98,13 @@ class ParentPhoneViewModel @Inject constructor(
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                _state.value = PairingState.Failed(if (e.isOffline()) PairingError.OFFLINE else PairingError.OTHER)
+                _state.value = PairingState.Failed(
+                    when {
+                        e.isOffline() -> PairingError.OFFLINE
+                        e is PairingRefusedException -> PairingError.REFUSED
+                        else -> PairingError.OTHER
+                    },
+                )
                 return@launch
             }
             code = newCode
@@ -276,7 +283,13 @@ private fun PairingDialog(state: PairingState, onAllow: () -> Unit, onRetry: () 
                         }
                         is PairingState.Failed -> {
                             Text(
-                                stringResource(if (state.reason == PairingError.OFFLINE) R.string.pair_offline else R.string.pair_error),
+                                stringResource(
+                                    when (state.reason) {
+                                        PairingError.OFFLINE -> R.string.pair_offline
+                                        PairingError.REFUSED -> R.string.pair_refused
+                                        PairingError.OTHER -> R.string.pair_error
+                                    },
+                                ),
                                 style = MaterialTheme.typography.bodyLarge,
                                 textAlign = TextAlign.Center,
                             )

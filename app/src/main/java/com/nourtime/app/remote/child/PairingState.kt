@@ -18,7 +18,8 @@ sealed interface PairingState {
     data class Failed(val reason: PairingError) : PairingState
 }
 
-enum class PairingError { OFFLINE, OTHER }
+/** REFUSED: the rules still refuse this phone's device after its old record was cleared. */
+enum class PairingError { OFFLINE, REFUSED, OTHER }
 
 object PairingStates {
 

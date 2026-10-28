@@ -411,6 +411,7 @@
     <string name="pair_try_again">حاول مرة أخرى</string>
     <string name="pair_offline">اتصل بالإنترنت على هذا الهاتف للربط.</string>
     <string name="pair_error">حدث خطأ. حاول مرة أخرى.</string>
+    <string name="pair_refused">يمنع سجل ربط قديم لهذا الهاتف إنشاء رمز جديد. حاول مرة أخرى بعد بضع دقائق، وإن تكرر ذلك فأعد تثبيت وقت نور على هذا الهاتف.</string>
     <string name="parent_signin_title">تابع هاتف طفلك</string>
     <string name="parent_signin_body">سجّل الدخول بحساب Google. سترى هنا هواتف أطفالك، ويمكنك منح وقت إضافي، وقفلها أو فتحها، وتغيير إعداداتها.</string>
     <string name="parent_signin_google">تسجيل الدخول بحساب Google</string>
