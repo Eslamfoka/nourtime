@@ -12,9 +12,12 @@ object LoopPacing {
     const val IDLE_MS = 30_000L
     /**
      * The screen re-read while the screen is off: the third way to notice it coming on, after the
-     * screen broadcast and the display listener.
+     * screen broadcast and the display listener. If both of those are missed, this is how long a
+     * limited app can show unblocked (2026-10-28 review: 5 s was too long). A re-read is one cheap
+     * PowerManager call: 30 a minute, about 34 wakes a minute with the screen off instead of ~16
+     * (~150 before §37).
      */
-    const val SCREEN_OFF_SYNC_MS = 5_000L
+    const val SCREEN_OFF_SYNC_MS = 2_000L
 
     /** The timer: counts only on a usable screen; otherwise lock periods and day changes are checked slowly. */
     fun timerTickMs(screenUsable: Boolean): Long = if (screenUsable) ACTIVE_MS else IDLE_MS

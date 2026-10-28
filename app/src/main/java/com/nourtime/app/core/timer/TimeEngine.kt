@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import java.time.LocalDate
 import java.time.LocalTime
 import javax.inject.Inject
@@ -125,17 +126,29 @@ class TimeEngine @Inject constructor(
 
     private suspend fun damaged(): Boolean = store.data.first()[TimekeepingMigration.DAMAGED] == true
 
-    /** Applies a command from the parent's phone (or the debug tools on Home) and saves it at once. */
-    suspend fun apply(command: TimerCommand) = change { TimeRules.apply(it, command) }
+    /**
+     * Applies a command from the parent's phone (or the quick actions on Home) and saves it at once.
+     * False when it couldn't be applied (see [change]).
+     */
+    suspend fun apply(command: TimerCommand): Boolean = change("$command") { TimeRules.apply(it, command) }
 
     /**
      * Applies [rule] to the current state and saves it. With no state yet (a fresh install before the
      * timer service's first [update], which needs the settings to start one), the change waits for that
-     * update instead of being dropped: Home's "Lock now" used to do nothing then.
+     * update instead of being dropped: Home's "Lock now" used to do nothing then. The wait is bounded
+     * (2026-10-28 review: a service that never updated kept Home's action and a parent's command
+     * waiting for good); false when it ran out and nothing changed.
      */
-    private suspend fun change(rule: (TimerState) -> TimerState) {
-        // The status is set only after the state, which is never cleared: one wait is enough.
-        while (!tryChange(rule)) status.filterNotNull().first()
+    private suspend fun change(name: String, rule: (TimerState) -> TimerState): Boolean {
+        // The status is set only after the state, which is never cleared: one wait is enough. Only the
+        // wait is timed, never a change half-way through its save.
+        while (!tryChange(rule)) {
+            if (withTimeoutOrNull(CHANGE_WAIT_MS) { status.filterNotNull().first() } == null) {
+                runCatching { Log.w(TAG, "$name not applied: no timer state after ${CHANGE_WAIT_MS / 1000} s") }
+                return false
+            }
+        }
+        return true
     }
 
     /** False when there's no state to change yet. */
@@ -161,11 +174,11 @@ class TimeEngine @Inject constructor(
     }
 
     /** Minutes earned in the Learning Hub; see [TimeRules.reward]. */
-    suspend fun reward(minutes: Int) = change { TimeRules.reward(it, minutes) }
+    suspend fun reward(minutes: Int): Boolean = change("reward") { TimeRules.reward(it, minutes) }
 
     /** Back from another user after [awayMs]; see [TimeRules.chargeOtherUser]. */
-    suspend fun chargeOtherUser(awayMs: Long, lockLeftAtStartMs: Long) =
-        change { TimeRules.chargeOtherUser(it, awayMs, lockLeftAtStartMs) }
+    suspend fun chargeOtherUser(awayMs: Long, lockLeftAtStartMs: Long): Boolean =
+        change("other user charge") { TimeRules.chargeOtherUser(it, awayMs, lockLeftAtStartMs) }
 
     /** Persists the latest state, e.g. when the service stops. */
     suspend fun flush() = mutex.withLock {
@@ -234,6 +247,9 @@ class TimeEngine @Inject constructor(
         const val TAG = "TimeEngine"
         const val MINUTE = 60_000L
         const val HOUR = 60 * MINUTE
+
+        /** The timer service's first update comes within seconds of its start; this is far past that. */
+        const val CHANGE_WAIT_MS = 30_000L
 
         val PHASE = stringPreferencesKey("timer_phase")
         val REMAINING = longPreferencesKey("timer_remaining")

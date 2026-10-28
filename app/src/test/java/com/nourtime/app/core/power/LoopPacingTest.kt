@@ -22,8 +22,10 @@ class LoopPacingTest {
     }
 
     @Test
-    fun `screen off still re-reads the screen every few seconds`() {
-        assertEquals(5_000L, LoopPacing.screenSyncMs(screenInteractive = false))
+    fun `screen off still re-reads the screen every 2 seconds`() {
+        // The last way to notice the screen coming on if its broadcast and the display listener are
+        // both missed: a limited app shows unblocked for at most this long.
+        assertEquals(2_000L, LoopPacing.screenSyncMs(screenInteractive = false))
     }
 
     @Test

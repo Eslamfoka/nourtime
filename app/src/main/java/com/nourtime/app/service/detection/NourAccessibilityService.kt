@@ -36,6 +36,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 
 /**
  * Detects which apps are on screen, including picture-in-picture and split screen.
@@ -88,6 +89,8 @@ class NourAccessibilityService : AccessibilityService() {
     /**
      * Everything one connection runs. Cancelled when the system unbinds and before a new connection
      * starts its own, so readers never pile up; the refresh requests and cached values carry over.
+     * Its children are supervised: one that fails (an Error, which keepRunning doesn't catch) leaves
+     * the window refresh loop and the other readers running.
      */
     private var connection: Job? = null
 
@@ -98,18 +101,22 @@ class NourAccessibilityService : AccessibilityService() {
         overlay.attach(this)
         connection?.cancel()
         connection = scope.launch {
-            launch(windowWorker) {
-                refreshLoop(refreshRequests, ::publishWindows) { e -> Log.e(TAG, "window refresh failed", e) }
-            }
-            // Each reader restarts after a settings-store error instead of keeping its last value.
-            reader("timer start") {
-                if (onboarding.isComplete.first()) TimerService.start(this@NourAccessibilityService)
-            }
-            reader("mode") { modes.mode.collect { mode = it } }
-            reader("limited apps") { settings.settings.collect { limitedApps = it.limitedApps } }
-            reader("setup complete") { onboarding.isComplete.collect { setupComplete = it } }
+            supervisorScope { connect() }
         }
         refreshRequests.trySend(Unit)
+    }
+
+    private fun CoroutineScope.connect() {
+        launch(windowWorker) {
+            refreshLoop(refreshRequests, ::publishWindows) { e -> Log.e(TAG, "window refresh failed", e) }
+        }
+        // Each reader restarts after a settings-store error instead of keeping its last value.
+        reader("timer start") {
+            if (onboarding.isComplete.first()) TimerService.start(this@NourAccessibilityService)
+        }
+        reader("mode") { modes.mode.collect { mode = it } }
+        reader("limited apps") { settings.settings.collect { limitedApps = it.limitedApps } }
+        reader("setup complete") { onboarding.isComplete.collect { setupComplete = it } }
     }
 
     private fun CoroutineScope.reader(name: String, block: suspend () -> Unit) = launch {

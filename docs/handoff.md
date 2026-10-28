@@ -3,14 +3,15 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (2026-10-28):** everything is on `master`, committed locally and **not pushed** (19
-> commits ahead of `origin/master`). Newest first: §38 (Arabic text assembly, TalkBack and large-font
+> **Resume here (2026-10-28):** everything is on `master`, committed locally and **not pushed** (21
+> commits ahead of `origin/master`). Newest first: §39 (review fixes: stale pairing record, rules
+> change to deploy), §38 (Arabic text assembly, TalkBack and large-font
 > polish, docs), §37 (battery, CI health, Firestore limits), §36 (language at setup, TalkBack states),
 > §35 (protection-off notice and 15 s alert, browsers), §34 (one PIN-try count), §33/§32 (disclosure
 > texts, FCM clean-up), §31 (other users, TalkBack switches), §30/§29 (disclosure, PIN wait), §28
 > (API 37 toolchain), §27/§26 (background audio, instrumented tests). Last verified: unit tests, lint
 > (baseline, warnings as errors) and debug build green; instrumented tests on `emulator-5554`
-> (`nourdm-test-api36`), see §38.
+> (`nourdm-test-api36`), see §39.
 >
 > **Owner TODOs:**
 > 1. **Deploy the Firestore rules and functions together with the new build** (§37.1, §25.1): an older
@@ -2270,3 +2271,41 @@ Tests: `TimeUpTemplatesTest` (+1 contrast), `FormattingTest` (+1 countdown parts
 Verified: `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green, 661 unit tests, lint 0 issues
 outside the baseline; `:app:connectedDebugAndroidTest` (emulator-5554, `nourdm-test-api36`) 21/21.
 Not covered: TalkBack by ear, the hub at font 2.0 on a real phone, the back-hint toast by hand.
+
+## 39. 2026-10-28: review fixes (stale pairing record, supervised Accessibility readers, bounded waits)
+
+**A phone refused every new pairing code (medium).** When `childAccounts/{uid}.deviceId` named a device
+other than this phone's (two device documents from older builds, or a changed local device id), the
+rules refused the device write and the code's transaction every time, and nothing cleared the old
+record. `ChildPairing.createCode` now claims the device through `PairingRecovery.retryOnceAfter`: on
+PERMISSION_DENIED it deletes the record's open code and the old device (its usage, meta, commands and
+requests first), then tries once more. A second refusal is `PairingRefusedException`, shown as
+`pair_refused` (EN + AR) instead of "Something went wrong". An existing device whose record names
+another one now moves the record explicitly; before, that refusal looked like "code taken" five times.
+Deleting the old device also removes it from a parent's list (it isn't this phone any more).
+
+**Rules (`deviceGoneAfter`).** The account record may move off, or be deleted, when its old device is
+gone *or names another account*. A device's `childUid` never changes, so such a device was never this
+account's: moving off it frees nothing, and one device and one open code per account still hold (rules
+tests). Before, a record naming a device the phone can't delete blocked it for good.
+**Owner:** deploy the rules with this build (`npx firebase deploy --only firestore:rules`).
+
+**Accessibility readers (low).** The connection's children run in `supervisorScope`: an `Error` in one
+reader (keepRunning catches only `Exception`) no longer cancels the window refresh loop and the other
+readers. Unbind and a new connection still cancel the whole connection.
+
+**`TimeEngine.change` (low).** The wait for the first timer state is bounded to 30 s (`CHANGE_WAIT_MS`);
+`apply`, `reward` and `chargeOtherUser` return false and log when it ran out, nothing changed. Only the
+wait is timed, never a change during its save. `RemoteSync` waits for a status before applying commands,
+so its commands never hit the bound; Home's "Lock now" no longer waits until the screen is left.
+
+**Screen-off re-read (low).** 5 s → 2 s (`LoopPacing.SCREEN_OFF_SYNC_MS`): if both the screen broadcast
+and the display listener are missed, a limited app shows unblocked for at most 2 s. Cost: one
+`PowerManager` read each, about 34 wakes a minute with the screen off instead of ~16 (~150 before §37).
+
+Tests: `PairingRecoveryTest` (6), `TimeEngineTest` (+1: gives up after 30 s, changes nothing),
+`LoopPacingTest` (2 s), `rules.test.ts` (+4: own stale device cleared then a new device and code, an
+older build's second device, a record naming another account's device, deleting such a record).
+Verified: `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green, 668 unit tests, lint 0 issues
+outside the baseline; `:app:connectedDebugAndroidTest` (emulator-5554) 21/21; `firebase npm test` 69/69.
+Not covered: the stale-record recovery against the deployed rules on a real phone.

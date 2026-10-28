@@ -8,15 +8,18 @@ import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.core.time.WallClock
 import com.nourtime.app.data.settings.ParentSettings
 import com.nourtime.app.data.usage.UsageSink
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -216,6 +219,22 @@ class TimeEngineTest {
         // And it was saved: a new engine on the same file starts locked.
         val again = engine(newStoreSameFile())
         assertTrue(again.isLocked())
+    }
+
+    @Test
+    fun `lock now gives up after 30 s with no timer state, and changes nothing`() = runTest {
+        val engine = engine(newStore())
+        // The timer service never updates: Home's action and a parent's command used to wait for good.
+        val lock = async { engine.apply(TimerCommand.LockNow) }
+        advanceTimeBy(29_000)
+        assertTrue("still waiting at 29 s", lock.isActive)
+        advanceTimeBy(1_001)
+        runCurrent()
+        assertTrue(lock.isCompleted)
+        assertFalse(lock.await())
+        // Nothing was saved or applied later: the first update starts a fresh budget.
+        engine.update(emptySet(), DetectionSource.ACCESSIBILITY, settings)
+        assertEquals(TimerPhase.AVAILABLE, engine.status.value!!.phase)
     }
 
     @Test
