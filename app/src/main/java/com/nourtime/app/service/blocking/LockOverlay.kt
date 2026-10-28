@@ -297,7 +297,6 @@ class LockOverlay @Inject constructor(
                 ForgotPinRequest.request()
                 openApp(appContext.packageName)
             }
-            it.onUseApp = { openApp(appContext.packageName) }
         }
         private val wm = context.getSystemService(WindowManager::class.java)
 

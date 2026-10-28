@@ -7,7 +7,6 @@ import com.nourtime.app.core.time.WallClock
 import java.time.Instant
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
-import com.nourtime.app.data.security.PinEntryPoint
 import com.nourtime.app.data.security.SecurityRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +20,6 @@ import kotlinx.coroutines.withTimeout
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -62,21 +60,38 @@ class PinCheckControllerTest {
     }
 
     @Test
-    fun `a child's wrong PINs on the lock screen leave the app's pad open`() = runTest {
+    fun `wrong PINs on the lock screen and in the app use the same free tries`() = runTest {
         security.setPin("4827")
-        val lockScreen = PinCheckController(io, security, FakeClock(), PinEntryPoint.LOCK_SCREEN) {}
+        val lockScreen = PinCheckController(io, security, FakeClock()) {}
+        val app = PinCheckController(io, security, FakeClock()) { opened = true }
+        "0000".forEach(lockScreen::onDigit)
+        assertEquals(3, settle(lockScreen).attemptsLeft)
+        "1111".forEach(app::onDigit)
+        assertEquals(2, settle(app).attemptsLeft)
+        "2222".forEach(lockScreen::onDigit)
+        assertEquals(1, settle(lockScreen).attemptsLeft)
+        "3333".forEach(app::onDigit)
+        assertEquals(0, settle(app).attemptsLeft)
+    }
+
+    @Test
+    fun `a wait started on the lock screen also holds in the app`() = runTest {
+        security.setPin("4827")
+        val lockScreen = PinCheckController(io, security, FakeClock()) {}
         repeat(5) {
             "0000".forEach(lockScreen::onDigit)
             settle(lockScreen)
         }
         withContext(Dispatchers.Default) { withTimeout(5_000) { lockScreen.state.first { it.lockoutRemainingMs > 0 } } }
 
+        // Nour Time's pad, opened now, shows the same wait and takes no digits, not even the right PIN.
         val app = PinCheckController(io, security, FakeClock()) { opened = true }
-        delay(100)
-        assertEquals(0L, app.state.value.lockoutRemainingMs)
+        val shown = withContext(Dispatchers.Default) { withTimeout(5_000) { app.state.first { it.lockoutRemainingMs > 0 } } }
+        assertEquals(30_000L, shown.lockoutRemainingMs)
         "4827".forEach(app::onDigit)
-        withContext(Dispatchers.Default) { withTimeout(5_000) { while (!opened) delay(20) } }
-        assertTrue(opened)
+        withContext(Dispatchers.Default) { delay(200) }
+        assertEquals(0, app.state.value.entered)
+        assertFalse(opened)
     }
 
     @Test

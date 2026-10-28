@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.nourtime.app.core.security.SecretHasher
@@ -90,40 +91,71 @@ class SecurityRepositoryTest {
     }
 
     @Test
-    fun `wrong PINs on the lock screen don't make the parent wait in the app`() = runTest {
-        repo.setPin("4827")
-        // A child tapping at random, waiting out each lockout, up to the longest one.
-        repeat(9) {
-            repo.verifyPin("0000", PinEntryPoint.LOCK_SCREEN)
-            clock.now += 60 * 60_000L
-        }
-        repo.verifyPin("0000", PinEntryPoint.LOCK_SCREEN)
-        assertEquals(60 * 60_000L, repo.lockoutRemaining(PinEntryPoint.LOCK_SCREEN))
-        assertEquals(0L, repo.lockoutRemaining(PinEntryPoint.APP))
-        // The app's pad still has all its free attempts, and the right PIN works there at once.
-        assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("1111", PinEntryPoint.APP))
-        assertEquals(PinCheckResult.Success, repo.verifyPin("4827", PinEntryPoint.APP))
-        // The parent is proven: the lock screen's count is forgiven too.
-        assertEquals(0L, repo.lockoutRemaining(PinEntryPoint.LOCK_SCREEN))
-        assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("0000", PinEntryPoint.LOCK_SCREEN))
-    }
-
-    @Test
-    fun `wrong PINs in the app don't lock the lock screen's pad`() = runTest {
+    fun `random taps during a wait aren't counted, so they don't make the parent's wait longer`() = runTest {
+        // What the separate counts protected: a child tapping at random mustn't keep the parent out
+        // for long. Taps during a wait are refused without counting, so the wait stays the first one...
         repo.setPin("4827")
         repeat(5) { repo.verifyPin("0000") }
-        assertEquals(30_000L, repo.lockoutRemaining(PinEntryPoint.APP))
-        assertEquals(PinCheckResult.Success, repo.verifyPin("4827", PinEntryPoint.LOCK_SCREEN))
-        assertEquals(0L, repo.lockoutRemaining(PinEntryPoint.APP))
+        repeat(50) {
+            assertEquals(PinCheckResult.LockedOut(30_000L - it * 100L), repo.verifyPin("1111"))
+            clock.now += 100
+        }
+        clock.now += 30_000
+        // ...and once it's over the parent's PIN works at once, wherever it's typed.
+        assertEquals(0L, repo.lockoutRemaining())
+        assertEquals(PinCheckResult.Success, repo.verifyPin("4827"))
+        assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("0000"))
+    }
+
+    /** Writes the lock screen's own count the way versions before 2026-10-28 kept it. */
+    private suspend fun legacyLockScreenCount(failures: Int, lockEnd: Long = 0, lockDuration: Long = 0, boot: Int = 1) {
+        store.edit {
+            it[intPreferencesKey("pin_lock_screen_failures")] = failures
+            it[longPreferencesKey("pin_lock_screen_lock_end_elapsed")] = lockEnd
+            it[longPreferencesKey("pin_lock_screen_lock_duration")] = lockDuration
+            it[intPreferencesKey("pin_lock_screen_lock_boot")] = boot
+        }
     }
 
     @Test
-    fun `reboot does not clear a lock screen lockout`() = runTest {
+    fun `migration keeps the lock screen's count when it's the stricter one`() = runTest {
         repo.setPin("4827")
-        repeat(5) { repo.verifyPin("0000", PinEntryPoint.LOCK_SCREEN) }
-        clock.now = 1_000
-        clock.boot = 2
-        assertEquals(30_000L, repo.lockoutRemaining(PinEntryPoint.LOCK_SCREEN))
+        repeat(2) { repo.verifyPin("0000") }
+        // The lock screen's pad had 7 wrong PINs and its 5-minute wait has 200 s left.
+        legacyLockScreenCount(7, lockEnd = clock.now + 200_000, lockDuration = 5 * 60_000L)
+        assertEquals(200_000L, repo.lockoutRemaining())
+        assertEquals(PinCheckResult.LockedOut(200_000L), repo.verifyPin("4827"))
+        clock.now += 200_000
+        // The 8th wrong PIN in all: 15 minutes.
+        assertEquals(PinCheckResult.LockedOut(15 * 60_000L), repo.verifyPin("0000"))
+        assertNull(store.data.first()[intPreferencesKey("pin_lock_screen_failures")])
+    }
+
+    @Test
+    fun `migration takes the most failures from one count and the longer wait from the other`() = runTest {
+        repo.setPin("4827")
+        repeat(5) { repo.verifyPin("0000") }  // the app's pad: 30 s wait running
+        // The lock screen's pad: more failures, but its wait is already over.
+        legacyLockScreenCount(6, lockEnd = clock.now - 1, lockDuration = 60_000L)
+        assertEquals(30_000L, repo.lockoutRemaining())
+        clock.now += 30_000
+        // 7 wrong PINs in all: 5 minutes.
+        assertEquals(PinCheckResult.LockedOut(5 * 60_000L), repo.verifyPin("0000"))
+    }
+
+    @Test
+    fun `migration restarts a lock screen wait from an earlier boot in full`() = runTest {
+        repo.setPin("4827")
+        legacyLockScreenCount(5, lockEnd = 999_999_999, lockDuration = 30_000L, boot = 0)
+        assertEquals(30_000L, repo.lockoutRemaining())
+    }
+
+    @Test
+    fun `a correct PIN clears the migrated count too`() = runTest {
+        repo.setPin("4827")
+        legacyLockScreenCount(4)
+        assertEquals(PinCheckResult.Success, repo.verifyPin("4827"))
+        assertEquals(PinCheckResult.Wrong(3), repo.verifyPin("0000"))
     }
 
     @Test

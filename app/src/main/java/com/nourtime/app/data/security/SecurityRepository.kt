@@ -51,13 +51,6 @@ sealed interface PinCheckResult {
 }
 
 /**
- * Where a PIN is typed. Each place counts its own wrong PINs: the lock screen's "For parents" pad is
- * the one a child taps at random, and that mustn't make the parent wait in Nour Time itself. A correct
- * PIN anywhere clears both counts.
- */
-enum class PinEntryPoint { APP, LOCK_SCREEN }
-
-/**
  * Parent PIN and security question. Only salted hashes are stored.
  *
  * A PIN set through the security answer ("Forgot PIN?") waits [PIN_RESET_WAIT_MS] before it works, or
@@ -65,6 +58,14 @@ enum class PinEntryPoint { APP, LOCK_SCREEN }
  * changing the PIN normally) cancels the reset. A child who guessed the answer gains nothing at once,
  * and the parent undoes it simply by unlocking (2026-10-13 audit, H1). The wait is real time the phone
  * was on ([PinResetWait]), so moving the date forward doesn't shorten it.
+ *
+ * Wrong PINs are counted once for the whole phone: the lock screen's "For parents" pad and Nour Time's
+ * own pad share one set of free tries and one lockout (2026-10-28). Until then each pad counted apart,
+ * so a child's taps on the lock screen couldn't make the parent wait in Nour Time; but the child can
+ * open Nour Time too (it's never covered), so that gave the child twice the guesses and two waits
+ * running side by side. What's kept of that protection: a PIN typed during a wait isn't counted, so
+ * random tapping only reaches a long wait if someone sits out each shorter one first; a correct PIN on
+ * either pad clears the count; and the parent's phone still works without the PIN.
  */
 @Singleton
 class SecurityRepository @Inject constructor(
@@ -141,13 +142,15 @@ class SecurityRepository @Inject constructor(
         approved
     }
 
-    suspend fun verifyPin(pin: String, from: PinEntryPoint = PinEntryPoint.APP): PinCheckResult = attemptMutex.withLock {
+    /** Checks a PIN from any pad: all of them share one count of wrong PINs ([PinAttemptPolicy]). */
+    suspend fun verifyPin(pin: String): PinCheckResult = attemptMutex.withLock {
         activatePendingIfDue()
+        foldLegacyLockScreenAttempts()
         val prefs = store.data.first()
         val stored = prefs[PIN_HASH]?.let(HashedSecret::decode) ?: return PinCheckResult.NoPin
         val pending = prefs.pendingPin()
         val result = checkWithLockout(
-            pinAttempts(from),
+            PIN_ATTEMPTS,
             PinAttemptPolicy,
             verify = { hasher.verify(pin, stored) },
             // The waiting PIN is neither right nor wrong yet: the screen says when it starts working.
@@ -155,8 +158,7 @@ class SecurityRepository @Inject constructor(
         )
         when (result) {
             is Attempt.Correct -> {
-                // The parent knows the current PIN: a waiting reset (perhaps the child's) is cancelled,
-                // and the other place's wrong PINs are forgiven too.
+                // The parent knows the current PIN: a waiting reset (perhaps the child's) is cancelled.
                 store.edit {
                     it.clearPinAttempts()
                     it.clearPendingPin()
@@ -201,7 +203,27 @@ class SecurityRepository @Inject constructor(
     }
 
     private fun MutablePreferences.clearPinAttempts() {
-        PinEntryPoint.entries.forEach { writeAttempts(pinAttempts(it), PinAttemptPolicy.onSuccess()) }
+        writeAttempts(PIN_ATTEMPTS, PinAttemptPolicy.onSuccess())
+        removeAttempts(LEGACY_LOCK_SCREEN_PIN_ATTEMPTS)
+    }
+
+    /**
+     * Before 2026-10-28 the lock screen's pad kept its own count. It's folded into the shared one,
+     * keeping the stricter of the two (more failures, the longer lockout still running), and removed.
+     * Checked on every PIN check, since a restored settings copy may bring the old keys back.
+     */
+    private suspend fun foldLegacyLockScreenAttempts() {
+        if (!store.data.first().hasAttempts(LEGACY_LOCK_SCREEN_PIN_ATTEMPTS)) return
+        val now = clock.elapsedRealtime()
+        val boot = clock.bootCount()
+        store.edit { prefs ->
+            if (!prefs.hasAttempts(LEGACY_LOCK_SCREEN_PIN_ATTEMPTS)) return@edit
+            fun current(keys: AttemptKeys) =
+                PinAttemptPolicy.clearExpired(PinAttemptPolicy.rebase(prefs.readAttempts(keys), now, boot), now)
+            val shared = PinAttemptPolicy.stricter(current(PIN_ATTEMPTS), current(LEGACY_LOCK_SCREEN_PIN_ATTEMPTS), now)
+            prefs.writeAttempts(PIN_ATTEMPTS, shared)
+            prefs.removeAttempts(LEGACY_LOCK_SCREEN_PIN_ATTEMPTS)
+        }
     }
 
     private fun MutablePreferences.clearPendingPin() {
@@ -234,9 +256,11 @@ class SecurityRepository @Inject constructor(
 
     private suspend fun nowMs(): Long = wall.now().toInstant().toEpochMilli()
 
-    /** Remaining wrong-PIN lockout in ms at [from], or 0. */
-    suspend fun lockoutRemaining(from: PinEntryPoint = PinEntryPoint.APP): Long =
-        attemptMutex.withLock { remainingLockout(pinAttempts(from), PinAttemptPolicy) }
+    /** Remaining wrong-PIN lockout in ms (the same on every pad), or 0. */
+    suspend fun lockoutRemaining(): Long = attemptMutex.withLock {
+        foldLegacyLockScreenAttempts()
+        remainingLockout(PIN_ATTEMPTS, PinAttemptPolicy)
+    }
 
     /** Remaining wrong-answer lockout in ms, or 0. */
     suspend fun answerLockoutRemaining(): Long = attemptMutex.withLock { remainingLockout(ANSWER_ATTEMPTS, AnswerAttemptPolicy) }
@@ -341,9 +365,14 @@ class SecurityRepository @Inject constructor(
         this[keys.lockBoot] = state.bootCount
     }
 
-    private fun pinAttempts(from: PinEntryPoint) = when (from) {
-        PinEntryPoint.APP -> PIN_ATTEMPTS
-        PinEntryPoint.LOCK_SCREEN -> LOCK_SCREEN_PIN_ATTEMPTS
+    private fun Preferences.hasAttempts(keys: AttemptKeys) =
+        this[keys.failures] != null || this[keys.lockDuration] != null
+
+    private fun MutablePreferences.removeAttempts(keys: AttemptKeys) {
+        remove(keys.failures)
+        remove(keys.lockEnd)
+        remove(keys.lockDuration)
+        remove(keys.lockBoot)
     }
 
     companion object {
@@ -368,7 +397,8 @@ class SecurityRepository @Inject constructor(
         private val PENDING_WAIT_ELAPSED = longPreferencesKey("pin_pending_wait_elapsed")
         private val PENDING_WAIT_BOOT = intPreferencesKey("pin_pending_wait_boot")
         private val PIN_ATTEMPTS = AttemptKeys("pin")
-        private val LOCK_SCREEN_PIN_ATTEMPTS = AttemptKeys("pin_lock_screen")
+        /** The lock screen's own count before 2026-10-28: only read to fold it into [PIN_ATTEMPTS]. */
+        private val LEGACY_LOCK_SCREEN_PIN_ATTEMPTS = AttemptKeys("pin_lock_screen")
         private val ANSWER_ATTEMPTS = AttemptKeys("answer")
     }
 }

@@ -54,7 +54,6 @@
     <string name="device_pin_reset_approve">الموافقة على الرمز الجديد</string>
     <string name="device_pin_reset_approve_body">سيعمل الرمز الجديد على هاتف طفلك فورًا.</string>
     <string name="pin_locked_out">محاولات كثيرة. حاول مرة أخرى بعد %1$s</string>
-    <string name="pin_lock_screen_use_app">أدخل الرمز في تطبيق وقت نور بدلًا من ذلك</string>
     <string name="pin_delete">حذف</string>
 
     <!-- Security question -->

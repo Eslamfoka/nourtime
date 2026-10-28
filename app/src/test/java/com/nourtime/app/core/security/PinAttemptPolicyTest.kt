@@ -71,4 +71,18 @@ class PinAttemptPolicyTest {
     fun `success resets everything`() {
         assertEquals(PinAttemptState(), PinAttemptPolicy.onSuccess())
     }
+
+    @Test
+    fun `two counts fold into the stricter one`() {
+        // More failures on one side, the longer lockout on the other: both are kept.
+        val manyFailures = failTimes(6, now = 1_000)                       // 1 min from 1 000
+        val longerLockout = PinAttemptState(5, lockoutEndElapsed = 500_000, lockoutDurationMs = 300_000, bootCount = 1)
+        val folded = PinAttemptPolicy.stricter(manyFailures, longerLockout, nowElapsed = 10_000)
+        assertEquals(6, folded.failures)
+        assertEquals(490_000L, PinAttemptPolicy.remainingLockout(folded, 10_000))
+        // Order doesn't matter.
+        assertEquals(folded, PinAttemptPolicy.stricter(longerLockout, manyFailures, nowElapsed = 10_000))
+        // Nothing to fold: nothing changes.
+        assertEquals(PinAttemptState(), PinAttemptPolicy.stricter(PinAttemptState(), PinAttemptState(), 10_000))
+    }
 }

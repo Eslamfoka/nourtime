@@ -54,7 +54,6 @@
     <string name="device_pin_reset_approve">Approve the new PIN</string>
     <string name="device_pin_reset_approve_body">The new PIN will work on your child\'s phone straight away.</string>
     <string name="pin_locked_out">Too many attempts. Try again in %1$s</string>
-    <string name="pin_lock_screen_use_app">Enter the PIN in Nour Time instead</string>
     <string name="pin_delete">Delete</string>
 
     <!-- Security question -->

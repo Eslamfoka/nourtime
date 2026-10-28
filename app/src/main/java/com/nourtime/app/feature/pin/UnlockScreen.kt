@@ -163,8 +163,6 @@ fun PinPanel(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
     onForgot: (() -> Unit)? = null,
-    /** The lock screen's pad, while it waits: Nour Time's own pad counts its wrong PINs apart. */
-    onUseApp: (() -> Unit)? = null,
 ) {
     val attemptsLeft = state.attemptsLeft
     val pendingAt = state.notYetActiveAtMs
@@ -186,9 +184,6 @@ fun PinPanel(
             onDelete = onDelete,
             enabled = state.lockoutRemainingMs == 0L && !state.checking,
         )
-        if (onUseApp != null && state.lockoutRemainingMs > 0) {
-            NourTextButton(stringResource(R.string.pin_lock_screen_use_app), onUseApp)
-        }
         if (onForgot != null) NourTextButton(stringResource(R.string.pin_forgot), onForgot)
     }
 }

@@ -4,7 +4,6 @@ import com.nourtime.app.core.security.PinRules
 import com.nourtime.app.core.time.DeviceClock
 import com.nourtime.app.data.security.AnswerCheckResult
 import com.nourtime.app.data.security.PinCheckResult
-import com.nourtime.app.data.security.PinEntryPoint
 import com.nourtime.app.data.security.SecurityRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -28,13 +27,12 @@ data class PinUiState(
 
 /**
  * PIN entry with lockout countdown. Shared by the app's unlock screen and the lock overlay, which
- * count their wrong PINs apart ([entryPoint]).
+ * share one count of wrong PINs and one lockout ([SecurityRepository.verifyPin]).
  */
 class PinCheckController(
     private val scope: CoroutineScope,
     private val security: SecurityRepository,
     private val clock: DeviceClock,
-    private val entryPoint: PinEntryPoint = PinEntryPoint.APP,
     private val onSuccess: () -> Unit,
 ) {
     private val _state = MutableStateFlow(PinUiState())
@@ -44,7 +42,7 @@ class PinCheckController(
     private var countdown: Job? = null
 
     init {
-        scope.launch { startCountdown(security.lockoutRemaining(entryPoint)) }
+        scope.launch { startCountdown(security.lockoutRemaining()) }
     }
 
     fun reset() {
@@ -69,7 +67,7 @@ class PinCheckController(
     private fun verify(pin: String) {
         _state.update { it.copy(checking = true) }
         scope.launch {
-            val result = security.verifyPin(pin, entryPoint)
+            val result = security.verifyPin(pin)
             input = ""
             when (result) {
                 PinCheckResult.Success -> {

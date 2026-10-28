@@ -11,7 +11,10 @@ data class PinAttemptState(
     val bootCount: Int = 0,
 )
 
-/** Escalating delay after repeated wrong PINs. */
+/**
+ * Escalating delay after repeated wrong PINs. One count for every pad (the lock screen's and Nour
+ * Time's own), so the child gets these free tries once, not once per pad.
+ */
 object PinAttemptPolicy : AttemptPolicy(
     freeAttempts = 4,
     delaysMs = longArrayOf(
@@ -75,4 +78,13 @@ open class AttemptPolicy(private val freeAttempts: Int, private val delaysMs: Lo
     }
 
     fun onSuccess(): PinAttemptState = PinAttemptState()
+
+    /**
+     * Two counts folded into one, keeping the stricter of each part: the higher failure count and the
+     * longer lockout still running at [nowElapsed]. Both must already be [rebase]d to this boot.
+     */
+    fun stricter(a: PinAttemptState, b: PinAttemptState, nowElapsed: Long): PinAttemptState {
+        val longer = if (remainingLockout(b, nowElapsed) > remainingLockout(a, nowElapsed)) b else a
+        return longer.copy(failures = maxOf(a.failures, b.failures))
+    }
 }
