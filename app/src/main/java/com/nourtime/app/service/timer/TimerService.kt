@@ -43,7 +43,7 @@ import com.nourtime.app.service.media.MediaWatcher
 import com.nourtime.app.service.blocking.BlockCoordinator
 import dagger.Lazy
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CancellationException
+import com.nourtime.app.core.coroutines.keepRunning
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -403,19 +403,8 @@ class TimerService : Service() {
      * Keeps a protection loop alive: a failure (e.g. a storage error) is logged and the loop restarts
      * after a pause, instead of crashing the process or silently ending protection.
      */
-    private suspend fun resilient(name: String, block: suspend () -> Unit) {
-        while (true) {
-            try {
-                block()
-                return
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                Log.e(TAG, "$name failed; restarting", e)
-                delay(RESTART_DELAY_MS)
-            }
-        }
-    }
+    private suspend fun resilient(name: String, block: suspend () -> Unit) =
+        keepRunning(name, pauseMs = { RESTART_DELAY_MS }, log = { msg, e -> Log.e(TAG, msg, e) }, block = block)
 
     companion object {
         private const val TAG = "TimerService"

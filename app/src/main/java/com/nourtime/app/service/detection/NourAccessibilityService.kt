@@ -8,6 +8,8 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityWindowInfo
+import com.nourtime.app.core.coroutines.doublingPause
+import com.nourtime.app.core.coroutines.keepRunning
 import com.nourtime.app.core.detection.AppWindow
 import com.nourtime.app.core.detection.ForegroundAppTracker
 import com.nourtime.app.core.detection.ForegroundRules
@@ -27,6 +29,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
@@ -79,21 +82,38 @@ class NourAccessibilityService : AccessibilityService() {
         },
     )
 
+    /** One refresh at a time, also while an unbound connection's loop is still finishing its last one. */
+    private val windowWorker = Dispatchers.Default.limitedParallelism(1)
+
+    /**
+     * Everything one connection runs. Cancelled when the system unbinds and before a new connection
+     * starts its own, so readers never pile up; the refresh requests and cached values carry over.
+     */
+    private var connection: Job? = null
+
     override fun onServiceConnected() {
         super.onServiceConnected()
         Log.i(TAG, "connected ${System.identityHashCode(this)}")
         tracker.onAccessibilityConnected()
         overlay.attach(this)
-        scope.launch(Dispatchers.Default.limitedParallelism(1)) {
-            refreshLoop(refreshRequests, ::publishWindows) { e -> Log.e(TAG, "window refresh failed", e) }
+        connection?.cancel()
+        connection = scope.launch {
+            launch(windowWorker) {
+                refreshLoop(refreshRequests, ::publishWindows) { e -> Log.e(TAG, "window refresh failed", e) }
+            }
+            // Each reader restarts after a settings-store error instead of keeping its last value.
+            reader("timer start") {
+                if (onboarding.isComplete.first()) TimerService.start(this@NourAccessibilityService)
+            }
+            reader("mode") { modes.mode.collect { mode = it } }
+            reader("limited apps") { settings.settings.collect { limitedApps = it.limitedApps } }
+            reader("setup complete") { onboarding.isComplete.collect { setupComplete = it } }
         }
         refreshRequests.trySend(Unit)
-        scope.launch {
-            if (onboarding.isComplete.first()) TimerService.start(this@NourAccessibilityService)
-        }
-        scope.launch { modes.mode.collect { mode = it } }
-        scope.launch { settings.settings.collect { limitedApps = it.limitedApps } }
-        scope.launch { onboarding.isComplete.collect { setupComplete = it } }
+    }
+
+    private fun CoroutineScope.reader(name: String, block: suspend () -> Unit) = launch {
+        keepRunning(name, { doublingPause(it, READER_RETRY_FIRST_MS, READER_RETRY_MAX_MS) }, { msg, e -> Log.e(TAG, msg, e) }, block = block)
     }
 
     /** Owner package of each window, from event metadata: used when a window's root can't be read. */
@@ -155,6 +175,8 @@ class NourAccessibilityService : AccessibilityService() {
 
     override fun onUnbind(intent: Intent?): Boolean {
         Log.i(TAG, "unbind ${System.identityHashCode(this)}")
+        connection?.cancel()
+        connection = null
         overlay.detach(this)
         tracker.onAccessibilityDisconnected(usageStats.available)
         return super.onUnbind(intent)
@@ -173,6 +195,10 @@ class NourAccessibilityService : AccessibilityService() {
 
         /** Long enough to find the app that was opened before its window became unreadable. */
         const val FALLBACK_LOOKBACK_MS = 60 * 60_000L
+
+        /** A failed settings reader starts again after 1 s, then 2, 4… up to 30 s. */
+        const val READER_RETRY_FIRST_MS = 1_000L
+        const val READER_RETRY_MAX_MS = 30_000L
     }
 }
 

@@ -1960,3 +1960,43 @@ Tests: `FcmTokenCleanupTest` (5); `SecurityRepositoryTest` + 1 (in-memory store 
 every 5 min, a failed save skipped, the next one counts all the time). Verified: `:app:testDebugUnitTest
 :app:lintDebug :app:assembleDebug` green, 604 unit tests, lint 0 errors / 20 warnings (none new). Not
 run on a device; the network capture of a fresh unpaired install (§30) is still to do.
+
+## 33. 2026-10-28: Accessibility texts match the disclosure; background readers restart
+
+**Accessibility texts (Play policy).** `accessibility_service_description` (shown by the system) and
+`perm_accessibility_why` ended "…then only the time left, the minutes used on each app and the list of
+apps are shared", but a connected child's phone also uploads (`ChildPairing` / `RemoteSync`): the
+phone's name (maker and model), Nour Time's settings, Learning Hub minutes, requests for more time and
+protection alerts (with the waiting PIN reset date), and crash reports go to Crashlytics. Both now list
+the same items as `disclosure_intro` (EN + AR). Docs: the Play Accessibility declaration
+(`play-compliance.md`) lists them too; the Data safety settings line no longer says only the settings
+the parent changes are uploaded (both phones' changes are); the Arabic privacy policy no longer says
+daily usage is stored "only" on the device. Checked and left as they are: `perm_usage_why` (about usage
+data only; only limited apps' minutes are recorded, `TimeEngine.chargeUsage`), `welcome_point_private`,
+the store listing (EN + AR), the English privacy policy. `remote_disconnect_body`'s "(usage, app list,
+commands)" understates what disconnect deletes (everything), not changed.
+
+**Background readers restart.** New `core/coroutines/keepRunning(name, pauseMs, log, fatal, block)`:
+runs `block` until it returns; an `Exception` is logged and `block` runs again after `pauseMs(failures)`;
+`CancellationException` passes through; a `fatal` error is rethrown. `doublingPause(failures, first,
+max)`. Now used by:
+- `TimerService.resilient` (constant 5 s, as before) and `runAlone` (`syncRetryPause`, 5 s → 60 s).
+- `NourAccessibilityService`: the mode, limited-apps and setup-complete readers and the start-up
+  "start the timer if set up" read (1 s → 30 s). A settings-store error used to freeze `limitedApps`,
+  `mode` and `setupComplete` until the service was recreated. They and `refreshLoop` run in one
+  `connection` job, cancelled in `onUnbind` and before `onServiceConnected` launches again (readers
+  can't pile up). The refresh requests channel, the cached values and the keeper live on the service
+  and carry over; `refreshLoop`'s single-thread dispatcher is now one property, so an unbound loop
+  finishing its last refresh never overlaps the new one.
+- `NourTimeApp`: the settings mirror (restoring damaged settings depends on it), the PIN reset wait
+  loop and the Firebase collection flow (5 s → 60 s). An `Error` still only stops that task, logged,
+  as the old `runCatching` did.
+
+Tests: `KeepRunningTest` (6, virtual time): a reader whose store fails once restarts and follows it;
+pauses 1, 2, 4, 8, 16, 30 s; a thrown cancellation isn't restarted; cancelling during the pause stops it;
+a fatal error is rethrown at once; `doublingPause`. `SyncTasksTest` / `RefreshLoopTest` unchanged and green.
+
+Verified: `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:connectedDebugAndroidTest`
+(ANDROID_SERIAL=emulator-5554) green: 610 unit tests, lint 0 errors / 20 warnings (none new),
+instrumented 19/19 on `nourdm-test-api36`. Not covered by a test: the service's unbind/rebind (no
+instrumented test binds and unbinds the Accessibility service); not run on the Honor.

@@ -1,14 +1,13 @@
 package com.nourtime.app.remote.child
 
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.delay
+import com.nourtime.app.core.coroutines.doublingPause
+import com.nourtime.app.core.coroutines.keepRunning
 
 /** First pause before a failed sync task runs again; it doubles up to [SYNC_RETRY_MAX_MS]. */
 const val SYNC_RETRY_FIRST_MS = 5_000L
 const val SYNC_RETRY_MAX_MS = 60_000L
 
-fun syncRetryPause(failures: Int): Long =
-    (SYNC_RETRY_FIRST_MS shl (failures - 1).coerceIn(0, 10)).coerceAtMost(SYNC_RETRY_MAX_MS)
+fun syncRetryPause(failures: Int): Long = doublingPause(failures, SYNC_RETRY_FIRST_MS, SYNC_RETRY_MAX_MS)
 
 /**
  * Runs one of [RemoteSync]'s tasks on its own: when it fails, it alone runs again after a growing
@@ -20,19 +19,4 @@ suspend fun runAlone(
     fatal: suspend (Throwable) -> Boolean,
     log: (String, Throwable) -> Unit,
     block: suspend () -> Unit,
-) {
-    var failures = 0
-    while (true) {
-        try {
-            block()
-            return
-        } catch (e: CancellationException) {
-            throw e
-        } catch (e: Exception) {
-            if (fatal(e)) throw e
-            failures++
-            log("$name failed ($failures); retrying", e)
-            delay(syncRetryPause(failures))
-        }
-    }
-}
+) = keepRunning(name, ::syncRetryPause, log, fatal, block)
