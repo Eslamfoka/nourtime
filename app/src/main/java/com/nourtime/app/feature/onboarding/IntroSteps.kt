@@ -27,6 +27,7 @@ import com.nourtime.app.core.designsystem.component.NourPrimaryButton
 import com.nourtime.app.core.designsystem.component.NourSecondaryButton
 import com.nourtime.app.core.designsystem.component.NourStar
 import com.nourtime.app.core.permissions.NourPermission
+import com.nourtime.app.feature.language.CompactLanguagePicker
 
 @Composable
 fun WelcomeStep(onBack: () -> Unit, onStart: () -> Unit) {
@@ -35,6 +36,8 @@ fun WelcomeStep(onBack: () -> Unit, onStart: () -> Unit) {
         onBack = onBack,
         actions = { NourPrimaryButton(stringResource(R.string.welcome_cta), onStart) },
     ) {
+        // Also here: Welcome is the first screen after a restart once the phone is chosen as the child's.
+        CompactLanguagePicker()
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             NourStar(Modifier.size(200.dp))
             Text(

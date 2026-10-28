@@ -26,8 +26,9 @@ import com.nourtime.app.core.designsystem.component.CenteredScrollColumn
 import com.nourtime.app.core.designsystem.component.IconBadge
 import com.nourtime.app.core.designsystem.component.NourStar
 import com.nourtime.app.data.mode.AppMode
+import com.nourtime.app.feature.language.CompactLanguagePicker
 
-/** First launch (Phase 2): is this the child's phone or the parent's? */
+/** First launch (Phase 2): is this the child's phone or the parent's? The language can be chosen first. */
 @Composable
 fun ModeChooserScreen(onChoose: (AppMode) -> Unit) {
     CenteredScrollColumn(Modifier.fillMaxSize().safeDrawingPadding().padding(24.dp)) {
@@ -36,6 +37,7 @@ fun ModeChooserScreen(onChoose: (AppMode) -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            CompactLanguagePicker()
             NourStar(Modifier.size(160.dp))
             Text(stringResource(R.string.mode_title), style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center)
             Text(
