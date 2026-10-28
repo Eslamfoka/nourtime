@@ -17,7 +17,15 @@ class TimeUpTemplatesTest {
         assertEquals(TemplateKind.STUDY, templateFor(BlockReason.TIME_UP, PeriodKind.STUDY))
         assertEquals(TemplateKind.DEFAULT, templateFor(BlockReason.TIME_UP, null))
         assertEquals(TemplateKind.PARENTS_ONLY, templateFor(BlockReason.SYSTEM_SETTINGS, PeriodKind.MEAL))
-        assertEquals(TemplateKind.DEFAULT, templateFor(BlockReason.PROTECTION, PeriodKind.MEAL))
+        assertEquals(TemplateKind.PROTECTION_OFF, templateFor(BlockReason.PROTECTION, PeriodKind.MEAL))
+    }
+
+    @Test
+    fun `protection off says so on every age's layout, not well done`() {
+        val style = styleFor(TemplateKind.PROTECTION_OFF)
+        assertEquals(R.string.tu_protection_off_title, style.title.pick(ChildGender.GIRL))
+        assertEquals(R.string.tu_protection_off_body, style.body?.pick(ChildGender.BOY))
+        assertEquals(emptyList<Activity>(), style.activities)
     }
 
     @Test

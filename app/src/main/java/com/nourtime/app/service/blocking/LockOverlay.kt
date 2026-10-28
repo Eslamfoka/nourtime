@@ -9,6 +9,7 @@ import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Build
+import android.provider.Settings
 import android.telecom.TelecomManager
 import android.util.Log
 import android.view.KeyEvent
@@ -181,6 +182,19 @@ class LockOverlay @Inject constructor(
             .onFailure { Log.w(TAG, "Couldn't open the phone app", it) }
     }
 
+    /**
+     * The phone's Accessibility settings, where the parent turns Nour Time back on (the parent's pass,
+     * granted just before, keeps them uncovered). Nour Time itself if a phone has no such screen: its
+     * Home offers the same fix.
+     */
+    @MainThread
+    fun openAccessibilitySettings() {
+        val opened = runCatching {
+            appContext.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        }.onFailure { Log.w(TAG, "Couldn't open the Accessibility settings", it) }.isSuccess
+        if (!opened) openApp(appContext.packageName)
+    }
+
     /** Sends the child to the home screen, away from the limited app. */
     @MainThread
     fun goHome() {
@@ -297,6 +311,7 @@ class LockOverlay @Inject constructor(
                 ForgotPinRequest.request()
                 openApp(appContext.packageName)
             }
+            it.onFixProtection = ::openAccessibilitySettings
         }
         private val wm = context.getSystemService(WindowManager::class.java)
 

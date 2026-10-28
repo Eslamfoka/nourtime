@@ -30,6 +30,8 @@ enum class ParentStage { CHILD, PIN, ANSWER }
  *   limited apps then stay closed.
  * - Settings, uninstall and security screens open straight on the PIN pad: whoever opens them is
  *   usually a parent, and the child can still step back to the friendly screen and its OK button.
+ * - Protection off (Accessibility lost): the same PIN (and, in a lock period, the answer), then
+ *   [onFixProtection] opens the Accessibility settings, which the pass keeps uncovered.
  * Success grants a short [ParentPass]; the coordinator then hides the overlay.
  */
 class OverlayParentFlow(
@@ -43,13 +45,18 @@ class OverlayParentFlow(
     /** "Forgot PIN?": opens Nour Time's own recovery (security question, then a new PIN). */
     var onForgotPin: () -> Unit = {}
 
+    /** After the parent unlocked a "protection is off" screen: opens the Accessibility settings. */
+    var onFixProtection: () -> Unit = {}
+
     private val _stage = MutableStateFlow(ParentStage.CHILD)
     val stage: StateFlow<ParentStage> = _stage.asStateFlow()
 
     val pin = PinCheckController(scope, security, clock) { onPinCorrect() }
     val answer = AnswerCheckController(scope, security, clock) {
+        val d = decision()
         _stage.value = ParentStage.CHILD
         pass.grantFull()
+        if (opensAccessibilitySettings(d)) onFixProtection()
     }
 
     fun openParent() {
@@ -78,7 +85,13 @@ class OverlayParentFlow(
         } else {
             _stage.value = ParentStage.CHILD
             pass.grantFull()
+            if (opensAccessibilitySettings(d)) onFixProtection()
         }
+    }
+
+    companion object {
+        /** Unlocking a "protection is off" screen is for turning Accessibility back on. */
+        fun opensAccessibilitySettings(decision: BlockDecision?): Boolean = decision?.reason == BlockReason.PROTECTION
     }
 }
 
@@ -95,6 +108,7 @@ fun LockOverlayContent(
     onBackToCall: (() -> Unit)? = null,
 ) {
     val settingsCover = state.decision.reason == BlockReason.SYSTEM_SETTINGS
+    val protectionOff = OverlayParentFlow.opensAccessibilitySettings(state.decision)
     LaunchedEffect(settingsCover) {
         if (settingsCover) parentFlow.openParent()
     }
@@ -108,13 +122,20 @@ fun LockOverlayContent(
             onAsk = onAsk,
             onLearn = onLearn,
             onBackToCall = onBackToCall,
+            onFixProtection = if (protectionOff) parentFlow::openParent else null,
         )
         ParentStage.PIN -> ParentPanelFrame(onBack = parentFlow::back) {
             val pin by parentFlow.pin.state.collectAsStateWithLifecycle()
             PinPanel(
                 state = pin,
                 title = stringResource(R.string.pin_unlock_title),
-                body = stringResource(if (settingsCover) R.string.lock_settings_pin_body else R.string.lock_parent_pin_body),
+                body = stringResource(
+                    when {
+                        settingsCover -> R.string.lock_settings_pin_body
+                        protectionOff -> R.string.lock_protection_pin_body
+                        else -> R.string.lock_parent_pin_body
+                    },
+                ),
                 onDigit = parentFlow.pin::onDigit,
                 onDelete = parentFlow.pin::onDelete,
                 onForgot = parentFlow::forgotPin,

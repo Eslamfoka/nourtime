@@ -249,6 +249,7 @@
     <string name="lock_parent_pin_body">Enter the parent PIN to continue.</string>
     <string name="lock_settings_pin_body">This part of the phone is for grown-ups. Parents: enter your PIN to open it.</string>
     <string name="lock_phone_only">Unlock the phone only</string>
+    <string name="lock_protection_pin_body">Enter the parent PIN, then turn Nour Time back on in the Accessibility settings.</string>
 
     <!-- Child "Time's up" screens (Arabic originals in values-ar) -->
     <string name="tu_default_title">Your time is up! See you again soon</string>
@@ -274,6 +275,9 @@
     <string name="tu_parents_button">For parents</string>
     <string name="tu_back_to_call">Back to the call</string>
     <string name="tu_ok">OK</string>
+    <string name="tu_protection_off_title">Protection is off</string>
+    <string name="tu_protection_off_body">A parent needs to turn Nour Time back on.</string>
+    <string name="tu_protection_off_fix">Parents: turn it back on</string>
     <string name="act_drawing">Drawing 🎨</string>
     <string name="act_blocks">Blocks 🧱</string>
     <string name="act_ball">Ball ⚽</string>

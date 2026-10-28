@@ -259,6 +259,7 @@
     <string name="lock_parent_pin_body">أدخل رمز الأهل للمتابعة.</string>
     <string name="lock_settings_pin_body">هذا الجزء من الهاتف للكبار. أيها الأهل: أدخلوا الرمز لفتحه.</string>
     <string name="lock_phone_only">افتح الهاتف فقط</string>
+    <string name="lock_protection_pin_body">أدخل رمز الأهل، ثم أعد تشغيل وقت نور من إعدادات إمكانية الوصول.</string>
 
     <!-- Child "Time's up" screens: exactly as written in the brief -->
     <string name="tu_default_title">خلص وقتك! نرجع نتقابل بعد شوية</string>
@@ -284,6 +285,9 @@
     <string name="tu_parents_button">للأهل</string>
     <string name="tu_back_to_call">العودة إلى المكالمة</string>
     <string name="tu_ok">حاضر</string>
+    <string name="tu_protection_off_title">الحماية متوقفة</string>
+    <string name="tu_protection_off_body">يجب أن يعيد أحد الأهل تشغيل وقت نور.</string>
+    <string name="tu_protection_off_fix">للأهل: أعيدوا تشغيل الحماية</string>
     <string name="act_drawing">رسم 🎨</string>
     <string name="act_blocks">مكعبات 🧱</string>
     <string name="act_ball">كورة ⚽</string>

@@ -1,6 +1,7 @@
 package com.nourtime.app.testing
 
 import android.app.KeyguardManager
+import android.app.UiAutomation
 import android.os.PowerManager
 import android.os.SystemClock
 import androidx.test.platform.app.InstrumentationRegistry
@@ -11,8 +12,12 @@ object Device {
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     val context get() = instrumentation.targetContext
 
+    /**
+     * Without [UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES] the test's UiAutomation would
+     * switch off every Accessibility service while connected, Nour Time's included.
+     */
     fun shell(command: String): String =
-        instrumentation.uiAutomation.executeShellCommand(command).let { pfd ->
+        instrumentation.getUiAutomation(UiAutomation.FLAG_DONT_SUPPRESS_ACCESSIBILITY_SERVICES).executeShellCommand(command).let { pfd ->
             java.io.FileInputStream(pfd.fileDescriptor).use { it.readBytes().decodeToString() }.also { pfd.close() }
         }
 

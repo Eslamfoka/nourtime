@@ -317,7 +317,7 @@ class RemoteSync @Inject constructor(
         combine(
             protectionAlerts.alerts,
             security.pendingPinActiveAt,
-            engine.status.filterNotNull().map { it.protectionDegraded }.reportedDegraded(),
+            engine.status.filterNotNull().map { it.protectionDegraded }.reportedDegraded { DegradedGrace.delayMs(clock.elapsedRealtime()) },
         ) { alerts, pending, degraded -> alerts.copy(pinResetPendingUntilMs = pending, protectionDegraded = degraded) }
             .distinctUntilChanged()
             .collect {

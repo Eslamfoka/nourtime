@@ -12,12 +12,12 @@ import com.nourtime.app.data.settings.AgeGroup
 import com.nourtime.app.data.settings.ChildGender
 
 /** The "Time's up" designs (brief §4, §12). New themes are added here. */
-enum class TemplateKind { DEFAULT, PLAY, STUDY, MEAL, SLEEP, PARENTS_ONLY }
+enum class TemplateKind { DEFAULT, PLAY, STUDY, MEAL, SLEEP, PARENTS_ONLY, PROTECTION_OFF }
 
 fun templateFor(reason: BlockReason, period: PeriodKind?): TemplateKind = when (reason) {
     BlockReason.BEDTIME -> TemplateKind.SLEEP
     BlockReason.SYSTEM_SETTINGS -> TemplateKind.PARENTS_ONLY
-    BlockReason.PROTECTION -> TemplateKind.DEFAULT
+    BlockReason.PROTECTION -> TemplateKind.PROTECTION_OFF
     BlockReason.TIME_UP -> when (period) {
         PeriodKind.STUDY -> TemplateKind.STUDY
         PeriodKind.PLAY -> TemplateKind.PLAY
@@ -62,6 +62,8 @@ data class TemplateStyle(
     val pose: NourPose,
     val title: Gendered,
     val activities: List<Activity>,
+    /** A line under the title on every age's layout, in place of the older children's "Well done". */
+    val body: Gendered? = null,
 )
 
 private val playActivities = listOf(Activity(R.string.act_drawing), Activity(R.string.act_blocks), Activity(R.string.act_ball))
@@ -101,6 +103,16 @@ fun styleFor(kind: TemplateKind): TemplateStyle = when (kind) {
         pose = NourPose.HAPPY,
         title = Gendered(R.string.tu_parents_title_m, R.string.tu_parents_title_f),
         activities = emptyList(),
+    )
+    // Accessibility is off: limited apps are covered until a parent turns Nour Time back on. Calm and
+    // factual, for whoever holds the phone (often the parent); nothing for the child to do but OK.
+    TemplateKind.PROTECTION_OFF -> TemplateStyle(
+        background = listOf(Color(0xFFDCEBFF), Color(0xFFFFF8EC)),
+        dark = false,
+        pose = NourPose.HAPPY,
+        title = Gendered(R.string.tu_protection_off_title),
+        activities = emptyList(),
+        body = Gendered(R.string.tu_protection_off_body),
     )
     TemplateKind.DEFAULT -> TemplateStyle(
         background = listOf(Color(0xFFFFE7A8), Color(0xFFFFF3D1)),

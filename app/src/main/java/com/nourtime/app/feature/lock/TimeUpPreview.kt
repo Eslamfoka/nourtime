@@ -57,7 +57,7 @@ fun TimeUpPreviewDialog(ageGroup: AgeGroup, gender: ChildGender, onDismiss: () -
                     .padding(vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                ChipRow(TemplateKind.entries.filter { it != TemplateKind.PARENTS_ONLY }, kind, { kind = it }) { stringResource(it.labelRes) }
+                ChipRow(TemplateKind.entries.filter { it != TemplateKind.PARENTS_ONLY && it != TemplateKind.PROTECTION_OFF }, kind, { kind = it }) { stringResource(it.labelRes) }
                 ChipRow(AgeGroup.entries, age, { age = it }) { stringResource(it.titleRes) }
             }
         }
@@ -91,5 +91,5 @@ private val TemplateKind.labelRes: Int
         TemplateKind.STUDY -> R.string.period_study
         TemplateKind.MEAL -> R.string.period_meal
         TemplateKind.SLEEP -> R.string.period_sleep
-        TemplateKind.PARENTS_ONLY -> R.string.preview_default
+        TemplateKind.PARENTS_ONLY, TemplateKind.PROTECTION_OFF -> R.string.preview_default
     }

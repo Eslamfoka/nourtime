@@ -74,7 +74,9 @@ import com.nourtime.app.remote.model.AskState
 /**
  * The child's "Time's up" screen (brief §4, §12): playful and positive, never a punishment.
  * [onOk] is null when the whole device is locked (only the parent can lift it). [ask] is null when
- * there's no parent's phone to ask (not paired, or not a time-up lock).
+ * there's no parent's phone to ask (not paired, or not a time-up lock). [onFixProtection] (protection
+ * is off) replaces the small "For parents" button with a clear one that leads to the PIN and then to
+ * the Accessibility settings.
  */
 @Composable
 fun TimeUpScreen(
@@ -86,6 +88,7 @@ fun TimeUpScreen(
     onAsk: () -> Unit = {},
     onLearn: (() -> Unit)? = null,
     onBackToCall: (() -> Unit)? = null,
+    onFixProtection: (() -> Unit)? = null,
 ) {
     val style = styleFor(state.template).forAge(state.ageGroup)
     val text = if (style.dark) NourPalette.Cream else NourPalette.Navy
@@ -108,7 +111,12 @@ fun TimeUpScreen(
                 Modifier.fillMaxSize().safeDrawingPadding().padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                ParentsButton(text, onParents, Modifier.align(Alignment.End))
+                if (onFixProtection == null) {
+                    ParentsButton(text, onParents, Modifier.align(Alignment.End))
+                } else {
+                    // Same height as the small button, so Nour sits where it does on the other screens.
+                    Spacer(Modifier.height(48.dp))
+                }
                 HeroAndActions(
                     modifier = Modifier.weight(1f).fillMaxWidth(),
                     hero = {
@@ -120,6 +128,7 @@ fun TimeUpScreen(
                     },
                     actions = {
                         if (onBackToCall != null) BackToCallButton(onBackToCall)
+                        if (onFixProtection != null) FixProtectionButton(onFixProtection)
                         if (onLearn != null) LearnButton(state, onLearn)
                         if (ask != null) AskRow(ask, state, text, onAsk)
                         if (state.allowedApps.isNotEmpty()) AllowedAppsRow(state, text, onOpenApp)
@@ -188,6 +197,20 @@ private fun YoungLayout(state: LockScreenState, style: TemplateStyle, text: Colo
         color = text,
         textAlign = TextAlign.Center,
     )
+    StyleBody(state, style, text)
+}
+
+/** The template's own line under the title, if it has one. */
+@Composable
+private fun StyleBody(state: LockScreenState, style: TemplateStyle, text: Color) {
+    val body = style.body ?: return
+    Spacer(Modifier.height(8.dp))
+    Text(
+        stringResource(body.pick(state.gender)),
+        style = MaterialTheme.typography.bodyLarge,
+        color = text.copy(alpha = 0.85f),
+        textAlign = TextAlign.Center,
+    )
 }
 
 /** Ages 7–9: short text, a round countdown and three off-screen ideas. */
@@ -200,6 +223,7 @@ private fun MiddleLayout(state: LockScreenState, style: TemplateStyle, text: Col
         color = text,
         textAlign = TextAlign.Center,
     )
+    StyleBody(state, style, text)
     state.countdownMs?.let { ms ->
         Spacer(Modifier.height(16.dp))
         CountdownRing(ms, state.countdownTotalMs, text)
@@ -235,7 +259,7 @@ private fun OlderLayout(state: LockScreenState, style: TemplateStyle, text: Colo
     )
     Spacer(Modifier.height(8.dp))
     Text(
-        stringResource(Gendered(R.string.tu_bravo_m, R.string.tu_bravo_f).pick(state.gender)),
+        stringResource((style.body ?: Gendered(R.string.tu_bravo_m, R.string.tu_bravo_f)).pick(state.gender)),
         style = MaterialTheme.typography.bodyLarge,
         color = text.copy(alpha = 0.8f),
         textAlign = TextAlign.Center,
@@ -399,6 +423,28 @@ private fun BackToCallButton(onClick: () -> Unit) {
             Icon(Icons.Rounded.Call, contentDescription = null)
             Spacer(Modifier.size(8.dp))
             Text(stringResource(R.string.tu_back_to_call), style = MaterialTheme.typography.titleLarge)
+        }
+    }
+}
+
+/** Protection is off: the parent's way to the PIN, then to the Accessibility settings. */
+@Composable
+private fun FixProtectionButton(onClick: () -> Unit) {
+    Surface(
+        onClick = onClick,
+        shape = CircleShape,
+        color = NourPalette.Navy,
+        contentColor = NourPalette.Cream,
+        modifier = Modifier.fillMaxWidth().widthIn(max = 480.dp).heightIn(min = 64.dp).padding(bottom = 12.dp),
+    ) {
+        Row(
+            Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Icon(Icons.Rounded.Lock, contentDescription = null)
+            Spacer(Modifier.size(8.dp))
+            Text(stringResource(R.string.tu_protection_off_fix), style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
         }
     }
 }

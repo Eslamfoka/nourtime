@@ -37,6 +37,7 @@ import com.nourtime.app.core.timer.TimerPhase
 import com.nourtime.app.core.timer.TimerStatus
 import com.nourtime.app.data.settings.ParentSettingsRepository
 import com.nourtime.app.data.usage.UsageRepository
+import com.nourtime.app.remote.child.DegradedGrace
 import com.nourtime.app.remote.child.DeviceIdentity
 import com.nourtime.app.remote.child.RemoteSync
 import com.nourtime.app.service.media.MediaWatcher
@@ -309,8 +310,9 @@ class TimerService : Service() {
     }
 
     /**
-     * Alerts the parent when protection is weakened. Waits first: right after a reboot this service
-     * often starts a few seconds before Accessibility reconnects, which isn't worth an alert.
+     * Alerts the parent when protection is weakened, after the same wait as the parent's phone
+     * ([DegradedGrace]): Accessibility often drops for a moment and comes back, and right after a
+     * reboot this service often starts before Accessibility reconnects; neither is worth an alert.
      */
     private suspend fun runDegradedAlert() {
         engine.status.filterNotNull()
@@ -320,7 +322,7 @@ class TimerService : Service() {
                 if (source == DetectionSource.ACCESSIBILITY) {
                     ProtectionNotifications.clearDegraded(this@TimerService)
                 } else {
-                    delay(DEGRADED_ALERT_DELAY_MS)
+                    delay(DegradedGrace.delayMs(deviceClock.elapsedRealtime()))
                     if (source == DetectionSource.NONE) Log.w(TAG, "No foreground detection available")
                     ProtectionNotifications.showDegraded(this@TimerService)
                 }
@@ -418,7 +420,6 @@ class TimerService : Service() {
         private const val POLL_MS = 2_000L
         private const val FIRST_LOOKBACK_MS = 60 * 60_000L
         private const val POLL_LOOKBACK_MS = 15_000L
-        private const val DEGRADED_ALERT_DELAY_MS = 15_000L
         private const val RESTART_DELAY_MS = 5_000L
         private const val STATS_KEEP_DAYS = 30L
         private const val CLEANUP_EVERY_MS = 12 * 60 * 60_000L
