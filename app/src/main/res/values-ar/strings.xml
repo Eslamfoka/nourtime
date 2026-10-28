@@ -179,7 +179,7 @@
     <string name="apps_browser_label">متصفح</string>
     <string name="apps_browsers_warning">تستطيع المتصفحات فتح يوتيوب ومواقع أخرى. هل تريد تحديدها أيضًا؟</string>
     <string name="apps_browsers_list">غير محددة: %1$s</string>
-    <string name="apps_browsers_separator">"، "</string>
+    <string name="list_separator">"، "</string>
     <string name="apps_limit_browsers">حدّد المتصفحات</string>
     <string name="apps_limited_label">التطبيقات المحددة</string>
     <plurals name="apps_selected_count">
@@ -352,6 +352,7 @@
     <!-- Stats -->
     <string name="stats_today">الاستخدام اليوم</string>
     <string name="stats_week">آخر ٧ أيام</string>
+    <string name="stats_day_usage">%1$s: %2$s</string>
     <string name="stats_week_average">نحو %1$s في اليوم</string>
     <string name="stats_week_top">الأكثر استخدامًا: %1$s (%2$s)</string>
     <string name="stats_week_more">أكثر بنسبة %1$d%% من الأيام السبعة السابقة</string>
@@ -531,6 +532,9 @@
     <string name="learn_hub_subtitle_fun_m">تعلّم واستمتع</string>
     <string name="learn_hub_subtitle_fun_f">تعلّمي واستمتعي</string>
     <string name="learn_bank">دقائقك: %1$s</string>
+    <string name="learn_bank_chip">⏱ %1$s</string>
+    <string name="learn_use_minutes_with_m">استخدم دقائقي (%1$s)</string>
+    <string name="learn_use_minutes_with_f">استخدمي دقائقي (%1$s)</string>
     <string name="learn_use_minutes_m">استخدم دقائقي</string>
     <string name="learn_use_minutes_f">استخدمي دقائقي</string>
     <string name="learn_daily_max_reached">هذه كل دقائق اليوم. يمكن متابعة التعلّم للمتعة!</string>
@@ -621,6 +625,9 @@
     <string name="learn_try_again_f">حاولي مرة أخرى!</string>
     <string name="learn_great_m">رائع!</string>
     <string name="learn_great_f">رائعة!</string>
+    <string name="learn_great_with_m">رائع! %1$s</string>
+    <string name="learn_great_with_f">رائعة! %1$s</string>
+    <string name="learn_coloring_reference">الصورة بألوانها</string>
     <string name="learn_done_title_m">أحسنت!</string>
     <string name="learn_done_title_f">أحسنتِ!</string>
     <string name="learn_earned_m">كسبت %1$s!</string>

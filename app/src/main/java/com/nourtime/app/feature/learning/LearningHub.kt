@@ -140,7 +140,7 @@ private fun BankChip(minutes: Int) {
     if (minutes <= 0) return
     Surface(shape = CircleShape, color = NourPalette.Mint) {
         Text(
-            "⏱ " + durationText(minutes),
+            stringResource(R.string.learn_bank_chip, durationText(minutes)),
             style = MaterialTheme.typography.labelLarge,
             color = NourPalette.Navy,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -408,7 +408,7 @@ private fun ColumnScope.DoneScreen(controller: LearningHubController, state: Lea
         val bank = state?.bankMinutes ?: 0
         if (controller.rewards && bank > 0) {
             NourPrimaryButton(
-                stringResource(Gendered(R.string.learn_use_minutes_m, R.string.learn_use_minutes_f).pick(gender)) + " (" + durationText(bank) + ")",
+                stringResource(Gendered(R.string.learn_use_minutes_with_m, R.string.learn_use_minutes_with_f).pick(gender), durationText(bank)),
                 controller::useMinutes,
             )
         }

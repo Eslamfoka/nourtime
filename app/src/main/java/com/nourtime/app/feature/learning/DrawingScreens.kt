@@ -112,7 +112,7 @@ internal fun ColumnScope.ConnectScreen(controller: LearningHubController, state:
 
     HubTopBar(stringResource(R.string.learn_level, numerals.format(s.level + 1)), { controller.back() })
     val message = when {
-        s.celebrating -> stringResource(Gendered(R.string.learn_great_m, R.string.learn_great_f).pick(gender)) + " " + shape.emoji
+        s.celebrating -> stringResource(Gendered(R.string.learn_great_with_m, R.string.learn_great_with_f).pick(gender), shape.emoji)
         round.tutorial && round.drawn == 0 -> stringResource(
             Gendered(R.string.learn_tutorial_connect_m, R.string.learn_tutorial_connect_f).pick(gender),
             numerals.format(1),
@@ -206,12 +206,14 @@ private fun ConnectCanvas(
     val finished by rememberUpdatedState(done)
     val reach by rememberUpdatedState(onReach)
     val release by rememberUpdatedState(onRelease)
+    // The game's own words, not the drawing's emoji (TalkBack reads an emoji's Unicode name, in English).
+    val canvasLabel = stringResource(R.string.learn_game_connect_hint)
 
     Canvas(
         Modifier
             .fillMaxSize()
             .padding(20.dp)
-            .semantics { contentDescription = shape.emoji }
+            .semantics { contentDescription = canvasLabel }
             .pointerInput(shape) {
                 fun norm(o: Offset) = Offset(o.x / size.width, o.y / size.height)
                 detectDragGestures(
@@ -331,15 +333,16 @@ internal fun ColumnScope.ColoringScreen(controller: LearningHubController, state
 
     HubTopBar(stringResource(R.string.learn_level, numerals.format(s.level + 1)), { controller.back() })
     val message = when {
-        s.celebrating -> stringResource(Gendered(R.string.learn_great_m, R.string.learn_great_f).pick(gender)) + " " + picture.emoji
+        s.celebrating -> stringResource(Gendered(R.string.learn_great_with_m, R.string.learn_great_with_f).pick(gender), picture.emoji)
         s.lastWrong -> stringResource(Gendered(R.string.learn_try_again_m, R.string.learn_try_again_f).pick(gender))
         tutorial -> stringResource(Gendered(R.string.learn_tutorial_coloring_m, R.string.learn_tutorial_coloring_f).pick(gender))
         else -> stringResource(Gendered(R.string.learn_task_coloring_m, R.string.learn_task_coloring_f).pick(gender))
     }
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.fillMaxWidth()) {
         // The colored reference: the same drawing with its real colors.
+        val referenceLabel = stringResource(R.string.learn_coloring_reference)
         Surface(shape = RoundedCornerShape(20.dp), color = NourPalette.White, shadowElevation = 2.dp, modifier = Modifier.size(104.dp)) {
-            Canvas(Modifier.fillMaxSize().padding(8.dp).semantics { contentDescription = picture.emoji }) {
+            Canvas(Modifier.fillMaxSize().padding(8.dp).semantics { contentDescription = referenceLabel }) {
                 drawPicture(picture, { Color(round.target(it)) }, 1.5f.dp.toPx())
             }
         }

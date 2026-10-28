@@ -43,8 +43,8 @@ fun WeekCard(report: WeekReport, topAppName: String?) {
             Text(usageText(report.totalMs), style = MaterialTheme.typography.titleMedium)
         }
         val chartDescription = report.days.map { day ->
-            "${day.date.dayOfWeek.getDisplayName(TextStyle.FULL, locale)} ${usageText(day.totalMs)}"
-        }.joinToString(", ")
+            stringResource(R.string.stats_day_usage, day.date.dayOfWeek.getDisplayName(TextStyle.FULL, locale), usageText(day.totalMs))
+        }.joinToString(stringResource(R.string.list_separator))
         Row(
             Modifier
                 .fillMaxWidth()

@@ -87,7 +87,7 @@ object ProtectionNotifications {
 
     /** Newly installed apps now share the time budget; the parent can untick them in Apps. */
     fun showNewAppsLimited(context: Context, labels: List<String>) {
-        val text = context.getString(R.string.notif_new_apps_limited, labels.joinToString(", "))
+        val text = context.getString(R.string.notif_new_apps_limited, labels.joinToString(context.getString(R.string.list_separator)))
         val n = NotificationCompat.Builder(context, CHANNEL_ALERTS)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(context.getString(R.string.notif_new_apps_title))

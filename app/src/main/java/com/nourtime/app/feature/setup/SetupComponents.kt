@@ -367,7 +367,7 @@ fun BrowserWarningCard(browsers: List<InstalledApp>, onLimit: () -> Unit) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(stringResource(R.string.apps_browsers_warning), style = MaterialTheme.typography.titleSmall)
                 Text(
-                    stringResource(R.string.apps_browsers_list, browsers.joinToString(stringResource(R.string.apps_browsers_separator)) { it.label }),
+                    stringResource(R.string.apps_browsers_list, browsers.joinToString(stringResource(R.string.list_separator)) { it.label }),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

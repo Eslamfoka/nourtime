@@ -74,7 +74,7 @@ internal fun ColumnScope.TracingScreen(controller: LearningHubController, state:
 
     HubTopBar(stringResource(R.string.learn_level, numerals.format(s.level + 1)), { controller.back() })
     val message = when {
-        s.celebrating -> stringResource(Gendered(R.string.learn_great_m, R.string.learn_great_f).pick(gender)) + " " + round.letter.letter
+        s.celebrating -> stringResource(Gendered(R.string.learn_great_with_m, R.string.learn_great_with_f).pick(gender), round.letter.letter)
         strayed -> stringResource(Gendered(R.string.learn_trace_stray_m, R.string.learn_trace_stray_f).pick(gender))
         round.tutorial && round.stroke == 0 && round.reached == 0 -> stringResource(Gendered(R.string.learn_tutorial_tracing_m, R.string.learn_tutorial_tracing_f).pick(gender))
         round.current?.dot == true -> stringResource(Gendered(R.string.learn_trace_dot_m, R.string.learn_trace_dot_f).pick(gender))

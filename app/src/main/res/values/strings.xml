@@ -181,7 +181,7 @@
     <string name="apps_browser_label">Browser</string>
     <string name="apps_browsers_warning">Browsers can open YouTube and other sites. Limit them too?</string>
     <string name="apps_browsers_list">Not limited: %1$s</string>
-    <string name="apps_browsers_separator">", "</string>
+    <string name="list_separator">", "</string>
     <string name="apps_limit_browsers">Limit browsers</string>
     <string name="apps_limited_label">Limited apps</string>
     <plurals name="apps_selected_count">
@@ -342,6 +342,7 @@
     <!-- Stats -->
     <string name="stats_today">Used today</string>
     <string name="stats_week">Last 7 days</string>
+    <string name="stats_day_usage">%1$s: %2$s</string>
     <string name="stats_week_average">About %1$s a day</string>
     <string name="stats_week_top">Most used: %1$s (%2$s)</string>
     <string name="stats_week_more">%1$d%% more than the 7 days before</string>
@@ -521,6 +522,9 @@
     <string name="learn_hub_subtitle_fun_m">Learn and have fun</string>
     <string name="learn_hub_subtitle_fun_f">Learn and have fun</string>
     <string name="learn_bank">Your minutes: %1$s</string>
+    <string name="learn_bank_chip">⏱ %1$s</string>
+    <string name="learn_use_minutes_with_m">Use my minutes (%1$s)</string>
+    <string name="learn_use_minutes_with_f">Use my minutes (%1$s)</string>
     <string name="learn_use_minutes_m">Use my minutes</string>
     <string name="learn_use_minutes_f">Use my minutes</string>
     <string name="learn_daily_max_reached">That\'s all the minutes for today. Keep learning for fun!</string>
@@ -611,6 +615,9 @@
     <string name="learn_try_again_f">Try again!</string>
     <string name="learn_great_m">Great!</string>
     <string name="learn_great_f">Great!</string>
+    <string name="learn_great_with_m">Great! %1$s</string>
+    <string name="learn_great_with_f">Great! %1$s</string>
+    <string name="learn_coloring_reference">The picture in its colors</string>
     <string name="learn_done_title_m">Well done!</string>
     <string name="learn_done_title_f">Well done!</string>
     <string name="learn_earned_m">You earned %1$s!</string>
