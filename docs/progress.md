@@ -1,9 +1,22 @@
 # Nour Time: progress against the brief
 
-> **2026-10-28:** this file was last fully updated on 2026-10-06. Everything since (committee audits,
-> lock fixes, push notifications to the parent's phone, the API 37 toolchain, Play compliance,
-> accessibility, battery, Firestore limits) is in [`handoff.md`](handoff.md) §20–38; the "Resume here"
-> block at its top is the current status and lists the owner's open items.
+> **2026-10-29:** the detailed sections below were last fully updated on 2026-10-06. Everything since
+> (committee audits, lock fixes, push notifications to the parent's phone, the API 37 toolchain, Play
+> compliance, accessibility, battery, Firestore limits) is in [`handoff.md`](handoff.md) §20–40; the
+> "Resume here" block at its top is the current status and lists the owner's open items.
+
+**2026-10-27 → 10-29:** ✅ **Two committee audits fixed, verified and pushed** (`master` at
+`edb05c5123`, CI green on every job). Round 1 ([§28–§32](handoff.md#28-2026-10-27-toolchain-upgrade-api-37-and-a-datastore-that-cant-stay-behind)):
+API 37 toolchain (AGP 9.4, Kotlin 2.4), the "Forgot PIN?" wait counts real time, an accurate
+disclosure and no FCM token on unconnected phones, other users shown at setup, TalkBack switches, a
+reachable OK in landscape. Round 2 ([§33–§39](handoff.md#33-2026-10-28-accessibility-texts-match-the-disclosure-background-readers-restart)):
+every privacy text lists what is shared, background readers restart after errors, one count of PIN
+tries and a 4-character security answer, the waiting PIN reset shown, a "protection is off" notice and
+a 15 s parent alert when Accessibility is lost, a "limit browsers" suggestion, safe mode said plainly,
+language choice at the start of setup, TalkBack announcements, far fewer wake-ups with the screen off,
+Firestore limits per account, CI builds the minified release. 668 unit tests, 21 instrumented, 69 rules,
+16 functions tests. **Owner:** deploy the Firestore rules with this build, then App Check; device checks;
+closed test ([§40](handoff.md#40-2026-10-27--10-29-two-committee-audits-their-fixes-verification-and-push)).
 
 Status as of 2026-10-06 (resume point: the "Resume here" block at the top of [`handoff.md`](handoff.md); next: the
 [roadmap](#roadmap-next-sessions-in-order) and [`handoff.md` §18](handoff.md#18-roadmap-for-the-next-sessions-in-order)). A copy of the brief with the status of every requirement, plus Phase 4, is in
@@ -396,7 +409,7 @@ screen option, pack, how a level starts). A new game is a `GameId`, one registry
 | 1 | **Conduct a comprehensive review of everything implemented so far to identify and fix any bugs, glitches, or edge cases.** | ✅ Done 2026-10-03: core solid; fixed Play language split, replay/bank rewards (owner's decisions), repeated math questions, cut-off chips, Home ring caption. The 2 Home items during a learning break done 2026-10-05 (`1e237834`) |
 | 2 | Number Connect UX: U5 (shape preview) and U6 (completely mute number pronunciation) | ✅ Done 2026-10-05; APK `dist/NourTime-2026-10-05-break-connect-release.apk` |
 | 3 | Parent app integration of the Learning Hub (settings, voice per language, minutes bank on the parent's phone) | ✅ Built 2026-10-05 (`e2941fb1`); two-phone test pending |
-| 4 | Release preparation: rotate the ElevenLabs key, upload key, Play listing, screenshots, video, account-deletion page | 🟡 Target API 36 ✅ (Android 16 emulator-tested 2026-10-06), AAB ✅; drafts of the feature graphic and screenshots ✅; the rest needs the owner |
+| 4 | Release preparation: rotate the ElevenLabs key, upload key, Play listing, screenshots, video, account-deletion page | 🟡 Target API 37 ✅ (2026-10-27; Android 16 emulator-tested 2026-10-06), AAB ✅, minified release built in CI ✅; drafts of the feature graphic and screenshots ✅ (screenshots need refreshing); the rest needs the owner |
 | 5 | Real-device testing on Samsung and Xiaomi (+ open Honor re-tests) | ⏳ |
 | 6 | Audio assets: voice message for ages 3–6, lullaby (ElevenLabs voices can record them) | ⏳ Texts drafted ([`audio-texts-draft.md`](audio-texts-draft.md)), waiting for the owner's approval |
 | 7 | G9 short surahs and du'as | On hold (licensing decision) |
@@ -405,16 +418,21 @@ Details for each task: [`handoff.md` §18](handoff.md#18-roadmap-for-the-next-se
 
 ## Strictly pending
 
-1. **Your Firebase project** (README steps 1–8, including the TTL policy), then a test on two real phones (QR scan, real Google sign-in).
+1. **Deploy and switch on:** the Firebase project `nourtime-8d4ce` exists; deploy the Firestore rules and functions **together with the current build** (older child apps are refused by the new rules, [`handoff.md` §37.1](handoff.md#371-owner)), then register and enforce App Check (§25.1). Then a test on two real phones: pairing end to end, including a phone with a stale record (§39).
 2. **Publish the account-deletion page** (`docs/account-deletion.md`, fill in the contact email) and put its URL and the privacy policy URL in Play Console.
 3. **Device testing** (step 8) on Samsung and Xiaomi (Honor started): PiP, battery savers, autostart, reboot during a lock, Force stop / uninstall attempts, whole-phone screen-off. [`testing-checklist.md`](testing-checklist.md).
 4. **Audio assets:** a short recorded voice message for ages 3–6 (masculine and feminine) and a soft lullaby for the sleep screen (the 3–6 description no longer promises the voice message).
 5. **Release:** create the upload key (README "Release signing"), Play App Signing, screenshots, feature graphic and the Accessibility demo video.
-6. **Optional:** Lottie animations if an illustrator provides them; Device Owner mode if Safe Mode must be blocked.
+6. **Optional:** Lottie animations if an illustrator provides them; Device Owner mode if Safe Mode must be blocked (it is now said plainly at setup and in the store listing, §35).
 7. **Push notifications to the parent's phone** are built (FCM + Cloud Functions on Blaze, [`handoff.md` §24](handoff.md#24-2026-10-14-push-notifications-to-the-parents-phone-fcm-on-blaze)); the owner deploys the functions and rules with the current build ([§37.1](handoff.md#371-owner)).
+8. **Privacy proof:** a network capture of a fresh unpaired install shows no Firebase traffic (§30, §32), and a native speaker reads the new Arabic disclosure texts (§30, §33).
+9. **Business (owner):** pricing and Play Billing before the public launch; the committee's proposal is in [`handoff.md` §20.5](handoff.md) (not decided).
 
 ## Known limitations (documented, not bugs)
-- Safe Mode disables all third-party apps; blocking it needs Device Owner (factory reset + adb).
+- Safe Mode disables all third-party apps; blocking it needs Device Owner (factory reset + adb). Said plainly at setup and in the listing; a paired parent gets the "phone went quiet" push.
+- A switch to a guest or another user can't be stopped without Device Owner; the time away is charged and the parent is alerted at the switch (§31).
+- Without Accessibility, the "protection is off" notice uses the regular overlay, which sits under the notification shade and which Android hides on some Settings screens (§35).
+- Browsers are detected and suggested, never limited without the parent's choice (§35).
 - The usage-stats fallback can't see picture-in-picture windows (only Accessibility can).
 - The lock period doesn't progress while the phone is powered off (by design, approved).
 - Changing the phone's time zone shifts bedtime and the schedule (the Settings app is protected, so this needs the parent).

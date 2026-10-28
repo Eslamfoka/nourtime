@@ -3,15 +3,17 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (2026-10-28):** everything is on `master`, committed locally and **not pushed** (21
-> commits ahead of `origin/master`). Newest first: §39 (review fixes: stale pairing record, rules
+> **Resume here (2026-10-29):** everything is on `master` and **pushed** (`edb05c5123`); GitHub
+> Actions CI run 40724249946 is green on every job (build with the new minified release, instrumented
+> on API 34, Firestore rules and functions). How the work was done and verified: [§40](#40-2026-10-27--10-29-two-committee-audits-their-fixes-verification-and-push).
+> Newest first: §39 (review fixes: stale pairing record, rules
 > change to deploy), §38 (Arabic text assembly, TalkBack and large-font
 > polish, docs), §37 (battery, CI health, Firestore limits), §36 (language at setup, TalkBack states),
 > §35 (protection-off notice and 15 s alert, browsers), §34 (one PIN-try count), §33/§32 (disclosure
 > texts, FCM clean-up), §31 (other users, TalkBack switches), §30/§29 (disclosure, PIN wait), §28
-> (API 37 toolchain), §27/§26 (background audio, instrumented tests). Last verified: unit tests, lint
-> (baseline, warnings as errors) and debug build green; instrumented tests on `emulator-5554`
-> (`nourdm-test-api36`), see §39.
+> (API 37 toolchain), §27/§26 (background audio, instrumented tests). Last verified (§40): 668 unit
+> tests, lint (baseline, new warnings fail), debug and real-config release builds (R8) green;
+> instrumented 21/21 on `emulator-5554` (`nourdm-test-api36`); Firestore rules 69/69, functions 16/16.
 >
 > **Owner TODOs:**
 > 1. **Deploy the Firestore rules and functions together with the new build** (§37.1, §25.1): an older
@@ -22,6 +24,9 @@ and the file map are in the [`README`](../README.md).
 >    (§35), the display listener (§37), pairing end to end against the new rules on two phones (§37.1),
 >    TalkBack by ear (§36, §38). Checklist: [`testing-checklist.md`](testing-checklist.md).
 > 5. **Network capture** of a fresh unpaired install (nothing should leave the phone, §30).
+> 6. **Store packet:** contact email and URLs in `privacy-policy.md`, `account-deletion.md` and
+>    `store-listing.md`; refreshed screenshots (the drafts in `dist/` predate §20–§39); a native read of
+>    the new Arabic disclosure texts (§30, §33).
 
 > **Earlier (2026-10-17):** the fresh audit's technical fixes are done ([§25](#25-2026-10-17-fresh-audit-fixes-before-the-closed-test-ship-after-fixes)): PIN lockouts apart, quiet-phone push, other users, sync isolation, unreadable pairing codes, App Check prepared. **Owner:** §25.1 (deploy rules + functions with the new build, then App Check).
 
@@ -2309,3 +2314,54 @@ older build's second device, a record naming another account's device, deleting 
 Verified: `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green, 668 unit tests, lint 0 issues
 outside the baseline; `:app:connectedDebugAndroidTest` (emulator-5554) 21/21; `firebase npm test` 69/69.
 Not covered: the stale-record recovery against the deployed rules on a real phone.
+
+## 40. 2026-10-27 → 10-29: two committee audits, their fixes, verification and push
+
+**What happened.** Two fresh `/advise` audits of the whole project (verdict both times: SHIP AFTER
+FIXES, the Investor refused until billing, Play approval and real demand data exist). The owner asked
+for the technical fixes only, done by one sub-agent per area in turn and checked by a separate reviewer
+agent before each push. Business items (pricing, billing, partners) stay with the owner.
+
+| Round | Commits | Sections | Pushed | CI |
+|---|---|---|---|---|
+| 1 (audit 2026-10-27) | `7ca28ff760..4ca621301d` (12) | §28–§32 | 2026-10-28 | run 40634639958 green |
+| 2 (audit 2026-10-28) | `d6dee6e03b..edb05c5123` (21) | §33–§39 | 2026-10-29 | run 40724249946 green |
+
+Each round's reviewer said NOT OK once and found real issues, fixed before the push: round 1, an FCM
+`deleteToken()` on every start of an unpaired phone (§32); round 2, a phone that could be refused new
+pairing codes for good (§39), plus three lows.
+
+**Final verification of round 2 (reviewer, each check alone):** `:app:testDebugUnitTest --rerun` 661,
+then 668 after §39, 0 failures, 0 skipped; lint clean against the baseline; `:app:assembleRelease` with
+the real config, R8 and lintVital passed (unsigned APK 14.1 MB); `:app:connectedDebugAndroidTest` 21/21
+on emulator-5554; `firebase npm test` 69/69; functions 16/16 and a clean `tsc` build.
+
+**Reviewer's remaining lows (not fixed, none blocks the closed test):**
+- A `TimeEngine` change that times out after 30 s (§39) is dropped without its caller knowing: an
+  other-user charge (`TimerService.kt` `takeOtherUserAway` has already used up the away record) or a
+  Learning Hub reward could be lost. Only if the timer produces no state for 30 s. Fix: check the
+  Boolean and keep the away record or retry.
+- Each anonymous account can still hold one open pairing code, and `requests` is unbounded per device,
+  until App Check is enforced (§37.1).
+
+**Known limits, said plainly in the app and docs:** safe mode (needs Device Owner, §35); a switch to
+another user can't be stopped, only charged and reported (§31); without Accessibility the regular
+overlay sits under the notification shade and Android hides it on some Settings screens (§35);
+browsers are suggested, never limited without the parent (§35).
+
+**Machine notes (this PC, 16 GB):**
+- Run one heavy process at a time while the emulator is up: Gradle with
+  `--no-daemon -Dorg.gradle.jvmargs="-Xmx2g -Dfile.encoding=UTF-8"`, or the Firestore emulator tests,
+  never both. A build killed for memory can leave a `GradleDaemon` java process (about 2.7 GB): stop it
+  before the next run.
+- Firestore tests from Git Bash need the JDK on PATH in `/d/...` form:
+  `JAVA_HOME=D:/dev-tools/jdk-21 PATH="/d/dev-tools/jdk-21/bin:$PATH" npm test` (a `D:/...` entry is
+  split at the colon and dropped).
+- `gh` isn't installed; CI status is read from the GitHub API with the git credential
+  (`printf "protocol=https\nhost=github.com\n\n" | git credential fill`).
+- git on this exFAT drive: `-c safe.directory=E:/cloud/nourtime -c maintenance.auto=false -c gc.auto=0`
+  (the automatic geometric repack fails harmlessly otherwise).
+
+**Next:** the owner TODOs in the resume block at the top (deploy rules with this build, App Check,
+device checks, network capture, store packet, closed test). Business: decide pricing and build Play
+Billing before the public launch (§20.5–§20.6).
