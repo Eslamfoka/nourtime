@@ -3,7 +3,26 @@
 Read this to resume work. Status against the brief is in [`progress.md`](progress.md). Build commands
 and the file map are in the [`README`](../README.md).
 
-> **Resume here (2026-10-17):** the fresh audit's technical fixes are done ([§25](#25-2026-10-17-fresh-audit-fixes-before-the-closed-test-ship-after-fixes)): PIN lockouts apart, quiet-phone push, other users, sync isolation, unreadable pairing codes, App Check prepared. **Owner:** §25.1 (deploy rules + functions with the new build, then App Check).
+> **Resume here (2026-10-28):** everything is on `master`, committed locally and **not pushed** (19
+> commits ahead of `origin/master`). Newest first: §38 (Arabic text assembly, TalkBack and large-font
+> polish, docs), §37 (battery, CI health, Firestore limits), §36 (language at setup, TalkBack states),
+> §35 (protection-off notice and 15 s alert, browsers), §34 (one PIN-try count), §33/§32 (disclosure
+> texts, FCM clean-up), §31 (other users, TalkBack switches), §30/§29 (disclosure, PIN wait), §28
+> (API 37 toolchain), §27/§26 (background audio, instrumented tests). Last verified: unit tests, lint
+> (baseline, warnings as errors) and debug build green; instrumented tests on `emulator-5554`
+> (`nourdm-test-api36`), see §38.
+>
+> **Owner TODOs:**
+> 1. **Deploy the Firestore rules and functions together with the new build** (§37.1, §25.1): an older
+>    child app is refused by the new rules. `npx firebase deploy --only firestore:rules --project nourtime-8d4ce`.
+> 2. **App Check**: register, watch the metrics, then enforce (§25.1).
+> 3. **Closed test** on Play (upload key, listing, Accessibility demo video: §20, `play-compliance.md`).
+> 4. **Device checks** on the Honor and on Samsung/Xiaomi: protection-off notice on Settings screens
+>    (§35), the display listener (§37), pairing end to end against the new rules on two phones (§37.1),
+>    TalkBack by ear (§36, §38). Checklist: [`testing-checklist.md`](testing-checklist.md).
+> 5. **Network capture** of a fresh unpaired install (nothing should leave the phone, §30).
+
+> **Earlier (2026-10-17):** the fresh audit's technical fixes are done ([§25](#25-2026-10-17-fresh-audit-fixes-before-the-closed-test-ship-after-fixes)): PIN lockouts apart, quiet-phone push, other users, sync isolation, unreadable pairing codes, App Check prepared. **Owner:** §25.1 (deploy rules + functions with the new build, then App Check).
 
 > **Earlier (2026-10-14):** push notifications to the parent's phone are built and tested on the
 > emulators ([§24](#24-2026-10-14-push-notifications-to-the-parents-phone-fcm-on-blaze)); the owner
@@ -49,7 +68,7 @@ and the file map are in the [`README`](../README.md).
 ## 1. Architecture at a glance
 
 Single `:app` module · Kotlin · Jetpack Compose + Material 3 · Hilt · MVVM · DataStore + Room ·
-minSdk 26, targetSdk 36 · Arabic (RTL) + English · network only for the optional parent's phone
+minSdk 26, targetSdk 37 · Arabic (RTL) + English · network only for the optional parent's phone
 (Firebase Auth + Firestore, started only once paired) and Crashlytics on connected phones.
 
 ```
@@ -2214,3 +2233,40 @@ config and `-Pnourtime.versionCode=7` OK (real config restored, checksum checked
   account (from older builds) can't make a new code until one is deleted. Requests for more time
   (`requests`) are still unbounded per device; anonymous accounts themselves are only limited by Firebase
   Auth's per-IP sign-up limit until App Check is enforced (§25.1).
+
+## 38. 2026-10-28: Arabic text assembly, TalkBack and large-font polish, stale docs
+
+**Arabic and string assembly.** User-visible text is no longer glued with `+`: the bank chip
+(`learn_bank_chip`), "Use my minutes (…)" (`learn_use_minutes_with_m/f`), "Great! 🐱" after a drawing,
+a coloring or a traced letter (`learn_great_with_m/f`), the week chart's spoken days (`stats_day_usage`).
+Lists use `list_separator` (", " / "، "): the new-apps notification, the week chart, the browsers line
+(was `apps_browsers_separator`). Number Connect's canvas is read as "Connect the dots to draw" and the
+coloring reference as "The picture in its colors" instead of the emoji's English Unicode name.
+
+**TalkBack and layout.** Time's up: the 🧩 before "Learn" is hidden; the countdown (7–9 ring, 10–12
+numbers) is one item read in words, "2 hours left" / "المتبقي ساعتين" (`formatCountdownWords`, new
+`duration_seconds` plurals), not a live region. "For parents" is drawn at 75% instead of the whole button
+at 55%: 0.55 gave 2.96–3.42:1 on the light templates (sleep 5.12), 0.75 gives at least 4.78:1 (meal's
+orange end) and 8.18:1 at night (`TimeUpTemplatesTest` checks every template, age and gradient end).
+Learning Hub: emoji and level digits inside fixed boxes no longer grow with the font scale
+(`fixedSize`, `LearningPicture`'s emoji size is now in dp); the top bar ends long titles with "…"; while
+the saved progress is read, a spinner (`CenteredProgress`, shown after 300 ms, read as "Loading…"), also
+on `MainActivity`'s LOADING route instead of a blank box. Setup: the keyboard's Done on the security
+answer saves like the button; the test step hides "Waiting for a limited app" when none can be opened;
+Back on a step that can't go back (after the PIN or question is saved) shows "Setup continues from here…"
+once, the next Back closes as before.
+
+**Docs.** The resume block at the top is current; `progress.md` (targetSdk 37, push built, banner →
+§20–38); `play-compliance.md` (`CrashReporting.allowed` applied by `FirebaseCollectionController`,
+`FirebaseCollection.pushes`; every other class, key and file named there exists); README (lint
+baseline, `-Pnourtime.versionCode`, CI jobs, Node 22). `dist/voice-samples/README.txt` (untracked) still
+names old voices; left alone.
+
+**Owner decisions, unchanged:** the Arabic dual as subject ("دقيقتين", "ساعتين", now also "ثانيتين"),
+and the schedule timeline left to right in Arabic.
+
+Tests: `TimeUpTemplatesTest` (+1 contrast), `FormattingTest` (+1 countdown parts), instrumented
+`TimeUpScreenLayoutTest` (+1: countdown read in words for 7–9 and 10–12, no 🧩 in the tree).
+Verified: `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug` green, 661 unit tests, lint 0 issues
+outside the baseline; `:app:connectedDebugAndroidTest` (emulator-5554, `nourdm-test-api36`) 21/21.
+Not covered: TalkBack by ear, the hub at font 2.0 on a real phone, the back-hint toast by hand.

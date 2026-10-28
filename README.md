@@ -13,7 +13,7 @@ Requirements: JDK 17 or newer, Android SDK platform 37 (Gradle 9.8 via the wrapp
 ```bash
 ./gradlew :app:testDebugUnitTest   # unit tests
 ./gradlew :app:assembleDebug       # debug APK: app/build/outputs/apk/debug/app-debug.apk
-./gradlew :app:lintDebug           # lint (no errors expected)
+./gradlew :app:lintDebug           # lint: warnings are errors, except those in app/lint-baseline.xml
 ANDROID_SERIAL=emulator-5554 ./gradlew :app:connectedDebugAndroidTest   # instrumented tests (below)
 ./gradlew :app:bundleRelease       # minified release bundle for Play: app/build/outputs/bundle/release/
 ./gradlew :app:assembleRelease     # minified release APK; both need app/google-services.json (Phase 2)
@@ -26,6 +26,11 @@ application, a fresh set of data files per test, the lock screen as a "display o
 Use a **clean emulator kept for this** (here: AVD `nourdm-test-api36`), and always set `ANDROID_SERIAL`:
 the task runs on every connected device, replaces Nour Time there and uninstalls it afterwards, so a
 plugged-in phone would lose its setup. CI runs them on API 34.
+
+CI (`.github/workflows/android.yml`, JDK 17) runs the unit tests, lint and a debug build, then a
+minified `assembleRelease` with the demo Firebase config copied to `app/google-services.json` on the
+runner (`-Pnourtime.crashlyticsMappingUpload=false`), the instrumented tests, and the Firestore rules
+and functions tests (Node 22, JDK 21).
 
 ### Release signing
 
@@ -46,7 +51,7 @@ Release builds are signed when a key is configured, and unsigned otherwise:
 3. `./gradlew :app:bundleRelease`, then upload the `.aab` in Play Console with **Play App Signing** on
    (Google keeps the app signing key; yours is the upload key). Add the SHA-1/SHA-256 of both keys
    (Play Console → App integrity) to the Firebase Android app for Google sign-in.
-4. Raise `versionCode` in `app/build.gradle.kts` for every upload.
+4. Give every upload a higher `versionCode` with `-Pnourtime.versionCode=<n>` (it is 1 without it).
 
 Debug builds show a **Detection (debug)** card on Home with what detection sees, and two buttons,
 **End budget now** / **End lock now**, to test locking without waiting. They don't exist in release builds.
@@ -59,7 +64,7 @@ phones. Details: [`docs/handoff.md` §7](docs/handoff.md#7-phase-2-remote-contro
 
 ### Develop against the local emulator (default for debug builds)
 
-Needs Node 18+ and **JDK 21** for firebase-tools (Gradle keeps JDK 17).
+Needs Node 22 (as CI and the functions' `engines`) and **JDK 21** for firebase-tools (Gradle keeps JDK 17).
 
 ```bash
 cd firebase && npm install

@@ -97,7 +97,8 @@ to pause them during a lock and count their audio; never leaves the phone). Back
     starts working).
   - **App info and performance → Crash logs and Diagnostics:** Firebase Crashlytics crash reports
     (stack trace, Android version, phone model, a Crashlytics installation id). Collected only on a
-    paired child's phone or a signed-in parent's phone (`CrashReporting`); off in the manifest
+    paired child's phone or a signed-in parent's phone (`CrashReporting.allowed`, applied by
+    `FirebaseCollectionController`); off in the manifest
     (`firebase_crashlytics_collection_enabled=false`), and reports saved while off are deleted.
     Purpose: app functionality / crash fixing. Shared with no one else. Not optional for a connected
     phone (declare as collected, required).
@@ -105,7 +106,7 @@ to pause them during a lock and count their audio; never leaves the phone). Back
     **parent's** phone only, the Firebase Cloud Messaging token while signed in (app functionality:
     notifications to the parent; not shared; deleted on sign-out and account deletion). FCM auto-init
     is off in the manifest (`firebase_messaging_auto_init_enabled=false`) and turned on only while a
-    parent is signed in (`FirebaseCollection`), so an unconnected or child's phone creates no token.
+    parent is signed in (`FirebaseCollection.pushes`), so an unconnected or child's phone creates no token.
     A token made by an older version is deleted once after the update; on a phone that never had one,
     Nour Time makes no FCM call at all (`FcmTokenCleanup`), and FCM's own start-up contacts nothing
     while auto-init is off.

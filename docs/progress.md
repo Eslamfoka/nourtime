@@ -1,8 +1,9 @@
 # Nour Time: progress against the brief
 
-> **2026-10-13:** this file was last fully updated on 2026-10-06. Everything since (committee audits,
-> lock fixes, the parent's phone's loading/error states, the PIN-reset wait, flash wear) is in
-> [`handoff.md`](handoff.md) §20–23, which is the current status.
+> **2026-10-28:** this file was last fully updated on 2026-10-06. Everything since (committee audits,
+> lock fixes, push notifications to the parent's phone, the API 37 toolchain, Play compliance,
+> accessibility, battery, Firestore limits) is in [`handoff.md`](handoff.md) §20–38; the "Resume here"
+> block at its top is the current status and lists the owner's open items.
 
 Status as of 2026-10-06 (resume point: the "Resume here" block at the top of [`handoff.md`](handoff.md); next: the
 [roadmap](#roadmap-next-sessions-in-order) and [`handoff.md` §18](handoff.md#18-roadmap-for-the-next-sessions-in-order)). A copy of the brief with the status of every requirement, plus Phase 4, is in
@@ -116,7 +117,7 @@ reason · PIN + security question · apps, time and lock type, child's gender an
 ### §9 Tech stack
 | Item | Status |
 |---|---|
-| Kotlin, Compose, Material 3, minSdk 26 | ✅ targetSdk 36 (Android 16, since 2026-10-05) |
+| Kotlin, Compose, Material 3, minSdk 26 | ✅ targetSdk / compileSdk 37 (since 2026-10-27, [`handoff.md` §28](handoff.md#28-2026-10-27-toolchain-upgrade-api-37-and-a-datastore-that-cant-stay-behind)) |
 | AccessibilityService primary, UsageStatsManager fallback | ✅ |
 | Foreground service for the timer | ✅ `specialUse` type |
 | Room + DataStore | ✅ |
@@ -409,7 +410,8 @@ Details for each task: [`handoff.md` §18](handoff.md#18-roadmap-for-the-next-se
 3. **Device testing** (step 8) on Samsung and Xiaomi (Honor started): PiP, battery savers, autostart, reboot during a lock, Force stop / uninstall attempts, whole-phone screen-off. [`testing-checklist.md`](testing-checklist.md).
 4. **Audio assets:** a short recorded voice message for ages 3–6 (masculine and feminine) and a soft lullaby for the sleep screen (the 3–6 description no longer promises the voice message).
 5. **Release:** create the upload key (README "Release signing"), Play App Signing, screenshots, feature graphic and the Accessibility demo video.
-6. **Optional:** Lottie animations if an illustrator provides them; Device Owner mode if Safe Mode must be blocked; push notifications to the parent (needs Cloud Functions / Blaze).
+6. **Optional:** Lottie animations if an illustrator provides them; Device Owner mode if Safe Mode must be blocked.
+7. **Push notifications to the parent's phone** are built (FCM + Cloud Functions on Blaze, [`handoff.md` §24](handoff.md#24-2026-10-14-push-notifications-to-the-parents-phone-fcm-on-blaze)); the owner deploys the functions and rules with the current build ([§37.1](handoff.md#371-owner)).
 
 ## Known limitations (documented, not bugs)
 - Safe Mode disables all third-party apps; blocking it needs Device Owner (factory reset + adb).
