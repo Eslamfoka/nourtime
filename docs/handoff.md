@@ -15,6 +15,12 @@ and the file map are in the [`README`](../README.md).
 > tests, lint (baseline, new warnings fail), debug and real-config release builds (R8) green;
 > instrumented 21/21 on `emulator-5554` (`nourdm-test-api36`); Firestore rules 69/69, functions 16/16.
 >
+> **APK for the Honor (newest, has everything up to `ceb4856a56`):**
+> `dist/NourTime-2026-10-29-audit-round2-release.apk` (14.1 MB, minified, real Firebase project
+> `nourtime-8d4ce`, signed with the debug key so `adb install -r` keeps the data; versionCode 1 /
+> 0.1.0, target SDK 37). Not for Play (needs the upload key). After installing, check that
+> Accessibility is still on, and deploy the new rules (TODO 1) before pairing.
+>
 > **Owner TODOs:**
 > 1. **Deploy the Firestore rules and functions together with the new build** (§37.1, §25.1): an older
 >    child app is refused by the new rules. `npx firebase deploy --only firestore:rules --project nourtime-8d4ce`.
@@ -2361,6 +2367,11 @@ browsers are suggested, never limited without the parent (§35).
   (`printf "protocol=https\nhost=github.com\n\n" | git credential fill`).
 - git on this exFAT drive: `-c safe.directory=E:/cloud/nourtime -c maintenance.auto=false -c gc.auto=0`
   (the automatic geometric repack fails harmlessly otherwise).
+
+**APK (built after the push, from `ceb4856a56`):** `dist/NourTime-2026-10-29-audit-round2-release.apk`
+(14,114,964 bytes; minified `assembleRelease` on the real config; debug-key signature, SHA-1
+`cad6d508…9ba`, the same as earlier Honor builds). Install:
+`adb -s AAYSNU2712209663 install -r dist/NourTime-2026-10-29-audit-round2-release.apk`.
 
 **Next:** the owner TODOs in the resume block at the top (deploy rules with this build, App Check,
 device checks, network capture, store packet, closed test). Business: decide pricing and build Play

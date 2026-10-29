@@ -15,7 +15,8 @@ tries and a 4-character security answer, the waiting PIN reset shown, a "protect
 a 15 s parent alert when Accessibility is lost, a "limit browsers" suggestion, safe mode said plainly,
 language choice at the start of setup, TalkBack announcements, far fewer wake-ups with the screen off,
 Firestore limits per account, CI builds the minified release. 668 unit tests, 21 instrumented, 69 rules,
-16 functions tests. **Owner:** deploy the Firestore rules with this build, then App Check; device checks;
+16 functions tests. APK `dist/NourTime-2026-10-29-audit-round2-release.apk` (minified, real Firebase,
+debug key). **Owner:** deploy the Firestore rules with this build, then App Check; device checks;
 closed test ([§40](handoff.md#40-2026-10-27--10-29-two-committee-audits-their-fixes-verification-and-push)).
 
 Status as of 2026-10-06 (resume point: the "Resume here" block at the top of [`handoff.md`](handoff.md); next: the
